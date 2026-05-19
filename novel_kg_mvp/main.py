@@ -139,6 +139,12 @@ def build_writing_prompt(context, chapter, language=None):
             lines.append(f"  - {e.get('title', '')}{gap_mark}: {e.get('detail', '')}")
         lines.append("")
 
+    # 前一章正文片段（感官/风格延续）
+    if context.get("prev_chapter_text"):
+        lines.append("【前一章结尾（保持感官和风格延续）】")
+        lines.append(context["prev_chapter_text"])
+        lines.append("")
+
     # 人物状态 + 人名硬约束
     if context.get("characters"):
         lines.append("【人物状态】")

@@ -372,6 +372,7 @@ def write_extraction(project: str, chapter: int,
         "conflicts": report["conflicts"],
         "character_updates": report.get("character_updates", []),
         "notes": report.get("notes", ""),
+        "skipped_threads": report.get("skipped_threads", []),
     }
 
 

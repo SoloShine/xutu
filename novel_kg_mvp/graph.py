@@ -502,6 +502,13 @@ class NovelKG:
                                 "type": r["type"], "detail": r.get("detail", "")}
                                for r in evidence_result]
 
+            # 前一章正文（用于感官/风格延续）
+            prev_text = None
+            if chapter > 1:
+                prev_text = self.get_chapter_text(chapter - 1)
+                if prev_text and len(prev_text) > 3000:
+                    prev_text = prev_text[-3000:]
+
             return {
                 "time_periods": time_periods,
                 "prev_events": prev_events,
@@ -515,6 +522,7 @@ class NovelKG:
                 "outline_entry": outline_entry,
                 "causal_links": causal_links,
                 "evidence_links": evidence_links,
+                "prev_chapter_text": prev_text,
             }
 
     def get_arc_derivation_context(self, chapter, lookback=3):
@@ -867,6 +875,19 @@ class NovelKG:
                 "outline_entries": outlines,
                 "relationships": rels,
             }
+
+    def get_chapter_text(self, chapter):
+        """读取已生成的章节正文（用于串行连贯性）"""
+        import os as _os
+        base_dir = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+        path = _os.path.join(
+            base_dir, "novel_kg_mvp", "projects", self.project,
+            "output", f"ch{chapter}_generated.txt"
+        )
+        if _os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+        return None
 
 
 if __name__ == "__main__":

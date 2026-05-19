@@ -299,9 +299,17 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
             stats.setdefault("thread_updates", 0)
             stats["thread_updates"] += 1
 
-    # 8. 新悬念线
+    # 8. 新悬念线（含预算控制）
+    current_threads = kg.stats()["suspense_threads"]
+    # 动态预算：max(8, chapter * 1.5)，6章≈9条，12章≈18条
+    max_threads = max(8, int(chapter * 1.5))
     thread_idx = 0
+    skipped_threads = []
     for nt in extracted.get("new_threads", []):
+        importance = nt.get("importance", "medium")
+        if current_threads >= max_threads and importance != "high":
+            skipped_threads.append(nt.get("content", ""))
+            continue
         thread_idx += 1
         tid = f"ST{chapter:02d}_{thread_idx:02d}"
         kg.add_suspense_thread(
@@ -317,6 +325,7 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
                            "Event", "id", nt["planted_event_id"])
         stats.setdefault("new_threads", 0)
         stats["new_threads"] += 1
+        current_threads += 1
 
     # 9. 因果链
     for cl in extracted.get("causal_links", []):
@@ -365,6 +374,7 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
         "notes": notes,
         "thread_updates": extracted.get("thread_updates", []),
         "new_threads": extracted.get("new_threads", []),
+        "skipped_threads": skipped_threads,
         "causal_links": extracted.get("causal_links", []),
         "evidence_links": extracted.get("evidence_links", []),
         "character_goals": extracted.get("character_goals", []),
