@@ -50,8 +50,11 @@ novel_test/
 │   └── v12-约束解耦重构/       # 后置校验替代prompt威慑 + git初始化
 │   └── v14-MCP闭环验证/        # MCP工具闭环验证《东华澡堂》
 ├── novel_mcp_server/            # MCP Server（26工具，包装novel_kg_mvp）
-│   ├── server.py                # FastMCP主文件
-│   ├── mcp_cli.py               # CLI fallback
+│   ├── server.py                # FastMCP主文件（薄壳）
+│   ├── core.py                  # 业务逻辑+连接池+后端选择
+│   ├── kg_json.py               # JSON文件后端（默认，零依赖）
+│   ├── mcp_cli.py               # CLI fallback（薄壳）
+│   ├── test_e2e.py              # 双后端E2E测试（36测试点）
 │   └── requirements.txt         # mcp[cli]依赖
 ├── .mcp.json                    # MCP Server配置
 ├── novel_kg_mvp/                # 知识图谱代码
@@ -139,6 +142,40 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - `.claude/skills/` 下的skill是早期网文创作流程的遗留，已不再使用，保留仅供参考
 - 项目目前没有package.json或构建脚本
 - 优先使用中文沟通
+
+### 测试与开发流程
+
+**代码修改后立即测试（无需重启）：**
+
+```bash
+cd novel_mcp_server
+
+# E2E测试：36个测试点覆盖全部26个工具，~3秒
+python test_e2e.py                    # JSON后端（默认，零依赖）
+KG_BACKEND=neo4j python test_e2e.py   # Neo4j后端（需docker-compose up -d）
+
+# 单工具测试
+python mcp_cli.py get_graph_stats --project <项目名>
+KG_BACKEND=neo4j python mcp_cli.py get_graph_stats --project <项目名>
+```
+
+**后端选择：** `KG_BACKEND` 环境变量控制，默认 `json`（文件存储于 `novel_kg_mvp/projects/<项目>/graph.json`）。
+
+**代码架构（改哪里）：**
+
+| 改什么 | 改哪里 | 需要重启MCP |
+|--------|--------|------------|
+| 业务逻辑（26个工具） | `novel_mcp_server/core.py` | 是 |
+| JSON后端存储 | `novel_mcp_server/kg_json.py` | 是 |
+| Neo4j后端存储 | `novel_kg_mvp/graph.py` | 是 |
+| 提取管线 | `novel_kg_mvp/mine.py` | 是 |
+| Prompt模板 | `novel_kg_mvp/prompts.py` + `main.py` | 是 |
+| MCP工具签名/文档 | `novel_mcp_server/server.py` | 是 |
+| CLI参数 | `novel_mcp_server/mcp_cli.py` | 否（每次新进程） |
+
+**开发循环：** 改代码 → `python test_e2e.py` → 通过即可。MCP集成验证仅在需要时重启。
+
+**破坏性操作保护：** `init_project` 和 `clear_chapter_data` 需传 `confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE"`。
 
 ## 归档规范
 
