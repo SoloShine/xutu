@@ -30,6 +30,8 @@
 
 13. **已完成：悬念线隐含解决验证** — 修复audit-threads的json_mode Bug（dict当string处理）。12章管线跑通：提取阶段解决率8.7%→16.7%（提取prompt隐含解决指导生效），audit-threads额外检出3条隐含解决（29.2%综合解决率）。24悬念线/49事件/170关系。归档于 `archive/v13-悬念线隐含解决验证/`。
 
+14. **已完成：MCP闭环验证** — 将图谱操作和prompt模板暴露为26个MCP工具，Agent直接作为LLM完成全流程（零外部API调用）。原创6章工业废墟悬疑《东华澡堂》：36,829字、18事件、6悬念线（5解决+1开放式）、84关系。单章耗时从10-15分钟降至3-5分钟。归档于 `archive/v14-MCP闭环验证/`。
+
 ## Project Structure
 
 ```text
@@ -46,6 +48,12 @@ novel_test/
 │   └── v10-叙事深度验证/       # 悬念线+大纲+叙事结构+预查询验证
 │   └── v11-12章规模验证/       # 12章双时间线悬疑《水蚀》+ Bug修复
 │   └── v12-约束解耦重构/       # 后置校验替代prompt威慑 + git初始化
+│   └── v14-MCP闭环验证/        # MCP工具闭环验证《东华澡堂》
+├── novel_mcp_server/            # MCP Server（26工具，包装novel_kg_mvp）
+│   ├── server.py                # FastMCP主文件
+│   ├── mcp_cli.py               # CLI fallback
+│   └── requirements.txt         # mcp[cli]依赖
+├── .mcp.json                    # MCP Server配置
 ├── novel_kg_mvp/                # 知识图谱代码
 │   ├── docker-compose.yml       # Neo4j容器
 │   ├── config.yaml              # 连接配置 + LLM配置
@@ -117,6 +125,8 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] prompt软化：12处标签改为描述性，LLM产出质量不降级（v12）
 - [x] 后置校验：人名/结构/风格/篇幅四校验器，管线集成自动修复+重试（v12）
 - [x] 悬念线隐含解决：提取prompt指导使解决率8.7%→16.7%，audit-threads额外+12.5%，综合29.2%（v13）
+- [x] MCP闭环：26个MCP工具包装图谱CRUD+prompt模板+校验，Agent零外部API调用完成6章原创（v14）
+- [x] MCP配置：`.mcp.json`在项目根目录（非settings.json），server.py用`os.chdir()`解决config.yaml相对路径
 
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
