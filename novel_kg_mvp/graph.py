@@ -406,7 +406,7 @@ class NovelKG:
                 relations.append(rel)
             return relations
 
-    def get_context_for_chapter(self, chapter):
+    def get_context_for_chapter(self, chapter, prev_text_chars=500):
         """获取写第N章时需要的所有图谱上下文"""
         p = self.project
         with self.driver.session() as s:
@@ -502,12 +502,12 @@ class NovelKG:
                                 "type": r["type"], "detail": r.get("detail", "")}
                                for r in evidence_result]
 
-            # 前一章正文（用于感官/风格延续）
+            # 前一章正文（首尾帧衔接）
             prev_text = None
-            if chapter > 1:
+            if chapter > 1 and prev_text_chars > 0:
                 prev_text = self.get_chapter_text(chapter - 1)
-                if prev_text and len(prev_text) > 3000:
-                    prev_text = prev_text[-3000:]
+                if prev_text and len(prev_text) > prev_text_chars:
+                    prev_text = prev_text[-prev_text_chars:]
 
             return {
                 "time_periods": time_periods,

@@ -297,7 +297,7 @@ class JsonKG:
     # 查询：复合
     # ================================================================
 
-    def get_context_for_chapter(self, chapter):
+    def get_context_for_chapter(self, chapter, prev_text_chars=500):
         prev_ch = max(chapter - 1, 1)
 
         # 前一章事件
@@ -359,12 +359,12 @@ class JsonKG:
             if r["rt"] == "EVIDENCES" and r["tv"] in unresolved_ids
         ]
 
-        # 前一章正文（用于感官/风格延续，截取尾部避免过长）
+        # 前一章正文（首尾帧衔接，截取尾部）
         prev_text = None
-        if chapter > 1:
+        if chapter > 1 and prev_text_chars > 0:
             prev_text = self.get_chapter_text(prev_ch)
-            if prev_text and len(prev_text) > 3000:
-                prev_text = prev_text[-3000:]
+            if prev_text and len(prev_text) > prev_text_chars:
+                prev_text = prev_text[-prev_text_chars:]
 
         return {
             "time_periods": time_periods,

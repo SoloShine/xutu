@@ -92,9 +92,10 @@ def _check_destructive(confirm: str) -> str | None:
 # 1. Query Tools (read-only)
 # ============================================================
 
-def get_chapter_context(project: str, chapter: int) -> dict:
+def get_chapter_context(project: str, chapter: int,
+                        prev_text_chars: int = 500) -> dict:
     kg = _kg(project)
-    return kg.get_context_for_chapter(chapter)
+    return kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars)
 
 
 def get_derivation_context(project: str, chapter: int, lookback: int = 3) -> dict:
@@ -131,9 +132,10 @@ def get_extraction_prompt(project: str, chapter: int, chapter_text: str) -> str:
     return build_extraction_prompt(kg, chapter, chapter_text)
 
 
-def get_writing_prompt(project: str, chapter: int) -> str:
+def get_writing_prompt(project: str, chapter: int,
+                       prev_text_chars: int = 500) -> str:
     kg = _kg(project)
-    context = kg.get_context_for_chapter(chapter)
+    context = kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars)
     return build_writing_prompt(context, chapter)
 
 

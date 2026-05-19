@@ -25,13 +25,16 @@ mcp = FastMCP(
 # ============================================================
 
 @mcp.tool()
-def get_chapter_context(project: str, chapter: int) -> dict:
+def get_chapter_context(project: str, chapter: int,
+                        prev_text_chars: int = 500) -> dict:
     """获取写第N章时需要的全部图谱上下文。
 
     返回:人物状态、前一章事件、地点、主题、风格指南、意象、情节弧线、悬念线、大纲条目。
     这是续写章节的核心输入——Agent据此理解当前故事状态。
+
+    prev_text_chars: 前一章结尾正文的截取字数（首尾帧衔接），默认500。设为0则不注入。
     """
-    return core.get_chapter_context(project, chapter)
+    return core.get_chapter_context(project, chapter, prev_text_chars=prev_text_chars)
 
 
 @mcp.tool()
@@ -86,14 +89,17 @@ def get_extraction_prompt(project: str, chapter: int,
 
 
 @mcp.tool()
-def get_writing_prompt(project: str, chapter: int) -> str:
+def get_writing_prompt(project: str, chapter: int,
+                       prev_text_chars: int = 500) -> str:
     """获取填充后的续写prompt。
 
     返回包含完整图谱上下文的续写指导:章节弧线、时间段、前一章事件、
     人物状态、地点、主题、风格指南、意象、悬念线、大纲约束、场景展开要求。
     Agent据此生成章节正文。
+
+    prev_text_chars: 前一章结尾正文的截取字数（首尾帧衔接），默认500。设为0则不注入。
     """
-    return core.get_writing_prompt(project, chapter)
+    return core.get_writing_prompt(project, chapter, prev_text_chars=prev_text_chars)
 
 
 @mcp.tool()
