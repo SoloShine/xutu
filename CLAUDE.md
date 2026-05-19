@@ -26,6 +26,8 @@
 
 11. **已完成：12章规模验证** — 修复loop跳章/人名漂移/结构不执行三个Bug，运行12章双时间线悬疑《水蚀》：100,717字、50事件、23悬念线、177关系、3章intercut实际执行。12章闭环零中断，大纲零偏移，人名零漂移。归档于 `archive/v11-12章规模验证/`。
 
+12. **已完成：约束/Prompt解耦重构** — 将50+处"必须/禁止"硬编码从prompt中剥离，改用validators.py后置校验。12处prompt标签软化 + 4个校验器（人名/结构/风格/篇幅）+ 管线集成（自动修复+重试）+ audit-threads命令。端到端验证：软化prompt后LLM产出质量未降级，intercut/风格/人名均正确。归档于 `archive/v12-约束解耦重构/`。
+
 ## Project Structure
 
 ```text
@@ -41,15 +43,17 @@ novel_test/
 │   └── v9-原创创作验证/        # 6章原创短篇《错轨夜车》
 │   └── v10-叙事深度验证/       # 悬念线+大纲+叙事结构+预查询验证
 │   └── v11-12章规模验证/       # 12章双时间线悬疑《水蚀》+ Bug修复
+│   └── v12-约束解耦重构/       # 后置校验替代prompt威慑 + git初始化
 ├── novel_kg_mvp/                # 知识图谱代码
 │   ├── docker-compose.yml       # Neo4j容器
 │   ├── config.yaml              # 连接配置 + LLM配置
 │   ├── graph.py                 # 图谱客户端（project隔离 + 10种节点类型 + CRUD + 查询）
 │   ├── extractor.py             # 手工数据构建（含风格层和情节层）
 │   ├── mine.py                  # 提取管线（冲突检测 + 图谱写回）
-│   ├── prompts.py               # 提取prompt模板（粒度控制 + 间隙定义）
-│   ├── main.py                  # 主流程（含三层prompt构建 + 场景展开指导）
-│   ├── cli.py                   # Click CLI（--project隔离 + --auto LLM模式）
+│   ├── prompts.py               # 提取prompt模板（粒度控制 + 间隙定义 + 隐含解决检测）
+│   ├── main.py                  # 主流程（描述性prompt构建 + 场景展开指导）
+│   ├── cli.py                   # Click CLI（--project隔离 + --auto + 后置校验 + audit-threads）
+│   ├── validators.py            # 后置校验模块（人名/结构/风格/篇幅 + 自动修复）
 │   ├── llm.py                   # LLM API调用（OpenAI兼容 + 环境变量Key）
 │   ├── projects/                # 项目级文件隔离
 │   │   ├── jianxi/              # 《间隙》
@@ -107,6 +111,9 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] 叙事深度：10条悬念线跨章追踪，6章大纲零偏移，14悬念线/118关系（v10）
 - [x] 12章规模：12章闭环零中断，3章intercut硬约束执行，100,717字，50事件/177关系（v11）
 - [x] Bug修复：loop跳章、人名漂移、叙事结构不执行（v11）
+- [x] 约束解耦：50+处"必须/禁止"从prompt中剥离，validators.py后置校验替代威慑指令（v12）
+- [x] prompt软化：12处标签改为描述性，LLM产出质量不降级（v12）
+- [x] 后置校验：人名/结构/风格/篇幅四校验器，管线集成自动修复+重试（v12）
 
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
