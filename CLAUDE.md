@@ -116,10 +116,10 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] 约束解耦：50+处"必须/禁止"从prompt中剥离，validators.py后置校验替代威慑指令（v12）
 - [x] prompt软化：12处标签改为描述性，LLM产出质量不降级（v12）
 - [x] 后置校验：人名/结构/风格/篇幅四校验器，管线集成自动修复+重试（v12）
+- [x] 悬念线隐含解决：提取prompt指导使解决率8.7%→16.7%，audit-threads额外+12.5%，综合29.2%（v13）
 
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
-- 🔲 悬念线隐含解决检测：提取器识别率提升
 - 🔲 篇幅精确控制：当前波动2.9x（4526-13094字）
 - 🔲 缩放：超过50章长篇的一致性保持与查询性能
 - 🔲 人机协作：作者修改→系统检测影响范围→自动调整后续
@@ -129,3 +129,46 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - `.claude/skills/` 下的skill是早期网文创作流程的遗留，已不再使用，保留仅供参考
 - 项目目前没有package.json或构建脚本
 - 优先使用中文沟通
+
+## 归档规范
+
+每轮验证（V1-V13…）完成后，必须将**全部产出物**归档到 `archive/vN-验证名/` 目录下。归档不完整=验证未完成。
+
+### 目录结构
+
+```
+archive/vN-验证名/
+├── 验证报告.md              # 必须有。包含：验证目标、架构变更、文件变更、端到端结果、对比数据、待改进
+├── world_setup.json         # 项目设定（如有）
+├── outline.json             # 全局大纲（如有）
+├── project.yaml             # 项目配置（如有）
+├── output/                  # 全部章节正文
+│   ├── ch1_generated.txt
+│   ├── ch2_generated.txt
+│   └── ...
+├── extractions/             # 提取结果JSON
+│   ├── extraction_ch1.json
+│   └── ...
+└── prompts/                 # 发送给LLM的完整prompt（提取prompt + 续写prompt）
+    ├── extraction_ch1.txt
+    ├── writing_ch1.txt
+    └── ...
+```
+
+### 归档检查清单
+
+每轮验证完成时，按此清单逐项确认：
+
+- [ ] **验证报告** — `验证报告.md` 已写入，包含完整数据（图谱统计、解决率、对比表）
+- [ ] **章节正文** — `output/ch*_generated.txt` 全部从 `projects/项目名/output/` 复制
+- [ ] **提取结果** — `extractions/extraction_ch*.json` 全部复制
+- [ ] **LLM prompt** — `prompts/extraction_ch*.txt` + `prompts/writing_ch*.txt` 全部复制
+- [ ] **项目设定** — `world_setup.json`、`outline.json`、`project.yaml` 复制（如存在）
+- [ ] **CLAUDE.md更新** — Project Overview新增条目，已验证/待验证列表已更新
+- [ ] **Git提交** — 代码变更和CLAUDE.md已commit（archive目录本身被gitignore排除）
+
+### 注意事项
+
+- `archive/` 目录在 `.gitignore` 中被排除，不会进入git。归档的目的是**持久化保存产出物**，防止项目目录被清理时丢失
+- 如果验证没有独立项目目录（如V12在v11_test上跑单章），则只归档有产出的文件，不强求空目录
+- 报告中的数据必须与实际产出文件一致（字数、文件数、统计数字）
