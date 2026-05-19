@@ -1106,22 +1106,23 @@ def audit_threads(ctx, auto):
 
         try:
             from llm import call_llm
-            result = call_llm(audit_prompt, json_mode=True)
-            # 解析JSON
-            import re
-            json_match = re.search(r'\{[\s\S]*\}', result)
-            if json_match:
-                audit_result = json.loads(json_match.group())
+            audit_result = call_llm(audit_prompt, json_mode=True)
+            # json_mode=True 已返回解析后的dict，无需再正则/JSON解析
+            if isinstance(audit_result, dict):
                 resolved = audit_result.get("resolved", [])
                 if resolved:
                     click.echo(f"\n检测到 {len(resolved)} 条隐含解决：")
                     for r in resolved:
-                        click.echo(f"  {r['thread_id']}: {r.get('reasoning', '')[:80]}")
+                        tid = r.get("thread_id", "?")
+                        click.echo(f"  {tid}: {r.get('reasoning', '')[:80]}")
                         click.echo(f"    证据: {r.get('evidence', '')[:80]}")
 
-                    if click.confirm("\n  是否更新这些悬念线状态为resolved？"):
+                    do_update = auto and True  # --auto模式下自动更新
+                    if not auto:
+                        do_update = click.confirm("\n  是否更新这些悬念线状态为resolved？")
+                    if do_update:
                         for r in resolved:
-                            tid = r["thread_id"]
+                            tid = r.get("thread_id", "")
                             for t in threads:
                                 if t.get("id") == tid:
                                     kg.update_suspense_thread(tid, status="resolved")
