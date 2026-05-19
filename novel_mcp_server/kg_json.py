@@ -180,6 +180,20 @@ class JsonKG:
         self._graph["outline_entries"][str(chapter)] = props
         self._save()
 
+    def add_character_goal(self, character_name, goal, goal_type="pursue",
+                           status="new", chapter=0):
+        """为角色追加目标到 goals 列表"""
+        char = self._graph["characters"].get(character_name)
+        if char is None:
+            return
+        if "goals" not in char:
+            char["goals"] = []
+        char["goals"].append({
+            "goal": goal, "type": goal_type,
+            "status": status, "chapter": chapter
+        })
+        self._save()
+
     def add_relation(self, from_label, from_key, from_val,
                      rel_type, to_label, to_key, to_val, **props):
         rel = {
@@ -299,6 +313,25 @@ class JsonKG:
         arc = self._graph["chapter_arcs"].get(str(chapter))
         chapter_arc = [deepcopy(arc)] if arc else []
 
+        # 因果链（前一章事件间的CAUSES关系）
+        prev_event_ids = {e["id"] for e in prev_events}
+        causal_links = [
+            {"from": r["fv"], "to": r["tv"],
+             "type": r.get("causal_type", ""), "detail": r.get("detail", "")}
+            for r in self._graph["relations"]
+            if r["rt"] == "CAUSES"
+            and r["fv"] in prev_event_ids or r["tv"] in prev_event_ids
+        ]
+
+        # 证据链（未解决悬念线的已有证据）
+        unresolved_ids = {t["id"] for t in self.get_unresolved_threads(chapter)}
+        evidence_links = [
+            {"event_id": r["fv"], "thread_id": r["tv"],
+             "type": r.get("evidence_type", ""), "detail": r.get("detail", "")}
+            for r in self._graph["relations"]
+            if r["rt"] == "EVIDENCES" and r["tv"] in unresolved_ids
+        ]
+
         return {
             "time_periods": time_periods,
             "prev_events": prev_events,
@@ -310,6 +343,8 @@ class JsonKG:
             "chapter_arc": chapter_arc,
             "suspense_threads": self.get_unresolved_threads(chapter),
             "outline_entry": self.get_outline_entry(chapter),
+            "causal_links": causal_links,
+            "evidence_links": evidence_links,
         }
 
     def get_arc_derivation_context(self, chapter, lookback=3):
@@ -368,7 +403,7 @@ class JsonKG:
     def check_consistency(self):
         issues = []
 
-        # 1. 人物时空矛盾（简化版：检查同一人物是否在同一章出现在不同地点）
+        # 1. 人物时空矛盾
         events = self._graph["events"]
         for eid, ev in events.items():
             locs_for_event = set()
@@ -394,6 +429,36 @@ class JsonKG:
                         "type": "悬念线悬而未决",
                         "detail": f"高重要度线程 {tid} ('{t.get('content', '')[:30]}') 已种植{gap}章未解决",
                         "severity": "medium"
+                    })
+
+        # 3. 因果断裂检测：事件没有因果入边（除了每章第一个事件）
+        events_by_ch = {}
+        for eid, ev in events.items():
+            ch = ev.get("chapter", 0)
+            events_by_ch.setdefault(ch, []).append(eid)
+        causal_targets = {r["tv"] for r in self._graph["relations"] if r["rt"] == "CAUSES"}
+        for ch in sorted(events_by_ch.keys()):
+            ch_events = sorted(events_by_ch[ch])
+            for eid in ch_events[1:]:  # 跳过每章第一个事件
+                if eid not in causal_targets:
+                    issues.append({
+                        "type": "因果断裂",
+                        "detail": f"事件 {eid} 没有因果前置（第{ch}章非首事件），情节可能缺乏驱动力",
+                        "severity": "medium"
+                    })
+
+        # 4. 证据缺失检测：已解决的悬念线没有EVIDENCES关系
+        for tid, t in self._graph["suspense_threads"].items():
+            if t.get("status") == "resolved":
+                has_evidence = any(
+                    r["rt"] == "EVIDENCES" and r["tv"] == tid
+                    for r in self._graph["relations"]
+                )
+                if not has_evidence:
+                    issues.append({
+                        "type": "证据缺失",
+                        "detail": f"悬念线 {tid} ('{t.get('content', '')[:30]}') 已解决但无证据链支撑，解决方案可能缺乏说服力",
+                        "severity": "high"
                     })
 
         return issues

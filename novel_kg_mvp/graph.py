@@ -6,6 +6,7 @@ Novel Knowledge Graph MVP
 
 from neo4j import GraphDatabase
 import yaml
+import json
 
 
 def load_config():
@@ -226,6 +227,28 @@ class NovelKG:
                 p=self.project, ch=chapter
             )
 
+    def add_character_goal(self, character_name, goal, goal_type="pursue",
+                           status="new", chapter=0):
+        """为角色添加目标（追加到goals列表）"""
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (c:Character {project: $p, name: $name}) RETURN c.goals AS goals",
+                p=self.project, name=character_name
+            )
+            record = result.single()
+            existing = record["goals"] if record and record["goals"] else "[]"
+            if isinstance(existing, str):
+                existing = json.loads(existing)
+            existing.append({
+                "goal": goal, "type": goal_type,
+                "status": status, "chapter": chapter
+            })
+            s.run(
+                "MATCH (c:Character {project: $p, name: $name}) SET c.goals = $goals",
+                p=self.project, name=character_name,
+                goals=json.dumps(existing, ensure_ascii=False)
+            )
+
     def get_all_characters(self):
         with self.driver.session() as s:
             result = s.run(
@@ -348,6 +371,31 @@ class NovelKG:
             # 大纲条目（硬约束）
             outline_entry = self.get_outline_entry(chapter)
 
+            # 因果链（前一章事件间的因果关系）
+            causal_result = s.run(
+                "MATCH (a:Event {project: $p})-[r:CAUSES]->(b:Event {project: $p}) "
+                "WHERE a.chapter = $prev_ch OR b.chapter = $prev_ch "
+                "RETURN a.id AS from_id, b.id AS to_id, "
+                "r.causal_type AS type, r.detail AS detail",
+                p=p, prev_ch=chapter - 1
+            )
+            causal_links = [{"from": r["from_id"], "to": r["to_id"],
+                             "type": r["type"], "detail": r.get("detail", "")}
+                            for r in causal_result]
+
+            # 证据链（未解决悬念线的已有证据）
+            evidence_result = s.run(
+                "MATCH (e:Event {project: $p})-[r:EVIDENCES]->(st:SuspenseThread {project: $p}) "
+                "WHERE st.status <> 'resolved' AND st.status <> 'abandoned' "
+                "RETURN e.id AS event_id, st.id AS thread_id, "
+                "r.evidence_type AS type, r.detail AS detail "
+                "ORDER BY st.id, e.chapter",
+                p=p
+            )
+            evidence_links = [{"event_id": r["event_id"], "thread_id": r["thread_id"],
+                                "type": r["type"], "detail": r.get("detail", "")}
+                               for r in evidence_result]
+
             return {
                 "time_periods": time_periods,
                 "prev_events": prev_events,
@@ -359,6 +407,8 @@ class NovelKG:
                 "chapter_arc": chapter_arc,
                 "suspense_threads": suspense_threads,
                 "outline_entry": outline_entry,
+                "causal_links": causal_links,
+                "evidence_links": evidence_links,
             }
 
     def get_arc_derivation_context(self, chapter, lookback=3):
@@ -485,6 +535,54 @@ class NovelKG:
                         "type": "章节缺失事件",
                         "detail": f"第{ch}章没有提取到任何事件",
                         "severity": "low"
+                    })
+
+            # 检查4: 因果断裂 — 事件没有因果入边（除了每章第一个事件）
+            events_by_ch_result = s.run(
+                "MATCH (e:Event {project: $p}) WHERE e.chapter IS NOT NULL "
+                "RETURN e.id AS eid, e.chapter AS ch ORDER BY e.chapter, e.id",
+                p=p
+            )
+            events_by_ch = {}
+            for r in events_by_ch_result:
+                events_by_ch.setdefault(r["ch"], []).append(r["eid"])
+
+            causal_targets = set()
+            causal_result = s.run(
+                "MATCH (e1:Event {project: $p})-[:CAUSES]->(e2:Event {project: $p}) "
+                "RETURN e2.id AS target_id",
+                p=p
+            )
+            for r in causal_result:
+                causal_targets.add(r["target_id"])
+
+            for ch in sorted(events_by_ch.keys()):
+                ch_events = sorted(events_by_ch[ch])
+                for eid in ch_events[1:]:  # 跳过每章第一个事件
+                    if eid not in causal_targets:
+                        issues.append({
+                            "type": "因果断裂",
+                            "detail": f"事件 {eid} 没有因果前置（第{ch}章非首事件），情节可能缺乏驱动力",
+                            "severity": "medium"
+                        })
+
+            # 检查5: 证据缺失 — 已解决的悬念线没有EVIDENCES关系
+            resolved_threads = s.run(
+                "MATCH (st:SuspenseThread {project: $p}) WHERE st.status = 'resolved' "
+                "RETURN st.id AS tid, st.content AS content",
+                p=p
+            )
+            for r in resolved_threads:
+                has_evidence = s.run(
+                    "MATCH (e:Event {project: $p})-[:EVIDENCES]->(st:SuspenseThread {project: $p}) "
+                    "WHERE st.id = $tid RETURN count(e) AS n",
+                    tid=r["tid"], p=p
+                ).single()["n"]
+                if has_evidence == 0:
+                    issues.append({
+                        "type": "证据缺失",
+                        "detail": f"悬念线 {r['tid']} ('{r['content'][:30]}') 已解决但无证据链支撑，解决方案可能缺乏说服力",
+                        "severity": "high"
                     })
 
         return issues

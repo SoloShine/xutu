@@ -154,20 +154,70 @@ def main():
         test("derivation has recent_events", len(drv_ctx["recent_events"]) == 3)
         test("derivation has last_event", drv_ctx["last_event"] is not None)
 
-        # ---- 7. 一致性检查 ----
-        print("\n[7] 一致性检查")
+        # ---- 7. 因果链 & 证据链 & 角色目标 ----
+        print("\n[7] 因果链 & 证据链 & 角色目标")
+
+        # 因果链：E1_01 → E1_02 → E2_01
+        kg.add_relation("Event", "id", "E1_01", "CAUSES", "Event", "id", "E1_02",
+                        causal_type="consequence", detail="发现焊疤后注意到纸片")
+        kg.add_relation("Event", "id", "E1_02", "CAUSES", "Event", "id", "E2_01",
+                        causal_type="investigation", detail="纸片线索引发调查")
+        test("causal relations added", kg.stats()["relationships"] == 8)
+
+        # 证据链：E2_01 为 ST02_01 提供线索
+        kg.add_relation("Event", "id", "E2_01", "EVIDENCES",
+                        "SuspenseThread", "id", "ST02_01",
+                        evidence_type="clue", detail="测量发现墙壁异常")
+        test("evidence relation added", kg.stats()["relationships"] == 9)
+
+        # 角色目标
+        kg.add_character_goal("老孟", goal="查明焊疤真相",
+                              goal_type="pursue", status="new", chapter=1)
+        kg.add_character_goal("孙洁", goal="保护老孟",
+                              goal_type="protect", status="new", chapter=2)
+        chars_with_goals = kg.get_all_characters()
+        meng = [c for c in chars_with_goals if c["name"] == "老孟"][0]
+        # Neo4j stores goals as JSON string, JSON backend stores as list
+        goals_raw = meng.get("goals", [])
+        if isinstance(goals_raw, str):
+            import json as _json
+            goals_raw = _json.loads(goals_raw)
+        test("character goal added", len(goals_raw) == 1)
+        test("character goal content", goals_raw[0]["goal"] == "查明焊疤真相")
+
+        # ---- 8. 一致性检查（含因果断裂+证据缺失） ----
+        print("\n[8] 一致性检查")
         issues = kg.check_consistency()
         test("check_consistency runs", isinstance(issues, list))
 
-        # ---- 8. 删除操作 ----
-        print("\n[8] 删除操作")
+        # 验证因果断裂检测：给第2章加一个孤立事件（非首事件，无因果入边）
+        kg.add_event("E2_02", title="孙洁遇到路人", chapter=2, event_type="daily")
+        issues_with_gap = kg.check_consistency()
+        causal_gaps = [i for i in issues_with_gap if i["type"] == "因果断裂"]
+        test("causal gap detected", len(causal_gaps) >= 1,
+             f"found {len(causal_gaps)} causal gaps")
+
+        # 验证证据缺失检测：ST01_01 已解决但没有 EVIDENCES 关系
+        evidence_missing = [i for i in issues_with_gap if i["type"] == "证据缺失"]
+        test("evidence missing detected", len(evidence_missing) >= 1,
+             f"found {len(evidence_missing)} evidence missing issues")
+
+        # 清理：删除测试用孤立事件
+        kg.delete_events_by_chapter(2)
+        # 重新添加 E2_01 和必要关系（因为 delete_events_by_chapter 删除了所有关系）
+        kg.add_event("E2_01", title="测量墙壁", chapter=2, event_type="investigation")
+        kg.add_relation("Event", "id", "E2_01", "INVOLVES", "Character", "name", "孙洁")
+        kg.add_relation("Event", "id", "E2_01", "OCCURS_AT", "Location", "name", "东华澡堂")
+
+        # ---- 9. 删除操作 ----
+        print("\n[9] 删除操作")
         kg.delete_events_by_chapter(1)
         test("delete_events_by_chapter",
              kg.stats()["events"] == 1)  # 只剩 E2_01
         test("event E1_01 gone", not kg.event_exists("E1_01"))
 
-        # ---- 9. 统计 ----
-        print("\n[9] 最终统计")
+        # ---- 10. 最终统计 ----
+        print("\n[10] 最终统计")
         final = kg.stats()
         test("final backend tag", final.get("backend") == _BACKEND or "backend" not in final)
         print(f"\n  最终图谱: {json.dumps(final, ensure_ascii=False, indent=4)}")

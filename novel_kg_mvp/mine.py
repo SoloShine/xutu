@@ -318,6 +318,44 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
         stats.setdefault("new_threads", 0)
         stats["new_threads"] += 1
 
+    # 9. 因果链
+    for cl in extracted.get("causal_links", []):
+        from_eid = cl.get("from")
+        to_eid = cl.get("to")
+        causal_type = cl.get("type", "consequence")
+        if from_eid and to_eid and from_eid not in conflict_event_ids and to_eid not in conflict_event_ids:
+            kg.add_relation("Event", "id", from_eid, "CAUSES",
+                           "Event", "id", to_eid,
+                           causal_type=causal_type,
+                           detail=cl.get("detail", ""))
+            stats.setdefault("causal_links", 0)
+            stats["causal_links"] += 1
+
+    # 10. 证据链
+    for el in extracted.get("evidence_links", []):
+        eid = el.get("event_id")
+        tid = el.get("thread_id")
+        ev_type = el.get("type", "clue")
+        if eid and tid and eid not in conflict_event_ids:
+            kg.add_relation("Event", "id", eid, "EVIDENCES",
+                           "SuspenseThread", "id", tid,
+                           evidence_type=ev_type,
+                           detail=el.get("detail", ""))
+            stats.setdefault("evidence_links", 0)
+            stats["evidence_links"] += 1
+
+    # 11. 角色目标
+    for cg in extracted.get("character_goals", []):
+        char_name = cg.get("character")
+        if char_name and cg.get("goal"):
+            kg.add_character_goal(char_name,
+                                  goal=cg["goal"],
+                                  goal_type=cg.get("type", "pursue"),
+                                  status=cg.get("status", "new"),
+                                  chapter=chapter)
+            stats.setdefault("character_goals", 0)
+            stats["character_goals"] += 1
+
     report = {
         "chapter": chapter,
         "stats": stats,
@@ -327,6 +365,9 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
         "notes": notes,
         "thread_updates": extracted.get("thread_updates", []),
         "new_threads": extracted.get("new_threads", []),
+        "causal_links": extracted.get("causal_links", []),
+        "evidence_links": extracted.get("evidence_links", []),
+        "character_goals": extracted.get("character_goals", []),
     }
 
     return report

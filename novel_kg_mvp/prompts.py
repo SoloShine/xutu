@@ -58,6 +58,29 @@ EXTRACTION_PROMPT = """你是一个小说结构化数据提取器。请从以下
 - 例如：悬念"胶卷记录了什么"——本章展示了冲洗后的照片内容，即使没写"胶卷之谜解开了"，也应标记resolved
 - 如果本章没有悬念变化，返回空数组
 
+## 因果链
+
+每个事件不是孤立的，要识别事件之间的因果关系：
+- **causal_links** 记录哪个事件导致了哪个事件，以及因果类型
+- 因果类型：reaction（被动反应）、investigation（主动调查）、escalation（冲突升级）、revelation（真相揭露）、decision（角色决定）、consequence（自然后果）
+- 只记录本章内的事件间因果关系（跨章因果关系已由事件时序隐含）
+- 如果本章事件之间没有明确因果，返回空数组
+
+## 证据链
+
+追踪悬念线的证据支撑：
+- **evidence_links** 记录本章哪些事件为哪些悬念线提供了证据/线索
+- 证据类型：clue（直接线索）、connection（关联发现）、misdirection（误导性线索）、confirmation（确认性证据）
+- 即使悬念线本章没有被推进或解决，也可能产生了新证据
+- 例如：老孟看到排污记录（事件），为"排污持续"这个悬念提供了clue（证据）
+
+## 角色目标
+
+识别本章中角色驱动力：
+- **character_goals** 记录角色的追求或恐惧
+- 目标类型：pursue（主动追求）、fear（害怕/回避）、protect（保护某物/某人）、duty（责任义务）
+- 只记录本章新出现的目标或发生重大变化的目标（已在图谱中的不需要重复）
+
 ## 返回格式
 
 返回严格合法的JSON：
@@ -98,6 +121,15 @@ EXTRACTION_PROMPT = """你是一个小说结构化数据提取器。请从以下
   ],
   "new_threads": [
     {{"content": "悬念内容描述", "importance": "high|medium|low", "thread_type": "foreshadowing|clue|mystery|character_arc", "planted_event_id": "E{{chapter}}_01"}}
+  ],
+  "causal_links": [
+    {{"from": "E{{chapter}}_01", "to": "E{{chapter}}_02", "type": "reaction|investigation|escalation|revelation|decision|consequence", "detail": "简述因果关系"}}
+  ],
+  "evidence_links": [
+    {{"event_id": "E{{chapter}}_01", "thread_id": "ST01_01", "type": "clue|connection|misdirection|confirmation", "detail": "该事件为悬念提供了什么证据"}}
+  ],
+  "character_goals": [
+    {{"character": "人物名", "goal": "目标描述", "type": "pursue|fear|protect|duty", "status": "new|advanced|achieved|abandoned"}}
   ],
   "notes": "值得记录的新细节：新的人物习惯（如对猫过敏）、新的物品设定、伏笔、环境细节变化等"
 }}
