@@ -10,14 +10,16 @@ import os
 import json
 import atexit
 
-# 定位 novel_kg_mvp 目录
-_mvp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'novel_kg_mvp')
-_mvp_dir = os.path.normpath(_mvp_dir)
+# 定位目录
+_here = os.path.dirname(os.path.abspath(__file__))
+_mvp_dir = os.path.normpath(os.path.join(_here, '..', 'novel_kg_mvp'))
+_projects_dir = os.path.join(_mvp_dir, 'projects')
+
+# novel_kg_mvp 需要 chdir（因为 config.yaml 相对路径）
 os.chdir(_mvp_dir)
 if _mvp_dir not in sys.path:
     sys.path.insert(0, _mvp_dir)
 
-from graph import NovelKG
 from mine import (
     build_extraction_prompt, detect_conflicts,
     write_extraction_to_graph,
@@ -29,16 +31,36 @@ from validators import validate_chapter as _run_validation
 
 
 # ============================================================
+# Backend Selection
+# ============================================================
+
+_BACKEND = os.environ.get("KG_BACKEND", "json")  # "json"(默认) 或 "neo4j"
+
+
+def _create_backend(project: str):
+    """根据环境变量创建后端实例"""
+    if _BACKEND == "neo4j":
+        from graph import NovelKG
+        return NovelKG(project=project)
+    else:
+        # 延迟导入，避免 Neo4j 依赖
+        if _here not in sys.path:
+            sys.path.insert(0, _here)
+        from kg_json import JsonKG
+        return JsonKG(project=project, data_dir=_projects_dir)
+
+
+# ============================================================
 # Connection Pool
 # ============================================================
 
-_pool: dict[str, NovelKG] = {}
+_pool: dict = {}
 
 
-def _kg(project: str) -> NovelKG:
-    """获取或创建连接池中的 NovelKG 实例。"""
+def _kg(project: str):
+    """获取或创建连接池中的后端实例。"""
     if project not in _pool:
-        _pool[project] = NovelKG(project=project)
+        _pool[project] = _create_backend(project)
     return _pool[project]
 
 

@@ -41,14 +41,7 @@ def normalize_characters(kg, extracted):
     策略：繁简转换 + 子串匹配。如果图谱中有"王婆"，提取到"老王婆"，
     则将"老王婆"替换为"王婆"。
     """
-    existing = set()
-    with kg.driver.session() as s:
-        result = s.run(
-            "MATCH (c:Character {project: $p}) RETURN c.name AS name",
-            p=kg.project
-        )
-        for r in result:
-            existing.add(r["name"])
+    existing = kg.get_all_character_names()
 
     if not existing:
         return extracted, []
@@ -136,85 +129,62 @@ def build_extraction_prompt(kg, chapter, chapter_text):
 
 def get_chapter_time_period(kg, chapter):
     """获取章节对应的时间段标签"""
-    with kg.driver.session() as s:
-        result = s.run(
-            "MATCH (t:TimePeriod {project: $p}) WHERE t.chapter_start <= $ch AND t.chapter_end >= $ch RETURN t.label AS label",
-            p=kg.project, ch=chapter
-        )
-        records = [r["label"] for r in result]
-        return records[0] if records else None
+    return kg.get_chapter_time_period(chapter)
 
 
 def detect_conflicts(kg, extracted):
     """检测提取数据与已有图谱的冲突"""
     conflicts = []
 
-    with kg.driver.session() as s:
-        # 1. 检查事件ID是否已存在
-        for ev in extracted.get("events", []):
-            result = s.run(
-                "MATCH (e:Event {project: $p, id: $id}) RETURN e.title AS title",
-                p=kg.project, id=ev["id"]
-            )
-            if result.single():
+    # 1. 检查事件ID是否已存在
+    for ev in extracted.get("events", []):
+        if kg.event_exists(ev["id"]):
+            conflicts.append({
+                "type": "事件ID重复",
+                "detail": f"{ev['id']} '{ev.get('title', '')}' 已存在于图谱中",
+                "severity": "high",
+                "resolution": "跳过（已有数据）"
+            })
+
+    # 2. 检查地点是否匹配已有地点
+    existing_locs = kg.get_all_location_names()
+
+    for rel in extracted.get("event_relations", []):
+        loc = rel.get("location")
+        if loc and loc not in existing_locs:
+            new_locs = {l["name"] for l in extracted.get("new_locations", [])}
+            if loc not in new_locs:
                 conflicts.append({
-                    "type": "事件ID重复",
-                    "detail": f"{ev['id']} '{ev.get('title', '')}' 已存在于图谱中",
-                    "severity": "high",
-                    "resolution": "跳过（已有数据）"
+                    "type": "地点未注册",
+                    "detail": f"事件 {rel['event_id']} 引用了地点 '{loc}'，该地点不在图谱中且未声明为新地点",
+                    "severity": "medium",
+                    "resolution": "补充为新地点，或映射到已有地点"
                 })
 
-        # 2. 检查地点是否匹配已有地点
-        existing_locs = set()
-        loc_result = s.run(
-            "MATCH (l:Location {project: $p}) RETURN l.name AS name",
-            p=kg.project
-        )
-        for r in loc_result:
-            existing_locs.add(r["name"])
+    # 3. 检查人物是否在图谱中
+    existing_chars = kg.get_all_character_names()
 
-        for rel in extracted.get("event_relations", []):
-            loc = rel.get("location")
-            if loc and loc not in existing_locs:
-                new_locs = {l["name"] for l in extracted.get("new_locations", [])}
-                if loc not in new_locs:
-                    conflicts.append({
-                        "type": "地点未注册",
-                        "detail": f"事件 {rel['event_id']} 引用了地点 '{loc}'，该地点不在图谱中且未声明为新地点",
-                        "severity": "medium",
-                        "resolution": "补充为新地点，或映射到已有地点"
-                    })
+    # new_characters 中声明的人物视为已知
+    declared_chars = {c["name"] for c in extracted.get("new_characters", [])}
 
-        # 3. 检查人物是否在图谱中
-        existing_chars = set()
-        char_result = s.run(
-            "MATCH (c:Character {project: $p}) RETURN c.name AS name",
-            p=kg.project
-        )
-        for r in char_result:
-            existing_chars.add(r["name"])
+    for rel in extracted.get("event_relations", []):
+        char = rel.get("character")
+        if char and char not in existing_chars and char not in declared_chars:
+            conflicts.append({
+                "type": "人物未注册",
+                "detail": f"事件 {rel['event_id']} 引用了人物 '{char}'，该人物不在图谱中且未声明为新人物",
+                "severity": "high",
+                "resolution": "在 new_characters 中添加该人物，或确认名字拼写"
+            })
 
-        # new_characters 中声明的人物视为已知
-        declared_chars = {c["name"] for c in extracted.get("new_characters", [])}
-
-        for rel in extracted.get("event_relations", []):
-            char = rel.get("character")
-            if char and char not in existing_chars and char not in declared_chars:
-                conflicts.append({
-                    "type": "人物未注册",
-                    "detail": f"事件 {rel['event_id']} 引用了人物 '{char}'，该人物不在图谱中且未声明为新人物",
-                    "severity": "high",
-                    "resolution": "在 new_characters 中添加该人物，或确认名字拼写"
-                })
-
-        for cu in extracted.get("character_updates", []):
-            if cu["name"] not in existing_chars:
-                conflicts.append({
-                    "type": "人物更新目标不存在",
-                    "detail": f"character_updates 中引用了 '{cu['name']}'，该人物不在图谱中",
-                    "severity": "high",
-                    "resolution": "确认人物名是否正确"
-                })
+    for cu in extracted.get("character_updates", []):
+        if cu["name"] not in existing_chars:
+            conflicts.append({
+                "type": "人物更新目标不存在",
+                "detail": f"character_updates 中引用了 '{cu['name']}'，该人物不在图谱中",
+                "severity": "high",
+                "resolution": "确认人物名是否正确"
+            })
 
     # 4. 检查事件粒度（每章建议5-8个）
     event_count = len(extracted.get("events", []))
@@ -322,19 +292,10 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
         tid = tu.get("thread_id")
         new_status = tu.get("new_status")
         if tid and new_status:
-            with kg.driver.session() as s:
-                if new_status == "resolved":
-                    s.run(
-                        "MATCH (st:SuspenseThread {project: $p, id: $id}) "
-                        "SET st.status = $status, st.resolved_chapter = $ch",
-                        p=kg.project, id=tid, status=new_status, ch=chapter
-                    )
-                else:
-                    s.run(
-                        "MATCH (st:SuspenseThread {project: $p, id: $id}) "
-                        "SET st.status = $status",
-                        p=kg.project, id=tid, status=new_status
-                    )
+            update_props = {"status": new_status}
+            if new_status == "resolved":
+                update_props["resolved_chapter"] = chapter
+            kg.update_suspense_thread(tid, **update_props)
             stats.setdefault("thread_updates", 0)
             stats["thread_updates"] += 1
 
@@ -373,11 +334,7 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
 
 def clear_chapter_data(kg, chapter):
     """清除图谱中指定章节的数据"""
-    with kg.driver.session() as s:
-        s.run(
-            "MATCH (e:Event {project: $p}) WHERE e.chapter = $ch DETACH DELETE e",
-            p=kg.project, ch=chapter
-        )
+    kg.delete_events_by_chapter(chapter)
     print(f"[DB] 已清除第{chapter}章的事件数据")
 
 

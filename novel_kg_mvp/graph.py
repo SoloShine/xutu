@@ -178,6 +178,54 @@ class NovelKG:
 
     # ========== 查询操作 ==========
 
+    def get_all_character_names(self):
+        """获取所有人物名集合"""
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (c:Character {project: $p}) RETURN c.name AS name",
+                p=self.project
+            )
+            return {r["name"] for r in result}
+
+    def get_all_location_names(self):
+        """获取所有地点名集合"""
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (l:Location {project: $p}) RETURN l.name AS name",
+                p=self.project
+            )
+            return {r["name"] for r in result}
+
+    def event_exists(self, event_id):
+        """检查事件ID是否已存在"""
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (e:Event {project: $p, id: $id}) RETURN e.id",
+                p=self.project, id=event_id
+            )
+            return result.single() is not None
+
+    def get_chapter_time_period(self, chapter):
+        """获取章节对应的时间段标签"""
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (t:TimePeriod {project: $p}) "
+                "WHERE t.chapter_start <= $ch AND t.chapter_end >= $ch "
+                "RETURN t.label AS label",
+                p=self.project, ch=chapter
+            )
+            records = [r["label"] for r in result]
+            return records[0] if records else None
+
+    def delete_events_by_chapter(self, chapter):
+        """删除指定章节的所有事件及其关系"""
+        with self.driver.session() as s:
+            s.run(
+                "MATCH (e:Event {project: $p}) WHERE e.chapter = $ch "
+                "DETACH DELETE e",
+                p=self.project, ch=chapter
+            )
+
     def get_all_characters(self):
         with self.driver.session() as s:
             result = s.run(
