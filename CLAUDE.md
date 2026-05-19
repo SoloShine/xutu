@@ -28,6 +28,8 @@
 
 12. **已完成：约束/Prompt解耦重构** — 将50+处"必须/禁止"硬编码从prompt中剥离，改用validators.py后置校验。12处prompt标签软化 + 4个校验器（人名/结构/风格/篇幅）+ 管线集成（自动修复+重试）+ audit-threads命令。端到端验证：软化prompt后LLM产出质量未降级，intercut/风格/人名均正确。归档于 `archive/v12-约束解耦重构/`。
 
+13. **已完成：悬念线隐含解决验证** — 修复audit-threads的json_mode Bug（dict当string处理）。12章管线跑通：提取阶段解决率8.7%→16.7%（提取prompt隐含解决指导生效），audit-threads额外检出3条隐含解决（29.2%综合解决率）。24悬念线/49事件/170关系。归档于 `archive/v13-悬念线隐含解决验证/`。
+
 ## Project Structure
 
 ```text
