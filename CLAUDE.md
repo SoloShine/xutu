@@ -32,6 +32,8 @@
 
 14. **已完成：MCP闭环验证** — 将图谱操作和prompt模板暴露为26个MCP工具，Agent直接作为LLM完成全流程（零外部API调用）。原创6章工业废墟悬疑《东华澡堂》：36,829字、18事件、6悬念线（5解决+1开放式）、84关系。单章耗时从10-15分钟降至3-5分钟。归档于 `archive/v14-MCP闭环验证/`。
 
+15. **已完成：功能增强验证** — 后端同步+增强一致性+叙事节奏分析三个功能增强。28个MCP工具，58测试点JSON/Neo4j双后端通过。原创6章小城殡仪馆悬疑《缝合》：72,169字、32事件、12悬念线（4解决+8开放）、160关系。一致性检查仅1个设计意图问题，节奏分析检测到2个结尾重复。归档于 `archive/v15-功能增强验证/`。
+
 ## Project Structure
 
 ```text
@@ -49,7 +51,8 @@ novel_test/
 │   └── v11-12章规模验证/       # 12章双时间线悬疑《水蚀》+ Bug修复
 │   └── v12-约束解耦重构/       # 后置校验替代prompt威慑 + git初始化
 │   └── v14-MCP闭环验证/        # MCP工具闭环验证《东华澡堂》
-├── novel_mcp_server/            # MCP Server（26工具，包装novel_kg_mvp）
+│   └── v15-功能增强验证/        # 后端同步+增强一致性+节奏分析《缝合》
+├── novel_mcp_server/            # MCP Server（28工具，包装novel_kg_mvp）
 │   ├── server.py                # FastMCP主文件（薄壳）
 │   ├── core.py                  # 业务逻辑+连接池+后端选择+节奏分析
 │   ├── kg_json.py               # JSON文件后端（默认，零依赖）
@@ -131,6 +134,10 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] 悬念线隐含解决：提取prompt指导使解决率8.7%→16.7%，audit-threads额外+12.5%，综合29.2%（v13）
 - [x] MCP闭环：26个MCP工具包装图谱CRUD+prompt模板+校验，Agent零外部API调用完成6章原创（v14）
 - [x] MCP配置：`.mcp.json`在项目根目录（非settings.json），server.py用`os.chdir()`解决config.yaml相对路径
+- [x] 后端同步：JSON↔Neo4j双向迁移，纯接口设计无后端特定代码，kg_sync.py（v15）
+- [x] 增强一致性：人物空间矛盾+事件ID连续+章节编号跳跃+主角缺席检测（v15）
+- [x] 叙事节奏：目的重复+结尾重复+场景密度+节奏曲线分析（v15）
+- [x] 28工具58测试点：JSON/Neo4j双后端E2E全部通过（v15）
 
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
@@ -151,7 +158,7 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 ```bash
 cd novel_mcp_server
 
-# E2E测试：58个测试点覆盖全部28个工具，~3秒
+# E2E测试：58个测试点覆盖全部28工具，~3秒
 python test_e2e.py                    # JSON后端（默认，零依赖）
 KG_BACKEND=neo4j python test_e2e.py   # Neo4j后端（需docker-compose up -d）
 
