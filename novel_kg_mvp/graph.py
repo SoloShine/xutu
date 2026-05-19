@@ -300,6 +300,112 @@ class NovelKG:
             entries = [dict(r["oe"]) for r in result]
             return entries[0] if entries else None
 
+    # ================================================================
+    # 批量查询（用于同步和节奏分析）
+    # ================================================================
+
+    _KEY_MAP = {
+        "Character": "name", "Location": "name", "Event": "id",
+        "Theme": "name", "StyleGuide": "id", "Motif": "name",
+        "ChapterArc": "chapter", "SuspenseThread": "id",
+        "OutlineEntry": "chapter", "TimePeriod": "label",
+    }
+
+    def get_all_events(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (e:Event {project: $p}) RETURN e ORDER BY e.chapter, e.id",
+                p=p)
+            return [dict(r["e"]) for r in result]
+
+    def get_all_locations(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (l:Location {project: $p}) RETURN l ORDER BY l.name",
+                p=p)
+            return [dict(r["l"]) for r in result]
+
+    def get_all_themes(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (t:Theme {project: $p}) RETURN t",
+                p=p)
+            return [dict(r["t"]) for r in result]
+
+    def get_all_style_guides(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (sg:StyleGuide {project: $p}) RETURN sg ORDER BY sg.id",
+                p=p)
+            return [dict(r["sg"]) for r in result]
+
+    def get_all_motifs(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (m:Motif {project: $p}) RETURN m",
+                p=p)
+            return [dict(r["m"]) for r in result]
+
+    def get_all_chapter_arcs(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (ca:ChapterArc {project: $p}) RETURN ca ORDER BY ca.chapter",
+                p=p)
+            return [dict(r["ca"]) for r in result]
+
+    def get_all_outline_entries(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (oe:OutlineEntry {project: $p}) RETURN oe ORDER BY oe.chapter",
+                p=p)
+            return [dict(r["oe"]) for r in result]
+
+    def get_all_time_periods(self):
+        p = self.project
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (tp:TimePeriod {project: $p}) RETURN tp ORDER BY tp.chapter_start",
+                p=p)
+            return [dict(r["tp"]) for r in result]
+
+    def get_all_relations(self):
+        """返回所有关系记录（统一字典格式）"""
+        p = self.project
+        km = self._KEY_MAP
+        with self.driver.session() as s:
+            result = s.run(
+                "MATCH (a {project: $p})-[r]->(b {project: $p}) "
+                "RETURN labels(a)[0] AS fl, labels(b)[0] AS tl, "
+                "type(r) AS rt, properties(r) AS rprops, "
+                "a AS from_node, b AS to_node",
+                p=p)
+            relations = []
+            for r in result:
+                from_node = dict(r["from_node"])
+                to_node = dict(r["to_node"])
+                fl = r["fl"]
+                tl = r["tl"]
+                fk = km.get(fl, "name")
+                tk = km.get(tl, "name")
+                rel = {
+                    "fl": fl, "fk": fk, "fv": from_node.get(fk, ""),
+                    "rt": r["rt"],
+                    "tl": tl, "tk": tk, "tv": to_node.get(tk, ""),
+                }
+                # 关系属性（排除内部字段）
+                for k, v in r["rprops"].items():
+                    if k not in rel:
+                        rel[k] = v
+                relations.append(rel)
+            return relations
+
     def get_context_for_chapter(self, chapter):
         """获取写第N章时需要的所有图谱上下文"""
         p = self.project
@@ -583,6 +689,98 @@ class NovelKG:
                         "type": "证据缺失",
                         "detail": f"悬念线 {r['tid']} ('{r['content'][:30]}') 已解决但无证据链支撑，解决方案可能缺乏说服力",
                         "severity": "high"
+                    })
+
+            # 检查6: 人物空间矛盾（同章同角色出现在不同地点）
+            coloc_result = s.run(
+                "MATCH (e:Event {project: $p})-[:INVOLVES]->(c:Character {project: $p}) "
+                "MATCH (e)-[:OCCURS_AT]->(l:Location {project: $p}) "
+                "WITH c.name AS char_name, e.chapter AS ch, "
+                "collect(DISTINCT l.name) AS locs "
+                "WHERE size(locs) > 1 "
+                "RETURN char_name, ch, locs",
+                p=p
+            )
+            for r in coloc_result:
+                issues.append({
+                    "type": "人物空间矛盾",
+                    "detail": f"{r['char_name']} 在第{r['ch']}章同时出现在: {set(r['locs'])}",
+                    "severity": "high"
+                })
+
+            # 检查7: 事件ID连续性
+            import re
+            event_id_result = s.run(
+                "MATCH (e:Event {project: $p}) WHERE e.id IS NOT NULL "
+                "RETURN e.id AS eid, e.chapter AS ch ORDER BY e.chapter, e.id",
+                p=p
+            )
+            events_by_ch_check = {}
+            for r in event_id_result:
+                m = re.match(r'E(\d+)_(\d+)', r["eid"] or "")
+                if m:
+                    ch, seq = int(m.group(1)), int(m.group(2))
+                    events_by_ch_check.setdefault(ch, []).append(seq)
+
+            for ch in sorted(events_by_ch_check.keys()):
+                seqs = sorted(events_by_ch_check[ch])
+                for i in range(1, len(seqs)):
+                    if seqs[i] - seqs[i-1] > 1:
+                        missing = list(range(seqs[i-1]+1, seqs[i]))
+                        issues.append({
+                            "type": "事件ID不连续",
+                            "detail": f"第{ch}章事件ID跳跃: E{ch}_{seqs[i-1]:02d} -> E{ch}_{seqs[i]:02d}，缺少 E{ch}_{missing[0]:02d} 等",
+                            "severity": "low"
+                        })
+
+            # 章节编号连续性
+            chapter_nums = sorted(events_by_ch_check.keys())
+            if len(chapter_nums) >= 2:
+                for i in range(1, len(chapter_nums)):
+                    if chapter_nums[i] - chapter_nums[i-1] > 1:
+                        issues.append({
+                            "type": "章节编号跳跃",
+                            "detail": f"事件从第{chapter_nums[i-1]}章跳到第{chapter_nums[i]}章，缺少中间章节的事件",
+                            "severity": "low"
+                        })
+
+            # 检查8: 主角缺席检测
+            protagonist_result = s.run(
+                "MATCH (c:Character {project: $p}) "
+                "WHERE c.role CONTAINS '主角' OR toLower(c.role) CONTAINS 'main' "
+                "RETURN c.name AS name",
+                p=p
+            )
+            all_ch_result = s.run(
+                "MATCH (e:Event {project: $p}) WHERE e.chapter > 0 "
+                "RETURN DISTINCT e.chapter AS ch ORDER BY e.chapter",
+                p=p
+            )
+            all_chapters = [r["ch"] for r in all_ch_result]
+
+            for pr in protagonist_result:
+                char_name = pr["name"]
+                char_ch_result = s.run(
+                    "MATCH (e:Event {project: $p})-[:INVOLVES]->(c:Character {project: $p, name: $name}) "
+                    "RETURN DISTINCT e.chapter AS ch",
+                    name=char_name, p=p
+                )
+                char_chapters = {r["ch"] for r in char_ch_result}
+
+                max_absence = 0
+                current_absence = 0
+                for ch in all_chapters:
+                    if ch in char_chapters:
+                        current_absence = 0
+                    else:
+                        current_absence += 1
+                        max_absence = max(max_absence, current_absence)
+
+                if max_absence >= 3:
+                    issues.append({
+                        "type": "主角缺席",
+                        "detail": f"主角 {char_name} 连续{max_absence}章未出现",
+                        "severity": "medium"
                     })
 
         return issues

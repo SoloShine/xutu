@@ -412,3 +412,179 @@ def detect_extraction_conflicts(project: str, extracted_json: str) -> list:
     else:
         extracted = extracted_json
     return detect_conflicts(kg, extracted)
+
+
+# ============================================================
+# 后端同步
+# ============================================================
+
+def sync_backends(project: str, direction: str = "json_to_neo4j") -> str:
+    """同步 JSON 和 Neo4j 后端数据"""
+    from kg_sync import sync_json_to_neo4j, sync_neo4j_to_json
+    if direction == "json_to_neo4j":
+        report = sync_json_to_neo4j(project)
+    elif direction == "neo4j_to_json":
+        report = sync_neo4j_to_json(project)
+    else:
+        return f"[ERROR] 未知方向: {direction}，可选: json_to_neo4j, neo4j_to_json"
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+# ============================================================
+# 叙事节奏分析
+# ============================================================
+
+def analyze_pacing(project: str) -> dict:
+    """分析叙事节奏问题"""
+    kg = _kg(project)
+    arcs = kg.get_all_chapter_arcs()
+
+    if len(arcs) < 3:
+        return {"issues": [], "message": "章节弧线不足3个，无法分析节奏",
+                "total_arcs": len(arcs)}
+
+    issues = []
+    arcs_sorted = sorted(arcs, key=lambda a: a.get("chapter", 0))
+
+    # 1. 目的重复检测
+    _check_purpose_repetition(arcs_sorted, issues)
+
+    # 2. 结尾重复检测
+    _check_ending_repetition(arcs_sorted, issues)
+
+    # 3. 场景密度异常
+    _check_scene_density(arcs_sorted, issues)
+
+    # 4. 节奏曲线分析
+    _check_pacing_curve(arcs_sorted, issues, kg)
+
+    return {
+        "total_arcs": len(arcs_sorted),
+        "issues": issues,
+        "chapters": [a.get("chapter", 0) for a in arcs_sorted],
+    }
+
+
+def _shared_keywords(strings, min_shared=2):
+    """检查多个字符串是否共享足够多的关键词（bigram方法）"""
+    if not all(strings):
+        return False
+
+    def _bigrams(s):
+        if len(s) < 4:
+            return set()
+        return {s[i:i+2] for i in range(len(s)-1)}
+
+    gram_sets = [_bigrams(s) for s in strings]
+    common = gram_sets[0]
+    for gs in gram_sets[1:]:
+        common = common & gs
+    return len(common) >= min_shared
+
+
+def _check_purpose_repetition(arcs, issues):
+    """检测连续3+章目的重复"""
+    window = 3
+    for i in range(len(arcs) - window + 1):
+        window_arcs = arcs[i:i+window]
+        purposes = [a.get("purpose", "") for a in window_arcs]
+        chapters = [a.get("chapter", 0) for a in window_arcs]
+        if len(set(purposes)) == 1 and purposes[0]:
+            issues.append({
+                "type": "目的重复",
+                "detail": f"第{chapters[0]}-{chapters[-1]}章连续{window}章目的相同: '{purposes[0]}'",
+                "severity": "medium"
+            })
+        elif _shared_keywords(purposes, min_shared=2):
+            issues.append({
+                "type": "目的相似",
+                "detail": f"第{chapters[0]}-{chapters[-1]}章目的高度相似",
+                "severity": "low"
+            })
+
+
+def _check_ending_repetition(arcs, issues):
+    """检测连续3+章结尾类型重复"""
+    window = 3
+    for i in range(len(arcs) - window + 1):
+        window_arcs = arcs[i:i+window]
+        endings = [a.get("ending", "") for a in window_arcs]
+        chapters = [a.get("chapter", 0) for a in window_arcs]
+        if _shared_keywords(endings, min_shared=2):
+            issues.append({
+                "type": "结尾重复",
+                "detail": f"第{chapters[0]}-{chapters[-1]}章结尾类型相似: '{endings[0][:20]}'...",
+                "severity": "medium"
+            })
+
+
+def _check_scene_density(arcs, issues):
+    """检测场景密度异常"""
+    scene_counts = []
+    for arc in arcs:
+        scenes_str = arc.get("scenes", "")
+        if scenes_str:
+            count = len([s.strip() for s in scenes_str.split("->") if s.strip()])
+        else:
+            count = 0
+        scene_counts.append((arc.get("chapter", 0), count))
+
+    if len(scene_counts) < 3:
+        return
+
+    counts = [c for _, c in scene_counts]
+    avg = sum(counts) / len(counts) if counts else 0
+
+    for ch, count in scene_counts:
+        if count > avg * 2 and avg > 0:
+            issues.append({
+                "type": "场景密度异常",
+                "detail": f"第{ch}章有{count}个场景，平均{avg:.1f}个",
+                "severity": "low"
+            })
+
+
+def _check_pacing_curve(arcs, issues, kg):
+    """分析节奏曲线"""
+    all_events = kg.get_all_events()
+
+    HIGH_TYPES = {"climax", "turning", "revelation", "confrontation"}
+    chapter_intensity = {}
+    for ev in all_events:
+        ch = ev.get("chapter", 0)
+        if ch == 0:
+            continue
+        ev_type = ev.get("type", ev.get("event_type", "daily"))
+        score = 3 if ev_type in HIGH_TYPES else 1
+        chapter_intensity[ch] = chapter_intensity.get(ch, 0) + score
+
+    if len(chapter_intensity) < 4:
+        return
+
+    chapters_sorted = sorted(chapter_intensity.keys())
+    intensities = [chapter_intensity[ch] for ch in chapters_sorted]
+
+    # 检测太平缓：连续4+章强度相同
+    flat_count = 1
+    for i in range(1, len(intensities)):
+        if intensities[i] == intensities[i-1]:
+            flat_count += 1
+            if flat_count >= 4:
+                issues.append({
+                    "type": "节奏太平缓",
+                    "detail": f"第{chapters_sorted[i-flat_count+1]}-{chapters_sorted[i]}章强度无变化（均为{intensities[i]}）",
+                    "severity": "medium"
+                })
+                break
+        else:
+            flat_count = 1
+
+    # 检测太剧烈：相邻章节强度差>5
+    for i in range(1, len(intensities)):
+        diff = abs(intensities[i] - intensities[i-1])
+        if diff > 5:
+            issues.append({
+                "type": "节奏剧烈波动",
+                "detail": f"第{chapters_sorted[i-1]}章(强度{intensities[i-1]}) -> 第{chapters_sorted[i]}章(强度{intensities[i]})，变化{diff}",
+                "severity": "low"
+            })

@@ -103,6 +103,16 @@ def build_parser():
     sp.add_argument('--json-file', '-f', required=True)
     sp.set_defaults(func=cmd_write_extraction)
 
+    sp = sub.add_parser('sync_backends')
+    _proj(sp)
+    sp.add_argument('--direction', default='json_to_neo4j',
+                    choices=['json_to_neo4j', 'neo4j_to_json'])
+    sp.set_defaults(func=lambda a: _out(core.sync_backends(a.project, a.direction)))
+
+    sp = sub.add_parser('analyze_pacing')
+    _proj(sp)
+    sp.set_defaults(func=lambda a: _out(core.analyze_pacing(a.project)))
+
     sp = sub.add_parser('add_character')
     _proj(sp)
     sp.add_argument('--name', required=True)

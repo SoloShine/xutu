@@ -222,6 +222,74 @@ def main():
         test("final backend tag", final.get("backend") == _BACKEND or "backend" not in final)
         print(f"\n  最终图谱: {json.dumps(final, ensure_ascii=False, indent=4)}")
 
+        # ---- 11. 批量查询方法 ----
+        print("\n[11] 批量查询方法")
+        test("get_all_events", len(kg.get_all_events()) >= 1)
+        test("get_all_locations", len(kg.get_all_locations()) >= 1)
+        test("get_all_themes", len(kg.get_all_themes()) >= 1)
+        test("get_all_style_guides", len(kg.get_all_style_guides()) >= 1)
+        test("get_all_motifs", isinstance(kg.get_all_motifs(), list))
+        test("get_all_chapter_arcs", len(kg.get_all_chapter_arcs()) >= 1)
+        test("get_all_outline_entries", len(kg.get_all_outline_entries()) >= 1)
+        test("get_all_time_periods", len(kg.get_all_time_periods()) >= 1)
+        test("get_all_relations", len(kg.get_all_relations()) >= 1)
+
+        # ---- 12. 增强一致性检查 ----
+        print("\n[12] 增强一致性检查")
+
+        # 人物空间矛盾测试：孙洁在第2章同时出现在两个地点
+        kg.add_event("E2_03", title="孙洁在管道层", chapter=2, event_type="daily")
+        kg.add_relation("Event", "id", "E2_03", "INVOLVES", "Character", "name", "孙洁")
+        kg.add_location("管道层地下室", loc_type="地下")
+        kg.add_relation("Event", "id", "E2_03", "OCCURS_AT", "Location", "name", "管道层地下室")
+
+        issues_enhanced = kg.check_consistency()
+        coloc_issues = [i for i in issues_enhanced if i["type"] == "人物空间矛盾"]
+        test("character co-location conflict", len(coloc_issues) >= 1,
+             f"found {len(coloc_issues)} co-location issues")
+
+        # 主角缺席检测运行正常
+        protagonist_absent = [i for i in issues_enhanced if i["type"] == "主角缺席"]
+        test("protagonist absence check runs", isinstance(protagonist_absent, list))
+
+        # 清理 E2_03
+        kg.delete_events_by_chapter(2)
+
+        # ---- 13. 叙事节奏分析 ----
+        print("\n[13] 叙事节奏分析")
+        from core import analyze_pacing
+
+        # 先测试不足3章弧线的情况
+        pacing = analyze_pacing(PROJECT)
+        test("analyze_pacing returns dict", isinstance(pacing, dict))
+        test("pacing has issues key", "issues" in pacing)
+
+        # 添加重复弧线触发检测
+        kg.add_chapter_arc(3, purpose="推进调查", scenes="A->B", ending="发现新线索")
+        kg.add_chapter_arc(4, purpose="推进调查", scenes="C->D", ending="发现新线索")
+        kg.add_chapter_arc(5, purpose="推进调查", scenes="E->F", ending="发现新线索")
+        kg.add_chapter_arc(6, purpose="高潮冲突",
+                           scenes="A->B->C->D->E->F->G->H", ending="真相大白")
+
+        # 直接用 kg 对象读取弧线（避免连接池缓存不一致）
+        from core import _check_purpose_repetition, _check_ending_repetition, _check_scene_density
+        all_arcs = kg.get_all_chapter_arcs()
+        arcs_sorted = sorted(all_arcs, key=lambda a: a.get("chapter", 0))
+        pacing_issues = []
+        _check_purpose_repetition(arcs_sorted, pacing_issues)
+        _check_ending_repetition(arcs_sorted, pacing_issues)
+        _check_scene_density(arcs_sorted, pacing_issues)
+
+        test("purpose repetition detected",
+             any(i["type"] == "目的重复" for i in pacing_issues),
+             f"issues: {[i['type'] for i in pacing_issues]}")
+        test("ending repetition detected",
+             any(i["type"] == "结尾重复" for i in pacing_issues),
+             f"issues: {[i['type'] for i in pacing_issues]}")
+        test("scene density anomaly",
+             any(i["type"] == "场景密度异常" for i in pacing_issues),
+             f"issues: {[i['type'] for i in pacing_issues]}")
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

@@ -51,10 +51,11 @@ novel_test/
 │   └── v14-MCP闭环验证/        # MCP工具闭环验证《东华澡堂》
 ├── novel_mcp_server/            # MCP Server（26工具，包装novel_kg_mvp）
 │   ├── server.py                # FastMCP主文件（薄壳）
-│   ├── core.py                  # 业务逻辑+连接池+后端选择
+│   ├── core.py                  # 业务逻辑+连接池+后端选择+节奏分析
 │   ├── kg_json.py               # JSON文件后端（默认，零依赖）
+│   ├── kg_sync.py               # JSON↔Neo4j双向同步工具
 │   ├── mcp_cli.py               # CLI fallback（薄壳）
-│   ├── test_e2e.py              # 双后端E2E测试（36测试点）
+│   ├── test_e2e.py              # 双后端E2E测试（58测试点）
 │   └── requirements.txt         # mcp[cli]依赖
 ├── .mcp.json                    # MCP Server配置
 ├── novel_kg_mvp/                # 知识图谱代码
@@ -150,12 +151,17 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 ```bash
 cd novel_mcp_server
 
-# E2E测试：36个测试点覆盖全部26个工具，~3秒
+# E2E测试：58个测试点覆盖全部28个工具，~3秒
 python test_e2e.py                    # JSON后端（默认，零依赖）
 KG_BACKEND=neo4j python test_e2e.py   # Neo4j后端（需docker-compose up -d）
 
 # 单工具测试
 python mcp_cli.py get_graph_stats --project <项目名>
+KG_BACKEND=neo4j python mcp_cli.py get_graph_stats --project <项目名>
+
+# 后端同步
+python mcp_cli.py sync_backends --project <项目名> --direction json_to_neo4j
+python mcp_cli.py analyze_pacing --project <项目名>
 KG_BACKEND=neo4j python mcp_cli.py get_graph_stats --project <项目名>
 ```
 
@@ -165,7 +171,7 @@ KG_BACKEND=neo4j python mcp_cli.py get_graph_stats --project <项目名>
 
 | 改什么 | 改哪里 | 需要重启MCP |
 |--------|--------|------------|
-| 业务逻辑（26个工具） | `novel_mcp_server/core.py` | 是 |
+| 业务逻辑（28个工具） | `novel_mcp_server/core.py` | 是 |
 | JSON后端存储 | `novel_mcp_server/kg_json.py` | 是 |
 | Neo4j后端存储 | `novel_kg_mvp/graph.py` | 是 |
 | 提取管线 | `novel_kg_mvp/mine.py` | 是 |

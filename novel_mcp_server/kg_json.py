@@ -266,6 +266,33 @@ class JsonKG:
         entry = self._graph["outline_entries"].get(str(chapter))
         return deepcopy(entry) if entry else None
 
+    def get_all_events(self):
+        return [deepcopy(v) for v in self._graph["events"].values()]
+
+    def get_all_locations(self):
+        return [deepcopy(v) for v in self._graph["locations"].values()]
+
+    def get_all_relations(self):
+        return [deepcopy(r) for r in self._graph["relations"]]
+
+    def get_all_chapter_arcs(self):
+        return [deepcopy(v) for v in self._graph["chapter_arcs"].values()]
+
+    def get_all_outline_entries(self):
+        return [deepcopy(v) for v in self._graph["outline_entries"].values()]
+
+    def get_all_time_periods(self):
+        return [deepcopy(v) for v in self._graph["time_periods"].values()]
+
+    def get_all_themes(self):
+        return [deepcopy(v) for v in self._graph["themes"].values()]
+
+    def get_all_style_guides(self):
+        return [deepcopy(v) for v in self._graph["style_guides"].values()]
+
+    def get_all_motifs(self):
+        return [deepcopy(v) for v in self._graph["motifs"].values()]
+
     # ================================================================
     # 查询：复合
     # ================================================================
@@ -460,6 +487,93 @@ class JsonKG:
                         "detail": f"悬念线 {tid} ('{t.get('content', '')[:30]}') 已解决但无证据链支撑，解决方案可能缺乏说服力",
                         "severity": "high"
                     })
+
+        # 5. 人物空间矛盾（同章同角色出现在不同地点）
+        char_loc_by_ch = {}  # {(char_name, chapter): set(loc_names)}
+        for eid, ev in events.items():
+            ch = ev.get("chapter", 0)
+            locs_for_event = set()
+            chars_for_event = set()
+            for r in self._graph["relations"]:
+                if r["fl"] == "Event" and r["fk"] == "id" and r["fv"] == eid:
+                    if r["rt"] == "OCCURS_AT" and r["tl"] == "Location":
+                        locs_for_event.add(r["tv"])
+                    if r["rt"] == "INVOLVES" and r["tl"] == "Character":
+                        chars_for_event.add(r["tv"])
+            for char in chars_for_event:
+                key = (char, ch)
+                char_loc_by_ch.setdefault(key, set()).update(locs_for_event)
+
+        for (char, ch), locs in char_loc_by_ch.items():
+            if len(locs) > 1:
+                issues.append({
+                    "type": "人物空间矛盾",
+                    "detail": f"{char} 在第{ch}章同时出现在: {locs}",
+                    "severity": "high"
+                })
+
+        # 6. 事件ID连续性
+        import re
+        events_by_ch_check = {}
+        for eid in events.keys():
+            m = re.match(r'E(\d+)_(\d+)', eid)
+            if m:
+                ch, seq = int(m.group(1)), int(m.group(2))
+                events_by_ch_check.setdefault(ch, []).append(seq)
+
+        for ch in sorted(events_by_ch_check.keys()):
+            seqs = sorted(events_by_ch_check[ch])
+            for i in range(1, len(seqs)):
+                if seqs[i] - seqs[i-1] > 1:
+                    missing = list(range(seqs[i-1]+1, seqs[i]))
+                    issues.append({
+                        "type": "事件ID不连续",
+                        "detail": f"第{ch}章事件ID跳跃: E{ch}_{seqs[i-1]:02d} -> E{ch}_{seqs[i]:02d}，缺少 E{ch}_{missing[0]:02d} 等",
+                        "severity": "low"
+                    })
+
+        # 7. 章节编号连续性
+        chapter_nums = sorted(events_by_ch_check.keys())
+        if len(chapter_nums) >= 2:
+            for i in range(1, len(chapter_nums)):
+                if chapter_nums[i] - chapter_nums[i-1] > 1:
+                    issues.append({
+                        "type": "章节编号跳跃",
+                        "detail": f"事件从第{chapter_nums[i-1]}章跳到第{chapter_nums[i]}章，缺少中间章节的事件",
+                        "severity": "low"
+                    })
+
+        # 8. 主角缺席检测
+        all_chapters_with_events = sorted(set(
+            ev.get("chapter", 0) for ev in events.values() if ev.get("chapter", 0) > 0
+        ))
+        if all_chapters_with_events:
+            for char in self._graph["characters"].values():
+                role = char.get("role", "")
+                if "主角" in role or "main" in role.lower():
+                    char_chapters = set()
+                    for r in self._graph["relations"]:
+                        if (r["rt"] == "INVOLVES" and r["tl"] == "Character"
+                                and r["tv"] == char["name"]):
+                            eid = r["fv"]
+                            if eid in events:
+                                char_chapters.add(events[eid].get("chapter", 0))
+
+                    max_absence = 0
+                    current_absence = 0
+                    for ch in all_chapters_with_events:
+                        if ch in char_chapters:
+                            current_absence = 0
+                        else:
+                            current_absence += 1
+                            max_absence = max(max_absence, current_absence)
+
+                    if max_absence >= 3:
+                        issues.append({
+                            "type": "主角缺席",
+                            "detail": f"主角 {char['name']} 连续{max_absence}章未出现",
+                            "severity": "medium"
+                        })
 
         return issues
 

@@ -259,5 +259,25 @@ def detect_extraction_conflicts(project: str,
     return core.detect_extraction_conflicts(project, extracted_json)
 
 
+@mcp.tool()
+def sync_backends(project: str, direction: str = "json_to_neo4j") -> str:
+    """同步 JSON 和 Neo4j 后端数据。
+
+    direction: 'json_to_neo4j'（从JSON导入到Neo4j）或 'neo4j_to_json'（从Neo4j导出到JSON）。
+    读取源后端全部数据，清空目标后端后写入。用于迁移或可视化。
+    """
+    return core.sync_backends(project, direction)
+
+
+@mcp.tool()
+def analyze_pacing(project: str) -> dict:
+    """分析叙事节奏问题。
+
+    检测: 目的重复、结尾重复、场景密度异常、节奏曲线平坦/剧烈波动。
+    返回问题列表和章节弧线概览。
+    """
+    return core.analyze_pacing(project)
+
+
 if __name__ == "__main__":
     mcp.run()
