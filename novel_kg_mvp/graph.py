@@ -15,9 +15,10 @@ def load_config():
 
 
 class NovelKG:
-    def __init__(self, project="default", uri=None, user=None, password=None):
+    def __init__(self, project="default", uri=None, user=None, password=None, config=None):
         cfg = load_config()
         self.project = project
+        self._config = config or {}
         self.uri = uri or cfg["NEO4J_URI"]
         self.user = user or cfg["NEO4J_USER"]
         self.password = password or cfg["NEO4J_PASSWORD"]
@@ -810,7 +811,7 @@ class NovelKG:
             )
             for r in result:
                 gap = max_ch - r["planted"]
-                if gap >= 3:
+                if gap >= self._config.get("suspense", {}).get("staleness_threshold", 3):
                     issues.append({
                         "type": "悬念线悬而未决",
                         "detail": f"高重要度线程 {r['id']} ('{r['content'][:30]}') 已种植{gap}章未解决",

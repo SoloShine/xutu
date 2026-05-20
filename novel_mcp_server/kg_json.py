@@ -35,8 +35,9 @@ class JsonKG:
     可以透明切换后端。
     """
 
-    def __init__(self, project="default", data_dir=None):
+    def __init__(self, project="default", data_dir=None, config=None):
         self.project = project
+        self._config = config or {}
         if data_dir is None:
             # 默认：novel_kg_mvp/projects/
             _here = os.path.dirname(os.path.abspath(__file__))
@@ -459,7 +460,7 @@ class JsonKG:
         for tid, t in self._graph["suspense_threads"].items():
             if t.get("status") not in ("resolved", "abandoned"):
                 gap = max_ch - t.get("planted_chapter", 0)
-                if gap >= 3 and t.get("importance") == "high":
+                if gap >= self._config.get("suspense", {}).get("staleness_threshold", 3) and t.get("importance") == "high":
                     issues.append({
                         "type": "悬念线悬而未决",
                         "detail": f"高重要度线程 {tid} ('{t.get('content', '')[:30]}') 已种植{gap}章未解决",

@@ -166,19 +166,34 @@ def generate_chapter(prompt):
     )
 
 
-def generate_world(direction):
+def generate_world(direction, project=None):
     """生成世界观设定（返回JSON）"""
     from prompts import WORLD_BUILD_PROMPT
-    prompt = WORLD_BUILD_PROMPT.format(direction=direction)
+    from config_loader import config_loader
+    cfg = config_loader.load(project)
+    wb_cfg = cfg.get("world_building", {})
+    prompt = WORLD_BUILD_PROMPT.format(
+        direction=direction,
+        default_chapters=wb_cfg.get("default_chapters", 6),
+        characters_range=wb_cfg.get("characters", "3-5"),
+        locations_range=wb_cfg.get("locations", "3-5"),
+        style_guides_range=wb_cfg.get("style_guides", "6-8"),
+        time_periods_range=wb_cfg.get("time_periods", "2-3"),
+    )
     return call_llm(prompt, json_mode=True, stream_label="生成世界观")
 
 
-def generate_outline(world_setup, total_chapters=6):
+def generate_outline(world_setup, total_chapters=6, project=None):
     """生成全局大纲（返回JSON）"""
     from prompts import OUTLINE_GENERATION_PROMPT
+    from config_loader import config_loader
+    cfg = config_loader.load(project)
+    derivation_cfg = cfg.get("derivation", {})
     prompt = OUTLINE_GENERATION_PROMPT.format(
         world_setup=json.dumps(world_setup, ensure_ascii=False, indent=2),
-        total_chapters=total_chapters
+        total_chapters=total_chapters,
+        main_threads=derivation_cfg.get("main_threads", "2-3"),
+        nonlinear_ratio=derivation_cfg.get("nonlinear_ratio", 4),
     )
     return call_llm(prompt, json_mode=True, stream_label="生成大纲")
 

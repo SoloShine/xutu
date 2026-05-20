@@ -20,6 +20,7 @@ os.chdir(_mvp_dir)
 if _mvp_dir not in sys.path:
     sys.path.insert(0, _mvp_dir)
 
+from config_loader import config_loader
 from mine import (
     build_extraction_prompt, detect_conflicts,
     write_extraction_to_graph,
@@ -39,15 +40,16 @@ _BACKEND = os.environ.get("KG_BACKEND", "json")  # "json"(默认) 或 "neo4j"
 
 def _create_backend(project: str):
     """根据环境变量创建后端实例"""
+    cfg = config_loader.load(project)
     if _BACKEND == "neo4j":
         from graph import NovelKG
-        return NovelKG(project=project)
+        return NovelKG(project=project, config=cfg)
     else:
         # 延迟导入，避免 Neo4j 依赖
         if _here not in sys.path:
             sys.path.insert(0, _here)
         from kg_json import JsonKG
-        return JsonKG(project=project, data_dir=_projects_dir)
+        return JsonKG(project=project, data_dir=_projects_dir, config=cfg)
 
 
 # ============================================================
@@ -93,12 +95,16 @@ def _check_destructive(confirm: str) -> str | None:
 # ============================================================
 
 def get_chapter_context(project: str, chapter: int,
-                        prev_text_chars: int = 500) -> dict:
+                        prev_text_chars: int = None) -> dict:
+    if prev_text_chars is None:
+        prev_text_chars = config_loader.get(project, "writing", "prev_text_chars", default=500)
     kg = _kg(project)
     return kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars)
 
 
-def get_derivation_context(project: str, chapter: int, lookback: int = 3) -> dict:
+def get_derivation_context(project: str, chapter: int, lookback: int = None) -> dict:
+    if lookback is None:
+        lookback = config_loader.get(project, "derivation", "lookback", default=3)
     kg = _kg(project)
     return kg.get_arc_derivation_context(chapter, lookback=lookback)
 
@@ -129,14 +135,17 @@ def get_all_threads(project: str) -> list:
 
 def get_extraction_prompt(project: str, chapter: int, chapter_text: str) -> str:
     kg = _kg(project)
-    return build_extraction_prompt(kg, chapter, chapter_text)
+    return build_extraction_prompt(kg, chapter, chapter_text, project=project)
 
 
 def get_writing_prompt(project: str, chapter: int,
-                       prev_text_chars: int = 500) -> str:
+                       prev_text_chars: int = None) -> str:
+    if prev_text_chars is None:
+        prev_text_chars = config_loader.get(project, "writing", "prev_text_chars", default=500)
+    cfg = config_loader.load(project)
     kg = _kg(project)
     context = kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars)
-    return build_writing_prompt(context, chapter)
+    return build_writing_prompt(context, chapter, config=cfg)
 
 
 def get_derivation_prompt(project: str, chapter: int) -> str:
@@ -175,11 +184,13 @@ def get_derivation_prompt(project: str, chapter: int) -> str:
         ensure_ascii=False, indent=2
     ) if ctx.get("suspense_threads") else "无"
 
+    cfg = config_loader.load(project)
     return ARC_DERIVATION_PROMPT.format(
         outline_entry=outline_text, suspense_threads=threads_text,
         recent_arcs=arcs_text, recent_events=events_text,
         characters=chars_text, themes=themes_text, motifs=motifs_text,
-        last_event=last_event_text)
+        last_event=last_event_text,
+        scenes_per_arc=cfg.get("derivation", {}).get("scenes_per_arc", "3-5"))
 
 
 # ============================================================
@@ -245,7 +256,8 @@ def add_event(project: str, event_id: str, title: str = "", detail: str = "",
 def add_chapter_arc(project: str, chapter: int, purpose: str, scenes: str,
                     ending: str, gap_note: str = "",
                     structure_type: str = "linear", time_jumps: str = "",
-                    thread_plan: str = "", reasoning: str = "") -> str:
+                    thread_plan: str = "", reasoning: str = "",
+                    rhythm: str = "") -> str:
     kg = _kg(project)
     props = {"purpose": purpose, "scenes": scenes, "ending": ending}
     if gap_note:
@@ -262,6 +274,8 @@ def add_chapter_arc(project: str, chapter: int, purpose: str, scenes: str,
         props["thread_plan"] = thread_plan
     if reasoning:
         props["reasoning"] = reasoning
+    if rhythm:
+        props["rhythm"] = rhythm
     kg.add_chapter_arc(chapter, **props)
     return f"已添加第{chapter}章弧线: {purpose}"
 
@@ -367,7 +381,7 @@ def write_extraction(project: str, chapter: int,
     else:
         extracted = extracted_json
     report = write_extraction_to_graph(kg, chapter, extracted,
-                                       skip_conflicts=True)
+                                       skip_conflicts=True, project=project)
     return {
         "chapter": report["chapter"],
         "stats": report["stats"],
@@ -394,10 +408,11 @@ def clear_chapter_data(project: str, chapter: int,
 
 def validate_chapter(project: str, text: str, chapter: int) -> dict:
     kg = _kg(project)
+    cfg = config_loader.load(project)
     context = kg.get_context_for_chapter(chapter)
     arc = context.get("chapter_arc", [None])
     arc = arc[0] if arc else None
-    result = _run_validation(text, context, arc=arc)
+    result = _run_validation(text, context, arc=arc, config=cfg)
     return {
         "passed": result.passed,
         "violations": [
@@ -448,18 +463,19 @@ def analyze_pacing(project: str) -> dict:
 
     issues = []
     arcs_sorted = sorted(arcs, key=lambda a: a.get("chapter", 0))
+    cfg = config_loader.load(project)
 
     # 1. 目的重复检测
-    _check_purpose_repetition(arcs_sorted, issues)
+    _check_purpose_repetition(arcs_sorted, issues, cfg)
 
     # 2. 结尾重复检测
-    _check_ending_repetition(arcs_sorted, issues)
+    _check_ending_repetition(arcs_sorted, issues, cfg)
 
     # 3. 场景密度异常
     _check_scene_density(arcs_sorted, issues)
 
     # 4. 节奏曲线分析
-    _check_pacing_curve(arcs_sorted, issues, kg)
+    _check_pacing_curve(arcs_sorted, issues, kg, cfg)
 
     return {
         "total_arcs": len(arcs_sorted),
@@ -468,7 +484,7 @@ def analyze_pacing(project: str) -> dict:
     }
 
 
-def _shared_keywords(strings, min_shared=2):
+def _shared_keywords(strings, min_shared):
     """检查多个字符串是否共享足够多的关键词（bigram方法）"""
     if not all(strings):
         return False
@@ -485,9 +501,10 @@ def _shared_keywords(strings, min_shared=2):
     return len(common) >= min_shared
 
 
-def _check_purpose_repetition(arcs, issues):
+def _check_purpose_repetition(arcs, issues, cfg):
     """检测连续3+章目的重复"""
     window = 3
+    min_shared = cfg.get("pacing", {}).get("min_shared", 2)
     for i in range(len(arcs) - window + 1):
         window_arcs = arcs[i:i+window]
         purposes = [a.get("purpose", "") for a in window_arcs]
@@ -498,7 +515,7 @@ def _check_purpose_repetition(arcs, issues):
                 "detail": f"第{chapters[0]}-{chapters[-1]}章连续{window}章目的相同: '{purposes[0]}'",
                 "severity": "medium"
             })
-        elif _shared_keywords(purposes, min_shared=2):
+        elif _shared_keywords(purposes, min_shared=min_shared):
             issues.append({
                 "type": "目的相似",
                 "detail": f"第{chapters[0]}-{chapters[-1]}章目的高度相似",
@@ -506,14 +523,15 @@ def _check_purpose_repetition(arcs, issues):
             })
 
 
-def _check_ending_repetition(arcs, issues):
+def _check_ending_repetition(arcs, issues, cfg):
     """检测连续3+章结尾类型重复"""
     window = 3
+    min_shared = cfg.get("pacing", {}).get("min_shared", 2)
     for i in range(len(arcs) - window + 1):
         window_arcs = arcs[i:i+window]
         endings = [a.get("ending", "") for a in window_arcs]
         chapters = [a.get("chapter", 0) for a in window_arcs]
-        if _shared_keywords(endings, min_shared=2):
+        if _shared_keywords(endings, min_shared=min_shared):
             issues.append({
                 "type": "结尾重复",
                 "detail": f"第{chapters[0]}-{chapters[-1]}章结尾类型相似: '{endings[0][:20]}'...",
@@ -547,8 +565,11 @@ def _check_scene_density(arcs, issues):
             })
 
 
-def _check_pacing_curve(arcs, issues, kg):
+def _check_pacing_curve(arcs, issues, kg, cfg):
     """分析节奏曲线"""
+    pacing_cfg = cfg.get("pacing", {})
+    flat_threshold = pacing_cfg.get("flat_threshold", 4)
+    intense_diff = pacing_cfg.get("intense_diff", 5)
     all_events = kg.get_all_events()
 
     HIGH_TYPES = {"climax", "turning", "revelation", "confrontation"}
@@ -572,7 +593,7 @@ def _check_pacing_curve(arcs, issues, kg):
     for i in range(1, len(intensities)):
         if intensities[i] == intensities[i-1]:
             flat_count += 1
-            if flat_count >= 4:
+            if flat_count >= flat_threshold:
                 issues.append({
                     "type": "节奏太平缓",
                     "detail": f"第{chapters_sorted[i-flat_count+1]}-{chapters_sorted[i]}章强度无变化（均为{intensities[i]}）",
@@ -585,7 +606,7 @@ def _check_pacing_curve(arcs, issues, kg):
     # 检测太剧烈：相邻章节强度差>5
     for i in range(1, len(intensities)):
         diff = abs(intensities[i] - intensities[i-1])
-        if diff > 5:
+        if diff > intense_diff:
             issues.append({
                 "type": "节奏剧烈波动",
                 "detail": f"第{chapters_sorted[i-1]}章(强度{intensities[i-1]}) -> 第{chapters_sorted[i]}章(强度{intensities[i]})，变化{diff}",

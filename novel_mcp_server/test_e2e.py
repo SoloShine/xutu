@@ -276,8 +276,8 @@ def main():
         all_arcs = kg.get_all_chapter_arcs()
         arcs_sorted = sorted(all_arcs, key=lambda a: a.get("chapter", 0))
         pacing_issues = []
-        _check_purpose_repetition(arcs_sorted, pacing_issues)
-        _check_ending_repetition(arcs_sorted, pacing_issues)
+        _check_purpose_repetition(arcs_sorted, pacing_issues, {})
+        _check_ending_repetition(arcs_sorted, pacing_issues, {})
         _check_scene_density(arcs_sorted, pacing_issues)
 
         test("purpose repetition detected",

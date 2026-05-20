@@ -7,6 +7,7 @@ Novel Knowledge Graph MVP
 
 import json
 from graph import NovelKG
+from config_loader import config_loader
 from prompts import EXTRACTION_PROMPT
 
 
@@ -107,8 +108,11 @@ def get_existing_characters(kg):
     return "\n".join(f"  - {c['name']}({c.get('role', '')})" for c in chars)
 
 
-def build_extraction_prompt(kg, chapter, chapter_text):
+def build_extraction_prompt(kg, chapter, chapter_text, project=None):
     """构建提取prompt"""
+    cfg = config_loader.load(project) if project else None
+    extraction_cfg = (cfg or {}).get("extraction", {})
+    target_events = extraction_cfg.get("target_events", "5-8")
     characters = get_existing_characters(kg)
     # 获取已有悬念线摘要
     threads = kg.get_unresolved_threads(chapter + 1)  # 包含本章及之前种植的
@@ -123,7 +127,8 @@ def build_extraction_prompt(kg, chapter, chapter_text):
         chapter=chapter,
         characters=characters,
         suspense_threads=threads_str,
-        chapter_text=chapter_text
+        chapter_text=chapter_text,
+        target_events=target_events,
     )
 
 
@@ -132,8 +137,13 @@ def get_chapter_time_period(kg, chapter):
     return kg.get_chapter_time_period(chapter)
 
 
-def detect_conflicts(kg, extracted):
+def detect_conflicts(kg, extracted, project=None):
     """检测提取数据与已有图谱的冲突"""
+    cfg = config_loader.load(project) if project else None
+    extraction_cfg = (cfg or {}).get("extraction", {})
+    max_events = extraction_cfg.get("max_events", 10)
+    min_events = extraction_cfg.get("min_events", 3)
+    gap_keywords = extraction_cfg.get("gap_keywords", ["尝到", "味道", "活在当下", "觉醒"])
     conflicts = []
 
     # 1. 检查事件ID是否已存在
@@ -188,14 +198,14 @@ def detect_conflicts(kg, extracted):
 
     # 4. 检查事件粒度（每章建议5-8个）
     event_count = len(extracted.get("events", []))
-    if event_count > 10:
+    if event_count > max_events:
         conflicts.append({
             "type": "事件过多",
             "detail": f"本章提取了{event_count}个事件，建议5-8个。过多会导致图谱臃肿",
             "severity": "low",
             "resolution": "合并同场景的子事件"
         })
-    elif event_count < 3:
+    elif event_count < min_events:
         conflicts.append({
             "type": "事件过少",
             "detail": f"本章只提取了{event_count}个事件，可能遗漏了重要场景",
@@ -208,7 +218,7 @@ def detect_conflicts(kg, extracted):
     for ge in gap_events:
         detail = ge.get("detail", "")
         title = ge.get("title", "")
-        if any(kw in detail for kw in ["尝到", "味道", "活在当下", "觉醒"]) and "滑出" not in detail and "飘" not in detail:
+        if any(kw in detail for kw in gap_keywords) and "滑出" not in detail and "飘" not in detail:
             conflicts.append({
                 "type": "间隙误判",
                 "detail": f"'{title}' 可能不是间隙体验（意识滑出身体），而是日常觉醒或情感变化",
@@ -219,13 +229,17 @@ def detect_conflicts(kg, extracted):
     return conflicts
 
 
-def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
+def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True, project=None):
     """将提取结果写入图谱（冲突项可跳过）"""
+    cfg = config_loader.load(project) if project else None
+    suspense_cfg = (cfg or {}).get("suspense", {})
+    budget_base = suspense_cfg.get("budget_base", 8)
+    budget_multiplier = suspense_cfg.get("budget_multiplier", 1.5)
     extracted, name_fixes = normalize_characters(kg, extracted)
     if name_fixes:
         print(f"  人名规范化: {', '.join(name_fixes)}")
 
-    conflicts = detect_conflicts(kg, extracted)
+    conflicts = detect_conflicts(kg, extracted, project=project)
     stats = {"events": 0, "relations": 0, "locations": 0, "conflicts": len(conflicts)}
 
     conflict_event_ids = set()
@@ -301,8 +315,8 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True):
 
     # 8. 新悬念线（含预算控制）
     current_threads = kg.stats()["suspense_threads"]
-    # 动态预算：max(8, chapter * 1.5)，6章≈9条，12章≈18条
-    max_threads = max(8, int(chapter * 1.5))
+    # 动态预算：max(base, chapter * multiplier)
+    max_threads = max(budget_base, int(chapter * budget_multiplier))
     thread_idx = 0
     skipped_threads = []
     for nt in extracted.get("new_threads", []):

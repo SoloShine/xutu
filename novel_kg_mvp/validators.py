@@ -145,8 +145,9 @@ def _count_timeline_switches(text, known_characters=None):
     return switches
 
 
-def validate_structure(text, arc, known_characters=None):
+def validate_structure(text, arc, known_characters=None, config=None):
     """校验非线性叙事结构是否实际执行"""
+    structure_cfg = (config or {}).get("structure", {})
     violations = []
     if not arc:
         return violations
@@ -158,7 +159,7 @@ def validate_structure(text, arc, known_characters=None):
     switches = _count_timeline_switches(text, known_characters)
 
     if structure_type == "intercut":
-        if switches < 2:
+        if switches < structure_cfg.get("intercut_min", 2):
             violations.append(Violation(
                 constraint_type="structure",
                 severity="error",
@@ -166,7 +167,7 @@ def validate_structure(text, arc, known_characters=None):
             ))
 
     elif structure_type == "flashback":
-        if switches < 1:
+        if switches < structure_cfg.get("flashback_min", 1):
             violations.append(Violation(
                 constraint_type="structure",
                 severity="error",
@@ -174,7 +175,7 @@ def validate_structure(text, arc, known_characters=None):
             ))
 
     elif structure_type == "parallel":
-        if switches < 2:
+        if switches < structure_cfg.get("parallel_min", 2):
             violations.append(Violation(
                 constraint_type="structure",
                 severity="error",
@@ -226,6 +227,29 @@ def validate_style(text, style_rules):
     return violations
 
 
+# ========== 禁用句式校验 ==========
+
+def validate_forbidden_patterns(text, config):
+    """校验禁用句式模式（error级别）"""
+    violations = []
+    patterns = (config or {}).get("validation", {}).get("forbidden_patterns", [])
+    if not patterns:
+        return violations
+
+    for fp in patterns:
+        pattern = fp.get("pattern", "")
+        max_count = fp.get("max_per_chapter", 1)
+        desc = fp.get("description", pattern)
+        matches = re.findall(pattern, text)
+        if len(matches) > max_count:
+            violations.append(Violation(
+                constraint_type="forbidden_pattern",
+                severity="error",
+                detail=f"禁用句式超标：「{desc}」出现{len(matches)}次（上限{max_count}次）",
+            ))
+    return violations
+
+
 # ========== 篇幅校验 ==========
 
 def _count_chinese_chars(text):
@@ -250,7 +274,7 @@ def validate_length(text, min_words=2500, max_words=3500):
 
 # ========== 编排 ==========
 
-def validate_chapter(text, context, arc=None):
+def validate_chapter(text, context, arc=None, config=None):
     """运行全部校验"""
     violations = []
 
@@ -260,13 +284,20 @@ def validate_chapter(text, context, arc=None):
 
     # 结构
     if arc:
-        violations.extend(validate_structure(text, arc, known_characters=known_names))
+        violations.extend(validate_structure(text, arc, known_characters=known_names,
+                                             config=config))
 
     # 风格
     violations.extend(validate_style(text, context.get("style_guides", [])))
 
+    # 禁用句式
+    violations.extend(validate_forbidden_patterns(text, config))
+
     # 篇幅
-    violations.extend(validate_length(text))
+    writing_cfg = (config or {}).get("writing", {})
+    violations.extend(validate_length(text,
+                                      min_words=writing_cfg.get("min_words", 2500),
+                                      max_words=writing_cfg.get("max_words", 3500)))
 
     # 自动修复人名
     fixed_text = None

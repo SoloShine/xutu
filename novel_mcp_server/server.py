@@ -151,11 +151,13 @@ def add_event(project: str, event_id: str, title: str = "",
 def add_chapter_arc(project: str, chapter: int, purpose: str, scenes: str,
                     ending: str, gap_note: str = "",
                     structure_type: str = "linear", time_jumps: str = "",
-                    thread_plan: str = "", reasoning: str = "") -> str:
-    """添加/更新章节弧线。time_jumps和thread_plan如果是对象请传JSON字符串。"""
+                    thread_plan: str = "", reasoning: str = "",
+                    rhythm: str = "") -> str:
+    """添加/更新章节弧线。time_jumps和thread_plan如果是对象请传JSON字符串。
+    rhythm可选: tight(紧凑), ascending(递进加速), descending(递减放慢), mixed(混合)"""
     return core.add_chapter_arc(project, chapter, purpose, scenes, ending,
                                 gap_note, structure_type, time_jumps,
-                                thread_plan, reasoning)
+                                thread_plan, reasoning, rhythm)
 
 
 @mcp.tool()

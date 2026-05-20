@@ -81,7 +81,7 @@ def main():
     kg.close()
 
 
-def build_writing_prompt(context, chapter, language=None):
+def build_writing_prompt(context, chapter, language=None, config=None):
     """基于图谱上下文构建续写prompt"""
     lines = []
 
@@ -121,6 +121,18 @@ def build_writing_prompt(context, chapter, language=None):
                             lines.append(f"    - {tj.get('position', '')}: 跳至「{tj.get('target', '')}」({tj.get('type', '')})")
                 except (json.JSONDecodeError, TypeError):
                     pass
+
+        # 叙事节奏指导
+        rhythm = arc.get("rhythm", "")
+        if rhythm:
+            rhythm_guide = {
+                "tight": "【叙事节奏：紧凑】本章以短句密集推进，场景快速切换，信息密度高。段落间不留呼吸空间。适合追逐、紧迫、倒计时场景。",
+                "ascending": "【叙事节奏：递进】本章从缓慢开始，逐步加速。前半段中等句长建立氛围，后半段短句密集推向高潮。像水面下的暗流逐渐浮出。",
+                "descending": "【叙事节奏：递减】本章从激烈开始，逐步放慢。开篇短促有力，中段放缓观察，结尾安静留下余韵。适合高潮后的沉淀和发现。",
+                "mixed": "【叙事节奏：混合】本章节奏自由变化，快慢交替。允许突然加速和突然停顿。用节奏的落差制造阅读体验的起伏。",
+            }
+            if rhythm in rhythm_guide:
+                lines.append(rhythm_guide[rhythm])
         lines.append("")
 
     # 时间段
@@ -218,7 +230,11 @@ def build_writing_prompt(context, chapter, language=None):
     lines.append("- 不要只写情节推进，要让读者'看到'场景——光线、温度、声音、质感")
     lines.append("- 对话前后加环境反应（天气变化、动物行为、其他人的动作），不要孤立对话")
     lines.append("- 过渡场景也要有细节：路途中的景物、时间的流逝、季节变化")
-    lines.append(f"- 【重要】篇幅目标：本章目标2500-3500字。每个场景至少600字。宁可多写细节也不能压缩跳过")
+    writing_cfg = (config or {}).get("writing", {})
+    min_words = writing_cfg.get("min_words", 2500)
+    max_words = writing_cfg.get("max_words", 3500)
+    min_scene = writing_cfg.get("min_words_per_scene", 600)
+    lines.append(f"- 【重要】篇幅目标：本章目标{min_words}-{max_words}字。每个场景至少{min_scene}字。宁可多写细节也不能压缩跳过")
 
     if language:
         lang_map = {
