@@ -411,9 +411,21 @@ def write_extraction(project: str, chapter: int,
     # 落盘提取结果
     _persist(project, "extractions", f"extraction_ch{chapter}.json",
              json.dumps(extracted, ensure_ascii=False, indent=2))
+    # 自动注册未在图谱中的地点（高频地点自动进入图谱）
+    existing_locs = kg.get_all_location_names()
+    new_loc_names = {l["name"] for l in extracted.get("new_locations", [])}
+    auto_locs = []
+    for rel in extracted.get("event_relations", []):
+        loc = rel.get("location")
+        if loc and loc not in existing_locs and loc not in new_loc_names:
+            kg.add_location(loc, type="auto_registered",
+                           description=f"第{chapter}章提取时自动注册")
+            existing_locs.add(loc)
+            new_loc_names.add(loc)
+            auto_locs.append(loc)
     report = write_extraction_to_graph(kg, chapter, extracted,
                                        skip_conflicts=True, project=project)
-    return {
+    result = {
         "chapter": report["chapter"],
         "stats": report["stats"],
         "conflicts": report["conflicts"],
@@ -421,6 +433,9 @@ def write_extraction(project: str, chapter: int,
         "notes": report.get("notes", ""),
         "skipped_threads": report.get("skipped_threads", []),
     }
+    if auto_locs:
+        result["auto_registered_locations"] = auto_locs
+    return result
 
 
 def clear_chapter_data(project: str, chapter: int,

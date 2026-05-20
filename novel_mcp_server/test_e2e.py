@@ -757,6 +757,87 @@ def main():
         test("extraction json has event data",
              "E1_02" in xcontent)
 
+        # ---- 23. 地点自动注册 ----
+        print("\n[23] 地点自动注册")
+        close_all()
+        kg.clear_project()
+        kg.add_character("李四", role="protagonist")
+        # 图谱中没有"废弃工厂"这个地点
+        existing_locs = kg.get_all_location_names()
+        test("no locations initially",
+             "废弃工厂" not in existing_locs)
+
+        from core import write_extraction as _we2
+        close_all()
+        extracted_auto = {
+            "events": [
+                {"id": "E2_01", "title": "到达", "detail": "到达废弃工厂", "chapter": 2, "type": "daily"}
+            ],
+            "event_relations": [
+                {"event_id": "E2_01", "character": "李四", "location": "废弃工厂"}
+            ],
+            "new_characters": [],
+            "character_updates": [],
+            "thread_updates": [],
+            "new_threads": [],
+            "new_locations": []
+        }
+        result_we = _we2(PROJECT, 2, json.dumps(extracted_auto))
+        test("write_extraction with auto location returns stats",
+             "stats" in result_we)
+        test("auto_registered_locations has 废弃工厂",
+             "废弃工厂" in result_we.get("auto_registered_locations", []),
+             f"got {result_we.get('auto_registered_locations')}")
+
+        # 验证地点已写入图谱
+        close_all()
+        kg = _create_backend(PROJECT)
+        locs_after = kg.get_all_location_names()
+        test("废弃工厂 now in locations",
+             "废弃工厂" in locs_after,
+             f"got {locs_after}")
+
+        # 测试：已在new_locations中声明的地点不应被重复自动注册
+        close_all()
+        extracted_declared = {
+            "events": [
+                {"id": "E3_01", "title": "访问", "detail": "访问旧仓库", "chapter": 3, "type": "daily"}
+            ],
+            "event_relations": [
+                {"event_id": "E3_01", "character": "李四", "location": "旧仓库"}
+            ],
+            "new_characters": [],
+            "character_updates": [],
+            "thread_updates": [],
+            "new_threads": [],
+            "new_locations": [{"name": "旧仓库", "type": "仓库", "description": "废弃仓库"}]
+        }
+        result_we2 = _we2(PROJECT, 3, json.dumps(extracted_declared))
+        test("declared location not auto-registered",
+             "auto_registered_locations" not in result_we2 or
+             "旧仓库" not in result_we2.get("auto_registered_locations", []))
+
+        # 测试：已存在的地点不应被自动注册
+        close_all()
+        kg.add_location("医院", type="建筑", description="市中心医院")
+        extracted_existing = {
+            "events": [
+                {"id": "E4_01", "title": "就医", "detail": "去医院", "chapter": 4, "type": "daily"}
+            ],
+            "event_relations": [
+                {"event_id": "E4_01", "character": "李四", "location": "医院"}
+            ],
+            "new_characters": [],
+            "character_updates": [],
+            "thread_updates": [],
+            "new_threads": [],
+            "new_locations": []
+        }
+        result_we3 = _we2(PROJECT, 4, json.dumps(extracted_existing))
+        test("existing location not auto-registered",
+             "auto_registered_locations" not in result_we3 or
+             "医院" not in result_we3.get("auto_registered_locations", []))
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")
