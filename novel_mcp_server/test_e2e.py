@@ -527,6 +527,25 @@ def main():
         test("review_chapter edit no text error",
              "error" in result_no_text)
 
+        # ---- 19. 协作配置 ----
+        print("\n[19] 协作配置")
+        from config_loader import config_loader
+        cfg = config_loader.load(PROJECT)
+        collab = cfg.get("collaboration", {})
+        test("collaboration config exists",
+             "collaboration" in cfg,
+             f"keys: {list(cfg.keys())}")
+        test("review_checkpoint default False",
+             collab.get("review_checkpoint") == False)
+        test("outline_compliance default True",
+             collab.get("outline_compliance") == True)
+        test("auto_revise_outline default False",
+             collab.get("auto_revise_outline") == False)
+
+        from config_loader import config_loader as cl2
+        test("config_loader.get collaboration",
+             cl2.get(PROJECT, "collaboration", "review_checkpoint", default=False) == False)
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

@@ -57,6 +57,11 @@ DEFAULTS = {
     "validation": {
         "forbidden_patterns": [],
     },
+    "collaboration": {
+        "review_checkpoint": False,
+        "outline_compliance": True,
+        "auto_revise_outline": False,
+    },
 }
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
