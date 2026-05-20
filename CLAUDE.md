@@ -42,6 +42,8 @@
 
 19. **已完成：节奏标记+禁用句式验证（R2）** — forbidden_patterns配置项（5条正则+validators.py后置校验）+ rhythm字段（tight/ascending/descending/mixed）注入写作prompt。6章串行《第六次死亡》重跑：27,448字符、30事件、12悬念线、186关系。"不是X是Y"句式从13→0（-100%），6章全部通过forbidden_pattern校验。6章rhythm标记全部与实际节奏一致。感官锚点30+个零重叠。归档于 `archive/v18-R2-节奏标记与禁用句式验证/`。
 
+20. **已完成：人机协作+大纲合规验证** — 5个新MCP工具（大纲合规检查/显式修订/事后编辑影响分析/采纳编辑/审核关卡），总计33工具96测试点。原创6章超现实悬疑《550kHz》+ 事后编辑闭环验证：6章大纲零偏移，Ch3事后编辑触发级联影响检测（5事件变更、4下游大纲修订），大纲修订审计轨迹完整。29事件、5悬念线（100%解决率含隐含）、148关系。归档于 `archive/v19-人机协作+大纲合规验证/`。
+
 ## Project Structure
 
 ```text
@@ -166,13 +168,21 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] 禁用句式校验：forbidden_patterns配置+validators.py后置校验使"不是X是Y"从13→0（-100%），prompt威慑无效配置校验有效（v18-R2）
 - [x] 节奏标记：rhythm字段（tight/ascending/descending/mixed）注入写作prompt，6章实际节奏均与标记一致（v18-R2）
 
+### 已验证（v19）
+- [x] 大纲合规检查：bigram匹配+LLM语义检查，6章零偏移，4字段逐项检查（v19）
+- [x] 大纲显式修订：revise_outline保留审计轨迹（reason/revised_chapter/compliance=overridden），级联影响自动追踪（v19）
+- [x] 事后编辑影响分析：analyze_edit_impact检测事件/悬念线/人物/下游大纲变更，5事件变更+4大纲级联（v19）
+- [x] 审核关卡：review_chapter支持accept/edit/rewrite/revise_outline四种动作（v19）
+- [x] 33工具96测试点：JSON后端E2E全部通过（v19）
+- [x] 大纲铁律：偏离大纲时显式修订而非静默放弃，完整审计链（v19）
+
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
 - 🔲 篇幅精确控制：当前波动1.5x（3938-5912字），串行后改善
-- 🔲 人机协作：作者修改→系统检测影响范围→自动调整后续
+- 🔲 LLM语义合规检查：补充bigram之外的语义匹配（如"深夜来访"="突然出现"）
 - 🔲 100章+规模：超50章的一致性保持与图谱查询性能
 - 🔲 地点自动注册：高频地点应自动进入图谱避免"地点未注册"冲突
-- 🔲 大纲动态调整：大纲偏离后自动标记或更新机制
+- 🔲 编辑版本管理：保留编辑历史，支持回滚
 
 ## Development Notes
 
@@ -187,7 +197,7 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 ```bash
 cd novel_mcp_server
 
-# E2E测试：58个测试点覆盖全部28工具，~3秒
+# E2E测试：96个测试点覆盖全部33工具，~3秒
 python test_e2e.py                    # JSON后端（默认，零依赖）
 KG_BACKEND=neo4j python test_e2e.py   # Neo4j后端（需docker-compose up -d）
 
@@ -207,7 +217,7 @@ KG_BACKEND=neo4j python mcp_cli.py get_graph_stats --project <项目名>
 
 | 改什么 | 改哪里 | 需要重启MCP |
 |--------|--------|------------|
-| 业务逻辑（28个工具） | `novel_mcp_server/core.py` | 是 |
+| 业务逻辑（33个工具） | `novel_mcp_server/core.py` | 是 |
 | JSON后端存储 | `novel_mcp_server/kg_json.py` | 是 |
 | Neo4j后端存储 | `novel_kg_mvp/graph.py` | 是 |
 | 提取管线 | `novel_kg_mvp/mine.py` | 是 |
