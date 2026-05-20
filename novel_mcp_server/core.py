@@ -1474,9 +1474,10 @@ def prepare_parallel_batch(project: str, chapters: list) -> dict:
 
     batch_id = f"batch_{uuid.uuid4().hex[:8]}"
 
-    # 为每章预冻结上下文
+    # 为每章预冻结上下文（MCP JSON key 可能是字符串，统一转 int）
     frozen = {}
     conflicts = []
+    chapters = [int(c) for c in chapters]
     for ch in chapters:
         ctx = kg.get_context_for_chapter(ch, prev_text_chars=0)
 
@@ -1564,8 +1565,8 @@ def merge_parallel_results(project: str, batch_id: str,
     merged = []
     conflicts = []
 
-    # 按章节号顺序串行写入
-    for ch in sorted(results.keys()):
+    # 按章节号顺序串行写入（MCP JSON key 可能是字符串，统一转 int）
+    for ch in sorted(int(k) for k in results.keys()):
         if ch not in batch["contexts"]:
             conflicts.append(f"Ch{ch}: 不在本批中，跳过")
             continue
