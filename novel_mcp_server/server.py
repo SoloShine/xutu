@@ -312,5 +312,27 @@ def revise_outline(project: str, chapter: int, reason: str,
                                 threads_to_plant, threads_to_resolve, structure_hint)
 
 
+@mcp.tool()
+def analyze_edit_impact(project: str, chapter: int) -> dict:
+    """事后影响分析。对比edited文本与图谱中该章数据的差异。
+
+    需要 projects/<project>/output/chN_edited.txt 存在。
+    返回受影响的事件/悬念线/人物/后续大纲警告。
+    Agent需对edited文本重新提取后调用 accept_edit 写入图谱。
+    """
+    return core.analyze_edit_impact(project, chapter)
+
+
+@mcp.tool()
+def accept_edit(project: str, chapter: int, extracted_json: str,
+                confirm: str = "") -> dict:
+    """采纳事后编辑。清除旧数据 → 写入新提取数据 → 标记后续大纲。
+
+    confirm需传入 'I_UNDERSTAND_THIS_IS_DESTRUCTIVE'。
+    extracted_json 为对edited文本重新提取的JSON结果。
+    """
+    return core.accept_edit(project, chapter, extracted_json, confirm)
+
+
 if __name__ == "__main__":
     mcp.run()

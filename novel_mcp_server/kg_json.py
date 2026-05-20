@@ -632,3 +632,14 @@ class JsonKG:
             with open(path, "r", encoding="utf-8") as f:
                 return f.read()
         return None
+
+    def get_edited_chapter_text(self, chapter):
+        """读取作者编辑后的章节正文（用于事后影响分析）"""
+        path = os.path.join(
+            os.path.dirname(self._path), "output",
+            f"ch{chapter}_edited.txt"
+        )
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+        return None

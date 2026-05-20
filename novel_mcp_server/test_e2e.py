@@ -403,6 +403,89 @@ def main():
         test("revise_outline missing entry",
              "无大纲条目" in result_missing)
 
+        # ---- 17. 事后编辑工具 ----
+        print("\n[17] 事后编辑工具 (analyze_edit_impact + accept_edit)")
+        from core import analyze_edit_impact as _aei, accept_edit as _ae, close_all
+
+        kg.clear_project()
+        close_all()  # clear pool
+        kg.add_character("老孟", role="主角")
+        kg.add_location("澡堂", loc_type="废墟")
+        kg.add_chapter_arc(1, purpose="ch1", scenes="A", ending="end")
+        kg.add_chapter_arc(2, purpose="ch2", scenes="B", ending="end")
+        kg.add_chapter_arc(3, purpose="ch3", scenes="C", ending="end")
+
+        # 创建 edited 文件
+        output_dir = os.path.join(os.path.dirname(kg._path), "output")
+        os.makedirs(output_dir, exist_ok=True)
+        with open(os.path.join(output_dir, "ch1_edited.txt"), "w", encoding="utf-8") as f:
+            f.write("这是编辑后的ch1文本")
+
+        # 添加旧数据
+        kg.add_event("E1_01", title="发现焊疤", chapter=1)
+        kg.add_event("E1_02", title="看到纸片", chapter=1)
+        kg.add_relation("Event", "id", "E1_01", "INVOLVES", "Character", "name", "老孟")
+        kg.add_suspense_thread("ST01_01", content="焊疤之谜", planted_chapter=1,
+                                importance="high", status="planted")
+        kg.add_relation("Event", "id", "E1_01", "EVIDENCES",
+                         "SuspenseThread", "id", "ST01_01")
+        kg.add_outline_entry(2, purpose="调查焊疤", key_events="发现焊疤")
+        kg.add_outline_entry(3, purpose="深入", key_events="发现纸片")
+
+        close_all()  # clear pool before using core functions
+        result_aei = _aei(PROJECT, 1)
+        test("analyze_edit_impact returns dict", isinstance(result_aei, dict))
+        test("analyze_edit_impact has old_events",
+             len(result_aei.get("old_events", [])) == 2,
+             f"old_events: {result_aei.get('old_events', [])}")
+        test("analyze_edit_impact affected threads",
+             len(result_aei.get("affected_threads", [])) >= 1,
+             f"threads: {result_aei.get('affected_threads', [])}")
+        test("analyze_edit_impact downstream warnings",
+             len(result_aei.get("downstream_warnings", [])) >= 1,
+             f"warnings: {result_aei.get('downstream_warnings', [])}")
+
+        # 无edited文件时应报错
+        result_no_edit = _aei(PROJECT, 99)
+        test("analyze_edit_impact missing file",
+             "error" in result_no_edit)
+
+        # accept_edit
+        new_extraction = json.dumps({
+            "events": [
+                {"id": "E1_01", "title": "重写事件", "chapter": 1, "type": "daily"},
+            ],
+            "event_relations": [
+                {"event_id": "E1_01", "character": "老孟", "location": "澡堂"},
+            ],
+            "new_characters": [],
+            "new_locations": [],
+            "thread_updates": [],
+            "new_threads": [],
+            "causal_links": [],
+            "evidence_links": [],
+        })
+        result_ae = _ae(PROJECT, 1, new_extraction,
+                         confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE")
+        test("accept_edit returns stats",
+             "stats" in result_ae)
+        test("accept_edit marked downstream",
+             len(result_ae.get("downstream_marked_for_revision", [])) >= 1,
+             f"marked: {result_ae.get('downstream_marked_for_revision', [])}")
+
+        # accept_edit without confirm should fail
+        result_blocked = _ae(PROJECT, 1, "{}", confirm="")
+        test("accept_edit blocked without confirm",
+             "error" in result_blocked or "BLOCKED" in str(result_blocked))
+
+        # 验证后续大纲被标记（需要重新创建kg实例）
+        close_all()
+        kg = _create_backend(PROJECT)
+        oe2 = kg.get_outline_entry(2)
+        test("downstream outline marked needs_revision",
+             oe2 is not None and oe2.get("compliance") == "needs_revision",
+             f"compliance: {oe2.get('compliance') if oe2 else 'None'}")
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

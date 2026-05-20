@@ -31,6 +31,17 @@ from prompts import ARC_DERIVATION_PROMPT
 from validators import validate_chapter as _run_validation
 
 
+def _bigram_overlap_str(s1, s2, min_shared=2):
+    """检查两个字符串是否有足够的bigram重叠"""
+    if not s1 or not s2:
+        return False
+    def _bigrams(s):
+        if len(s) < 4:
+            return {s} if s else set()
+        return {s[i:i+2] for i in range(len(s)-1)}
+    return len(_bigrams(s1) & _bigrams(s2)) >= min_shared
+
+
 # ============================================================
 # Backend Selection
 # ============================================================
@@ -696,3 +707,116 @@ def _check_pacing_curve(arcs, issues, kg, cfg):
                 "detail": f"第{chapters_sorted[i-1]}章(强度{intensities[i-1]}) -> 第{chapters_sorted[i]}章(强度{intensities[i]})，变化{diff}",
                 "severity": "low"
             })
+
+
+def analyze_edit_impact(project: str, chapter: int) -> dict:
+    """事后影响分析：对比edited文本的提取结果与图谱中该章数据。"""
+    kg = _kg(project)
+
+    edited_text = kg.get_edited_chapter_text(chapter)
+    if not edited_text:
+        return {
+            "error": f"未找到第{chapter}章的编辑版本 (ch{chapter}_edited.txt)",
+            "edited_chapter": chapter,
+        }
+
+    old_events = kg.get_events_by_chapter(chapter)
+    old_event_ids = {e["id"] for e in old_events}
+    old_event_map = {e["id"]: e for e in old_events}
+
+    all_outlines = kg.get_all_outline_entries()
+    downstream_outlines = [
+        oe for oe in all_outlines
+        if oe.get("chapter", 0) > chapter
+    ]
+
+    old_evidence_links = [
+        r for r in kg.get_all_relations()
+        if r["rt"] == "EVIDENCES"
+        and r["fv"] in old_event_ids
+    ]
+    affected_thread_ids = {r["tv"] for r in old_evidence_links}
+    all_threads = kg.get_all_threads()
+    affected_threads = [
+        {"id": t["id"], "content": t.get("content", ""),
+         "status": t.get("status", ""), "importance": t.get("importance", ""),
+         "impact": "关联事件可能被删除或修改", "severity": "high"}
+        for t in all_threads if t["id"] in affected_thread_ids
+    ]
+
+    old_char_names = set()
+    for r in kg.get_all_relations():
+        if (r["fl"] == "Event" and r["fk"] == "id"
+                and r["fv"] in old_event_ids
+                and r["rt"] == "INVOLVES"
+                and r["tl"] == "Character"):
+            old_char_names.add(r["tv"])
+
+    downstream_warnings = []
+    outline_revision_suggestions = []
+    for oe in downstream_outlines:
+        ke = oe.get("key_events", "")
+        for eid, ev in old_event_map.items():
+            title = ev.get("title", "")
+            if title and _bigram_overlap_str(title, ke):
+                downstream_warnings.append({
+                    "chapter": oe.get("chapter", 0),
+                    "outline_key": "key_events",
+                    "issue": f"依赖可能被删除/修改的事件'{title}' ({eid})",
+                })
+                outline_revision_suggestions.append({
+                    "chapter": oe.get("chapter", 0),
+                    "field": "key_events",
+                    "suggestion": f"检查'{title}'是否仍存在，必要时替换",
+                })
+
+    return {
+        "edited_chapter": chapter,
+        "old_events": [{"id": e["id"], "title": e.get("title", "")} for e in old_events],
+        "affected_threads": affected_threads,
+        "affected_characters": sorted(old_char_names),
+        "downstream_warnings": downstream_warnings,
+        "outline_revision_suggestions": outline_revision_suggestions,
+        "edited_text_length": len(edited_text),
+        "message": "Agent需对edited文本重新提取，然后调用 accept_edit 写入图谱",
+    }
+
+
+def accept_edit(project: str, chapter: int, extracted_json: str,
+                confirm: str = "") -> dict:
+    """采纳事后编辑：清除旧数据 → 写入新数据 → 标记后续大纲。"""
+    err = _check_destructive(confirm)
+    if err:
+        return {"error": err}
+
+    kg = _kg(project)
+
+    _mine_clear_chapter(kg, chapter)
+
+    if isinstance(extracted_json, str):
+        extracted = json.loads(extracted_json)
+    else:
+        extracted = extracted_json
+    report = write_extraction_to_graph(kg, chapter, extracted,
+                                        skip_conflicts=True, project=project)
+
+    all_outlines = kg.get_all_outline_entries()
+    marked = []
+    for oe in all_outlines:
+        ch = oe.get("chapter", 0)
+        if ch > chapter:
+            existing = kg.get_outline_entry(ch)
+            if existing and existing.get("compliance") != "overridden":
+                kg.add_outline_entry(ch, **{
+                    k: v for k, v in existing.items()
+                    if k != "chapter"
+                }, compliance="needs_revision")
+                marked.append(ch)
+
+    return {
+        "chapter": chapter,
+        "stats": report["stats"],
+        "conflicts": report["conflicts"],
+        "downstream_marked_for_revision": marked,
+        "message": f"已采纳第{chapter}章编辑。后续章节 {marked} 的大纲标记为 needs_revision。",
+    }
