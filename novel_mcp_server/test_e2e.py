@@ -838,6 +838,52 @@ def main():
              "auto_registered_locations" not in result_we3 or
              "医院" not in result_we3.get("auto_registered_locations", []))
 
+        # ---- 24. 批量大纲合规检查 ----
+        print("\n[24] 批量大纲合规检查")
+        close_all()
+        kg.clear_project()
+        # 设置3章大纲+事件
+        kg.add_outline_entry(1, purpose="发现线索",
+                            key_events="找到日记", structure_hint="linear")
+        kg.add_outline_entry(2, purpose="调查深入",
+                            key_events="审问嫌疑人", structure_hint="linear")
+        kg.add_outline_entry(3, purpose="真相大白",
+                            key_events="揭露真相", structure_hint="linear")
+        kg.add_event("E1_01", title="找到日记", detail="在阁楼发现旧日记", chapter=1)
+        kg.add_event("E2_01", title="审问嫌疑人", detail="在审讯室问话", chapter=2)
+        kg.add_event("E3_01", title="揭露真相", detail="公布调查结果", chapter=3)
+
+        from core import batch_check_outline_compliance as _bcoc
+        close_all()
+        result_batch = _bcoc(PROJECT, chapters=[1, 2, 3])
+        test("batch returns results dict",
+             isinstance(result_batch.get("results"), dict))
+        test("batch has stats",
+             "stats" in result_batch and "total" in result_batch["stats"])
+        test("batch total is 3",
+             result_batch["stats"]["total"] == 3,
+             f"got {result_batch['stats']['total']}")
+        test("batch each chapter has overall",
+             all(ch in result_batch["results"] for ch in [1, 2, 3]))
+        # 程序化检查应该全部通过（bigram匹配）
+        test("batch all followed",
+             all(result_batch["results"][ch].get("overall") == "followed"
+                 for ch in [1, 2, 3]),
+             f"got {[result_batch['results'][ch].get('overall') for ch in [1,2,3]]}")
+
+        # 测试不传chapters参数（自动检测所有大纲章节）
+        close_all()
+        result_auto = _bcoc(PROJECT)
+        test("batch auto-detect chapters",
+             result_auto["stats"]["total"] == 3,
+             f"got {result_auto['stats']['total']}")
+
+        # 测试空列表
+        close_all()
+        result_empty = _bcoc(PROJECT, chapters=[])
+        test("batch empty chapters",
+             result_empty["stats"]["total"] == 0)
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

@@ -279,6 +279,17 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
 
 
 @mcp.tool()
+def batch_check_outline_compliance(project: str,
+                                   chapters: list = None) -> dict:
+    """批量大纲合规检查。程序化逐章执行，purpose检查合并为一次LLM调用。
+
+    chapters: 可选，指定要检查的章节列表。不传则检查所有有大纲条目的章节。
+    返回各章合规结果和统计摘要。
+    """
+    return core.batch_check_outline_compliance(project, chapters)
+
+
+@mcp.tool()
 def sync_backends(project: str, direction: str = "json_to_neo4j") -> str:
     """同步 JSON 和 Neo4j 后端数据。
 

@@ -567,6 +567,156 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
     }
 
 
+def batch_check_outline_compliance(project: str,
+                                   chapters: list = None) -> dict:
+    """批量化大纲合规检查：程序化逐章执行，purpose检查合并为一次LLM调用。
+
+    chapters: 要检查的章节列表。不传则检查所有有大纲条目的章节。
+    返回 {"results": {ch: result}, "batch_purpose": bool, "stats": {...}}
+    """
+    kg = _kg(project)
+
+    # 确定要检查的章节
+    if chapters is None:
+        all_outlines = kg.get_all_outline_entries()
+        chapters = sorted([o.get("chapter", 0) for o in all_outlines
+                           if o.get("chapter")])
+
+    # 逐章执行程序化检查
+    results = {}
+    chapters_needing_purpose = []
+
+    for ch in chapters:
+        result = check_outline_compliance(project, ch)
+        results[ch] = result
+        # 收集需要purpose检查的章节（有purpose且有events的）
+        oe = result.get("outline_entry") or {}
+        if oe.get("purpose"):
+            chapters_needing_purpose.append({
+                "chapter": ch,
+                "purpose": oe["purpose"],
+                "events": kg.get_events_by_chapter(ch),
+            })
+
+    # 批量purpose检查（合并为一次LLM调用）
+    batch_done = False
+    cfg = config_loader.load(project)
+    if (cfg.get("collaboration", {}).get("semantic_check", True)
+            and len(chapters_needing_purpose) > 1):
+        batch_result = _batch_purpose_check(project, chapters_needing_purpose)
+        if batch_result:
+            batch_done = True
+            # 用批量结果替换各章的单次purpose结果
+            for ch_info in batch_result:
+                ch = ch_info["chapter"]
+                if ch in results:
+                    # 移除原有的单次purpose检查结果
+                    sem = results[ch].get("semantic_checks", [])
+                    sem = [s for s in sem if s.get("item") != "purpose_alignment"]
+                    # 添加批量检查结果
+                    sem.append(ch_info["result"])
+                    results[ch]["semantic_checks"] = sem
+                    # 重新计算overall
+                    all_c = (results[ch].get("programmatic_checks", [])
+                             + sem)
+                    errs = [c for c in all_c if c["severity"] == "error"]
+                    warns = [c for c in all_c if c["severity"] == "warning"]
+                    if errs:
+                        results[ch]["overall"] = "diverged"
+                    elif warns:
+                        results[ch]["overall"] = "partial"
+                    else:
+                        results[ch]["overall"] = "followed"
+                    results[ch]["action_required"] = results[ch]["overall"] != "followed"
+
+    return {
+        "results": results,
+        "batch_purpose": batch_done,
+        "stats": {
+            "total": len(results),
+            "followed": sum(1 for r in results.values()
+                           if r.get("overall") == "followed"),
+            "partial": sum(1 for r in results.values()
+                          if r.get("overall") == "partial"),
+            "diverged": sum(1 for r in results.values()
+                           if r.get("overall") == "diverged"),
+            "no_outline": sum(1 for r in results.values()
+                             if r.get("overall") == "no_outline"),
+        }
+    }
+
+
+def _batch_purpose_check(project, chapters_info):
+    """批量purpose合规检查：一次LLM调用检查多章。
+
+    chapters_info: [{"chapter": N, "purpose": "...", "events": [...]}]
+    返回: [{"chapter": N, "result": {...}}] 或 None
+    """
+    sections = []
+    for info in chapters_info:
+        ch = info["chapter"]
+        purpose = info["purpose"]
+        events = info["events"]
+        ev_lines = []
+        for ev in events:
+            title = ev.get("title", "")
+            detail = ev.get("detail", "")
+            if title or detail:
+                ev_lines.append(f"  - {title}{'：' + detail if detail else ''}")
+        sections.append(
+            f"### 第{ch}章\n大纲目的: {purpose}\n实际事件:\n"
+            + "\n".join(ev_lines)
+        )
+
+    prompt = f"""你是小说大纲合规检查助手。判断以下多章的实际事件是否符合各自大纲的叙事目的。
+
+{chr(10).join(sections)}
+
+## 判定标准
+- 不是要求完全一致，而是判断叙事方向是否一致
+- 如果大纲目的是"潜入B2层"但实际是"送外卖买早餐"，这是偏离
+- 如果大纲目的是"建立悬念"而实际是"发现线索建立悬念"，这是符合的
+- 允许细节层面的偏差，但不允许叙事方向的根本性改变
+
+## 输出格式（JSON数组）
+```json
+[{{"chapter": 章节号, "aligned": true/false, "reason": "简要说明", "confidence": "high/medium/low"}}]
+```"""
+
+    try:
+        from llm import call_llm
+        result = call_llm(prompt, json_mode=True,
+                          stream_label=f"批量目的合规({len(chapters_info)}章)")
+        items = result if isinstance(result, list) else [result]
+        output = []
+        for item in items:
+            ch = item.get("chapter")
+            aligned = bool(item.get("aligned", False))
+            reason = str(item.get("reason", ""))
+            confidence = str(item.get("confidence", "medium"))
+            # 找到对应的purpose
+            purpose = ""
+            for info in chapters_info:
+                if info["chapter"] == ch:
+                    purpose = info["purpose"]
+                    break
+            output.append({
+                "chapter": ch,
+                "result": {
+                    "item": "purpose_alignment",
+                    "status": "aligned" if aligned else "diverged",
+                    "severity": "info" if aligned else "warning",
+                    "detail": f"批量目的合规: 大纲'{purpose[:30]}...' — "
+                              f"{'对齐' if aligned else '偏离'} "
+                              f"(confidence={confidence}) — {reason}",
+                    "confidence": confidence,
+                }
+            })
+        return output
+    except Exception:
+        return None
+
+
 def _semantic_compliance_check(project, chapter, outline_entry, events,
                                 pending_items):
     """LLM语义合规判定：对bigram未匹配的大纲项进行语义等价检查。
