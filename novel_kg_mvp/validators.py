@@ -259,15 +259,45 @@ def _count_chinese_chars(text):
     return len(cleaned)
 
 
+def _analyze_scene_compression(text, word_count, min_words):
+    """分析场景是否被压缩或跳过，返回诊断字符串。"""
+    # 统计场景分隔标记（---、***、——— 等）
+    scene_breaks = len(re.findall(r'(?:^|\n)\s*[-—―]{2,}\s*(?:\n|$)', text))
+    scene_breaks += len(re.findall(r'(?:^|\n)\s*\*{2,}\s*(?:\n|$)', text))
+
+    if scene_breaks > 0:
+        avg_scene_length = word_count // max(scene_breaks + 1, 1)
+        if avg_scene_length < 400:
+            return (f"共{scene_breaks + 1}个场景，平均每场景仅{avg_scene_length}字，"
+                    f"疑似场景被压缩或跳过")
+    elif word_count < min_words * 0.7:
+        return ("无场景分隔标记且篇幅严重不足，"
+                "可能缺少场景展开或描写细节")
+    return ""
+
+
 def validate_length(text, min_words=2500, max_words=3500):
     """校验篇幅"""
     violations = []
     count = _count_chinese_chars(text)
     if count < min_words:
+        deficit = min_words - count
+        deficit_pct = round(deficit / min_words * 100)
+        detail = (f"篇幅不足：{count}字（目标{min_words}-{max_words}字），"
+                  f"缺少{deficit}字（{deficit_pct}%）")
+        diagnosis = _analyze_scene_compression(text, count, min_words)
+        if diagnosis:
+            detail += f"。{diagnosis}"
         violations.append(Violation(
             constraint_type="length",
             severity="warning",
-            detail=f"篇幅不足：{count}字（目标{min_words}-{max_words}字）",
+            detail=detail,
+        ))
+    if count > max_words:
+        violations.append(Violation(
+            constraint_type="length_over",
+            severity="warning",
+            detail=f"篇幅超出上限：{count}字（上限{max_words}字）",
         ))
     return violations
 

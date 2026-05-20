@@ -9,6 +9,7 @@ import sys
 import os
 import json
 import atexit
+import hashlib
 
 # 定位目录
 _here = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +30,62 @@ from mine import (
 from main import build_writing_prompt
 from prompts import ARC_DERIVATION_PROMPT
 from validators import validate_chapter as _run_validation
+
+
+# ========== 目的检查缓存 ==========
+
+def _purpose_cache_dir(project: str) -> str:
+    return os.path.join(_projects_dir, project, "cache", "purpose_checks")
+
+
+def _purpose_cache_path(project: str, chapter: int) -> str:
+    return os.path.join(_purpose_cache_dir(project), f"purpose_ch{chapter}.json")
+
+
+def _purpose_cache_hash(purpose: str, events: list) -> str:
+    """从目的文本和事件数据计算缓存键。"""
+    content = purpose
+    for ev in events:
+        content += ev.get("title", "") + ev.get("detail", "")
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()[:16]
+
+
+def _read_purpose_cache(project: str, chapter: int,
+                        purpose: str, events: list):
+    """读取缓存的目的检查结果，命中返回 result dict，否则 None。"""
+    path = _purpose_cache_path(project, chapter)
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cached = json.load(f)
+        if cached.get("hash") == _purpose_cache_hash(purpose, events):
+            return cached.get("result")
+    except Exception:
+        pass
+    return None
+
+
+def _write_purpose_cache(project: str, chapter: int,
+                         purpose: str, events: list, result: dict):
+    """写入目的检查结果缓存。"""
+    from datetime import datetime
+    os.makedirs(_purpose_cache_dir(project), exist_ok=True)
+    cache_data = {
+        "hash": _purpose_cache_hash(purpose, events),
+        "result": result,
+        "timestamp": datetime.now().isoformat(),
+    }
+    path = _purpose_cache_path(project, chapter)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(cache_data, f, ensure_ascii=False, indent=2)
+
+
+def _invalidate_purpose_cache(project: str, chapter: int):
+    """删除某章的目的检查缓存。"""
+    path = _purpose_cache_path(project, chapter)
+    if os.path.exists(path):
+        os.remove(path)
 
 
 def _persist(project: str, subdir: str, filename: str, content: str):
@@ -425,6 +482,7 @@ def write_extraction(project: str, chapter: int,
             auto_locs.append(loc)
     report = write_extraction_to_graph(kg, chapter, extracted,
                                        skip_conflicts=True, project=project)
+    _invalidate_purpose_cache(project, chapter)
     result = {
         "chapter": report["chapter"],
         "stats": report["stats"],
@@ -445,6 +503,7 @@ def clear_chapter_data(project: str, chapter: int,
         return err
     kg = _kg(project)
     _mine_clear_chapter(kg, chapter)
+    _invalidate_purpose_cache(project, chapter)
     return f"已清除第{chapter}章的事件数据"
 
 
@@ -662,8 +721,24 @@ def _batch_purpose_check(project, chapters_info):
     chapters_info: [{"chapter": N, "purpose": "...", "events": [...]}]
     返回: [{"chapter": N, "result": {...}}] 或 None
     """
-    sections = []
+    # 先查缓存，分离已缓存和未缓存章节
+    cached_results = {}
+    uncached_info = []
     for info in chapters_info:
+        ch = info["chapter"]
+        cached = _read_purpose_cache(project, ch, info["purpose"], info["events"])
+        if cached is not None:
+            cached_results[ch] = cached
+        else:
+            uncached_info.append(info)
+
+    # 全部命中缓存 → 直接返回
+    if not uncached_info:
+        return [{"chapter": ch, "result": cached_results[ch]}
+                for ch in sorted(cached_results.keys())]
+
+    sections = []
+    for info in uncached_info:
         ch = info["chapter"]
         purpose = info["purpose"]
         events = info["events"]
@@ -696,7 +771,7 @@ def _batch_purpose_check(project, chapters_info):
     try:
         from llm import call_llm
         result = call_llm(prompt, json_mode=True,
-                          stream_label=f"批量目的合规({len(chapters_info)}章)")
+                          stream_label=f"批量目的合规({len(uncached_info)}章)")
         items = result if isinstance(result, list) else [result]
         output = []
         for item in items:
@@ -706,24 +781,35 @@ def _batch_purpose_check(project, chapters_info):
             confidence = str(item.get("confidence", "medium"))
             # 找到对应的purpose
             purpose = ""
-            for info in chapters_info:
+            events = []
+            for info in uncached_info:
                 if info["chapter"] == ch:
                     purpose = info["purpose"]
+                    events = info["events"]
                     break
-            output.append({
-                "chapter": ch,
-                "result": {
-                    "item": "purpose_alignment",
-                    "status": "aligned" if aligned else "diverged",
-                    "severity": "info" if aligned else "warning",
-                    "detail": f"批量目的合规: 大纲'{purpose[:30]}...' — "
-                              f"{'对齐' if aligned else '偏离'} "
-                              f"(confidence={confidence}) — {reason}",
-                    "confidence": confidence,
-                }
-            })
+            res = {
+                "item": "purpose_alignment",
+                "status": "aligned" if aligned else "diverged",
+                "severity": "info" if aligned else "warning",
+                "detail": f"批量目的合规: 大纲'{purpose[:30]}...' — "
+                          f"{'对齐' if aligned else '偏离'} "
+                          f"(confidence={confidence}) — {reason}",
+                "confidence": confidence,
+            }
+            # 写缓存
+            _write_purpose_cache(project, ch, purpose, events, res)
+            output.append({"chapter": ch, "result": res})
+
+        # 合并缓存结果
+        for ch, res in cached_results.items():
+            output.append({"chapter": ch, "result": res})
+
         return output
     except Exception:
+        # LLM 失败时仍返回缓存部分
+        if cached_results:
+            return [{"chapter": ch, "result": cached_results[ch]}
+                    for ch in sorted(cached_results.keys())]
         return None
 
 
@@ -810,6 +896,11 @@ def _purpose_compliance_check(project, chapter, purpose, events):
     如果章节事件在叙事目的层面偏离了大纲，也应该被检测出来。
     返回 dict（semantic_check条目格式）。
     """
+    # 查缓存
+    cached = _read_purpose_cache(project, chapter, purpose, events)
+    if cached is not None:
+        return cached
+
     event_summaries = []
     for ev in events:
         title = ev.get("title", "")
@@ -844,7 +935,7 @@ def _purpose_compliance_check(project, chapter, purpose, events):
             aligned = bool(result.get("aligned", False))
             reason = str(result.get("reason", ""))
             confidence = str(result.get("confidence", "medium"))
-            return {
+            ret = {
                 "item": "purpose_alignment",
                 "status": "aligned" if aligned else "diverged",
                 "severity": "info" if aligned else "warning",
@@ -852,6 +943,8 @@ def _purpose_compliance_check(project, chapter, purpose, events):
                           f"{'对齐' if aligned else '偏离'} (confidence={confidence}) — {reason}",
                 "confidence": confidence,
             }
+            _write_purpose_cache(project, chapter, purpose, events, ret)
+            return ret
     except Exception:
         pass
 
@@ -1171,6 +1264,7 @@ def accept_edit(project: str, chapter: int, extracted_json: str,
     snapshot_id = kg.snapshot_chapter(chapter, reason=f"accept_edit ch{chapter}")
 
     _mine_clear_chapter(kg, chapter)
+    _invalidate_purpose_cache(project, chapter)
 
     if isinstance(extracted_json, str):
         extracted = json.loads(extracted_json)
@@ -1268,7 +1362,8 @@ def list_edits(project: str, chapter: int = None) -> dict:
 
 
 def rollback_edit(project: str, snapshot_id: str,
-                  confirm: str = "") -> dict:
+                  confirm: str = "",
+                  clear_revision_marks: bool = True) -> dict:
     """回滚到指定快照版本。"""
     err = _check_destructive(confirm)
     if err:
@@ -1291,13 +1386,35 @@ def rollback_edit(project: str, snapshot_id: str,
     if not success:
         return {"error": f"恢复快照 '{snapshot_id}' 失败。"}
 
+    _invalidate_purpose_cache(project, chapter)
+
+    # 清除下游大纲的 needs_revision 标记
+    cleared = []
+    if clear_revision_marks:
+        all_outlines = kg.get_all_outline_entries()
+        for oe in all_outlines:
+            ch = oe.get("chapter", 0)
+            if ch > chapter and oe.get("compliance") == "needs_revision":
+                existing = kg.get_outline_entry(ch)
+                if existing:
+                    kg.add_outline_entry(ch, **{
+                        k: v for k, v in existing.items()
+                        if k not in ("chapter", "compliance")
+                    }, compliance="")
+                    cleared.append(ch)
+
+    msg = (f"已回滚第{chapter}章到快照 {snapshot_id} "
+           f"({event_count}事件, {relation_count}关系)。"
+           f"回滚前快照: {new_snap}")
+    if cleared:
+        msg += f" 已清除 {len(cleared)} 个下游大纲的needs_revision标记。"
+
     return {
         "snapshot_id": snapshot_id,
         "chapter": chapter,
         "restored_events": event_count,
         "restored_relations": relation_count,
         "pre_rollback_snapshot": new_snap,
-        "message": f"已回滚第{chapter}章到快照 {snapshot_id} "
-                   f"({event_count}事件, {relation_count}关系)。"
-                   f"回滚前快照: {new_snap}",
+        "revision_marks_cleared": cleared,
+        "message": msg,
     }

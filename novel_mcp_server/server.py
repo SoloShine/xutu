@@ -372,14 +372,17 @@ def list_edits(project: str, chapter: int = None) -> dict:
 
 @mcp.tool()
 def rollback_edit(project: str, snapshot_id: str,
-                  confirm: str = "") -> dict:
+                  confirm: str = "",
+                  clear_revision_marks: bool = True) -> dict:
     """回滚到指定快照版本（破坏性操作）。
 
     回滚前自动快照当前状态，支持再次回滚。
     需传入 confirm='I_UNDERSTAND_THIS_IS_DESTRUCTIVE' 确认执行。
     用 list_edits 查看可用的 snapshot_id。
+    clear_revision_marks: 回滚时是否清除下游大纲的needs_revision标记（默认True）。
     """
-    return core.rollback_edit(project, snapshot_id, confirm=confirm)
+    return core.rollback_edit(project, snapshot_id, confirm=confirm,
+                              clear_revision_marks=clear_revision_marks)
 
 
 if __name__ == "__main__":

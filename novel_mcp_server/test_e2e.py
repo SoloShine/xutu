@@ -17,6 +17,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from core import _create_backend, close_all, _BACKEND
+import core
 
 PROJECT = f"e2e_test_{_BACKEND}"
 PASS = 0
@@ -918,6 +919,178 @@ def main():
         test("batch_size=1 no batch",
              result_bs1.get("batch_purpose") == False,
              f"got batch_purpose={result_bs1.get('batch_purpose')}")
+
+        # ---- 25. rollback_edit 清除 needs_revision ----
+        print("\n[25] rollback_edit 清除 needs_revision")
+        close_all()
+        kg.clear_project()
+        # 设置 Ch1-3 大纲+事件
+        for ch in range(1, 4):
+            kg.add_outline_entry(ch, purpose=f"第{ch}章目的",
+                                key_events=f"事件{ch}")
+            kg.add_event(f"E{ch}_01", title=f"事件{ch}", detail=f"详情{ch}",
+                        chapter=ch)
+        # Ch1 accept_edit → 快照
+        snap_id = kg.snapshot_chapter(1, reason="test_accept")
+        # 模拟 accept_edit 的下游标记
+        from core import _mine_clear_chapter
+        _mine_clear_chapter(kg, 1)
+        kg.add_event("E1_01", title="新事件1", detail="新详情", chapter=1)
+        for ch in range(2, 4):
+            existing = kg.get_outline_entry(ch)
+            kg.add_outline_entry(ch, **{
+                k: v for k, v in existing.items()
+                if k not in ("chapter", "compliance")
+            }, compliance="needs_revision")
+
+        # 验证标记存在
+        oe2 = kg.get_outline_entry(2)
+        test("ch2 marked needs_revision",
+             oe2.get("compliance") == "needs_revision",
+             f"got {oe2.get('compliance')}")
+
+        # rollback 清除标记
+        close_all()
+        result = core.rollback_edit(PROJECT, snap_id,
+                                    confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE")
+        test("rollback returned revision_marks_cleared",
+             isinstance(result.get("revision_marks_cleared"), list))
+        test("rollback cleared 2 downstream marks",
+             len(result.get("revision_marks_cleared", [])) == 2,
+             f"got {len(result.get('revision_marks_cleared', []))}")
+
+        # 验证标记已清除（需新建后端实例）
+        close_all()
+        kg_check = _create_backend(PROJECT)
+        oe2_after = kg_check.get_outline_entry(2)
+        oe3_after = kg_check.get_outline_entry(3)
+        test("ch2 compliance cleared",
+             oe2_after.get("compliance") != "needs_revision",
+             f"got {oe2_after.get('compliance')}")
+        test("ch3 compliance cleared",
+             oe3_after.get("compliance") != "needs_revision",
+             f"got {oe3_after.get('compliance')}")
+
+        # 测试 clear_revision_marks=False
+        close_all()
+        kg.clear_project()
+        for ch in range(1, 3):
+            kg.add_outline_entry(ch, purpose=f"第{ch}章目的")
+            kg.add_event(f"E{ch}_01", title=f"事件{ch}", chapter=ch)
+        snap2 = kg.snapshot_chapter(1, reason="test_no_clear")
+        kg.get_outline_entry(2)
+        kg.add_outline_entry(2, purpose="第2章目的", compliance="needs_revision")
+        close_all()
+        result2 = core.rollback_edit(PROJECT, snap2,
+                                     confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE",
+                                     clear_revision_marks=False)
+        test("no clear returns empty list",
+             result2.get("revision_marks_cleared") == [],
+             f"got {result2.get('revision_marks_cleared')}")
+        close_all()
+        kg_check2 = _create_backend(PROJECT)
+        oe2_no_clear = kg_check2.get_outline_entry(2)
+        test("ch2 still needs_revision",
+             oe2_no_clear.get("compliance") == "needs_revision",
+             f"got {oe2_no_clear.get('compliance')}")
+
+        # ---- 26. 篇幅校验增强 ----
+        print("\n[26] 篇幅校验增强")
+        from validators import validate_length, _count_chinese_chars
+
+        # 正常篇幅 → 无违规
+        normal_text = "字" * 2800
+        v_normal = validate_length(normal_text, min_words=2500, max_words=3500)
+        test("normal length no violations",
+             len(v_normal) == 0,
+             f"got {len(v_normal)} violations")
+
+        # 不足 → length 警告含缺字数和百分比
+        short_text = "字" * 2000
+        v_short = validate_length(short_text, min_words=2500, max_words=3500)
+        test("short text has 1 violation",
+             len(v_short) == 1,
+             f"got {len(v_short)}")
+        test("short text type is length",
+             v_short[0].constraint_type == "length")
+        test("short detail has deficit info",
+             "缺少500字" in v_short[0].detail and "20%" in v_short[0].detail,
+             f"got '{v_short[0].detail}'")
+
+        # 严重不足无分隔符 → 诊断"严重不足"
+        very_short = "字" * 1500
+        v_very = validate_length(very_short, min_words=2500, max_words=3500)
+        test("very short has diagnosis",
+             "严重不足" in v_very[0].detail,
+             f"got '{v_very[0].detail}'")
+
+        # 场景压缩 → 诊断"疑似场景被压缩"
+        compressed = "字" * 500 + "\n---\n" + "字" * 200 + "\n---\n" + "字" * 100
+        v_comp = validate_length(compressed, min_words=2500, max_words=3500)
+        test("compressed scenes has diagnosis",
+             "疑似场景被压缩" in v_comp[0].detail or "平均每场景" in v_comp[0].detail,
+             f"got '{v_comp[0].detail}'")
+
+        # 超上限 → length_over 警告
+        long_text = "字" * 4000
+        v_long = validate_length(long_text, min_words=2500, max_words=3500)
+        test("long text has length_over",
+             any(v.constraint_type == "length_over" for v in v_long),
+             f"got types: {[v.constraint_type for v in v_long]}")
+        test("length_over severity is warning",
+             all(v.severity == "warning" for v in v_long
+                 if v.constraint_type == "length_over"))
+
+        # ---- 27. 目的检查缓存 ----
+        print("\n[27] 目的检查缓存")
+        import hashlib as _hl
+        from core import (_purpose_cache_path, _purpose_cache_hash,
+                          _read_purpose_cache, _write_purpose_cache,
+                          _invalidate_purpose_cache)
+
+        close_all()
+        kg.clear_project()
+        # 设置章节大纲+事件
+        kg.add_outline_entry(1, purpose="测试目的", key_events="测试事件")
+        kg.add_event("E1_01", title="测试事件", detail="测试详情", chapter=1)
+
+        # 验证缓存路径
+        cache_path = _purpose_cache_path(PROJECT, 1)
+        test("cache path format",
+             cache_path.endswith("purpose_ch1.json"),
+             f"got {cache_path}")
+
+        # 写入缓存
+        events = [{"title": "测试事件", "detail": "测试详情"}]
+        test_result = {
+            "item": "purpose_alignment",
+            "status": "aligned",
+            "severity": "info",
+            "detail": "测试缓存",
+        }
+        _write_purpose_cache(PROJECT, 1, "测试目的", events, test_result)
+        test("cache file exists after write",
+             os.path.exists(cache_path))
+
+        # 读取缓存
+        cached = _read_purpose_cache(PROJECT, 1, "测试目的", events)
+        test("cache hit returns result",
+             cached is not None and cached["status"] == "aligned")
+
+        # 内容变更 → 缓存失效（hash 不匹配）
+        cached_miss = _read_purpose_cache(PROJECT, 1, "变更目的", events)
+        test("cache miss on purpose change",
+             cached_miss is None)
+
+        # 显式失效
+        _invalidate_purpose_cache(PROJECT, 1)
+        test("cache file removed after invalidation",
+             not os.path.exists(cache_path))
+
+        # 失效后读取 → None
+        cached_gone = _read_purpose_cache(PROJECT, 1, "测试目的", events)
+        test("cache miss after invalidation",
+             cached_gone is None)
 
     except Exception as e:
         global FAIL
