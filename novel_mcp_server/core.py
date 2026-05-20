@@ -1554,50 +1554,58 @@ def merge_parallel_results(project: str, batch_id: str,
     results: {chapter: {"text": str, "extraction_json": str}}
     返回: {merged_chapters, conflicts_found, post_merge_consistency}
     """
-    if batch_id not in _frozen_batches:
-        return {"error": f"batch_id '{batch_id}' 不存在"}
+    try:
+        if batch_id not in _frozen_batches:
+            return {"error": f"batch_id '{batch_id}' 不存在"}
 
-    batch = _frozen_batches[batch_id]
-    if batch["project"] != project:
-        return {"error": f"batch 项目不匹配"}
+        batch = _frozen_batches[batch_id]
+        if batch["project"] != project:
+            return {"error": f"batch 项目不匹配"}
 
-    kg = _kg(project)
-    merged = []
-    conflicts = []
+        kg = _kg(project)
+        merged = []
+        conflicts = []
 
-    # 按章节号顺序串行写入（MCP JSON key 可能是字符串，统一转 int）
-    for ch in sorted(int(k) for k in results.keys()):
-        if ch not in batch["contexts"]:
-            conflicts.append(f"Ch{ch}: 不在本批中，跳过")
-            continue
+        # 归一化 results key（MCP 传字符串 key，直接调用传 int key）
+        norm_results = {}
+        for k, v in results.items():
+            norm_results[int(k)] = v
 
-        ch_result = results[ch]
+        for ch in sorted(norm_results.keys()):
+            if ch not in batch["contexts"]:
+                conflicts.append(f"Ch{ch}: 不在本批中，跳过")
+                continue
 
-        # 保存正文
-        text = ch_result.get("text", "")
-        if text:
-            kg.save_chapter_text(ch, text)
+            ch_result = norm_results[ch]
 
-        # 写入提取结果
-        ext_json = ch_result.get("extraction_json", "")
-        if ext_json:
-            write_report = write_extraction(project, ch, ext_json)
-            if write_report.get("conflicts"):
-                for c in write_report["conflicts"]:
-                    conflicts.append(f"Ch{ch}: {c}")
+            # 保存正文
+            text = ch_result.get("text", "")
+            if text:
+                kg.save_chapter_text(ch, text)
+
+            # 写入提取结果
+            ext_json = ch_result.get("extraction_json", "")
+            if ext_json:
+                write_report = write_extraction(project, ch, ext_json)
+                if write_report.get("conflicts"):
+                    for c in write_report["conflicts"]:
+                        conflicts.append(f"Ch{ch}: {c}")
             merged.append(ch)
 
-    # 合并后一致性检查
-    consistency = check_consistency(project)
+        # 合并后一致性检查
+        consistency = check_consistency(project)
 
-    # 清理冻结上下文
-    del _frozen_batches[batch_id]
+        # 清理冻结上下文
+        del _frozen_batches[batch_id]
 
-    return {
-        "merged_chapters": merged,
-        "conflicts_found": conflicts,
-        "post_merge_consistency": consistency,
-    }
+        return {
+            "merged_chapters": merged,
+            "conflicts_found": conflicts,
+            "post_merge_consistency": consistency,
+        }
+    except Exception as e:
+        import traceback
+        return {"error": f"merge_parallel_results 异常: {e}\n{traceback.format_exc()}"}
 
 
 def accept_edit(project: str, chapter: int, extracted_json: str,
