@@ -498,6 +498,17 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
                 "original_outline_item": item.fix.split(":", 2)[-1] if item.fix and ":" in item.fix else "",
             })
 
+    # 第三步：purpose级别的LLM语义检查（始终执行）
+    # 判断章节事件是否符合大纲的叙事目的，不受bigram影响
+    cfg = config_loader.load(project)
+    if cfg.get("collaboration", {}).get("semantic_check", True):
+        purpose = outline_entry.get("purpose", "")
+        if purpose and events:
+            purpose_result = _purpose_compliance_check(
+                project, chapter, purpose, events
+            )
+            semantic_checks.append(purpose_result)
+
     # 合并所有检查结果
     all_checks = programmatic_checks + semantic_checks
 
@@ -595,6 +606,68 @@ def _semantic_compliance_check(project, chapter, outline_entry, events,
         else:
             results.append((v, False, "LLM语义检查不可用，按warning处理"))
     return results
+
+
+def _purpose_compliance_check(project, chapter, purpose, events):
+    """LLM purpose级别合规检查：判断章节事件是否符合大纲的叙事目的。
+
+    这是独立于bigram/语义匹配的检查维度——即使key_events都匹配了，
+    如果章节事件在叙事目的层面偏离了大纲，也应该被检测出来。
+    返回 dict（semantic_check条目格式）。
+    """
+    event_summaries = []
+    for ev in events:
+        title = ev.get("title", "")
+        detail = ev.get("detail", "")
+        if title or detail:
+            event_summaries.append(f"- {title}{'：' + detail if detail else ''}")
+
+    prompt = f"""你是小说大纲合规检查助手。判断第{chapter}章的实际事件是否符合大纲的叙事目的。
+
+## 大纲叙事目的
+{purpose}
+
+## 第{chapter}章实际事件
+{chr(10).join(event_summaries)}
+
+## 判定标准
+- 不是要求完全一致，而是判断叙事方向是否一致
+- 如果大纲目的是"潜入B2层"但实际是"送外卖买早餐"，这是明显偏离
+- 如果大纲目的是"建立悬念"而实际是"发现线索建立悬念"，这是符合的
+- 允许细节层面的偏差，但不允许叙事方向的根本性改变
+
+## 输出格式（JSON）
+```json
+{{"aligned": true/false, "reason": "简要说明为什么对齐/偏离", "confidence": "high/medium/low"}}
+```"""
+
+    try:
+        from llm import call_llm
+        result = call_llm(prompt, json_mode=True,
+                          stream_label=f"目的合规Ch{chapter}")
+        if isinstance(result, dict):
+            aligned = bool(result.get("aligned", False))
+            reason = str(result.get("reason", ""))
+            confidence = str(result.get("confidence", "medium"))
+            return {
+                "item": "purpose_alignment",
+                "status": "aligned" if aligned else "diverged",
+                "severity": "info" if aligned else "warning",
+                "detail": f"目的合规: 大纲'{purpose[:30]}...' — "
+                          f"{'对齐' if aligned else '偏离'} (confidence={confidence}) — {reason}",
+                "confidence": confidence,
+            }
+    except Exception:
+        pass
+
+    # Fallback
+    return {
+        "item": "purpose_alignment",
+        "status": "unknown",
+        "severity": "info",
+        "detail": f"目的合规检查不可用: 大纲'{purpose[:30]}...'",
+        "confidence": "unknown",
+    }
 
 
 def revise_outline(project: str, chapter: int, reason: str,
