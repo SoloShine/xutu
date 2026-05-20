@@ -820,3 +820,52 @@ def accept_edit(project: str, chapter: int, extracted_json: str,
         "downstream_marked_for_revision": marked,
         "message": f"已采纳第{chapter}章编辑。后续章节 {marked} 的大纲标记为 needs_revision。",
     }
+
+
+def review_chapter(project: str, chapter: int, action: str,
+                   edited_text: str = "") -> dict:
+    """审核关卡操作。"""
+    kg = _kg(project)
+    valid_actions = {"accept", "edit", "rewrite", "revise_outline"}
+    if action not in valid_actions:
+        return {"error": f"未知操作 '{action}'，可选: {', '.join(sorted(valid_actions))}"}
+
+    if action == "accept":
+        return {
+            "action": "accept",
+            "chapter": chapter,
+            "message": f"第{chapter}章已通过审核。可以继续第{chapter+1}章。",
+        }
+
+    if action in ("edit", "rewrite"):
+        if not edited_text:
+            return {"error": f"action='{action}' 需要 edited_text 参数"}
+        output_dir = os.path.join(os.path.dirname(kg._path), "output")
+        os.makedirs(output_dir, exist_ok=True)
+        edited_path = os.path.join(output_dir, f"ch{chapter}_edited.txt")
+        with open(edited_path, "w", encoding="utf-8") as f:
+            f.write(edited_text)
+
+        if action == "rewrite":
+            return {
+                "action": "rewrite",
+                "chapter": chapter,
+                "message": f"第{chapter}章已保存编辑版本。请重新提取并调用 accept_edit 写入图谱。",
+                "edited_path": edited_path,
+            }
+        else:
+            return {
+                "action": "edit",
+                "chapter": chapter,
+                "message": f"第{chapter}章小修已保存。可调用 analyze_edit_impact 检查影响。",
+                "edited_path": edited_path,
+            }
+
+    if action == "revise_outline":
+        return {
+            "action": "revise_outline",
+            "chapter": chapter,
+            "message": f"请调用 revise_outline 修订第{chapter}章大纲，然后继续。",
+        }
+
+    return {"error": "unreachable"}

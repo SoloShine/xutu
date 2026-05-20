@@ -486,6 +486,47 @@ def main():
              oe2 is not None and oe2.get("compliance") == "needs_revision",
              f"compliance: {oe2.get('compliance') if oe2 else 'None'}")
 
+        # ---- 18. review_chapter MCP工具 ----
+        print("\n[18] review_chapter MCP工具")
+        from core import review_chapter as _rc, close_all
+
+        close_all()  # clear pool
+        kg.clear_project()
+
+        # accept
+        result_accept = _rc(PROJECT, 1, "accept")
+        test("review_chapter accept",
+             result_accept["action"] == "accept")
+        test("review_chapter accept message",
+             "通过审核" in result_accept["message"])
+
+        # edit (with text)
+        result_edit = _rc(PROJECT, 1, "edit", edited_text="修改后的文本内容")
+        test("review_chapter edit saved",
+             result_edit["action"] == "edit")
+        test("review_chapter edit has path",
+             "edited_path" in result_edit)
+
+        # rewrite (with text)
+        result_rewrite = _rc(PROJECT, 2, "rewrite", edited_text="完全重写的文本")
+        test("review_chapter rewrite",
+             result_rewrite["action"] == "rewrite")
+
+        # revise_outline
+        result_revise = _rc(PROJECT, 1, "revise_outline")
+        test("review_chapter revise_outline",
+             result_revise["action"] == "revise_outline")
+
+        # invalid action
+        result_invalid = _rc(PROJECT, 1, "invalid_action")
+        test("review_chapter invalid action",
+             "error" in result_invalid)
+
+        # edit without text
+        result_no_text = _rc(PROJECT, 1, "edit")
+        test("review_chapter edit no text error",
+             "error" in result_no_text)
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

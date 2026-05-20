@@ -334,5 +334,18 @@ def accept_edit(project: str, chapter: int, extracted_json: str,
     return core.accept_edit(project, chapter, extracted_json, confirm)
 
 
+@mcp.tool()
+def review_chapter(project: str, chapter: int, action: str,
+                   edited_text: str = "") -> dict:
+    """审核关卡操作。
+
+    action: 'accept'(通过), 'edit'(小修,需edited_text),
+    'rewrite'(重写,需edited_text), 'revise_outline'(修订大纲)。
+    accept/revise_outline 不需要 edited_text。
+    edit/rewrite 会将 edited_text 保存为 chN_edited.txt。
+    """
+    return core.review_chapter(project, chapter, action, edited_text)
+
+
 if __name__ == "__main__":
     mcp.run()
