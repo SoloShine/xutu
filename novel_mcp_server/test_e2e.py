@@ -595,6 +595,96 @@ def main():
              all(k in result_struct for k in ["programmatic_checks", "semantic_checks", "overall"]),
              f"keys: {list(result_struct.keys())}")
 
+        # ---- 21. 版本管理 ----
+        print("\n[21] 版本管理 (snapshot + list_edits + rollback_edit)")
+        from core import list_edits as _le, rollback_edit as _re
+        from core import accept_edit as _ae
+
+        close_all()
+        kg.clear_project()
+        kg.add_character("老陈", role="protagonist")
+        kg.add_event("E1_01", title="初始事件A", detail="原始内容", chapter=1)
+        kg.add_event("E1_02", title="初始事件B", detail="更多内容", chapter=1)
+
+        # list_edits 初始为空
+        result_le = _le(PROJECT)
+        test("list_edits empty initially",
+             result_le["total"] == 0,
+             f"got {result_le['total']}")
+
+        # accept_edit 应自动创建快照
+        close_all()
+        extracted = json.dumps({
+            "events": [
+                {"id": "E1_01", "title": "修改后事件", "detail": "新内容", "chapter": 1, "type": "daily"}
+            ],
+            "event_relations": [],
+            "new_characters": [],
+            "character_updates": [],
+            "thread_updates": [],
+            "new_threads": []
+        })
+        result_ae = _ae(PROJECT, 1, extracted,
+                        confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE")
+        test("accept_edit has snapshot_id",
+             result_ae.get("snapshot_id") is not None,
+             f"got {result_ae.get('snapshot_id')}")
+
+        # list_edits 现在有1个快照
+        close_all()
+        result_le2 = _le(PROJECT, chapter=1)
+        test("list_edits has 1 snapshot",
+             result_le2["total"] == 1,
+             f"got {result_le2['total']}")
+        test("list_edits snapshot has chapter",
+             result_le2["snapshots"][0]["chapter"] == 1)
+        test("list_edits snapshot has event_count",
+             result_le2["snapshots"][0]["event_count"] == 2,
+             f"got {result_le2['snapshots'][0]['event_count']}")
+
+        # rollback_edit 需要确认
+        snap_id = result_le2["snapshots"][0]["id"]
+        result_rb_fail = _re(PROJECT, snap_id)
+        test("rollback_edit blocked without confirm",
+             "error" in result_rb_fail)
+
+        # rollback_edit 成功
+        close_all()
+        result_rb = _re(PROJECT, snap_id,
+                        confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE")
+        test("rollback_edit success",
+             "restored_events" in result_rb,
+             f"got {result_rb}")
+        test("rollback_edit restored 2 events",
+             result_rb["restored_events"] == 2)
+        test("rollback_edit has pre_rollback_snapshot",
+             result_rb.get("pre_rollback_snapshot") is not None)
+
+        # 验证回滚后数据正确
+        close_all()
+        events_after = kg.get_events_by_chapter(1)
+        test("rollback events restored",
+             len(events_after) == 2,
+             f"got {len(events_after)} events")
+        titles = {e.get("title", "") for e in events_after}
+        test("rollback correct events",
+             "初始事件A" in titles,
+             f"titles: {titles}")
+
+        # list_edits 现在有2个快照（原始 + rollback前的自动快照）
+        close_all()
+        result_le3 = _le(PROJECT)
+        test("list_edits has 2 snapshots after rollback",
+             result_le3["total"] == 2,
+             f"got {result_le3['total']}")
+
+        # rollback 不存在的快照
+        close_all()
+        result_rb_fake = _re(PROJECT, "fake_snapshot_999",
+                             confirm="I_UNDERSTAND_THIS_IS_DESTRUCTIVE")
+        test("rollback_edit fake snapshot error",
+             "error" in result_rb_fake)
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

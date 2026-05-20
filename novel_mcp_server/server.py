@@ -347,5 +347,27 @@ def review_chapter(project: str, chapter: int, action: str,
     return core.review_chapter(project, chapter, action, edited_text)
 
 
+@mcp.tool()
+def list_edits(project: str, chapter: int = None) -> dict:
+    """列出章节编辑快照历史。每次 accept_edit 前自动创建快照。
+
+    chapter: 可选，筛选指定章节。不传则列出全部快照。
+    返回快照列表（id, chapter, timestamp, reason, event_count）。
+    """
+    return core.list_edits(project, chapter=chapter)
+
+
+@mcp.tool()
+def rollback_edit(project: str, snapshot_id: str,
+                  confirm: str = "") -> dict:
+    """回滚到指定快照版本（破坏性操作）。
+
+    回滚前自动快照当前状态，支持再次回滚。
+    需传入 confirm='I_UNDERSTAND_THIS_IS_DESTRUCTIVE' 确认执行。
+    用 list_edits 查看可用的 snapshot_id。
+    """
+    return core.rollback_edit(project, snapshot_id, confirm=confirm)
+
+
 if __name__ == "__main__":
     mcp.run()

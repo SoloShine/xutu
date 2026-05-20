@@ -115,9 +115,14 @@ class JsonKG:
         self._save()
 
     def clear_project(self):
-        """清空当前项目数据"""
+        """清空当前项目数据（含快照）"""
         self._graph = _empty_graph()
         self._save()
+        # 清理快照目录
+        snap_dir = self._snapshots_dir
+        if os.path.isdir(snap_dir):
+            import shutil
+            shutil.rmtree(snap_dir)
 
     # ================================================================
     # 节点写入
@@ -643,3 +648,104 @@ class JsonKG:
             with open(path, "r", encoding="utf-8") as f:
                 return f.read()
         return None
+
+    # ================================================================
+    # 版本管理：快照 + 回滚
+    # ================================================================
+
+    @property
+    def _snapshots_dir(self):
+        return os.path.join(
+            os.path.dirname(self._path), "snapshots"
+        )
+
+    def snapshot_chapter(self, chapter, reason=""):
+        """创建章节数据快照（事件+关联关系），返回 snapshot_id。"""
+        events = {eid: deepcopy(ev) for eid, ev in self._graph["events"].items()
+                  if ev.get("chapter") == chapter}
+        event_ids = set(events.keys())
+        relations = [deepcopy(r) for r in self._graph["relations"]
+                     if (r["fl"] == "Event" and r["fk"] == "id"
+                         and r["fv"] in event_ids)
+                     or (r["tl"] == "Event" and r["tk"] == "id"
+                         and r["tv"] in event_ids)]
+
+        if not events and not relations:
+            return None  # 无数据可快照
+
+        from datetime import datetime
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        snapshot_id = f"ch{chapter}_{ts}"
+
+        snapshot = {
+            "id": snapshot_id,
+            "chapter": chapter,
+            "timestamp": ts,
+            "reason": reason,
+            "events": events,
+            "relations": relations,
+        }
+
+        snap_dir = self._snapshots_dir
+        os.makedirs(snap_dir, exist_ok=True)
+        path = os.path.join(snap_dir, f"{snapshot_id}.json")
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(snapshot, f, ensure_ascii=False, indent=2)
+
+        return snapshot_id
+
+    def list_snapshots(self, chapter=None):
+        """列出快照历史，按时间倒序。"""
+        snap_dir = self._snapshots_dir
+        if not os.path.exists(snap_dir):
+            return []
+
+        snapshots = []
+        for fname in os.listdir(snap_dir):
+            if not fname.endswith(".json"):
+                continue
+            path = os.path.join(snap_dir, fname)
+            with open(path, "r", encoding="utf-8") as f:
+                snap = json.load(f)
+            ch = snap.get("chapter", 0)
+            if chapter is not None and ch != chapter:
+                continue
+            snapshots.append({
+                "id": snap["id"],
+                "chapter": ch,
+                "timestamp": snap.get("timestamp", ""),
+                "reason": snap.get("reason", ""),
+                "event_count": len(snap.get("events", {})),
+                "relation_count": len(snap.get("relations", [])),
+            })
+
+        snapshots.sort(key=lambda s: s["timestamp"], reverse=True)
+        return snapshots
+
+    def get_snapshot(self, snapshot_id):
+        """获取指定快照的完整数据。"""
+        snap_dir = self._snapshots_dir
+        path = os.path.join(snap_dir, f"{snapshot_id}.json")
+        if not os.path.exists(path):
+            return None
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def restore_snapshot(self, snapshot_id):
+        """从快照恢复章节数据（清除当前数据→写入快照数据）。"""
+        snap = self.get_snapshot(snapshot_id)
+        if not snap:
+            return False
+
+        chapter = snap["chapter"]
+        # 清除当前章节数据
+        self.delete_events_by_chapter(chapter)
+
+        # 写入快照数据
+        for eid, ev in snap.get("events", {}).items():
+            self._graph["events"][eid] = deepcopy(ev)
+        for r in snap.get("relations", []):
+            self._graph["relations"].append(deepcopy(r))
+        self._save()
+
+        return True

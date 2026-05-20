@@ -965,12 +965,15 @@ def analyze_edit_impact(project: str, chapter: int) -> dict:
 
 def accept_edit(project: str, chapter: int, extracted_json: str,
                 confirm: str = "") -> dict:
-    """采纳事后编辑：清除旧数据 → 写入新数据 → 标记后续大纲。"""
+    """采纳事后编辑：快照旧数据 → 清除 → 写入新数据 → 标记后续大纲。"""
     err = _check_destructive(confirm)
     if err:
         return {"error": err}
 
     kg = _kg(project)
+
+    # 自动快照旧数据（覆盖前可回滚）
+    snapshot_id = kg.snapshot_chapter(chapter, reason=f"accept_edit ch{chapter}")
 
     _mine_clear_chapter(kg, chapter)
 
@@ -999,7 +1002,8 @@ def accept_edit(project: str, chapter: int, extracted_json: str,
         "stats": report["stats"],
         "conflicts": report["conflicts"],
         "downstream_marked_for_revision": marked,
-        "message": f"已采纳第{chapter}章编辑。后续章节 {marked} 的大纲标记为 needs_revision。",
+        "snapshot_id": snapshot_id,
+        "message": f"已采纳第{chapter}章编辑。快照: {snapshot_id}。后续章节 {marked} 的大纲标记为 needs_revision。",
     }
 
 
@@ -1050,3 +1054,55 @@ def review_chapter(project: str, chapter: int, action: str,
         }
 
     return {"error": "unreachable"}
+
+
+# ============================================================
+# 版本管理
+# ============================================================
+
+def list_edits(project: str, chapter: int = None) -> dict:
+    """列出章节编辑快照历史。"""
+    kg = _kg(project)
+    snapshots = kg.list_snapshots(chapter=chapter)
+    return {
+        "project": project,
+        "filter_chapter": chapter,
+        "total": len(snapshots),
+        "snapshots": snapshots,
+    }
+
+
+def rollback_edit(project: str, snapshot_id: str,
+                  confirm: str = "") -> dict:
+    """回滚到指定快照版本。"""
+    err = _check_destructive(confirm)
+    if err:
+        return {"error": err}
+
+    kg = _kg(project)
+    snap = kg.get_snapshot(snapshot_id)
+    if not snap:
+        return {"error": f"快照 '{snapshot_id}' 不存在。请用 list_edits 查看可用快照。"}
+
+    chapter = snap["chapter"]
+    event_count = len(snap.get("events", {}))
+    relation_count = len(snap.get("relations", []))
+
+    # 回滚前快照当前状态（以便再次回滚）
+    new_snap = kg.snapshot_chapter(
+        chapter, reason=f"rollback to {snapshot_id}")
+
+    success = kg.restore_snapshot(snapshot_id)
+    if not success:
+        return {"error": f"恢复快照 '{snapshot_id}' 失败。"}
+
+    return {
+        "snapshot_id": snapshot_id,
+        "chapter": chapter,
+        "restored_events": event_count,
+        "restored_relations": relation_count,
+        "pre_rollback_snapshot": new_snap,
+        "message": f"已回滚第{chapter}章到快照 {snapshot_id} "
+                   f"({event_count}事件, {relation_count}关系)。"
+                   f"回滚前快照: {new_snap}",
+    }
