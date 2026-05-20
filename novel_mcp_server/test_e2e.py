@@ -16,7 +16,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from core import _create_backend, close_all, _BACKEND
+from core import _create_backend, _kg, close_all, _BACKEND
 import core
 
 PROJECT = f"e2e_test_{_BACKEND}"
@@ -1091,6 +1091,207 @@ def main():
         cached_gone = _read_purpose_cache(PROJECT, 1, "测试目的", events)
         test("cache miss after invalidation",
              cached_gone is None)
+
+        # ---- 28. 并行组分析 ----
+        print("\n[28] 并行组分析")
+        # 关键：此节是最后一个测试节，重新绑定 kg 为池化实例。
+        # 否则 kg（非池化）和 _kg()（池化）会互相覆盖磁盘数据。
+        close_all()
+        kg = _kg(PROJECT)
+        kg.clear_project()
+
+        # 无大纲 → 返回空
+        result_empty = core.analyze_parallel_groups(PROJECT)
+        test("no outlines returns empty",
+             result_empty["max_parallelism"] == 1,
+             f"got {result_empty['max_parallelism']}")
+
+        # 串行大纲（无 parallel_group 标记）
+        for ch in range(1, 5):
+            kg.add_outline_entry(ch, purpose=f"第{ch}章目的",
+                                key_events=f"事件{ch}")
+        result_seq = core.analyze_parallel_groups(PROJECT)
+        test("sequential has 4 groups",
+             len(result_seq["parallel_groups"]) == 4,
+             f"got {len(result_seq['parallel_groups'])}")
+        test("sequential max_par is 1",
+             result_seq["max_parallelism"] == 1)
+        test("sequential has warning",
+             len(result_seq["warnings"]) > 0)
+        test("sequential dep graph has 4 chapters",
+             len(result_seq["dependency_graph"]) == 4)
+
+        # 双 POV 并行（交替组 A/B，连续章节全串行）
+        close_all()
+        kg = _kg(PROJECT)
+        kg.clear_project()
+        for ch in [1, 3, 5]:
+            kg.add_outline_entry(ch, purpose=f"POV-A第{ch}章",
+                                parallel_group="A")
+        for ch in [2, 4, 6]:
+            kg.add_outline_entry(ch, purpose=f"POV-B第{ch}章",
+                                parallel_group="B")
+        result_par = core.analyze_parallel_groups(PROJECT)
+        test("parallel has dependency graph",
+             len(result_par["dependency_graph"]) == 6)
+        test("parallel has groups",
+             len(result_par["parallel_groups"]) > 0)
+        # 连续章节全部相邻，即使有并行标记也是串行
+        test("consecutive chapters all serial",
+             result_par["max_parallelism"] == 1,
+             f"got max_par={result_par['max_parallelism']}")
+
+        # 非连续章节并行组（跳跃编号，真正可并行）
+        close_all()
+        kg = _kg(PROJECT)
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="A线起", parallel_group="A")
+        kg.add_outline_entry(5, purpose="A线承", parallel_group="A")
+        kg.add_outline_entry(10, purpose="A线转", parallel_group="A")
+        kg.add_outline_entry(3, purpose="B线起", parallel_group="B")
+        kg.add_outline_entry(7, purpose="B线承", parallel_group="B")
+        kg.add_outline_entry(12, purpose="B线转", parallel_group="B")
+        result_gap = core.analyze_parallel_groups(PROJECT)
+        test("gap chapters has parallelism",
+             result_gap["max_parallelism"] > 1,
+             f"got max_par={result_gap['max_parallelism']}")
+        # parallel_groups 存储到图谱（只有 can_parallel 的组才存储）
+        pg = kg.get_parallel_groups()
+        test("parallel groups stored in graph",
+             len(pg) > 0,
+             f"got {len(pg)} groups")
+
+        # 测试 parallel_dependencies 显式依赖
+        close_all()
+        kg = _kg(PROJECT)
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="起点", parallel_group="A")
+        kg.add_outline_entry(2, purpose="分支A", parallel_group="A",
+                            parallel_dependencies=[1])
+        kg.add_outline_entry(3, purpose="分支B", parallel_group="B",
+                            parallel_dependencies=[1])
+        kg.add_outline_entry(4, purpose="汇合", parallel_group="A",
+                            parallel_dependencies=[2, 3])
+        result_dep = core.analyze_parallel_groups(PROJECT)
+        test("explicit deps has dep graph",
+             2 in result_dep["dependency_graph"].get(4, {}).get("depends_on", []),
+             f"got deps: {result_dep['dependency_graph'].get(4)}")
+        test("explicit deps has 3 in ch4 depends",
+             3 in result_dep["dependency_graph"].get(4, {}).get("depends_on", []))
+
+        # ---- 29. 并行批次：快照+冻结上下文 ----
+        print("\n[29] 并行批次：快照+冻结上下文")
+        close_all()
+        kg = _kg(PROJECT)
+        kg.clear_project()
+        # 设置双时间线：ch1,3,5 (group A) 和 ch10,12,14 (group B)
+        for ch in [1, 3, 5]:
+            kg.add_outline_entry(ch, purpose=f"A线第{ch}章", parallel_group="A",
+                                key_events=f"事件A{ch}")
+            kg.add_chapter_arc(ch, purpose=f"A线{ch}", scenes="场景",
+                              ending=f"A线结尾{ch}")
+        for ch in [10, 12, 14]:
+            kg.add_outline_entry(ch, purpose=f"B线第{ch}章", parallel_group="B",
+                                key_events=f"事件B{ch}")
+            kg.add_chapter_arc(ch, purpose=f"B线{ch}", scenes="场景",
+                              ending=f"B线结尾{ch}")
+        kg.add_character("主角A", role="protagonist")
+        kg.add_character("主角B", role="protagonist")
+        kg.add_style_guide("sg01", rule="测试风格")
+        kg.add_theme("双线叙事", description="两条时间线交织")
+
+        # 准备并行批次
+        batch_result = core.prepare_parallel_batch(PROJECT, [1, 3, 10])
+        test("batch has batch_id",
+             "batch_" in batch_result["batch_id"])
+        test("batch has snapshot_id",
+             "full_" in batch_result["snapshot_id"])
+        test("batch frozen 3 chapters",
+             len(batch_result["frozen_contexts"]) == 3,
+             f"got {len(batch_result['frozen_contexts'])}")
+        test("batch each context has keys",
+             all("characters" in v for v in batch_result["frozen_contexts"].values()))
+        test("batch no conflicts",
+             len(batch_result["conflicts_preview"]) == 0,
+             f"got {batch_result['conflicts_preview']}")
+
+        # ---- 30. 并行写作 prompt ----
+        print("\n[30] 并行写作 prompt")
+        batch_id = batch_result["batch_id"]
+
+        prompt1 = core.get_parallel_writing_prompt(PROJECT, 1, batch_id)
+        test("parallel prompt ch1 returns string",
+             isinstance(prompt1, str) and len(prompt1) > 100)
+        test("parallel prompt ch1 has style guides",
+             "测试风格" in prompt1)
+
+        prompt10 = core.get_parallel_writing_prompt(PROJECT, 10, batch_id)
+        test("parallel prompt ch10 returns string",
+             isinstance(prompt10, str) and len(prompt10) > 100)
+
+        # 错误的 batch_id
+        prompt_err = core.get_parallel_writing_prompt(PROJECT, 1, "fake_batch")
+        test("parallel prompt bad batch returns error",
+             "错误" in prompt_err)
+
+        # 错误的章节号
+        prompt_ch_err = core.get_parallel_writing_prompt(PROJECT, 99, batch_id)
+        test("parallel prompt bad chapter returns error",
+             "错误" in prompt_ch_err)
+
+        # ---- 31. 并行合并 ----
+        print("\n[31] 并行合并")
+        # 模拟并行结果
+        mock_results = {
+            1: {
+                "text": "第一章正文内容，主角A出场。",
+                "extraction_json": json.dumps({
+                    "events": [
+                        {"id": "E1_01", "title": "A出场", "detail": "主角A首次登场",
+                         "chapter": 1, "type": "daily"}
+                    ],
+                    "event_relations": [],
+                    "new_characters": [],
+                    "new_locations": []
+                })
+            },
+            10: {
+                "text": "第十章正文内容，主角B出场。",
+                "extraction_json": json.dumps({
+                    "events": [
+                        {"id": "E10_01", "title": "B出场", "detail": "主角B首次登场",
+                         "chapter": 10, "type": "daily"}
+                    ],
+                    "event_relations": [],
+                    "new_characters": [],
+                    "new_locations": []
+                })
+            },
+        }
+        merge_result = core.merge_parallel_results(PROJECT, batch_id, mock_results)
+        test("merge has merged_chapters",
+             sorted(merge_result["merged_chapters"]) == [1, 10])
+        test("merge has consistency",
+             isinstance(merge_result["post_merge_consistency"], list))
+
+        # 验证事件已写入图谱
+        kg_events = kg.get_events_by_chapter(1)
+        test("merge ch1 event written",
+             len(kg_events) > 0,
+             f"got {len(kg_events)} events")
+        kg_events_10 = kg.get_events_by_chapter(10)
+        test("merge ch10 event written",
+             len(kg_events_10) > 0)
+
+        # 验证正文已保存
+        ch1_text = kg.get_chapter_text(1)
+        test("merge ch1 text saved",
+             ch1_text is not None and "主角A" in ch1_text)
+
+        # 合并已清理冻结上下文
+        merge_again = core.merge_parallel_results(PROJECT, batch_id, {})
+        test("merge twice returns error",
+             "error" in merge_again)
 
     except Exception as e:
         global FAIL

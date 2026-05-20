@@ -63,6 +63,13 @@ DEFAULTS = {
         "auto_revise_outline": False,
         "semantic_check": True,
     },
+    "parallel": {
+        "enabled": False,
+        "strategy": "arc_first_parallel",
+        "max_parallel_chapters": 3,
+        "auto_merge": False,
+        "prev_text_substitute": "arc_ending",
+    },
 }
 
 _HERE = os.path.dirname(os.path.abspath(__file__))

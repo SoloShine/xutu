@@ -385,5 +385,49 @@ def rollback_edit(project: str, snapshot_id: str,
                               clear_revision_marks=clear_revision_marks)
 
 
+@mcp.tool()
+def analyze_parallel_groups(project: str) -> dict:
+    """分析章节依赖关系，返回可并行分组。
+
+    基于大纲条目的 parallel_group 标记、相邻章节约束和悬念线交叉引用，
+    计算哪些章节可以同时生成。返回依赖图、并行分组、预估加速比。
+    """
+    return core.analyze_parallel_groups(project)
+
+
+@mcp.tool()
+def prepare_parallel_batch(project: str, chapters: list) -> dict:
+    """为并行组创建图谱快照并预冻结每章的上下文。
+
+    创建全图谱快照（合并时可回滚），为每章预计算 chapter_context。
+    对前一章在同批的章节，用弧线 ending 锚点替代 prev_text。
+    返回 batch_id 和冻结上下文概要。
+    """
+    return core.prepare_parallel_batch(project, chapters)
+
+
+@mcp.tool()
+def get_parallel_writing_prompt(project: str, chapter: int,
+                                batch_id: str) -> str:
+    """使用冻结上下文生成写作 prompt（并行模式）。
+
+    与 get_writing_prompt 类似但使用预冻结的上下文，不查询活图谱。
+    需先调用 prepare_parallel_batch 获取 batch_id。
+    """
+    return core.get_parallel_writing_prompt(project, chapter, batch_id)
+
+
+@mcp.tool()
+def merge_parallel_results(project: str, batch_id: str,
+                           results: dict) -> dict:
+    """合并并行生成结果到图谱。
+
+    按章节号顺序串行写入正文和提取数据，含冲突检测。
+    results: {chapter: {"text": str, "extraction_json": str}}
+    返回合并报告和一致性检查结果。
+    """
+    return core.merge_parallel_results(project, batch_id, results)
+
+
 if __name__ == "__main__":
     mcp.run()

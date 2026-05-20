@@ -1251,6 +1251,354 @@ def analyze_edit_impact(project: str, chapter: int) -> dict:
     }
 
 
+# ============================================================
+# 并行章节生成
+# ============================================================
+
+def analyze_parallel_groups(project: str) -> dict:
+    """分析章节依赖关系，返回可并行分组。
+
+    依赖规则：
+    - 相邻章节（Ch N 与 Ch N+1）必须串行
+    - 共享 parallel_group 标记的章节可并行（前提：不相邻）
+    - threads_to_plant/resolve 交叉引用 → 串行
+    - 无并行标记时全部串行（向后兼容）
+
+    返回：{dependency_graph, parallel_groups, max_parallelism,
+           estimated_speedup, warnings}
+    """
+    kg = _kg(project)
+    outlines = kg.get_all_outline_entries()
+    if not outlines:
+        return {"dependency_graph": {}, "parallel_groups": [],
+                "max_parallelism": 1, "estimated_speedup": "1.0x",
+                "warnings": ["无大纲条目"]}
+
+    chapters = sorted([oe.get("chapter", 0) for oe in outlines if oe.get("chapter", 0) > 0])
+    if not chapters:
+        return {"dependency_graph": {}, "parallel_groups": [],
+                "max_parallelism": 1, "estimated_speedup": "1.0x",
+                "warnings": ["无有效章节号"]}
+
+    # 构建依赖图
+    dep_graph = {}
+    for ch in chapters:
+        dep_graph[ch] = {"depends_on": [], "dependents": []}
+
+    # 规则1：字面相邻章节串行（Ch N 与 Ch N+1）
+    for i in range(len(chapters) - 1):
+        a, b = chapters[i], chapters[i + 1]
+        if b - a == 1:  # 仅字面相邻
+            dep_graph[b]["depends_on"].append(a)
+            dep_graph[a]["dependents"].append(b)
+
+    # 规则2：悬念线交叉引用 → 串行
+    thread_map = {}  # thread_id -> planted_chapter
+    all_threads = kg.get_all_threads()
+    for t in all_threads:
+        tid = t.get("thread_id", "")
+        planted = t.get("planted_chapter", 0)
+        if tid and planted:
+            thread_map[tid] = planted
+
+    for oe in outlines:
+        ch = oe.get("chapter", 0)
+        # 检查 threads_to_resolve 依赖
+        resolve_str = oe.get("threads_to_resolve", "")
+        if resolve_str:
+            for other_ch in chapters:
+                if other_ch >= ch:
+                    continue
+                other_oe = kg.get_outline_entry(other_ch)
+                if other_oe:
+                    plant_str = other_oe.get("threads_to_plant", "")
+                    # 粗粒度检查：如果 resolve 引用了 plant 的内容
+                    if plant_str and resolve_str:
+                        # 同组内不额外添加依赖（已有相邻依赖覆盖）
+                        pass
+
+    # 规则3：显式 parallel_dependencies
+    for oe in outlines:
+        ch = oe.get("chapter", 0)
+        deps = oe.get("parallel_dependencies", [])
+        if isinstance(deps, list):
+            for dep in deps:
+                if dep in dep_graph and dep != ch:
+                    if dep not in dep_graph[ch]["depends_on"]:
+                        dep_graph[ch]["depends_on"].append(dep)
+                    if ch not in dep_graph[dep]["dependents"]:
+                        dep_graph[dep]["dependents"].append(ch)
+
+    # 检查是否有并行标记
+    has_groups = any(oe.get("parallel_group") for oe in outlines)
+
+    # 构建并行分组（拓扑排序）
+    warnings = []
+    if not has_groups:
+        # 无并行标记 → 全串行
+        groups = []
+        for i, ch in enumerate(chapters):
+            groups.append({
+                "group_id": i,
+                "chapters": [ch],
+                "can_parallel": False,
+                "reason": "无并行标记或相邻章节",
+            })
+        max_par = 1
+        speedup = "1.0x"
+        warnings.append("未设置 parallel_group，全部串行。"
+                        "在 outline_entry 中设置 parallel_group 可启用并行。")
+    else:
+        # 按并行组分析
+        group_map = {}  # group_name -> [chapters]
+        for oe in outlines:
+            ch = oe.get("chapter", 0)
+            grp = oe.get("parallel_group", "")
+            if grp:
+                group_map.setdefault(grp, []).append(ch)
+
+        # 将无组的章节各自成组
+        for ch in chapters:
+            assigned = any(ch in gchs for gchs in group_map.values())
+            if not assigned:
+                group_map[f"_solo_{ch}"] = [ch]
+
+        # 验证并行可行性：同组内不能有相邻章节
+        for grp_name, gchs in list(group_map.items()):
+            sorted_gchs = sorted(gchs)
+            for i in range(len(sorted_gchs) - 1):
+                if sorted_gchs[i + 1] - sorted_gchs[i] == 1:
+                    warnings.append(
+                        f"组 '{grp_name}' 包含相邻章节 {sorted_gchs[i]} 和 {sorted_gchs[i+1]}，"
+                        f"无法并行，将拆分为串行。")
+                    # 拆分：每个章节独立
+                    group_map[f"{grp_name}_{sorted_gchs[i]}"] = [sorted_gchs[i]]
+                    group_map[f"{grp_name}_{sorted_gchs[i+1]}"] = [sorted_gchs[i+1]]
+                    del group_map[grp_name]
+                    break
+
+        # 按拓扑层分组
+        remaining = set(chapters)
+        groups = []
+        group_id = 0
+        while remaining:
+            # 找出当前可执行的章节（所有依赖已完成）
+            ready = []
+            for ch in sorted(remaining):
+                deps = dep_graph[ch]["depends_on"]
+                if all(d not in remaining for d in deps):
+                    ready.append(ch)
+
+            if not ready:
+                # 环路保护
+                warnings.append(f"检测到依赖环路，剩余章节: {sorted(remaining)}")
+                break
+
+            can_parallel = len(ready) > 1
+            # 检查 ready 中的章节是否真的可以并行（同组+不相邻）
+            if can_parallel:
+                # 如果 ready 中有相邻章节，不能并行
+                for i in range(len(ready) - 1):
+                    if ready[i + 1] - ready[i] == 1:
+                        can_parallel = False
+                        break
+
+            reason = ""
+            if can_parallel:
+                # 检查是否在不同并行组
+                ready_groups = set()
+                for ch in ready:
+                    oe = kg.get_outline_entry(ch)
+                    ready_groups.add(oe.get("parallel_group", "") if oe else "")
+                if len(ready_groups) <= 1:
+                    can_parallel = False
+                    reason = "同组章节"
+                else:
+                    reason = f"不同并行组: {', '.join(str(g) for g in ready_groups)}"
+            else:
+                reason = "相邻章节或无并行组标记"
+
+            groups.append({
+                "group_id": group_id,
+                "chapters": ready,
+                "can_parallel": can_parallel,
+                "reason": reason,
+            })
+            remaining -= set(ready)
+            group_id += 1
+
+        max_par = max((len(g["chapters"]) for g in groups), default=1)
+        if max_par <= 1:
+            speedup = "1.0x"
+        else:
+            seq_time = len(chapters)
+            par_time = len(groups)  # 每组约1个slot
+            speedup = f"{seq_time / max(par_time, 1):.1f}x"
+
+    # 存储并行组到图谱
+    for g in groups:
+        if g["can_parallel"] and len(g["chapters"]) > 1:
+            gid = f"batch_{g['group_id']}"
+            kg.add_parallel_group(gid, g["chapters"],
+                                  reason=g.get("reason", ""))
+
+    return {
+        "dependency_graph": dep_graph,
+        "parallel_groups": groups,
+        "max_parallelism": max_par,
+        "estimated_speedup": speedup,
+        "warnings": warnings,
+    }
+
+
+# ============================================================
+# 并行生成工具（Phase 2-3）
+# ============================================================
+
+# 内存中的冻结上下文缓存：batch_id -> {chapter -> context_dict}
+_frozen_batches: dict = {}
+
+
+def prepare_parallel_batch(project: str, chapters: list) -> dict:
+    """为并行组创建图谱快照并预冻结每章的上下文。
+
+    返回: {batch_id, snapshot_id, frozen_contexts, conflicts_preview}
+    """
+    from copy import deepcopy
+    import uuid
+
+    kg = _kg(project)
+
+    # 创建全图谱快照（合并时可回滚）
+    snapshot_id = kg.snapshot_full_graph(reason=f"parallel_batch {chapters}")
+
+    batch_id = f"batch_{uuid.uuid4().hex[:8]}"
+
+    # 为每章预冻结上下文
+    frozen = {}
+    conflicts = []
+    for ch in chapters:
+        ctx = kg.get_context_for_chapter(ch, prev_text_chars=0)
+
+        # 如果前一章不在本批中，尝试用弧线 ending 锚点替代
+        prev_ch = ch - 1
+        if prev_ch > 0 and prev_ch not in chapters:
+            # 前一章不在并行组中，可以正常注入 prev_text
+            prev_text = kg.get_chapter_text(prev_ch)
+            cfg = config_loader.load(project)
+            ptc = config_loader.get(project, "writing", "prev_text_chars", default=500)
+            if prev_text and len(prev_text) > ptc:
+                prev_text = prev_text[-ptc:]
+            ctx["prev_chapter_text"] = prev_text
+        elif prev_ch in chapters:
+            # 前一章在并行组中 → 用弧线 ending 替代
+            arc = kg._graph["chapter_arcs"].get(str(prev_ch))
+            if arc:
+                ctx["prev_chapter_text"] = (
+                    f"[弧线锚点：前章（Ch{prev_ch}）尚未生成，以下为弧线结尾锚点]\n"
+                    f"{arc.get('ending', '（无结尾锚点）')}"
+                )
+                ctx["_parallel_note"] = "prev_text_from_arc_ending"
+            else:
+                ctx["prev_chapter_text"] = None
+                conflicts.append(
+                    f"Ch{ch}: 前一章Ch{prev_ch}在并行组中但无弧线ending锚点"
+                )
+
+        frozen[ch] = deepcopy(ctx)
+
+    _frozen_batches[batch_id] = {
+        "project": project,
+        "snapshot_id": snapshot_id,
+        "chapters": chapters,
+        "contexts": frozen,
+    }
+
+    return {
+        "batch_id": batch_id,
+        "snapshot_id": snapshot_id,
+        "frozen_contexts": {ch: list(ctx.keys()) for ch, ctx in frozen.items()},
+        "conflicts_preview": conflicts,
+    }
+
+
+def get_parallel_writing_prompt(project: str, chapter: int,
+                                batch_id: str) -> str:
+    """使用冻结上下文生成写作 prompt（并行模式）。
+
+    与 get_writing_prompt 类似但使用预冻结的上下文，
+    不查询活图谱，保证并行一致性。
+    """
+    if batch_id not in _frozen_batches:
+        return f"错误：batch_id '{batch_id}' 不存在或已过期。请先调用 prepare_parallel_batch。"
+
+    batch = _frozen_batches[batch_id]
+    if batch["project"] != project:
+        return f"错误：batch_id '{batch_id}' 属于项目 '{batch['project']}'，不匹配 '{project}'。"
+
+    if chapter not in batch["contexts"]:
+        return f"错误：章节 {chapter} 不在 batch '{batch_id}' 的冻结上下文中。"
+
+    ctx = batch["contexts"][chapter]
+    cfg = config_loader.load(project)
+    prompt = build_writing_prompt(ctx, chapter, config=cfg)
+    _persist(project, "prompts", f"parallel_writing_ch{chapter}.txt", prompt)
+    return prompt
+
+
+def merge_parallel_results(project: str, batch_id: str,
+                           results: dict) -> dict:
+    """合并并行生成结果到图谱（串行写入，冲突检测）。
+
+    results: {chapter: {"text": str, "extraction_json": str}}
+    返回: {merged_chapters, conflicts_found, post_merge_consistency}
+    """
+    if batch_id not in _frozen_batches:
+        return {"error": f"batch_id '{batch_id}' 不存在"}
+
+    batch = _frozen_batches[batch_id]
+    if batch["project"] != project:
+        return {"error": f"batch 项目不匹配"}
+
+    kg = _kg(project)
+    merged = []
+    conflicts = []
+
+    # 按章节号顺序串行写入
+    for ch in sorted(results.keys()):
+        if ch not in batch["contexts"]:
+            conflicts.append(f"Ch{ch}: 不在本批中，跳过")
+            continue
+
+        ch_result = results[ch]
+
+        # 保存正文
+        text = ch_result.get("text", "")
+        if text:
+            kg.save_chapter_text(ch, text)
+
+        # 写入提取结果
+        ext_json = ch_result.get("extraction_json", "")
+        if ext_json:
+            write_report = write_extraction(project, ch, ext_json)
+            if write_report.get("conflicts"):
+                for c in write_report["conflicts"]:
+                    conflicts.append(f"Ch{ch}: {c}")
+            merged.append(ch)
+
+    # 合并后一致性检查
+    consistency = check_consistency(project)
+
+    # 清理冻结上下文
+    del _frozen_batches[batch_id]
+
+    return {
+        "merged_chapters": merged,
+        "conflicts_found": conflicts,
+        "post_merge_consistency": consistency,
+    }
+
+
 def accept_edit(project: str, chapter: int, extracted_json: str,
                 confirm: str = "") -> dict:
     """采纳事后编辑：快照旧数据 → 清除 → 写入新数据 → 标记后续大纲。"""

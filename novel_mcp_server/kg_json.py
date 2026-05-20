@@ -25,6 +25,7 @@ def _empty_graph():
         "outline_entries": {}, # key: str(chapter)
         "time_periods": {},    # key: label
         "relations": [],       # list of dicts
+        "parallel_groups": {}, # key: group_id
     }
 
 
@@ -123,6 +124,72 @@ class JsonKG:
         if os.path.isdir(snap_dir):
             import shutil
             shutil.rmtree(snap_dir)
+
+    # ================================================================
+    # 并行组
+    # ================================================================
+
+    def add_parallel_group(self, group_id, chapters, **props):
+        """添加/更新并行组。"""
+        self._graph["parallel_groups"][group_id] = {
+            "group_id": group_id,
+            "chapters": chapters,
+            **props,
+        }
+        self._save()
+
+    def get_parallel_groups(self):
+        """获取全部并行组。"""
+        return list(self._graph.get("parallel_groups", {}).values())
+
+    def get_parallel_group(self, group_id):
+        """获取单个并行组。"""
+        return self._graph.get("parallel_groups", {}).get(group_id)
+
+    def remove_parallel_group(self, group_id):
+        """删除并行组。"""
+        if group_id in self._graph.get("parallel_groups", {}):
+            del self._graph["parallel_groups"][group_id]
+            self._save()
+
+    # ================================================================
+    # 全图谱快照（并行生成用）
+    # ================================================================
+
+    def snapshot_full_graph(self, reason=""):
+        """创建全图谱快照（非章节级），返回 snapshot_id。"""
+        from copy import deepcopy
+        from datetime import datetime
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        snap_id = f"full_{ts}"
+        snap_dir = self._snapshots_dir
+        os.makedirs(snap_dir, exist_ok=True)
+        snap_data = {
+            "snapshot_id": snap_id,
+            "chapter": -1,  # 标记为全图谱快照
+            "reason": reason,
+            "timestamp": ts,
+            "full_graph": deepcopy(self._graph),
+        }
+        snap_path = os.path.join(snap_dir, f"{snap_id}.json")
+        with open(snap_path, "w", encoding="utf-8") as f:
+            json.dump(snap_data, f, ensure_ascii=False, indent=2)
+        return snap_id
+
+    def restore_full_snapshot(self, snapshot_id):
+        """从全图谱快照恢复。返回 bool。"""
+        from copy import deepcopy
+        snap_path = os.path.join(self._snapshots_dir, f"{snapshot_id}.json")
+        if not os.path.exists(snap_path):
+            return False
+        with open(snap_path, "r", encoding="utf-8") as f:
+            snap = json.load(f)
+        full = snap.get("full_graph")
+        if not full:
+            return False
+        self._graph = deepcopy(full)
+        self._save()
+        return True
 
     # ================================================================
     # 节点写入
@@ -637,6 +704,14 @@ class JsonKG:
             with open(path, "r", encoding="utf-8") as f:
                 return f.read()
         return None
+
+    def save_chapter_text(self, chapter, text):
+        """保存生成的章节正文"""
+        output_dir = os.path.join(os.path.dirname(self._path), "output")
+        os.makedirs(output_dir, exist_ok=True)
+        path = os.path.join(output_dir, f"ch{chapter}_generated.txt")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(text)
 
     def get_edited_chapter_text(self, chapter):
         """读取作者编辑后的章节正文（用于事后影响分析）"""
