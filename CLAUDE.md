@@ -46,7 +46,7 @@
 
 21. **已完成：语义合规+目的检查验证** — 三步合规管线（bigram→LLM语义→purpose检查）+ V17 50章回溯验证。LLM语义检查解决"深夜来访"="突然出现"等bigram盲区；purpose级别检查精准检测V17的19/50偏离章节（Ch27首次偏离，Ch30-48持续偏离，Ch49-50回归），零误报零漏报。103 E2E测试全部通过。归档于 `archive/v20-语义合规+目的检查验证/`。
 
-22. **已完成：功能增强验证（V21）** — 编辑版本管理+prompt落盘+地点自动注册+批量合规检查。4项增强：①编辑快照自动创建（微秒时间戳防冲突），list_edits/rollback_edit支持回滚；②extraction/writing/derivation prompt自动落盘到projects目录；③write_extraction自动注册未声明地点（type=auto_registered）；④batch_check_outline_compliance多章purpose合并为单次LLM调用。37个MCP工具，140 E2E测试全部通过。
+22. **已完成：功能增强验证（V21）** — 编辑版本管理+prompt落盘+地点自动注册+批量合规检查。4项增强：①编辑快照自动创建（微秒时间戳防冲突），list_edits/rollback_edit支持回滚；②extraction/writing/derivation prompt自动落盘到projects目录；③write_extraction自动注册未声明地点（type=auto_registered）；④batch_check_outline_compliance多章purpose合并为单次LLM调用。原创6章旧物修复悬疑《铜锈》：51,533字符、39事件、8悬念线（100%解决率）、243关系。6章大纲零偏移，事后编辑闭环验证（Ch3编辑→快照→回滚），批量合规batch_purpose=true。37个MCP工具，140 E2E测试全部通过。归档于 `archive/v21-功能增强验证/`。
 
 ## Project Structure
 
@@ -204,6 +204,7 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - `.claude/skills/` 下的skill是早期网文创作流程的遗留，已不再使用，保留仅供参考
 - 项目目前没有package.json或构建脚本
 - 优先使用中文沟通
+- **生成验证必须使用子代理（Agent工具）**：章节正文生成、提取、校验等闭环操作必须在子代理中完成。主会话只做编排和收集结果。直接在主会话生成正文会浪费上下文且造成污染。
 
 ### 测试与开发流程
 
