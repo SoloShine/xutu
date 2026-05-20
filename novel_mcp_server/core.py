@@ -31,6 +31,17 @@ from prompts import ARC_DERIVATION_PROMPT
 from validators import validate_chapter as _run_validation
 
 
+def _persist(project: str, subdir: str, filename: str, content: str):
+    """将内容落盘到 projects/<project>/<subdir>/<filename>。"""
+    from datetime import datetime
+    dir_path = os.path.join(_projects_dir, project, subdir)
+    os.makedirs(dir_path, exist_ok=True)
+    path = os.path.join(dir_path, filename)
+    header = f"# Persisted: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(header + content)
+
+
 def _bigram_overlap_str(s1, s2, min_shared=2):
     """检查两个字符串是否有足够的bigram重叠"""
     if not s1 or not s2:
@@ -146,7 +157,9 @@ def get_all_threads(project: str) -> list:
 
 def get_extraction_prompt(project: str, chapter: int, chapter_text: str) -> str:
     kg = _kg(project)
-    return build_extraction_prompt(kg, chapter, chapter_text, project=project)
+    prompt = build_extraction_prompt(kg, chapter, chapter_text, project=project)
+    _persist(project, "prompts", f"extraction_ch{chapter}.txt", prompt)
+    return prompt
 
 
 def get_writing_prompt(project: str, chapter: int,
@@ -156,7 +169,9 @@ def get_writing_prompt(project: str, chapter: int,
     cfg = config_loader.load(project)
     kg = _kg(project)
     context = kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars)
-    return build_writing_prompt(context, chapter, config=cfg)
+    prompt = build_writing_prompt(context, chapter, config=cfg)
+    _persist(project, "prompts", f"writing_ch{chapter}.txt", prompt)
+    return prompt
 
 
 def get_derivation_prompt(project: str, chapter: int) -> str:
@@ -196,12 +211,14 @@ def get_derivation_prompt(project: str, chapter: int) -> str:
     ) if ctx.get("suspense_threads") else "无"
 
     cfg = config_loader.load(project)
-    return ARC_DERIVATION_PROMPT.format(
+    prompt = ARC_DERIVATION_PROMPT.format(
         outline_entry=outline_text, suspense_threads=threads_text,
         recent_arcs=arcs_text, recent_events=events_text,
         characters=chars_text, themes=themes_text, motifs=motifs_text,
         last_event=last_event_text,
         scenes_per_arc=cfg.get("derivation", {}).get("scenes_per_arc", "3-5"))
+    _persist(project, "prompts", f"derivation_ch{chapter}.txt", prompt)
+    return prompt
 
 
 # ============================================================
@@ -391,6 +408,9 @@ def write_extraction(project: str, chapter: int,
         extracted = json.loads(extracted_json)
     else:
         extracted = extracted_json
+    # 落盘提取结果
+    _persist(project, "extractions", f"extraction_ch{chapter}.json",
+             json.dumps(extracted, ensure_ascii=False, indent=2))
     report = write_extraction_to_graph(kg, chapter, extracted,
                                        skip_conflicts=True, project=project)
     return {

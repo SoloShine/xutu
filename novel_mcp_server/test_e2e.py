@@ -685,6 +685,78 @@ def main():
         test("rollback_edit fake snapshot error",
              "error" in result_rb_fake)
 
+        # ---- 22. Prompt/Extraction 落盘 ----
+        print("\n[22] Prompt/Extraction 落盘")
+        import glob as _glob
+
+        close_all()
+        kg.clear_project()
+        kg.add_character("测试角色", role="protagonist")
+        kg.add_event("E1_01", title="测试事件", detail="用于落盘测试", chapter=1)
+        kg.add_chapter_arc(1, purpose="落盘测试", scenes="场景A", ending="结束")
+
+        # 测试 prompts 目录不存在（clean start）
+        prompts_dir = os.path.join(os.path.dirname(kg._path), "prompts")
+        extractions_dir = os.path.join(os.path.dirname(kg._path), "extractions")
+
+        # get_extraction_prompt 落盘
+        from core import get_extraction_prompt as _gep
+        close_all()
+        prompt_e = _gep(PROJECT, 1, "这是章节正文用于测试提取。")
+        test("extraction prompt returns string",
+             isinstance(prompt_e, str) and len(prompt_e) > 50)
+        epath = os.path.join(prompts_dir, "extraction_ch1.txt")
+        test("extraction prompt file exists",
+             os.path.isfile(epath))
+        with open(epath, encoding="utf-8") as f:
+            content = f.read()
+        test("extraction prompt has persisted header",
+             "# Persisted:" in content)
+        test("extraction prompt has content",
+             "这是章节正文用于测试提取" in content)
+
+        # get_writing_prompt 落盘
+        from core import get_writing_prompt as _gwp
+        close_all()
+        prompt_w = _gwp(PROJECT, 1)
+        test("writing prompt returns string",
+             isinstance(prompt_w, str) and len(prompt_w) > 50)
+        wpath = os.path.join(prompts_dir, "writing_ch1.txt")
+        test("writing prompt file exists",
+             os.path.isfile(wpath))
+
+        # get_derivation_prompt 落盘
+        from core import get_derivation_prompt as _gdp
+        close_all()
+        prompt_d = _gdp(PROJECT, 2)
+        test("derivation prompt returns string",
+             isinstance(prompt_d, str) and len(prompt_d) > 50)
+        dpath = os.path.join(prompts_dir, "derivation_ch2.txt")
+        test("derivation prompt file exists",
+             os.path.isfile(dpath))
+
+        # write_extraction 落盘
+        from core import write_extraction as _we
+        close_all()
+        extracted_data = {
+            "events": [{"id": "E1_02", "title": "提取事件", "detail": "测试", "chapter": 1, "type": "daily"}],
+            "event_relations": [],
+            "new_characters": [],
+            "character_updates": [],
+            "thread_updates": [],
+            "new_threads": []
+        }
+        _we(PROJECT, 1, json.dumps(extracted_data))
+        xpath = os.path.join(extractions_dir, "extraction_ch1.json")
+        test("extraction json file exists",
+             os.path.isfile(xpath))
+        with open(xpath, encoding="utf-8") as f:
+            xcontent = f.read()
+        test("extraction json has persisted header",
+             "# Persisted:" in xcontent)
+        test("extraction json has event data",
+             "E1_02" in xcontent)
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")
