@@ -46,6 +46,8 @@
 
 21. **已完成：语义合规+目的检查验证** — 三步合规管线（bigram→LLM语义→purpose检查）+ V17 50章回溯验证。LLM语义检查解决"深夜来访"="突然出现"等bigram盲区；purpose级别检查精准检测V17的19/50偏离章节（Ch27首次偏离，Ch30-48持续偏离，Ch49-50回归），零误报零漏报。103 E2E测试全部通过。归档于 `archive/v20-语义合规+目的检查验证/`。
 
+22. **已完成：功能增强验证（V21）** — 编辑版本管理+prompt落盘+地点自动注册+批量合规检查。4项增强：①编辑快照自动创建（微秒时间戳防冲突），list_edits/rollback_edit支持回滚；②extraction/writing/derivation prompt自动落盘到projects目录；③write_extraction自动注册未声明地点（type=auto_registered）；④batch_check_outline_compliance多章purpose合并为单次LLM调用。37个MCP工具，140 E2E测试全部通过。
+
 ## Project Structure
 
 ```text
@@ -71,7 +73,7 @@ novel_test/
 │   ├── kg_json.py               # JSON文件后端（默认，零依赖）
 │   ├── kg_sync.py               # JSON↔Neo4j双向同步工具
 │   ├── mcp_cli.py               # CLI fallback（薄壳）
-│   ├── test_e2e.py              # 双后端E2E测试（58测试点）
+│   ├── test_e2e.py              # 双后端E2E测试（140测试点）
 │   └── requirements.txt         # mcp[cli]依赖
 ├── .mcp.json                    # MCP Server配置
 ├── novel_kg_mvp/                # 知识图谱代码
@@ -185,13 +187,17 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] 偏离起点检测：Ch27为V17首次偏离点，与V17原始报告精确吻合（v20）
 - [x] 103 E2E测试全部通过（v20）
 
+### 已验证（v21）
+- [x] 编辑版本管理：accept_edit自动快照（微秒时间戳），list_edits/rollback_edit回滚，clear_project同步清理快照（v21）
+- [x] prompt/extraction落盘：get_extraction_prompt/get_writing_prompt/get_derivation_prompt自动保存到prompts/目录，write_extraction保存到extractions/目录（v21）
+- [x] 地点自动注册：write_extraction自动注册未在图谱中的引用地点（type=auto_registered），去重existing+new_locations（v21）
+- [x] 批量合规检查：batch_check_outline_compliance多章purpose合并为单次LLM调用，自动检测大纲章节，返回统计摘要（v21）
+- [x] 37工具140测试点：JSON后端E2E全部通过（v21）
+
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
 - 🔲 篇幅精确控制：当前波动1.5x（3938-5912字），串行后改善
 - 🔲 100章+规模：超50章的一致性保持与图谱查询性能
-- 🔲 地点自动注册：高频地点应自动进入图谱避免"地点未注册"冲突
-- 🔲 编辑版本管理：保留编辑历史，支持回滚
-- 🔲 purpose检查批量化：一次LLM调用检查多章，减少开销
 
 ## Development Notes
 
@@ -206,7 +212,7 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 ```bash
 cd novel_mcp_server
 
-# E2E测试：96个测试点覆盖全部33工具，~3秒
+# E2E测试：140个测试点覆盖全部37工具，~60秒
 python test_e2e.py                    # JSON后端（默认，零依赖）
 KG_BACKEND=neo4j python test_e2e.py   # Neo4j后端（需docker-compose up -d）
 
@@ -226,7 +232,7 @@ KG_BACKEND=neo4j python mcp_cli.py get_graph_stats --project <项目名>
 
 | 改什么 | 改哪里 | 需要重启MCP |
 |--------|--------|------------|
-| 业务逻辑（33个工具） | `novel_mcp_server/core.py` | 是 |
+| 业务逻辑（37个工具） | `novel_mcp_server/core.py` | 是 |
 | JSON后端存储 | `novel_mcp_server/kg_json.py` | 是 |
 | Neo4j后端存储 | `novel_kg_mvp/graph.py` | 是 |
 | 提取管线 | `novel_kg_mvp/mine.py` | 是 |
