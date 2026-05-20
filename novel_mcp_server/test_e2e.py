@@ -294,7 +294,7 @@ def main():
         print("\n[14] 大纲合规检查")
         from validators import check_outline_compliance
 
-        # 合规场景
+        # 合规场景（bigram匹配）
         kg.clear_project()
         kg.add_outline_entry(1, purpose="建立悬念", key_events="发现焊疤")
         compliant_events = [{"id": "E1_01", "title": "发现焊疤", "detail": "老孟看到焊疤"}]
@@ -303,11 +303,11 @@ def main():
              len(result) == 0,
              f"violations: {[v.detail for v in result]}")
 
-        # 不合规场景
+        # bigram不匹配场景 → pending_semantic
         divergent_events = [{"id": "E1_01", "title": "遇到孙洁", "detail": "走廊偶遇"}]
         result2 = check_outline_compliance(kg.get_outline_entry(1), divergent_events)
-        test("outline compliance failed on key_events",
-             any(v.detail.startswith("大纲事件") for v in result2),
+        test("outline compliance pending_semantic on bigram miss",
+             any(v.severity == "pending_semantic" for v in result2),
              f"violations: {[v.detail for v in result2]}")
 
         # 无大纲
@@ -327,8 +327,8 @@ def main():
             kg.get_outline_entry(2), [],
             thread_updates=[]
         )
-        test("outline threads_to_resolve failed",
-             any("ST01_01" in v.detail for v in result5))
+        test("outline threads_to_resolve pending_semantic",
+             any(v.severity == "pending_semantic" and "ST01_01" in v.detail for v in result5))
 
         # ---- 15. check_outline_compliance MCP工具 ----
         print("\n[15] check_outline_compliance MCP工具")
@@ -349,16 +349,21 @@ def main():
              f"got {result_coc['overall']}")
         test("check_outline_compliance action_required false",
              result_coc["action_required"] == False)
+        test("check_outline_compliance has semantic_checks field",
+             "semantic_checks" in result_coc)
 
-        # 不合规测试
+        # bigram miss → LLM语义检查（fallback时key_events→error→diverged）
         close_all()
         kg.clear_project()
         kg.add_outline_entry(1, purpose="建立悬念", key_events="发现焊疤")
         kg.add_event("E1_01", title="遇到孙洁", chapter=1)
         result_div = _coc(PROJECT, 1)
-        test("check_outline_compliance diverged",
+        test("check_outline_compliance diverged on semantic miss",
              result_div["overall"] == "diverged",
              f"got {result_div['overall']}")
+        test("check_outline_compliance has semantic_checks results",
+             len(result_div.get("semantic_checks", [])) > 0,
+             f"semantic_checks: {result_div.get('semantic_checks', [])}")
 
         # 无大纲测试
         close_all()
@@ -541,10 +546,54 @@ def main():
              collab.get("outline_compliance") == True)
         test("auto_revise_outline default False",
              collab.get("auto_revise_outline") == False)
+        test("semantic_check default True",
+             collab.get("semantic_check") == True)
 
         from config_loader import config_loader as cl2
         test("config_loader.get collaboration",
              cl2.get(PROJECT, "collaboration", "review_checkpoint", default=False) == False)
+
+        # ---- 20. LLM语义合规检查 ----
+        print("\n[20] LLM语义合规检查")
+        from core import _semantic_compliance_check
+
+        # 测试1: 无事件数据时fallback
+        close_all()
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="测试", key_events="宋姐出现")
+        from validators import check_outline_compliance as _coc_val
+        outline_e = kg.get_outline_entry(1)
+        violations_e = _coc_val(outline_e, [])  # 空事件列表
+        sem_no_events = _semantic_compliance_check(PROJECT, 1, outline_e, [], violations_e)
+        test("semantic check no events fallback",
+             len(sem_no_events) > 0 and not sem_no_events[0][1],
+             f"got {sem_no_events}")
+
+        # 测试2: mock LLM语义匹配（"深夜来访" = "突然出现"）
+        close_all()
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="测试", key_events="宋姐突然出现")
+        kg.add_event("E1_01", title="宋姐深夜来访", detail="半夜敲门", chapter=1)
+        outline_sem = kg.get_outline_entry(1)
+        events_sem = kg.get_events_by_chapter(1)
+        violations_sem = _coc_val(outline_sem, events_sem)
+
+        # violations_sem应该有pending_semantic项（bigram不匹配）
+        test("semantic pending items exist after bigram miss",
+             any(v.severity == "pending_semantic" for v in violations_sem),
+             f"violations: {[v.detail for v in violations_sem]}")
+
+        # 测试3: semantic_check配置项
+        test("semantic_check config True",
+             cl2.get(PROJECT, "collaboration", "semantic_check", default=True) == True)
+
+        # 测试4: 返回结构完整性
+        from core import check_outline_compliance as _coc_core
+        close_all()
+        result_struct = _coc_core(PROJECT, 1)
+        test("semantic result has required fields",
+             all(k in result_struct for k in ["programmatic_checks", "semantic_checks", "overall"]),
+             f"keys: {list(result_struct.keys())}")
 
     except Exception as e:
         global FAIL

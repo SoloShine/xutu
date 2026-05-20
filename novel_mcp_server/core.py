@@ -444,7 +444,7 @@ def detect_extraction_conflicts(project: str, extracted_json: str) -> list:
 
 
 def check_outline_compliance(project: str, chapter: int) -> dict:
-    """大纲合规检查（程序化）。"""
+    """大纲合规检查（程序化+LLM语义）。"""
     kg = _kg(project)
     outline_entry = kg.get_outline_entry(chapter)
     if not outline_entry:
@@ -461,17 +461,48 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
     from validators import check_outline_compliance as _check_compliance
     violations = _check_compliance(outline_entry, events, chapter_arc=chapter_arc)
 
-    checks = []
+    # 分离程序化结果和需要语义检查的项
+    programmatic_checks = []
+    pending_semantic = []
     for v in violations:
-        checks.append({
-            "item": v.constraint_type,
-            "status": "failed",
-            "severity": v.severity,
-            "detail": v.detail,
-        })
+        if v.severity == "pending_semantic":
+            pending_semantic.append(v)
+        else:
+            programmatic_checks.append({
+                "item": v.constraint_type,
+                "status": "failed",
+                "severity": v.severity,
+                "detail": v.detail,
+            })
 
-    errors = [c for c in checks if c["severity"] == "error"]
-    warnings = [c for c in checks if c["severity"] == "warning"]
+    # 第二步：对程序化未匹配的项，调用LLM语义判定
+    semantic_checks = []
+    if pending_semantic:
+        sem_results = _semantic_compliance_check(
+            project, chapter, outline_entry, events, pending_semantic
+        )
+        for item, matched, reason in sem_results:
+            severity = "warning" if matched else "error"
+            # key_events用error，其余用warning
+            field = item.fix.split(":")[1] if item.fix and ":" in item.fix else ""
+            if not matched and field == "key_events":
+                severity = "error"
+            elif not matched:
+                severity = "warning"
+            semantic_checks.append({
+                "item": item.constraint_type,
+                "status": "matched" if matched else "failed",
+                "severity": severity if not matched else "info",
+                "detail": f"语义判定: '{item.detail.split('未在程序化检查中匹配')[0].strip()}' "
+                          f"{'已匹配' if matched else '未匹配'} — {reason}",
+                "original_outline_item": item.fix.split(":", 2)[-1] if item.fix and ":" in item.fix else "",
+            })
+
+    # 合并所有检查结果
+    all_checks = programmatic_checks + semantic_checks
+
+    errors = [c for c in all_checks if c["severity"] == "error"]
+    warnings = [c for c in all_checks if c["severity"] == "warning"]
 
     if errors:
         overall = "diverged"
@@ -483,10 +514,87 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
     return {
         "chapter": chapter,
         "outline_entry": outline_entry,
-        "programmatic_checks": checks,
+        "programmatic_checks": programmatic_checks,
+        "semantic_checks": semantic_checks,
         "overall": overall,
         "action_required": overall != "followed",
     }
+
+
+def _semantic_compliance_check(project, chapter, outline_entry, events,
+                                pending_items):
+    """LLM语义合规判定：对bigram未匹配的大纲项进行语义等价检查。
+
+    返回 list of (Violation, matched: bool, reason: str)
+    """
+    # 收集事件文本作为"实际发生了什么"
+    event_summaries = []
+    for ev in events:
+        title = ev.get("title", "")
+        detail = ev.get("detail", "")
+        if title or detail:
+            event_summaries.append(f"- {title}{'：' + detail if detail else ''}")
+
+    if not event_summaries:
+        # 没有事件，所有未匹配项直接判定为失败
+        return [(v, False, "本章无事件数据") for v in pending_items]
+
+    # 构建LLM prompt
+    items_text = []
+    for v in pending_items:
+        field_info = v.fix.split(":", 2) if v.fix and ":" in v.fix else ["", "", ""]
+        field_name = field_info[1] if len(field_info) > 1 else "unknown"
+        item_value = field_info[2] if len(field_info) > 2 else ""
+        items_text.append(f"- [{field_name}] {item_value}")
+
+    prompt = f"""你是小说大纲合规检查助手。判断以下大纲要求是否在章节事件中得到满足（语义等价即可，不需要字面匹配）。
+
+## 第{chapter}章大纲要求（程序化bigram未匹配的项）
+{chr(10).join(items_text)}
+
+## 第{chapter}章实际事件
+{chr(10).join(event_summaries)}
+
+## 判定规则
+- "深夜来访"、"突然出现"、"夜间到访"是语义等价的
+- "讲述历史"、"说出真相"、"揭露秘密"可能语义等价
+- "发现异常"、"注意到不对劲"、"察觉异样"是语义等价的
+- 关键是判断大纲描述的事件是否在章节中以不同措辞发生了
+
+## 输出格式（JSON）
+返回一个JSON数组，每个元素对应一个大纲要求：
+```json
+[
+  {{"matched": true/false, "reason": "简要说明为什么匹配/不匹配"}}
+]
+```
+按大纲要求的顺序返回，不要遗漏。"""
+
+    try:
+        from llm import call_llm
+        result = call_llm(prompt, json_mode=True,
+                          stream_label=f"语义合规检查Ch{chapter}")
+        if isinstance(result, list) and len(result) == len(pending_items):
+            return [
+                (pending_items[i],
+                 bool(r.get("matched", False)),
+                 str(r.get("reason", "")))
+                for i, r in enumerate(result)
+            ]
+    except Exception as e:
+        # LLM调用失败时，按保守策略处理：key_events视为error，其余warning
+        pass
+
+    # Fallback: 无法判定时按字段类型给severity
+    results = []
+    for v in pending_items:
+        field_info = v.fix.split(":", 2) if v.fix and ":" in v.fix else ["", "", ""]
+        field_name = field_info[1] if len(field_info) > 1 else ""
+        if field_name == "key_events":
+            results.append((v, False, "LLM语义检查不可用，按error处理"))
+        else:
+            results.append((v, False, "LLM语义检查不可用，按warning处理"))
+    return results
 
 
 def revise_outline(project: str, chapter: int, reason: str,

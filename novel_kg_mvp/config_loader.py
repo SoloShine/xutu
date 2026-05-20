@@ -61,6 +61,7 @@ DEFAULTS = {
         "review_checkpoint": False,
         "outline_compliance": True,
         "auto_revise_outline": False,
+        "semantic_check": True,
     },
 }
 

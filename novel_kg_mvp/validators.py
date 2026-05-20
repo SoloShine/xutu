@@ -332,6 +332,10 @@ def check_outline_compliance(outline_entry, events, chapter_arc=None,
 
     对比 outline_entry 各字段与章节的实际提取结果。
     返回 Violation 列表（每个 violation 的 constraint_type 为 outline_compliance）。
+
+    当 bigram 未匹配时，将未匹配项记录在返回的 violations 中，
+    但 severity 使用 "pending_semantic" 标记，供 core.py 调用 LLM 语义判定后
+    再决定最终 severity。
     """
     violations = []
     if not outline_entry:
@@ -350,8 +354,9 @@ def check_outline_compliance(outline_entry, events, chapter_arc=None,
             if not matched:
                 violations.append(Violation(
                     constraint_type="outline_compliance",
-                    severity="error",
-                    detail=f"大纲事件'{ke}'未在本章出现",
+                    severity="pending_semantic",
+                    detail=f"大纲事件'{ke}'未在程序化检查中匹配",
+                    fix=f"SEMANTIC_CHECK:key_events:{ke}",
                 ))
 
     # 2. threads_to_plant 检查
@@ -364,8 +369,9 @@ def check_outline_compliance(outline_entry, events, chapter_arc=None,
             if not id_matched and not content_matched:
                 violations.append(Violation(
                     constraint_type="outline_compliance",
-                    severity="warning",
-                    detail=f"大纲要求种植'{tp}'但未种植",
+                    severity="pending_semantic",
+                    detail=f"大纲要求种植'{tp}'未在程序化检查中匹配",
+                    fix=f"SEMANTIC_CHECK:threads_to_plant:{tp}",
                 ))
 
     # 3. threads_to_resolve 检查
@@ -380,8 +386,9 @@ def check_outline_compliance(outline_entry, events, chapter_arc=None,
             if tr not in resolved_ids:
                 violations.append(Violation(
                     constraint_type="outline_compliance",
-                    severity="warning",
-                    detail=f"大纲要求解决'{tr}'但未解决",
+                    severity="pending_semantic",
+                    detail=f"大纲要求解决'{tr}'未在程序化检查中匹配",
+                    fix=f"SEMANTIC_CHECK:threads_to_resolve:{tr}",
                 ))
 
     # 4. structure_hint 检查
