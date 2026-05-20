@@ -212,6 +212,7 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
 - 🔲 篇幅精确控制：当前波动1.5x（3938-5912字），串行后改善
 - 🔲 100章+规模：超50章的一致性保持与图谱查询性能
+- 🔲 **E2E测试分组**：test_e2e.py 按 LLM/非LLM 分组，支持命令行参数选择性运行（如 `python test_e2e.py --no-llm` 跳过 LLM 测试，`python test_e2e.py --section 28-31` 只跑指定段），避免每次全量4分钟
 
 ## Development Notes
 
@@ -227,7 +228,10 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 ```bash
 cd novel_mcp_server
 
-# E2E测试：140个测试点覆盖全部37工具，~60秒
+# 快速测试（无LLM调用，~1秒）
+python test_parallel.py              # 并行生成工具（V23，27测试点）
+
+# 全量E2E测试（含LLM调用，~4分钟）
 python test_e2e.py                    # JSON后端（默认，零依赖）
 KG_BACKEND=neo4j python test_e2e.py   # Neo4j后端（需docker-compose up -d）
 
