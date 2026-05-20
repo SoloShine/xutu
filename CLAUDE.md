@@ -48,6 +48,8 @@
 
 22. **已完成：功能增强验证（V21）** — 编辑版本管理+prompt落盘+地点自动注册+批量合规检查。4项增强：①编辑快照自动创建（微秒时间戳防冲突），list_edits/rollback_edit支持回滚；②extraction/writing/derivation prompt自动落盘到projects目录；③write_extraction自动注册未声明地点（type=auto_registered）；④batch_check_outline_compliance多章purpose合并为单次LLM调用。原创6章旧物修复悬疑《铜锈》：51,533字符、39事件、8悬念线（100%解决率）、243关系。6章大纲零偏移，事后编辑闭环验证（Ch3编辑→快照→回滚），批量合规batch_purpose=true。37个MCP工具，140 E2E测试全部通过。归档于 `archive/v21-功能增强验证/`。
 
+23. **已完成：三项改进+并行章节生成（V22-V23）** — V22：rollback needs_revision清理、purpose SHA256缓存、篇幅校验增强（166测试）。V23：4个并行生成MCP工具——analyze_parallel_groups（字面相邻依赖分析+拓扑排序）、prepare_parallel_batch（全图谱快照+冻结上下文）、get_parallel_writing_prompt（弧线ending锚点替代prev_text）、merge_parallel_results（串行合并+冲突检测）。41个MCP工具，194 E2E测试全部通过。
+
 ## Project Structure
 
 ```text
@@ -69,11 +71,11 @@ novel_test/
 │   └── v16-串行连贯性验证/      # 前章注入+悬念线预算+串行重跑《缝合》
 ├── novel_mcp_server/            # MCP Server（28工具，包装novel_kg_mvp）
 │   ├── server.py                # FastMCP主文件（薄壳）
-│   ├── core.py                  # 业务逻辑+连接池+后端选择+节奏分析
+│   ├── core.py                  # 业务逻辑+连接池+后端选择+节奏分析+并行生成
 │   ├── kg_json.py               # JSON文件后端（默认，零依赖）
 │   ├── kg_sync.py               # JSON↔Neo4j双向同步工具
 │   ├── mcp_cli.py               # CLI fallback（薄壳）
-│   ├── test_e2e.py              # 双后端E2E测试（140测试点）
+│   ├── test_e2e.py              # 双后端E2E测试（194测试点）
 │   └── requirements.txt         # mcp[cli]依赖
 ├── .mcp.json                    # MCP Server配置
 ├── novel_kg_mvp/                # 知识图谱代码
@@ -193,6 +195,18 @@ Neo4j浏览器：http://localhost:7474 （neo4j / novel2024）
 - [x] 地点自动注册：write_extraction自动注册未在图谱中的引用地点（type=auto_registered），去重existing+new_locations（v21）
 - [x] 批量合规检查：batch_check_outline_compliance多章purpose合并为单次LLM调用，自动检测大纲章节，返回统计摘要（v21）
 - [x] 37工具140测试点：JSON后端E2E全部通过（v21）
+
+### 已验证（v22）
+- [x] V22 三项改进：rollback_edit needs_revision清理、purpose缓存（SHA256哈希+4个失效点）、篇幅校验增强（deficit%+场景压缩+max_words）
+- [x] 37工具166测试点：JSON后端E2E全部通过（v22）
+
+### 已完成（v23）
+- [x] 并行章节生成：4个新MCP工具（analyze_parallel_groups/prepare_parallel_batch/get_parallel_writing_prompt/merge_parallel_results）
+- [x] 依赖分析：字面相邻规则（仅Ch N/N+1串行），跳跃编号章节可并行，拓扑排序分组
+- [x] 冻结上下文：全图谱快照+预计算chapter_context，前一章在批内时用弧线ending锚点替代prev_text
+- [x] 合并管线：串行写回+冲突检测+一致性检查，合并后自动清理冻结缓存
+- [x] 向后兼容：无parallel_group标记时完全串行，零行为变更
+- [x] 41工具194测试点：JSON后端E2E全部通过（v23）
 
 ### 待验证
 - 🔲 预查询有效性：长篇（50章+）场景下LLM主动请求上下文的价值
