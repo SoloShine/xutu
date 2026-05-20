@@ -568,13 +568,19 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
 
 
 def batch_check_outline_compliance(project: str,
-                                   chapters: list = None) -> dict:
-    """批量化大纲合规检查：程序化逐章执行，purpose检查合并为一次LLM调用。
+                                   chapters: list = None,
+                                   batch_size: int = 8) -> dict:
+    """批量化大纲合规检查：程序化逐章执行，purpose检查按batch_size分批合并LLM调用。
 
     chapters: 要检查的章节列表。不传则检查所有有大纲条目的章节。
-    返回 {"results": {ch: result}, "batch_purpose": bool, "stats": {...}}
+    batch_size: 每批purpose检查合并的最大章节数。默认8。设为0或负数则全部合并。
+    返回 {"results": {ch: result}, "batch_purpose": bool, "batch_count": int, "stats": {...}}
     """
     kg = _kg(project)
+
+    # batch_size <= 0 表示全部合并
+    if batch_size <= 0:
+        batch_size = 9999
 
     # 确定要检查的章节
     if chapters is None:
@@ -598,40 +604,44 @@ def batch_check_outline_compliance(project: str,
                 "events": kg.get_events_by_chapter(ch),
             })
 
-    # 批量purpose检查（合并为一次LLM调用）
+    # 批量purpose检查（按batch_size分批合并LLM调用）
     batch_done = False
+    batch_count = 0
     cfg = config_loader.load(project)
     if (cfg.get("collaboration", {}).get("semantic_check", True)
-            and len(chapters_needing_purpose) > 1):
-        batch_result = _batch_purpose_check(project, chapters_needing_purpose)
-        if batch_result:
-            batch_done = True
-            # 用批量结果替换各章的单次purpose结果
-            for ch_info in batch_result:
-                ch = ch_info["chapter"]
-                if ch in results:
-                    # 移除原有的单次purpose检查结果
-                    sem = results[ch].get("semantic_checks", [])
-                    sem = [s for s in sem if s.get("item") != "purpose_alignment"]
-                    # 添加批量检查结果
-                    sem.append(ch_info["result"])
-                    results[ch]["semantic_checks"] = sem
-                    # 重新计算overall
-                    all_c = (results[ch].get("programmatic_checks", [])
-                             + sem)
-                    errs = [c for c in all_c if c["severity"] == "error"]
-                    warns = [c for c in all_c if c["severity"] == "warning"]
-                    if errs:
-                        results[ch]["overall"] = "diverged"
-                    elif warns:
-                        results[ch]["overall"] = "partial"
-                    else:
-                        results[ch]["overall"] = "followed"
-                    results[ch]["action_required"] = results[ch]["overall"] != "followed"
+            and len(chapters_needing_purpose) > 1
+            and batch_size > 1):
+        # 分批处理
+        for i in range(0, len(chapters_needing_purpose), batch_size):
+            batch = chapters_needing_purpose[i:i + batch_size]
+            batch_result = _batch_purpose_check(project, batch)
+            if batch_result:
+                batch_done = True
+                batch_count += 1
+                for ch_info in batch_result:
+                    ch = ch_info["chapter"]
+                    if ch in results:
+                        sem = results[ch].get("semantic_checks", [])
+                        sem = [s for s in sem if s.get("item") != "purpose_alignment"]
+                        sem.append(ch_info["result"])
+                        results[ch]["semantic_checks"] = sem
+                        all_c = (results[ch].get("programmatic_checks", [])
+                                 + sem)
+                        errs = [c for c in all_c if c["severity"] == "error"]
+                        warns = [c for c in all_c if c["severity"] == "warning"]
+                        if errs:
+                            results[ch]["overall"] = "diverged"
+                        elif warns:
+                            results[ch]["overall"] = "partial"
+                        else:
+                            results[ch]["overall"] = "followed"
+                        results[ch]["action_required"] = results[ch]["overall"] != "followed"
 
     return {
         "results": results,
         "batch_purpose": batch_done,
+        "batch_count": batch_count,
+        "batch_size": batch_size,
         "stats": {
             "total": len(results),
             "followed": sum(1 for r in results.values()

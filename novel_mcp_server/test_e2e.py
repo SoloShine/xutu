@@ -884,6 +884,41 @@ def main():
         test("batch empty chapters",
              result_empty["stats"]["total"] == 0)
 
+        # 测试 batch_size 参数
+        # 设置6章大纲+事件（用于分批测试）
+        close_all()
+        kg.clear_project()
+        for ch in range(1, 7):
+            kg.add_outline_entry(ch, purpose=f"第{ch}章目的",
+                                key_events=f"事件{ch}", structure_hint="linear")
+            kg.add_event(f"E{ch}_01", title=f"事件{ch}", detail=f"第{ch}章事件", chapter=ch)
+
+        # batch_size=2 → 3批
+        close_all()
+        result_bs2 = _bcoc(PROJECT, batch_size=2)
+        test("batch_size=2 has batch_count",
+             result_bs2.get("batch_count", 0) >= 1,
+             f"got batch_count={result_bs2.get('batch_count')}")
+        test("batch_size=2 total is 6",
+             result_bs2["stats"]["total"] == 6,
+             f"got {result_bs2['stats']['total']}")
+        test("batch_size=2 returns batch_size field",
+             result_bs2.get("batch_size") == 2,
+             f"got {result_bs2.get('batch_size')}")
+
+        # batch_size=0 → 全部合并（1批）
+        close_all()
+        result_bs0 = _bcoc(PROJECT, batch_size=0)
+        test("batch_size=0 total is 6",
+             result_bs0["stats"]["total"] == 6)
+
+        # batch_size=1 → 逐章检查（无批量）
+        close_all()
+        result_bs1 = _bcoc(PROJECT, batch_size=1)
+        test("batch_size=1 no batch",
+             result_bs1.get("batch_purpose") == False,
+             f"got batch_purpose={result_bs1.get('batch_purpose')}")
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

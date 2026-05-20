@@ -280,13 +280,15 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
 
 @mcp.tool()
 def batch_check_outline_compliance(project: str,
-                                   chapters: list = None) -> dict:
-    """批量大纲合规检查。程序化逐章执行，purpose检查合并为一次LLM调用。
+                                   chapters: list = None,
+                                   batch_size: int = 8) -> dict:
+    """批量大纲合规检查。程序化逐章执行，purpose检查按batch_size分批合并LLM调用。
 
     chapters: 可选，指定要检查的章节列表。不传则检查所有有大纲条目的章节。
+    batch_size: 每批purpose检查合并的最大章节数，默认8。设为0则全部合并为一次调用。
     返回各章合规结果和统计摘要。
     """
-    return core.batch_check_outline_compliance(project, chapters)
+    return core.batch_check_outline_compliance(project, chapters, batch_size)
 
 
 @mcp.tool()
