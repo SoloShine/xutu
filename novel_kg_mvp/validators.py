@@ -311,3 +311,88 @@ def validate_chapter(text, context, arc=None, config=None):
         violations=violations,
         fixed_text=fixed_text,
     )
+
+
+# ========== 大纲合规检查 ==========
+
+def _bigram_overlap(s1, s2, min_shared=2):
+    """检查两个字符串是否有足够的bigram重叠"""
+    if not s1 or not s2:
+        return False
+    def _bigrams(s):
+        if len(s) < 4:
+            return {s} if s else set()
+        return {s[i:i+2] for i in range(len(s)-1)}
+    return len(_bigrams(s1) & _bigrams(s2)) >= min_shared
+
+
+def check_outline_compliance(outline_entry, events, chapter_arc=None,
+                              thread_updates=None, new_threads=None):
+    """程序化大纲合规检查。
+
+    对比 outline_entry 各字段与章节的实际提取结果。
+    返回 Violation 列表（每个 violation 的 constraint_type 为 outline_compliance）。
+    """
+    violations = []
+    if not outline_entry:
+        return violations
+
+    # 1. key_events 检查
+    key_events_str = outline_entry.get("key_events", "")
+    if key_events_str:
+        key_events = [e.strip() for e in key_events_str.split(",") if e.strip()]
+        event_texts = [
+            (ev.get("title", "") or "") + " " + (ev.get("detail", "") or "")
+            for ev in events
+        ]
+        for ke in key_events:
+            matched = any(_bigram_overlap(ke, et) for et in event_texts)
+            if not matched:
+                violations.append(Violation(
+                    constraint_type="outline_compliance",
+                    severity="error",
+                    detail=f"大纲事件'{ke}'未在本章出现",
+                ))
+
+    # 2. threads_to_plant 检查
+    threads_plant_str = outline_entry.get("threads_to_plant", "")
+    if threads_plant_str and new_threads is not None:
+        planted_contents = {t.get("content", "") for t in new_threads}
+        for tp in [t.strip() for t in threads_plant_str.split(",") if t.strip()]:
+            id_matched = tp in {t.get("id", "") for t in new_threads}
+            content_matched = any(_bigram_overlap(tp, pc) for pc in planted_contents)
+            if not id_matched and not content_matched:
+                violations.append(Violation(
+                    constraint_type="outline_compliance",
+                    severity="warning",
+                    detail=f"大纲要求种植'{tp}'但未种植",
+                ))
+
+    # 3. threads_to_resolve 检查
+    threads_resolve_str = outline_entry.get("threads_to_resolve", "")
+    if threads_resolve_str and thread_updates is not None:
+        resolved_ids = {
+            tu.get("thread_id", "")
+            for tu in thread_updates
+            if tu.get("new_status") == "resolved"
+        }
+        for tr in [t.strip() for t in threads_resolve_str.split(",") if t.strip()]:
+            if tr not in resolved_ids:
+                violations.append(Violation(
+                    constraint_type="outline_compliance",
+                    severity="warning",
+                    detail=f"大纲要求解决'{tr}'但未解决",
+                ))
+
+    # 4. structure_hint 检查
+    structure_hint = outline_entry.get("structure_hint", "")
+    if structure_hint and chapter_arc:
+        arc_structure = chapter_arc.get("structure_type", "linear")
+        if structure_hint.lower() != arc_structure.lower():
+            violations.append(Violation(
+                constraint_type="outline_compliance",
+                severity="warning",
+                detail=f"大纲要求结构'{structure_hint}'，实际为'{arc_structure}'",
+            ))
+
+    return violations

@@ -290,6 +290,46 @@ def main():
              any(i["type"] == "场景密度异常" for i in pacing_issues),
              f"issues: {[i['type'] for i in pacing_issues]}")
 
+        # ---- 14. 大纲合规检查 ----
+        print("\n[14] 大纲合规检查")
+        from validators import check_outline_compliance
+
+        # 合规场景
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="建立悬念", key_events="发现焊疤")
+        compliant_events = [{"id": "E1_01", "title": "发现焊疤", "detail": "老孟看到焊疤"}]
+        result = check_outline_compliance(kg.get_outline_entry(1), compliant_events)
+        test("outline compliance passed",
+             len(result) == 0,
+             f"violations: {[v.detail for v in result]}")
+
+        # 不合规场景
+        divergent_events = [{"id": "E1_01", "title": "遇到孙洁", "detail": "走廊偶遇"}]
+        result2 = check_outline_compliance(kg.get_outline_entry(1), divergent_events)
+        test("outline compliance failed on key_events",
+             any(v.detail.startswith("大纲事件") for v in result2),
+             f"violations: {[v.detail for v in result2]}")
+
+        # 无大纲
+        result3 = check_outline_compliance(None, compliant_events)
+        test("outline compliance no outline", len(result3) == 0)
+
+        # threads_to_resolve 检查
+        kg.add_outline_entry(2, purpose="推进", threads_to_resolve="ST01_01")
+        result4 = check_outline_compliance(
+            kg.get_outline_entry(2), [],
+            thread_updates=[{"thread_id": "ST01_01", "new_status": "resolved"}]
+        )
+        test("outline threads_to_resolve passed",
+             not any("ST01_01" in v.detail for v in result4))
+
+        result5 = check_outline_compliance(
+            kg.get_outline_entry(2), [],
+            thread_updates=[]
+        )
+        test("outline threads_to_resolve failed",
+             any("ST01_01" in v.detail for v in result5))
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")
