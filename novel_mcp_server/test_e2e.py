@@ -330,6 +330,42 @@ def main():
         test("outline threads_to_resolve failed",
              any("ST01_01" in v.detail for v in result5))
 
+        # ---- 15. check_outline_compliance MCP工具 ----
+        print("\n[15] check_outline_compliance MCP工具")
+        from core import check_outline_compliance as _coc
+
+        # Clear the connection pool to avoid stale data
+        from core import _pool, close_all
+        close_all()
+
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="建立悬念", key_events="发现焊疤,看到纸片")
+        kg.add_event("E1_01", title="发现焊疤", chapter=1)
+        kg.add_event("E1_02", title="看到纸片", chapter=1)
+
+        result_coc = _coc(PROJECT, 1)
+        test("check_outline_compliance followed",
+             result_coc["overall"] == "followed",
+             f"got {result_coc['overall']}")
+        test("check_outline_compliance action_required false",
+             result_coc["action_required"] == False)
+
+        # 不合规测试
+        close_all()
+        kg.clear_project()
+        kg.add_outline_entry(1, purpose="建立悬念", key_events="发现焊疤")
+        kg.add_event("E1_01", title="遇到孙洁", chapter=1)
+        result_div = _coc(PROJECT, 1)
+        test("check_outline_compliance diverged",
+             result_div["overall"] == "diverged",
+             f"got {result_div['overall']}")
+
+        # 无大纲测试
+        close_all()
+        result_none = _coc(PROJECT, 99)
+        test("check_outline_compliance no outline",
+             result_none["overall"] == "no_outline")
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

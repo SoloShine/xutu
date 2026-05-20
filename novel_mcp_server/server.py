@@ -268,6 +268,17 @@ def detect_extraction_conflicts(project: str,
 
 
 @mcp.tool()
+def check_outline_compliance(project: str, chapter: int) -> dict:
+    """大纲合规检查（程序化+LLM）。
+
+    检查项: key_events是否出现、threads_to_plant/resolve是否执行、structure_hint是否匹配。
+    返回合规状态(followed/partial/diverged)和详细检查结果。
+    无outline_entry的章节返回 no_outline。
+    """
+    return core.check_outline_compliance(project, chapter)
+
+
+@mcp.tool()
 def sync_backends(project: str, direction: str = "json_to_neo4j") -> str:
     """同步 JSON 和 Neo4j 后端数据。
 

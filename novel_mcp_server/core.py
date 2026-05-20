@@ -432,6 +432,52 @@ def detect_extraction_conflicts(project: str, extracted_json: str) -> list:
     return detect_conflicts(kg, extracted)
 
 
+def check_outline_compliance(project: str, chapter: int) -> dict:
+    """大纲合规检查（程序化）。"""
+    kg = _kg(project)
+    outline_entry = kg.get_outline_entry(chapter)
+    if not outline_entry:
+        return {"chapter": chapter, "overall": "no_outline", "action_required": False}
+
+    events = kg.get_events_by_chapter(chapter)
+    arcs = kg.get_all_chapter_arcs()
+    chapter_arc = None
+    for a in arcs:
+        if a.get("chapter") == chapter:
+            chapter_arc = a
+            break
+
+    from validators import check_outline_compliance as _check_compliance
+    violations = _check_compliance(outline_entry, events, chapter_arc=chapter_arc)
+
+    checks = []
+    for v in violations:
+        checks.append({
+            "item": v.constraint_type,
+            "status": "failed",
+            "severity": v.severity,
+            "detail": v.detail,
+        })
+
+    errors = [c for c in checks if c["severity"] == "error"]
+    warnings = [c for c in checks if c["severity"] == "warning"]
+
+    if errors:
+        overall = "diverged"
+    elif warnings:
+        overall = "partial"
+    else:
+        overall = "followed"
+
+    return {
+        "chapter": chapter,
+        "outline_entry": outline_entry,
+        "programmatic_checks": checks,
+        "overall": overall,
+        "action_required": overall != "followed",
+    }
+
+
 # ============================================================
 # 后端同步
 # ============================================================
