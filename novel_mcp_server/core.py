@@ -478,6 +478,44 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
     }
 
 
+def revise_outline(project: str, chapter: int, reason: str,
+                   purpose: str = "", key_events: str = "",
+                   threads_to_plant: str = "", threads_to_resolve: str = "",
+                   structure_hint: str = "") -> str:
+    """显式修订大纲条目。只修改传入的字段，并记录修订原因。"""
+    kg = _kg(project)
+    existing = kg.get_outline_entry(chapter)
+    if not existing:
+        return f"第{chapter}章无大纲条目，无法修订。请先用 add_outline_entry 创建。"
+
+    all_arcs = kg.get_all_chapter_arcs()
+    max_chapter = max((a.get("chapter", 0) for a in all_arcs), default=chapter)
+
+    # Merge with existing entry
+    props = existing.copy()
+    # Remove chapter from props to avoid duplicate argument
+    props.pop("chapter", None)
+    props.update({
+        "compliance": "overridden",
+        "revision_reason": reason,
+        "revised_chapter": max_chapter,
+    })
+    if purpose:
+        props["purpose"] = purpose
+    if key_events:
+        props["key_events"] = key_events
+    if threads_to_plant:
+        props["threads_to_plant"] = threads_to_plant
+    if threads_to_resolve:
+        props["threads_to_resolve"] = threads_to_resolve
+    if structure_hint:
+        props["structure_hint"] = structure_hint
+
+    kg.add_outline_entry(chapter, **props)
+    updated_fields = [k for k in props if k not in ("compliance", "revision_reason", "revised_chapter")]
+    return f"已修订第{chapter}章大纲。原因: {reason}。更新字段: {', '.join(updated_fields) or '无'}"
+
+
 # ============================================================
 # 后端同步
 # ============================================================

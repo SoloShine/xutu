@@ -366,6 +366,43 @@ def main():
         test("check_outline_compliance no outline",
              result_none["overall"] == "no_outline")
 
+        # ---- 16. revise_outline MCP工具 ----
+        print("\n[16] revise_outline MCP工具")
+        from core import revise_outline as _ro
+
+        close_all()
+        kg = _create_backend(PROJECT)
+        kg.clear_project()
+        kg.add_chapter_arc(1, purpose="test", scenes="A->B", ending="end")
+        kg.add_chapter_arc(2, purpose="test", scenes="C->D", ending="end")
+        kg.add_outline_entry(1, purpose="原始目的", key_events="事件A")
+        kg.add_chapter_arc(3, purpose="latest", scenes="E->F", ending="end")
+
+        result_ro = _ro(PROJECT, 1, reason="作者修改了ch1", purpose="新目的",
+                         key_events="事件B,事件C")
+        test("revise_outline returns success",
+             "已修订" in result_ro)
+
+        # Close pool to get fresh instance with updated data
+        close_all()
+        kg = _create_backend(PROJECT)
+        updated = kg.get_outline_entry(1)
+        test("revise_outline updated purpose",
+             updated["purpose"] == "新目的")
+        test("revise_outline updated key_events",
+             updated["key_events"] == "事件B,事件C")
+        test("revise_outline set compliance",
+             updated["compliance"] == "overridden")
+        test("revise_outline set reason",
+             updated["revision_reason"] == "作者修改了ch1")
+        test("revise_outline set revised_chapter",
+             updated["revised_chapter"] == 3)
+
+        # 修订不存在的章节
+        result_missing = _ro(PROJECT, 99, reason="test")
+        test("revise_outline missing entry",
+             "无大纲条目" in result_missing)
+
     except Exception as e:
         global FAIL
         print(f"\n  [ERROR] {e}")

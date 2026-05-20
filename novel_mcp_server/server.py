@@ -298,5 +298,19 @@ def analyze_pacing(project: str) -> dict:
     return core.analyze_pacing(project)
 
 
+@mcp.tool()
+def revise_outline(project: str, chapter: int, reason: str,
+                   purpose: str = "", key_events: str = "",
+                   threads_to_plant: str = "", threads_to_resolve: str = "",
+                   structure_hint: str = "") -> str:
+    """显式修订大纲条目。只传需要修改的字段。
+
+    修订时自动设置 compliance='overridden'，记录修订原因和修订时最新章节号。
+    reason 参数必填，说明为什么修订。
+    """
+    return core.revise_outline(project, chapter, reason, purpose, key_events,
+                                threads_to_plant, threads_to_resolve, structure_hint)
+
+
 if __name__ == "__main__":
     mcp.run()
