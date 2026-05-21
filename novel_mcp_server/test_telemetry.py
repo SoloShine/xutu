@@ -16,7 +16,7 @@ if _here not in sys.path:
 from telemetry import (
     TelemetryCollector, ToolCall, ChapterSession,
     wrap, init_telemetry, get_collector,
-    _infer_chapter, _extract_decision,
+    _infer_chapter, _infer_project, _extract_decision,
 )
 
 PASS = 0
@@ -224,8 +224,8 @@ print("\n=== Section 4: 文件输出测试 ===")
 import tempfile
 tmp = tempfile.mkdtemp()
 c2 = TelemetryCollector("file_test")
-# 覆盖 _telemetry_dir
-c2._telemetry_dir = os.path.join(tmp, "telemetry")
+# 覆盖 _telemetry_dirs
+c2._telemetry_dirs = {"file_test": os.path.join(tmp, "telemetry")}
 call_f = ToolCall(
     tool="get_graph_stats", chapter=1,
     start=0, end=0.01, duration_ms=10.0,
@@ -277,6 +277,22 @@ test("5.4 chapter second param",
 
 
 # ============================================================
+# Section 5b: project 推断测试
+# ============================================================
+print("\n=== Section 5b: project 推断 ===")
+
+def func_with_proj(project, chapter, text=""): pass
+def func_no_proj(name=""): pass
+
+test("5b.1 kwargs project",
+     _infer_project(func_with_proj, ("p",), {"project": "my_proj"}) == "my_proj")
+test("5b.2 positional project",
+     _infer_project(func_with_proj, ("test_project", 5, "t"), {}) == "test_project")
+test("5b.3 no project param",
+     _infer_project(func_no_proj, ("p",), {"name": "x"}) is None)
+
+
+# ============================================================
 # Section 6: write_extraction 自动保存测试
 # ============================================================
 print("\n=== Section 6: write_extraction 自动保存 ===")
@@ -284,7 +300,7 @@ print("\n=== Section 6: write_extraction 自动保存 ===")
 import tempfile
 tmp_auto = tempfile.mkdtemp()
 telemetry._collector = TelemetryCollector("auto_save_test")
-telemetry._collector._telemetry_dir = os.path.join(tmp_auto, "telemetry")
+telemetry._collector._telemetry_dirs = {"auto_save_test": os.path.join(tmp_auto, "telemetry")}
 
 # 模拟 write_extraction 被 wrap 后的自动保存
 # 先记录几个调用，模拟章节管线

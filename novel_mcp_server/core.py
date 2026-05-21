@@ -1791,7 +1791,7 @@ def save_telemetry_chapter_report(project: str, chapter: int) -> dict:
     c = _tel.get_collector()
     if c is None:
         return {"status": "no_collector", "message": "遥测未激活"}
-    path = c.save_chapter_report(chapter)
+    path = c.save_chapter_report(chapter, project=project)
     if path is None:
         return {"status": "no_data", "message": f"第{chapter}章无遥测数据"}
     return {"status": "ok", "path": path}
@@ -1803,7 +1803,7 @@ def save_telemetry_session_summary(project: str) -> dict:
     c = _tel.get_collector()
     if c is None:
         return {"status": "no_collector", "message": "遥测未激活"}
-    path = c.save_session_summary()
+    path = c.save_session_summary(project=project)
     return {"status": "ok", "path": path}
 
 

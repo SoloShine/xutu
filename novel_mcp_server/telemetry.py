@@ -82,18 +82,18 @@ class TelemetryCollector:
         self.start_time = time.perf_counter()
         self.chapters: dict[int, ChapterSession] = {}
         self.tool_stats: dict[str, list[float]] = {}
-        self._telemetry_dir = None
+        self._telemetry_dirs: dict[str, str] = {}  # project -> dir path
 
-    def _ensure_dir(self):
-        if self._telemetry_dir is None:
-            # 定位 projects 目录（与 core.py 相同逻辑）
+    def _ensure_dir(self, project: str = None):
+        proj = project or self.project
+        if proj not in self._telemetry_dirs:
             here = os.path.dirname(os.path.abspath(__file__))
             mvp_dir = os.path.normpath(os.path.join(here, '..', 'novel_kg_mvp'))
-            self._telemetry_dir = os.path.join(
-                mvp_dir, 'projects', self.project, 'telemetry'
+            self._telemetry_dirs[proj] = os.path.join(
+                mvp_dir, 'projects', proj, 'telemetry'
             )
-        os.makedirs(self._telemetry_dir, exist_ok=True)
-        return self._telemetry_dir
+        os.makedirs(self._telemetry_dirs[proj], exist_ok=True)
+        return self._telemetry_dirs[proj]
 
     def record(self, call: ToolCall):
         """记录一次工具调用。"""
@@ -120,11 +120,11 @@ class TelemetryCollector:
         report["timestamp"] = datetime.now().isoformat()
         return report
 
-    def save_chapter_report(self, chapter: int) -> Optional[str]:
+    def save_chapter_report(self, chapter: int, project: str = None) -> Optional[str]:
         report = self.get_chapter_report(chapter)
         if report is None:
             return None
-        d = self._ensure_dir()
+        d = self._ensure_dir(project)
         path = os.path.join(d, f"ch{chapter}_report.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
@@ -178,9 +178,10 @@ class TelemetryCollector:
             "per_chapter_duration_ms": per_chapter,
         }
 
-    def save_session_summary(self) -> str:
+    def save_session_summary(self, project: str = None) -> str:
         summary = self.get_session_summary()
-        d = self._ensure_dir()
+        summary["project"] = project or self.project
+        d = self._ensure_dir(project)
         path = os.path.join(d, "session_summary.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(summary, f, ensure_ascii=False, indent=2)
@@ -256,6 +257,23 @@ def _infer_chapter(func, args, kwargs) -> Optional[int]:
     return None
 
 
+def _infer_project(func, args, kwargs) -> Optional[str]:
+    """从函数参数推断 project 名。"""
+    proj = kwargs.get("project")
+    if proj is not None:
+        return str(proj)
+    try:
+        sig = inspect.signature(func)
+        params = list(sig.parameters.keys())
+        if "project" in params:
+            idx = params.index("project")
+            if idx < len(args):
+                return str(args[idx])
+    except (ValueError, TypeError):
+        pass
+    return None
+
+
 def _read_llm_usage() -> Optional[dict]:
     """读取 llm._last_usage（如果可访问）。"""
     try:
@@ -304,6 +322,7 @@ def wrap(func):
             _collector.record(call)
             # V25: write_extraction 完成后自动保存该章遥测报告
             if func.__name__ == "write_extraction" and chapter is not None:
-                _collector.save_chapter_report(chapter)
+                project = _infer_project(func, args, kwargs)
+                _collector.save_chapter_report(chapter, project=project)
 
     return wrapper
