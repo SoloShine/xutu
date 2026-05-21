@@ -16,7 +16,7 @@ if _here not in sys.path:
 from telemetry import (
     TelemetryCollector, ToolCall, ChapterSession,
     wrap, init_telemetry, get_collector,
-    _infer_chapter, _infer_project, _extract_decision,
+    _infer_chapter, _infer_project, _extract_decision, _bind_args,
 )
 
 PASS = 0
@@ -267,13 +267,13 @@ def func_no_ch(project, name=""): pass
 def func_ch_second(a, chapter, b): pass
 
 test("5.1 kwargs chapter",
-     _infer_chapter(func_with_ch, ("p",), {"chapter": 3}) == 3)
+     _infer_chapter(_bind_args(func_with_ch, ("p",), {"chapter": 3})) == 3)
 test("5.2 positional chapter",
-     _infer_chapter(func_with_ch, ("p", 5, "t"), {}) == 5)
+     _infer_chapter(_bind_args(func_with_ch, ("p", 5, "t"), {})) == 5)
 test("5.3 no chapter param",
-     _infer_chapter(func_no_ch, ("p",), {"name": "x"}) is None)
+     _infer_chapter(_bind_args(func_no_ch, ("p",), {"name": "x"})) is None)
 test("5.4 chapter second param",
-     _infer_chapter(func_ch_second, ("a", 7, "b"), {}) == 7)
+     _infer_chapter(_bind_args(func_ch_second, ("a", 7, "b"), {})) == 7)
 
 
 # ============================================================
@@ -285,11 +285,11 @@ def func_with_proj(project, chapter, text=""): pass
 def func_no_proj(name=""): pass
 
 test("5b.1 kwargs project",
-     _infer_project(func_with_proj, ("p",), {"project": "my_proj"}) == "my_proj")
+     _infer_project(_bind_args(func_with_proj, ("p",), {"project": "my_proj"})) == "my_proj")
 test("5b.2 positional project",
-     _infer_project(func_with_proj, ("test_project", 5, "t"), {}) == "test_project")
+     _infer_project(_bind_args(func_with_proj, ("test_project", 5, "t"), {})) == "test_project")
 test("5b.3 no project param",
-     _infer_project(func_no_proj, ("p",), {"name": "x"}) is None)
+     _infer_project(_bind_args(func_no_proj, ("p",), {"name": "x"})) is None)
 
 
 # ============================================================

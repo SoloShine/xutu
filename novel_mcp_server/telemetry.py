@@ -253,41 +253,35 @@ def _extract_decision(tool_name: str, kwargs: dict, result) -> Optional[dict]:
 # 装饰器
 # ============================================================
 
-def _infer_chapter(func, args, kwargs) -> Optional[int]:
-    """从函数参数推断 chapter 编号。"""
-    # 优先 kwargs
-    ch = kwargs.get("chapter")
-    if ch is not None:
-        return int(ch) if not isinstance(ch, int) else ch
+def _bind_args(func, args, kwargs) -> dict:
+    """将位置参数绑定到函数签名，返回统一的 kwargs dict。
 
-    # 从签名位置参数推断
+    server.py 用位置参数调 core.func(project, chapter, ...)，
+    原始 kwargs 为空。此函数通过 inspect.Signature.bind()
+    把位置参数映射到参数名，供决策提取等使用。
+    """
     try:
         sig = inspect.signature(func)
-        params = list(sig.parameters.keys())
-        if "chapter" in params:
-            idx = params.index("chapter")
-            if idx < len(args):
-                val = args[idx]
-                return int(val) if not isinstance(val, int) else val
-    except (ValueError, TypeError):
-        pass
+        bound = sig.bind(*args, **kwargs)
+        bound.apply_defaults()
+        return dict(bound.arguments)
+    except (TypeError, ValueError):
+        return dict(kwargs)
+
+
+def _infer_chapter(bound_kwargs: dict) -> Optional[int]:
+    """从绑定后的参数 dict 推断 chapter 编号。"""
+    ch = bound_kwargs.get("chapter")
+    if ch is not None:
+        return int(ch) if not isinstance(ch, int) else ch
     return None
 
 
-def _infer_project(func, args, kwargs) -> Optional[str]:
-    """从函数参数推断 project 名。"""
-    proj = kwargs.get("project")
+def _infer_project(bound_kwargs: dict) -> Optional[str]:
+    """从绑定后的参数 dict 推断 project 名。"""
+    proj = bound_kwargs.get("project")
     if proj is not None:
         return str(proj)
-    try:
-        sig = inspect.signature(func)
-        params = list(sig.parameters.keys())
-        if "project" in params:
-            idx = params.index("project")
-            if idx < len(args):
-                return str(args[idx])
-    except (ValueError, TypeError):
-        pass
     return None
 
 
@@ -313,7 +307,8 @@ def wrap(func):
         if _collector is None:
             return func(*args, **kwargs)
 
-        chapter = _infer_chapter(func, args, kwargs)
+        bound = _bind_args(func, args, kwargs)
+        chapter = _infer_chapter(bound)
         start = time.perf_counter()
         error = None
         result = None
@@ -333,14 +328,14 @@ def wrap(func):
                 end=end,
                 duration_ms=(end - start) * 1000,
                 llm_tokens=tokens,
-                decision=_extract_decision(func.__name__, kwargs, result),
+                decision=_extract_decision(func.__name__, bound, result),
                 error=error,
             )
             _collector.record(call)
             # V25: write_extraction 完成后自动保存该章遥测报告
             if func.__name__ == "write_extraction" and chapter is not None:
                 try:
-                    project = _infer_project(func, args, kwargs)
+                    project = _infer_project(bound)
                     _collector.save_chapter_report(chapter, project=project)
                 except Exception as _save_err:
                     import sys as _sys
