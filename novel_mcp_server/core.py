@@ -1797,6 +1797,21 @@ def save_telemetry_chapter_report(project: str, chapter: int) -> dict:
     return {"status": "ok", "path": path}
 
 
+def set_telemetry_wall_clock(project: str, chapter: int,
+                             wall_clock_ms: float,
+                             agent_tool_uses: int = None) -> dict:
+    """注入子代理端到端墙钟时间（主会话在子代理返回后调用）。
+    wall_clock_ms: 子代理从启动到完成的总毫秒数。
+    agent_tool_uses: 子代理的MCP工具调用次数（可选）。
+    """
+    import telemetry as _tel
+    c = _tel.get_collector()
+    if c is None:
+        return {"status": "no_collector", "message": "遥测未激活"}
+    c.set_wall_clock(chapter, wall_clock_ms, agent_tool_uses=agent_tool_uses)
+    return {"status": "ok", "chapter": chapter, "wall_clock_ms": wall_clock_ms}
+
+
 def save_telemetry_session_summary(project: str) -> dict:
     """保存会话遥测摘要到磁盘。"""
     import telemetry as _tel
@@ -1827,6 +1842,7 @@ _PUBLIC_TOOLS = [
     "prepare_parallel_batch", "get_parallel_writing_prompt",
     "merge_parallel_results",
     "save_telemetry_chapter_report", "save_telemetry_session_summary",
+    "set_telemetry_wall_clock",
 ]
 for _fname in _PUBLIC_TOOLS:
     if _fname in globals():

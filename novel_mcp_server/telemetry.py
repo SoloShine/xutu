@@ -54,6 +54,8 @@ class ToolCall:
 class ChapterSession:
     chapter: int
     calls: list = field(default_factory=list)
+    wall_clock_ms: Optional[float] = None  # 子代理端到端耗时（含LLM）
+    agent_tool_uses: Optional[int] = None  # 子代理MCP调用次数
 
     def to_dict(self) -> dict:
         total_ms = sum(c.duration_ms for c in self.calls)
@@ -63,7 +65,7 @@ class ChapterSession:
         total_completion = sum(
             (c.llm_tokens or {}).get("completion_tokens", 0) for c in self.calls
         )
-        return {
+        result = {
             "chapter": self.chapter,
             "tool_calls": [c.to_dict() for c in self.calls],
             "totals": {
@@ -73,6 +75,12 @@ class ChapterSession:
                 "tool_count": len(self.calls),
             },
         }
+        # 墙钟时间（子代理端到端，含LLM调用）
+        if self.wall_clock_ms is not None:
+            result["wall_clock_ms"] = round(self.wall_clock_ms, 1)
+        if self.agent_tool_uses is not None:
+            result["agent_tool_uses"] = self.agent_tool_uses
+        return result
 
 
 class TelemetryCollector:
@@ -109,6 +117,15 @@ class TelemetryCollector:
         if name not in self.tool_stats:
             self.tool_stats[name] = []
         self.tool_stats[name].append(call.duration_ms)
+
+    def set_wall_clock(self, chapter: int, wall_clock_ms: float,
+                       agent_tool_uses: int = None):
+        """注入子代理端到端墙钟时间（主会话在子代理返回后调用）。"""
+        if chapter not in self.chapters:
+            self.chapters[chapter] = ChapterSession(chapter=chapter)
+        self.chapters[chapter].wall_clock_ms = wall_clock_ms
+        if agent_tool_uses is not None:
+            self.chapters[chapter].agent_tool_uses = agent_tool_uses
 
     def get_chapter_report(self, chapter: int) -> Optional[dict]:
         session = self.chapters.get(chapter)
@@ -322,7 +339,12 @@ def wrap(func):
             _collector.record(call)
             # V25: write_extraction 完成后自动保存该章遥测报告
             if func.__name__ == "write_extraction" and chapter is not None:
-                project = _infer_project(func, args, kwargs)
-                _collector.save_chapter_report(chapter, project=project)
+                try:
+                    project = _infer_project(func, args, kwargs)
+                    _collector.save_chapter_report(chapter, project=project)
+                except Exception as _save_err:
+                    import sys as _sys
+                    _sys.stderr.write(f"[telemetry] auto-save failed: {_save_err}\n")
+                    _sys.stderr.flush()
 
     return wrapper

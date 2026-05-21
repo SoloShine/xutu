@@ -49,9 +49,11 @@ def render_dashboard(data: dict, output_path: str):
 
     # 每章总耗时
     ch_totals = []
+    ch_wall_clock = []  # 墙钟时间
     for c in sorted_ch:
         r = chapters[c]
         ch_totals.append(r.get("totals", {}).get("duration_ms", 0))
+        ch_wall_clock.append(r.get("wall_clock_ms", 0))
 
     # 每章工具调用数
     ch_tool_counts = []
@@ -192,7 +194,8 @@ def render_dashboard(data: dict, output_path: str):
   <div class="metric"><span class="val">{len(sorted_ch)}</span><span class="label">章节数</span></div>
   <div class="metric"><span class="val">{total_calls}</span><span class="label">工具调用</span></div>
   <div class="metric"><span class="val">{total_duration:.0f}ms</span><span class="label">MCP总耗时</span></div>
-  <div class="metric"><span class="val">{total_duration/max(len(sorted_ch),1):.0f}ms</span><span class="label">平均每章</span></div>
+  <div class="metric"><span class="val">{total_duration/max(len(sorted_ch),1):.0f}ms</span><span class="label">平均每章(MCP)</span></div>
+  {_wall_clock_metrics(sorted_ch, ch_wall_clock)}
 </div>
 
 <!-- 图表网格 -->
@@ -271,25 +274,42 @@ new Chart(document.getElementById('toolDistChart'), {{
   }}
 }});
 
-// Chapter trend line
+// Chapter trend line (MCP vs Wall Clock)
+const hasWallClock = {_json(any(v > 0 for v in ch_wall_clock))};
+const trendDatasets = [{{
+  label: 'MCP工具耗时 (ms)',
+  data: {_json([round(t, 1) for t in ch_totals])},
+  borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.1)',
+  fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: '#58a6ff',
+  yAxisID: 'y'
+}}];
+if (hasWallClock) {{
+  trendDatasets.push({{
+    label: '墙钟时间 (含LLM, 秒)',
+    data: {_json([round(v/1000, 1) for v in ch_wall_clock])},
+    borderColor: '#f28e2b', backgroundColor: 'rgba(242,142,43,0.1)',
+    fill: false, tension: 0.3, pointRadius: 5, pointBackgroundColor: '#f28e2b',
+    borderDash: [5, 3], yAxisID: 'y1'
+  }});
+}}
+const trendScales = {{
+  x: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e' }} }},
+  y: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#58a6ff' }},
+       title: {{ display: true, text: 'MCP耗时 (ms)', color: '#58a6ff' }} }}
+}};
+if (hasWallClock) {{
+  trendScales['y1'] = {{
+    position: 'right', grid: {{ drawOnChartArea: false }},
+    ticks: {{ color: '#f28e2b' }},
+    title: {{ display: true, text: '墙钟时间 (秒)', color: '#f28e2b' }}
+  }};
+}}
 new Chart(document.getElementById('trendChart'), {{
   type: 'line',
-  data: {{
-    labels: {_json(ch_labels)},
-    datasets: [{{
-      label: 'Total Duration (ms)',
-      data: {_json([round(t, 1) for t in ch_totals])},
-      borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.1)',
-      fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: '#58a6ff'
-    }}]
-  }},
+  data: {{ labels: {_json(ch_labels)}, datasets: trendDatasets }},
   options: {{
     responsive: true, maintainAspectRatio: false,
-    scales: {{
-      x: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e' }} }},
-      y: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e' }},
-           title: {{ display: true, text: 'ms', color: '#8b949e' }} }}
-    }},
+    scales: trendScales,
     plugins: {{ legend: {{ labels: {{ color: '#e6edf3' }} }} }}
   }}
 }});
@@ -316,6 +336,35 @@ new Chart(document.getElementById('countChart'), {{
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"仪表盘已生成: {output_path}")
+
+
+def _wall_clock_metrics(sorted_ch, ch_wall_clock) -> str:
+    """生成墙钟时间概览HTML。如果无数据返回空字符串。"""
+    has_data = any(v > 0 for v in ch_wall_clock)
+    if not has_data:
+        return ""
+    total_wc = sum(v for v in ch_wall_clock)
+    avg_wc = total_wc / max(len(sorted_ch), 1)
+    return (
+        f'<div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">'
+        f'<div class="metric"><span class="val">{_fmt_duration(total_wc)}</span><span class="label">总墙钟时间</span></div>'
+        f'<div class="metric"><span class="val">{_fmt_duration(avg_wc)}</span><span class="label">平均每章(含LLM)</span></div>'
+        f'</div>'
+    )
+
+
+def _fmt_duration(ms) -> str:
+    """毫秒转人类可读格式。"""
+    if ms <= 0:
+        return "N/A"
+    seconds = ms / 1000
+    if seconds < 60:
+        return f"{seconds:.1f}s"
+    minutes = seconds / 60
+    if minutes < 60:
+        return f"{minutes:.1f}min"
+    hours = minutes / 60
+    return f"{hours:.1f}h"
 
 
 def _fmt_tokens(tokens) -> str:

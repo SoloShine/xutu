@@ -450,5 +450,19 @@ def save_telemetry_session_summary(project: str) -> dict:
     return core.save_telemetry_session_summary(project)
 
 
+@mcp.tool()
+def set_telemetry_wall_clock(project: str, chapter: int,
+                             wall_clock_ms: float,
+                             agent_tool_uses: int = None) -> dict:
+    """注入子代理端到端墙钟时间（主会话在子代理返回后调用）。
+    wall_clock_ms: 子代理从启动到完成的总毫秒数。
+    agent_tool_uses: 子代理的MCP工具调用次数（可选）。
+    """
+    return core.set_telemetry_wall_clock(
+        project, chapter, wall_clock_ms,
+        agent_tool_uses=agent_tool_uses
+    )
+
+
 if __name__ == "__main__":
     mcp.run()
