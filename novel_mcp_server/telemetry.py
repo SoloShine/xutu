@@ -301,12 +301,14 @@ def _read_llm_usage() -> Optional[dict]:
 
 
 def wrap(func):
-    """装饰器工厂：包装 core.py 公共函数，记录遥测数据。"""
+    """装饰器工厂：包装 core.py 公共函数，记录遥测数据。
+
+    注意：不在函数调用前检查 _collector is None，因为首次调用会
+    通过 _kg() 懒初始化 collector。改为在 finally 中检查，确保
+    首次调用也能被记录。
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if _collector is None:
-            return func(*args, **kwargs)
-
         bound = _bind_args(func, args, kwargs)
         chapter = _infer_chapter(bound)
         start = time.perf_counter()
@@ -319,27 +321,29 @@ def wrap(func):
             error = str(e)
             raise
         finally:
-            end = time.perf_counter()
-            tokens = _read_llm_usage()
-            call = ToolCall(
-                tool=func.__name__,
-                chapter=chapter,
-                start=start,
-                end=end,
-                duration_ms=(end - start) * 1000,
-                llm_tokens=tokens,
-                decision=_extract_decision(func.__name__, bound, result),
-                error=error,
-            )
-            _collector.record(call)
-            # V25: write_extraction 完成后自动保存该章遥测报告
-            if func.__name__ == "write_extraction" and chapter is not None:
-                try:
-                    project = _infer_project(bound)
-                    _collector.save_chapter_report(chapter, project=project)
-                except Exception as _save_err:
-                    import sys as _sys
-                    _sys.stderr.write(f"[telemetry] auto-save failed: {_save_err}\n")
-                    _sys.stderr.flush()
+            # 首次调用时 _kg() 会初始化 collector，此处检查即可
+            if _collector is not None:
+                end = time.perf_counter()
+                tokens = _read_llm_usage()
+                call = ToolCall(
+                    tool=func.__name__,
+                    chapter=chapter,
+                    start=start,
+                    end=end,
+                    duration_ms=(end - start) * 1000,
+                    llm_tokens=tokens,
+                    decision=_extract_decision(func.__name__, bound, result),
+                    error=error,
+                )
+                _collector.record(call)
+                # V25: write_extraction 完成后自动保存该章遥测报告
+                if func.__name__ == "write_extraction" and chapter is not None:
+                    try:
+                        project = _infer_project(bound)
+                        _collector.save_chapter_report(chapter, project=project)
+                    except Exception as _save_err:
+                        import sys as _sys
+                        _sys.stderr.write(f"[telemetry] auto-save failed: {_save_err}\n")
+                        _sys.stderr.flush()
 
     return wrapper
