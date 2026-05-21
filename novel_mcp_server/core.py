@@ -32,6 +32,18 @@ from prompts import ARC_DERIVATION_PROMPT
 from validators import validate_chapter as _run_validation
 
 
+# ========== 内部 LLM 开关 ==========
+
+def _llm_enabled() -> bool:
+    """内部 LLM 调用是否启用。默认关闭，设 NOVEL_LLM_ENABLED=1 开启。
+
+    关闭时合规检查返回 needs_agent_review 标记，由 Agent 自行判定。
+    开启时调 call_llm() 做语义/purpose 判定（需配置 LLM API）。
+    """
+    env = os.environ.get("NOVEL_LLM_ENABLED", "").strip()
+    return env in ("1", "true", "yes")
+
+
 # ========== 目的检查缓存 ==========
 
 def _purpose_cache_dir(project: str) -> str:
@@ -573,38 +585,60 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
                 "detail": v.detail,
             })
 
-    # 第二步：对程序化未匹配的项，调用LLM语义判定
+    # 第二步：对程序化未匹配的项，调用LLM语义判定（或返回需Agent审查标记）
     semantic_checks = []
     if pending_semantic:
-        sem_results = _semantic_compliance_check(
-            project, chapter, outline_entry, events, pending_semantic
-        )
-        for item, matched, reason in sem_results:
-            severity = "warning" if matched else "error"
-            # key_events用error，其余用warning
-            field = item.fix.split(":")[1] if item.fix and ":" in item.fix else ""
-            if not matched and field == "key_events":
-                severity = "error"
-            elif not matched:
-                severity = "warning"
-            semantic_checks.append({
-                "item": item.constraint_type,
-                "status": "matched" if matched else "failed",
-                "severity": severity if not matched else "info",
-                "detail": f"语义判定: '{item.detail.split('未在程序化检查中匹配')[0].strip()}' "
-                          f"{'已匹配' if matched else '未匹配'} — {reason}",
-                "original_outline_item": item.fix.split(":", 2)[-1] if item.fix and ":" in item.fix else "",
-            })
+        if _llm_enabled():
+            sem_results = _semantic_compliance_check(
+                project, chapter, outline_entry, events, pending_semantic
+            )
+            for item, matched, reason in sem_results:
+                severity = "warning" if matched else "error"
+                # key_events用error，其余用warning
+                field = item.fix.split(":")[1] if item.fix and ":" in item.fix else ""
+                if not matched and field == "key_events":
+                    severity = "error"
+                elif not matched:
+                    severity = "warning"
+                semantic_checks.append({
+                    "item": item.constraint_type,
+                    "status": "matched" if matched else "failed",
+                    "severity": severity if not matched else "info",
+                    "detail": f"语义判定: '{item.detail.split('未在程序化检查中匹配')[0].strip()}' "
+                              f"{'已匹配' if matched else '未匹配'} — {reason}",
+                    "original_outline_item": item.fix.split(":", 2)[-1] if item.fix and ":" in item.fix else "",
+                })
+        else:
+            # LLM 未启用：返回 pending 项，标记需 Agent 审查
+            for v in pending_semantic:
+                field_info = v.fix.split(":", 2) if v.fix and ":" in v.fix else ["", "", ""]
+                field_name = field_info[1] if len(field_info) > 1 else ""
+                semantic_checks.append({
+                    "item": v.constraint_type,
+                    "status": "pending",
+                    "severity": "error" if field_name == "key_events" else "warning",
+                    "detail": f"语义判定需Agent审查: {v.detail}",
+                    "needs_agent_review": True,
+                })
 
-    # 第三步：purpose级别的LLM语义检查（始终执行）
+    # 第三步：purpose级别的LLM语义检查（或返回需Agent审查标记）
     # 判断章节事件是否符合大纲的叙事目的，不受bigram影响
     cfg = config_loader.load(project)
     if cfg.get("collaboration", {}).get("semantic_check", True):
         purpose = outline_entry.get("purpose", "")
         if purpose and events:
-            purpose_result = _purpose_compliance_check(
-                project, chapter, purpose, events
-            )
+            if _llm_enabled():
+                purpose_result = _purpose_compliance_check(
+                    project, chapter, purpose, events
+                )
+            else:
+                purpose_result = {
+                    "item": "purpose_alignment",
+                    "status": "pending",
+                    "severity": "info",
+                    "detail": f"目的合规需Agent审查: '{purpose[:50]}'",
+                    "needs_agent_review": True,
+                }
             semantic_checks.append(purpose_result)
 
     # 合并所有检查结果
@@ -673,7 +707,8 @@ def batch_check_outline_compliance(project: str,
     cfg = config_loader.load(project)
     if (cfg.get("collaboration", {}).get("semantic_check", True)
             and len(chapters_needing_purpose) > 1
-            and batch_size > 1):
+            and batch_size > 1
+            and _llm_enabled()):
         # 分批处理
         for i in range(0, len(chapters_needing_purpose), batch_size):
             batch = chapters_needing_purpose[i:i + batch_size]

@@ -5,7 +5,10 @@ Novel KG 端到端测试脚本。
   初始化 → 写入世界观 → 大纲 → 弧线推演 → 续写 → 提取 → 校验 → 统计
 
 用法:
-  python test_e2e.py                    # JSON 后端（默认）
+  python test_e2e.py                    # JSON 后端（默认，无LLM）
+  python test_e2e.py --no-llm           # 显式跳过LLM测试
+  python test_e2e.py --section 1-19     # 只跑指定段
+  NOVEL_LLM_ENABLED=1 python test_e2e.py  # 含LLM测试（需API key）
   KG_BACKEND=neo4j python test_e2e.py   # Neo4j 后端
 """
 
@@ -13,16 +16,27 @@ import sys
 import os
 import json
 import time
+import argparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from core import _create_backend, _kg, close_all, _BACKEND
 import core
 
+# ========== 命令行参数 ==========
+_parser = argparse.ArgumentParser(description="Novel KG E2E Tests")
+_parser.add_argument("--no-llm", action="store_true",
+                     help="跳过LLM相关测试（Section 20, 24部分）")
+_args = _parser.parse_args()
+
+# LLM 测试是否跳过：--no-llm 或 未启用内部LLM
+_skip_llm = _args.no_llm or not core._llm_enabled()
+
 PROJECT = f"e2e_test_{_BACKEND}"
 PASS = 0
 FAIL = 0
 ERRORS = []
+
 
 
 def test(name, condition, detail=""):
@@ -555,46 +569,49 @@ def main():
              cl2.get(PROJECT, "collaboration", "review_checkpoint", default=False) == False)
 
         # ---- 20. LLM语义合规检查 ----
-        print("\n[20] LLM语义合规检查")
-        from core import _semantic_compliance_check
+        if _skip_llm:
+            print("\n[20] LLM语义合规检查 — SKIPPED (NOVEL_LLM_ENABLED not set)")
+        else:
+            print("\n[20] LLM语义合规检查")
+            from core import _semantic_compliance_check
 
-        # 测试1: 无事件数据时fallback
-        close_all()
-        kg.clear_project()
-        kg.add_outline_entry(1, purpose="测试", key_events="宋姐出现")
-        from validators import check_outline_compliance as _coc_val
-        outline_e = kg.get_outline_entry(1)
-        violations_e = _coc_val(outline_e, [])  # 空事件列表
-        sem_no_events = _semantic_compliance_check(PROJECT, 1, outline_e, [], violations_e)
-        test("semantic check no events fallback",
-             len(sem_no_events) > 0 and not sem_no_events[0][1],
-             f"got {sem_no_events}")
+            # 测试1: 无事件数据时fallback
+            close_all()
+            kg.clear_project()
+            kg.add_outline_entry(1, purpose="测试", key_events="宋姐出现")
+            from validators import check_outline_compliance as _coc_val
+            outline_e = kg.get_outline_entry(1)
+            violations_e = _coc_val(outline_e, [])  # 空事件列表
+            sem_no_events = _semantic_compliance_check(PROJECT, 1, outline_e, [], violations_e)
+            test("semantic check no events fallback",
+                 len(sem_no_events) > 0 and not sem_no_events[0][1],
+                 f"got {sem_no_events}")
 
-        # 测试2: mock LLM语义匹配（"深夜来访" = "突然出现"）
-        close_all()
-        kg.clear_project()
-        kg.add_outline_entry(1, purpose="测试", key_events="宋姐突然出现")
-        kg.add_event("E1_01", title="宋姐深夜来访", detail="半夜敲门", chapter=1)
-        outline_sem = kg.get_outline_entry(1)
-        events_sem = kg.get_events_by_chapter(1)
-        violations_sem = _coc_val(outline_sem, events_sem)
+            # 测试2: mock LLM语义匹配（"深夜来访" = "突然出现"）
+            close_all()
+            kg.clear_project()
+            kg.add_outline_entry(1, purpose="测试", key_events="宋姐突然出现")
+            kg.add_event("E1_01", title="宋姐深夜来访", detail="半夜敲门", chapter=1)
+            outline_sem = kg.get_outline_entry(1)
+            events_sem = kg.get_events_by_chapter(1)
+            violations_sem = _coc_val(outline_sem, events_sem)
 
-        # violations_sem应该有pending_semantic项（bigram不匹配）
-        test("semantic pending items exist after bigram miss",
-             any(v.severity == "pending_semantic" for v in violations_sem),
-             f"violations: {[v.detail for v in violations_sem]}")
+            # violations_sem应该有pending_semantic项（bigram不匹配）
+            test("semantic pending items exist after bigram miss",
+                 any(v.severity == "pending_semantic" for v in violations_sem),
+                 f"violations: {[v.detail for v in violations_sem]}")
 
-        # 测试3: semantic_check配置项
-        test("semantic_check config True",
-             cl2.get(PROJECT, "collaboration", "semantic_check", default=True) == True)
+            # 测试3: semantic_check配置项
+            test("semantic_check config True",
+                 cl2.get(PROJECT, "collaboration", "semantic_check", default=True) == True)
 
-        # 测试4: 返回结构完整性
-        from core import check_outline_compliance as _coc_core
-        close_all()
-        result_struct = _coc_core(PROJECT, 1)
-        test("semantic result has required fields",
-             all(k in result_struct for k in ["programmatic_checks", "semantic_checks", "overall"]),
-             f"keys: {list(result_struct.keys())}")
+            # 测试4: 返回结构完整性
+            from core import check_outline_compliance as _coc_core
+            close_all()
+            result_struct = _coc_core(PROJECT, 1)
+            test("semantic result has required fields",
+                 all(k in result_struct for k in ["programmatic_checks", "semantic_checks", "overall"]),
+                 f"keys: {list(result_struct.keys())}")
 
         # ---- 21. 版本管理 ----
         print("\n[21] 版本管理 (snapshot + list_edits + rollback_edit)")
@@ -894,26 +911,37 @@ def main():
                                 key_events=f"事件{ch}", structure_hint="linear")
             kg.add_event(f"E{ch}_01", title=f"事件{ch}", detail=f"第{ch}章事件", chapter=ch)
 
-        # batch_size=2 → 3批
-        close_all()
-        result_bs2 = _bcoc(PROJECT, batch_size=2)
-        test("batch_size=2 has batch_count",
-             result_bs2.get("batch_count", 0) >= 1,
-             f"got batch_count={result_bs2.get('batch_count')}")
-        test("batch_size=2 total is 6",
-             result_bs2["stats"]["total"] == 6,
-             f"got {result_bs2['stats']['total']}")
-        test("batch_size=2 returns batch_size field",
-             result_bs2.get("batch_size") == 2,
-             f"got {result_bs2.get('batch_size')}")
+        if _skip_llm:
+            # LLM 未启用时 batch purpose 不触发，验证基本功能
+            close_all()
+            result_bs2 = _bcoc(PROJECT, batch_size=2)
+            test("batch_size=2 total is 6 (no LLM)",
+                 result_bs2["stats"]["total"] == 6,
+                 f"got {result_bs2['stats']['total']}")
+            test("batch_size=2 no batch (no LLM)",
+                 result_bs2.get("batch_purpose") == False,
+                 f"got batch_purpose={result_bs2.get('batch_purpose')}")
+        else:
+            # batch_size=2 → 3批（LLM 批量 purpose 检查）
+            close_all()
+            result_bs2 = _bcoc(PROJECT, batch_size=2)
+            test("batch_size=2 has batch_count",
+                 result_bs2.get("batch_count", 0) >= 1,
+                 f"got batch_count={result_bs2.get('batch_count')}")
+            test("batch_size=2 total is 6",
+                 result_bs2["stats"]["total"] == 6,
+                 f"got {result_bs2['stats']['total']}")
+            test("batch_size=2 returns batch_size field",
+                 result_bs2.get("batch_size") == 2,
+                 f"got {result_bs2.get('batch_size')}")
 
-        # batch_size=0 → 全部合并（1批）
-        close_all()
-        result_bs0 = _bcoc(PROJECT, batch_size=0)
-        test("batch_size=0 total is 6",
-             result_bs0["stats"]["total"] == 6)
+            # batch_size=0 → 全部合并（1批）
+            close_all()
+            result_bs0 = _bcoc(PROJECT, batch_size=0)
+            test("batch_size=0 total is 6",
+                 result_bs0["stats"]["total"] == 6)
 
-        # batch_size=1 → 逐章检查（无批量）
+        # batch_size=1 → 逐章检查（无批量）— 不依赖 LLM
         close_all()
         result_bs1 = _bcoc(PROJECT, batch_size=1)
         test("batch_size=1 no batch",
