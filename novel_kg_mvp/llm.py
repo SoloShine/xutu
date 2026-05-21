@@ -12,6 +12,9 @@ import yaml
 from openai import OpenAI
 
 
+# V25 Telemetry: 上一次 LLM 调用的 token usage（供遥测模块读取）
+_last_usage: dict = {}
+
 def load_llm_config():
     with open("config.yaml", "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
@@ -129,6 +132,12 @@ def call_llm(prompt, system="你是一个专业的文学结构化分析助手。
         try:
             response = client.chat.completions.create(**kwargs)
             text = response.choices[0].message.content.strip()
+            # V25: 捕获 token usage
+            if hasattr(response, 'usage') and response.usage:
+                _last_usage.update({
+                    "prompt_tokens": getattr(response.usage, 'prompt_tokens', 0) or 0,
+                    "completion_tokens": getattr(response.usage, 'completion_tokens', 0) or 0,
+                })
         finally:
             stop_event.set()
             t.join(timeout=1)
@@ -142,6 +151,12 @@ def call_llm(prompt, system="你是一个专业的文学结构化分析助手。
 
     # 普通同步调用
     response = client.chat.completions.create(**kwargs)
+    # V25: 捕获 token usage
+    if hasattr(response, 'usage') and response.usage:
+        _last_usage.update({
+            "prompt_tokens": getattr(response.usage, 'prompt_tokens', 0) or 0,
+            "completion_tokens": getattr(response.usage, 'completion_tokens', 0) or 0,
+        })
     return response.choices[0].message.content.strip()
 
 
