@@ -116,9 +116,6 @@ def _bigram_overlap_str(s1, s2, min_shared=2):
 
 _BACKEND = os.environ.get("KG_BACKEND", "json")  # "json"(默认) 或 "neo4j"
 
-# V25 遥测开关
-_TELEMETRY = os.environ.get("NOVEL_TELEMETRY", "").strip() in ("1", "true", "yes")
-
 
 def _create_backend(project: str):
     """根据环境变量创建后端实例"""
@@ -142,9 +139,13 @@ _pool: dict = {}
 
 
 def _kg(project: str):
-    """获取或创建连接池中的后端实例。"""
+    """获取或创建连接池中的后端实例。首次访问时初始化遥测。"""
     if project not in _pool:
         _pool[project] = _create_backend(project)
+        # V25: 懒初始化遥测 collector
+        import telemetry as _tel
+        if _tel._collector is None:
+            _tel.init_telemetry(project)
     return _pool[project]
 
 
@@ -1781,27 +1782,26 @@ def rollback_edit(project: str, snapshot_id: str,
 
 
 # ============================================================
-# V25 遥测自动注入（仅 NOVEL_TELEMETRY=1 时生效）
+# V25 遥测自动注入（无条件装饰，运行时通过 _collector 控制）
 # ============================================================
-if _TELEMETRY:
-    import telemetry as _telemetry
+import telemetry as _telemetry
 
-    _PUBLIC_TOOLS = [
-        "get_chapter_context", "get_derivation_context", "get_graph_stats",
-        "check_consistency", "get_unresolved_threads", "get_all_threads",
-        "get_extraction_prompt", "get_writing_prompt", "get_derivation_prompt",
-        "init_project", "add_character", "add_location", "add_event",
-        "add_chapter_arc", "add_suspense_thread", "add_outline_entry",
-        "add_style_guide", "add_motif", "add_theme", "add_time_period",
-        "add_relation", "update_suspense_thread", "write_extraction",
-        "clear_chapter_data", "validate_chapter", "detect_extraction_conflicts",
-        "check_outline_compliance", "batch_check_outline_compliance",
-        "sync_backends", "analyze_pacing", "revise_outline",
-        "analyze_edit_impact", "accept_edit", "review_chapter",
-        "list_edits", "rollback_edit", "analyze_parallel_groups",
-        "prepare_parallel_batch", "get_parallel_writing_prompt",
-        "merge_parallel_results",
-    ]
-    for _fname in _PUBLIC_TOOLS:
-        if _fname in globals():
-            globals()[_fname] = _telemetry.wrap(globals()[_fname])
+_PUBLIC_TOOLS = [
+    "get_chapter_context", "get_derivation_context", "get_graph_stats",
+    "check_consistency", "get_unresolved_threads", "get_all_threads",
+    "get_extraction_prompt", "get_writing_prompt", "get_derivation_prompt",
+    "init_project", "add_character", "add_location", "add_event",
+    "add_chapter_arc", "add_suspense_thread", "add_outline_entry",
+    "add_style_guide", "add_motif", "add_theme", "add_time_period",
+    "add_relation", "update_suspense_thread", "write_extraction",
+    "clear_chapter_data", "validate_chapter", "detect_extraction_conflicts",
+    "check_outline_compliance", "batch_check_outline_compliance",
+    "sync_backends", "analyze_pacing", "revise_outline",
+    "analyze_edit_impact", "accept_edit", "review_chapter",
+    "list_edits", "rollback_edit", "analyze_parallel_groups",
+    "prepare_parallel_batch", "get_parallel_writing_prompt",
+    "merge_parallel_results",
+]
+for _fname in _PUBLIC_TOOLS:
+    if _fname in globals():
+        globals()[_fname] = _telemetry.wrap(globals()[_fname])
