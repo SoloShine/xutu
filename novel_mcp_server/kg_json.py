@@ -395,9 +395,16 @@ class JsonKG:
         characters = [deepcopy(self._graph["characters"][n])
                       for n in sorted(char_names)
                       if n in self._graph["characters"]]
+        # 回退：无事件关联时返回全部人物（冷启动/并行首章）
+        if not characters:
+            characters = [deepcopy(v) for v in self._graph["characters"].values()]
+
         locations = [deepcopy(self._graph["locations"][n])
                      for n in sorted(loc_names)
                      if n in self._graph["locations"]]
+        # 回退：无事件关联时返回全部地点
+        if not locations:
+            locations = [deepcopy(v) for v in self._graph["locations"].values()]
 
         # 时间段
         time_periods = [deepcopy(v) for v in self._graph["time_periods"].values()
