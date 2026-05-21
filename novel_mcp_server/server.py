@@ -429,5 +429,26 @@ def merge_parallel_results(project: str, batch_id: str,
     return core.merge_parallel_results(project, batch_id, results)
 
 
+# ============================================================
+# 14. 遥测工具
+# ============================================================
+
+@mcp.tool()
+def save_telemetry_chapter_report(project: str, chapter: int) -> dict:
+    """保存指定章节的遥测报告到磁盘（JSON文件）。
+    返回保存路径。
+    """
+    return core.save_telemetry_chapter_report(project, chapter)
+
+
+@mcp.tool()
+def save_telemetry_session_summary(project: str) -> dict:
+    """保存会话遥测摘要到磁盘（JSON文件）。
+    包含所有章节的工具调用统计、耗时、token消耗等。
+    返回保存路径。
+    """
+    return core.save_telemetry_session_summary(project)
+
+
 if __name__ == "__main__":
     mcp.run()

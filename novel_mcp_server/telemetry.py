@@ -302,5 +302,8 @@ def wrap(func):
                 error=error,
             )
             _collector.record(call)
+            # V25: write_extraction 完成后自动保存该章遥测报告
+            if func.__name__ == "write_extraction" and chapter is not None:
+                _collector.save_chapter_report(chapter)
 
     return wrapper

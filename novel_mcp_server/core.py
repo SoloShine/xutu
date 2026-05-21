@@ -1782,6 +1782,31 @@ def rollback_edit(project: str, snapshot_id: str,
 
 
 # ============================================================
+# V25 遥测保存工具
+# ============================================================
+
+def save_telemetry_chapter_report(project: str, chapter: int) -> dict:
+    """保存指定章节的遥测报告到磁盘。"""
+    import telemetry as _tel
+    c = _tel.get_collector()
+    if c is None:
+        return {"status": "no_collector", "message": "遥测未激活"}
+    path = c.save_chapter_report(chapter)
+    if path is None:
+        return {"status": "no_data", "message": f"第{chapter}章无遥测数据"}
+    return {"status": "ok", "path": path}
+
+
+def save_telemetry_session_summary(project: str) -> dict:
+    """保存会话遥测摘要到磁盘。"""
+    import telemetry as _tel
+    c = _tel.get_collector()
+    if c is None:
+        return {"status": "no_collector", "message": "遥测未激活"}
+    path = c.save_session_summary()
+    return {"status": "ok", "path": path}
+
+
 # V25 遥测自动注入（无条件装饰，运行时通过 _collector 控制）
 # ============================================================
 import telemetry as _telemetry
@@ -1801,6 +1826,7 @@ _PUBLIC_TOOLS = [
     "list_edits", "rollback_edit", "analyze_parallel_groups",
     "prepare_parallel_batch", "get_parallel_writing_prompt",
     "merge_parallel_results",
+    "save_telemetry_chapter_report", "save_telemetry_session_summary",
 ]
 for _fname in _PUBLIC_TOOLS:
     if _fname in globals():

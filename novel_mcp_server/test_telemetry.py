@@ -277,6 +277,41 @@ test("5.4 chapter second param",
 
 
 # ============================================================
+# Section 6: write_extraction 自动保存测试
+# ============================================================
+print("\n=== Section 6: write_extraction 自动保存 ===")
+
+import tempfile
+tmp_auto = tempfile.mkdtemp()
+telemetry._collector = TelemetryCollector("auto_save_test")
+telemetry._collector._telemetry_dir = os.path.join(tmp_auto, "telemetry")
+
+# 模拟 write_extraction 被 wrap 后的自动保存
+# 先记录几个调用，模拟章节管线
+call_derive = ToolCall(tool="get_derivation_prompt", chapter=3, start=0, end=0.01, duration_ms=10.0)
+call_arc = ToolCall(tool="add_chapter_arc", chapter=3, start=0, end=0.02, duration_ms=20.0,
+                    decision={"rhythm": "tight", "purpose": "test"})
+call_write = ToolCall(tool="write_extraction", chapter=3, start=0, end=0.05, duration_ms=50.0,
+                      decision={"events": 5, "conflicts": 0})
+telemetry._collector.record(call_derive)
+telemetry._collector.record(call_arc)
+telemetry._collector.record(call_write)
+
+# 手动触发自动保存（模拟 wrap 中的行为）
+path_auto = telemetry._collector.save_chapter_report(3)
+test("6.1 auto-save path", path_auto is not None and os.path.exists(path_auto))
+with open(path_auto, "r", encoding="utf-8") as f:
+    auto_data = json.load(f)
+test("6.1 auto-save has 3 calls", len(auto_data.get("tool_calls", [])) == 3)
+test("6.1 auto-save has totals", auto_data.get("totals", {}).get("tool_count") == 3)
+
+# 清理
+import shutil
+shutil.rmtree(tmp_auto, ignore_errors=True)
+telemetry._collector = prev_collector
+
+
+# ============================================================
 # 结果汇总
 # ============================================================
 print(f"\n{'='*50}")
