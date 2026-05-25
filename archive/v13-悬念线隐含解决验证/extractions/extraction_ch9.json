@@ -1,0 +1,197 @@
+{
+  "events": [
+    {
+      "id": "E9_01",
+      "chapter": 9,
+      "title": "铁皮棚内的震颤",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "铁皮桌面的积水漫过照片，赵建国盯着水下的新鲜金属凹坑，身体后缩抵住马扎，右手悬空发生高频剧烈震颤，搪瓷缸倒下，铁锈水渗入假肢接缝。"
+    },
+    {
+      "id": "E9_02",
+      "chapter": 9,
+      "title": "崩溃的音节",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "积水漫过碎布纤维特写，纸张边缘卷曲，赵建国面部扭曲、颈部青筋凸起，从齿缝中挤出“大……堤……”两个破碎的音节，引出当年的大堤记忆。"
+    },
+    {
+      "id": "E9_03",
+      "chapter": 9,
+      "title": "暴雨中的跋涉",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆中，暴雨江水漫过脚踝，林素云踩在混有碎玻璃的泥坡上，脚底被刺穿流血。她左手死死攥着一张字迹模糊的泡软纸张，右手张开维持推拒姿势但剧烈发抖。"
+    },
+    {
+      "id": "E9_04",
+      "chapter": 9,
+      "title": "纸落黑水",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆中，两个穿工业胶靴的黑影从大堤方向逼近，一阵狂风将林素云左手攥着的纸扯落卷入江水。林素云没有低头看纸，而是主动双膝跪入泥浆，将自己钉在黑影面前。"
+    },
+    {
+      "id": "E9_05",
+      "chapter": 9,
+      "title": "畸形的脚步",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆中，林素云在跪姿下死死盯住黑影的下肢：左侧黑影右腿像被拴住般拖拽，前方黑影右脚踝呈现习惯性的过度外翻。所有环境音在此刻化为白噪音，她的视线如生锈钉子般锁定在畸形运转的脚踝上。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E9_01",
+      "character": "陈若竹",
+      "location": "铁皮棚"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "赵建国",
+      "location": "铁皮棚"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "陈若竹",
+      "location": "铁皮棚"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "赵建国",
+      "location": "铁皮棚"
+    },
+    {
+      "event_id": "E9_03",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E9_04",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E9_04",
+      "character": "穿胶靴的黑影（高个）"
+    },
+    {
+      "event_id": "E9_04",
+      "character": "穿胶靴的黑影（矮个）"
+    },
+    {
+      "event_id": "E9_05",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E9_05",
+      "character": "穿胶靴的黑影（高个）"
+    },
+    {
+      "event_id": "E9_05",
+      "character": "穿胶靴的黑影（矮个）"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "赵建国",
+      "field": "state_change",
+      "content": "看到水浸照片上的凹坑时瞬间失去身体控制力，右手高频震颤蔓延至腕关节，挤出“大堤”二字，表明凹坑直接关联到大堤的极端创伤。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "在极端恐惧和压迫下，会采取主动下跪的固定姿态来应对，且具备在高压下极其冷静的微观观察力（能精准捕捉脚步的病理性细节）。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "铁皮棚",
+      "type": "室内",
+      "description": "顶部有锈蚀穿孔，地面为铁皮，有造纸废渣散发的酸腐气息，内有铁皮桌和马扎。"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "穿胶靴的黑影（高个）",
+      "role": "悬疑角色",
+      "personality": "压迫感极强，右脚踝存在习惯性过度外翻的骨骼畸形，步伐稳健。"
+    },
+    {
+      "name": "穿胶靴的黑影（矮个）",
+      "role": "悬疑角色",
+      "personality": "跟随者，右腿存在严重的拖拽步态，疑似旧伤或残疾。"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "铁皮棚桌面的积水晕染照片，以及回忆中漫过脚踝、带来刺骨寒冷和碎玻璃伤害的浑浊江水。"
+    },
+    {
+      "motif": "铁/铁锈",
+      "context": "铁皮桌面、铁锈色的水、生锈的铁丝般的青筋、生锈的钉子般的视线。"
+    },
+    {
+      "motif": "畸形/残缺",
+      "context": "赵建国震颤的右手与假肢，黑影过度外翻的脚踝和拖拽的右腿。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST08_02",
+      "action": "advanced",
+      "evidence": "赵建国看到水浸照片上的凹坑后，挤出“大……堤……”二字，直接将凹坑与当年大堤上的某件事联系起来。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST07_02",
+      "action": "advanced",
+      "evidence": "照片上的新鲜金属凹坑在水中折射，直接触发了赵建国关于大堤的创伤记忆。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST08_01",
+      "action": "advanced",
+      "evidence": "赵建国的右手震颤从指尖蔓延到腕关节，幅度大到划出虚影，在极度恐惧时完全失控。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "照片被水浸透，暗管交叉点被晕染，但碎布纤维特写被水浸泡松散，提供了更多物理细节。",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "林素云在暴雨大堤上死死攥着的那张被水泡软、字迹模糊的纸到底是什么文件？为何黑影逼近时她如此看重？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E9_03"
+    },
+    {
+      "content": "穿胶靴的高个黑影右脚踝为何存在习惯性的过度外翻畸形？这是否是某种职业损伤或特定人物的生理特征？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E9_05"
+    },
+    {
+      "content": "穿胶靴的矮个黑影右腿为何呈现被拴住般的拖拽步态？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E9_05"
+    },
+    {
+      "content": "当年大堤上到底发生了什么，让林素云主动跪入泥水，让赵建国至今看到相关印记便会全身痉挛？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E9_02"
+    }
+  ],
+  "notes": "值得记录的新细节：赵建国的假肢在搪瓷缸倒下时接缝处渗入铁锈水；林素云在极端高压下的解离状态表现为听觉白噪音和视觉极度聚焦（如生锈的钉子）；黑影的步态特征（外翻和拖拽）是非常具体的物理识别标记，可用于后续身份指认。"
+}

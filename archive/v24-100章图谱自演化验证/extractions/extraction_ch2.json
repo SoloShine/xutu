@@ -1,0 +1,264 @@
+# Persisted: 2026-05-21 06:27:03
+{
+  "events": [
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "出租屋内封印余震再次发作",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远回到城中村出租屋躺下后，胸口异跳持续。热流再次从胸口扩散至四肢，十根指尖同时冒出淡蓝色光芒，攥拳后光灭但被子被烫出十个黑色指尖印。陆远盯着烧焦的印子，意识到身体出了问题"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "深夜拨打名片电话联系周衡安",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远拿起手机拨打名片上的号码，周衡安秒接并准确说出陆远觉醒的事实。周衡安透露江城三年没出过第二个觉醒者，约陆远次日上午九点在老张牛肉面见面，还精确点出被子上的窟窿，令陆远毛骨悚然"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "觉醒后首次感知到感官大幅提升",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "次日早晨陆远发现昨天的疲劳全部消失，膝盖摔伤结痂无痛。下楼时能清楚听到三楼外一楼房东吵架的每个字，甚至能隔两层墙听到街对面五金店老板跟儿子说话。他发现集中注意力可以分层过滤声音"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "老张牛肉面馆与周衡安正式见面",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远赴约来到东湖路老张牛肉面馆。周衡安点破灵气觉醒、封印、灵脉等概念，透露废弃工厂蓝光是灵脉节点，陆远觉醒时差点震开东湖路灵脉。周衡安判断陆远体内封印至少金丹期以上的人所布，暗示其父母可能不是普通人。陆远愤怒离席，留下十五块面钱"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "离后面馆后感官继续异变",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远蹲在电动车旁，右手食指指甲缝里蓝光一闪而过。骑离面馆时能同时听到二十米外小女孩说话、楼上夫妻对话、以及面馆里周衡安点加肉的声音。骑过废弃工厂时胸口跳动突然加速半拍"
+    },
+    {
+      "id": "E2_06",
+      "chapter": 2,
+      "title": "接到东湖路18号酸辣粉订单",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远接到新订单，地址是东湖路18号，正好在废弃工厂隔壁。他犹豫三秒后接单，骑车返回东湖路。经过废弃工厂围墙时胸口重跳一下，但围墙内白天没有蓝光，只有枯死的爬山虎"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E2_01",
+      "character": "陆远",
+      "location": "城中村出租屋"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "陆远",
+      "location": "城中村出租屋"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "陆远",
+      "location": "城中村"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "陆远",
+      "location": "老张牛肉面馆"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "周衡安",
+      "location": "老张牛肉面馆"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "陆远",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "陆远",
+      "location": "东湖路"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "觉醒后身体异变加速：听觉大幅提升能隔两层墙听清对话，疲劳感消失，膝盖伤一天结痂无痛，指尖蓝光可无意识触发"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "对周衡安既警惕又无法完全拒绝，留了十五块面钱表示不接受施恩，但没删电话号码"
+    },
+    {
+      "name": "周衡安",
+      "field": "new_detail",
+      "content": "六十来岁，头发花白，穿灰色polo衫戴玉坠，脸瘦手上有老茧。能精确感知灵气波动，判断封印等级至少金丹期。知道陆远被子被烫出窟窿，远程感知能力惊人"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城中村出租屋",
+      "type": "住所",
+      "description": "城中村三楼六平米无窗房间，吊扇生锈，月租七百，楼道灯坏了三个月"
+    },
+    {
+      "name": "老张牛肉面馆",
+      "type": "餐饮",
+      "description": "东湖路南三百米的小面馆，夹在棋牌室和手机维修店中间，只有四张桌子，牛肉面十五块"
+    },
+    {
+      "name": "东湖路18号",
+      "type": "地址",
+      "description": "废弃工厂隔壁的门牌号，陆远接到酸辣粉外卖订单的目的地"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "陆远蹲在电动车旁，外卖箱挂在后座上黄色的干干净净；阳光碎光斑打在外卖箱上"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "周衡安用WiFi信号比喻灵气，说觉醒时方圆五十米灵气波动压不住，差点震开东湖路灵脉"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "周衡安自称觉醒时在场，精确感知灵气波动，约陆远见面透露修真信息，暗示自己在暗中监控",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "胸口异跳持续一整夜，次日更重；蓝光可无意识触发；手指甲缝蓝光一闪而过；感官全面提升",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "周衡安判断封印至少金丹期以上的人所布，暗示陆远父母可能不是普通人",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "周衡安解释废弃工厂蓝光是灵脉节点，白天围墙内没有蓝光但陆远经过时胸口重跳",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "都市中不止一个觉醒者——周衡安说江城三年没出过第二个，暗示之前有过其他人。这个城市里还藏着多少修真者？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E2_04"
+    },
+    {
+      "content": "东湖路18号的酸辣粉订单——谁在废弃工厂隔壁点外卖？巧合还是有人故意引导陆远回去？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_06"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E2_01",
+      "to": "E2_02",
+      "type": "reaction",
+      "detail": "被子被蓝光烫出窟窿后陆远决定拨打名片电话"
+    },
+    {
+      "from": "E2_02",
+      "to": "E2_04",
+      "type": "decision",
+      "detail": "电话中周衡安约见面，陆远决定赴约"
+    },
+    {
+      "from": "E2_04",
+      "to": "E2_05",
+      "type": "reaction",
+      "detail": "周衡安点破觉醒事实和父母疑点，陆远愤怒离席"
+    },
+    {
+      "from": "E2_05",
+      "to": "E2_06",
+      "type": "consequence",
+      "detail": "骑过废弃工厂时胸口异动加剧，随即收到紧邻工厂地址的订单"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E2_02",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "周衡安确认自己在暗巷旁目击觉醒，能远程感知被子被烧"
+    },
+    {
+      "event_id": "E2_04",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "周衡安判断封印等级为金丹期以上，暗示父母身份"
+    },
+    {
+      "event_id": "E2_04",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "周衡安确认废弃工厂蓝光是灵脉节点"
+    },
+    {
+      "event_id": "E2_01",
+      "thread_id": "ST01_03",
+      "type": "clue",
+      "detail": "封印余震再次发作，蓝光可无意识触发"
+    },
+    {
+      "event_id": "E2_06",
+      "thread_id": "ST01_02",
+      "type": "connection",
+      "detail": "废弃工厂隔壁出现订单，陆远被引回灵脉附近"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "弄清楚身体异变的真相",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "拒绝被陌生人掌控",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "周衡安",
+      "goal": "引导陆远认识觉醒",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "陆远做了蓝色走廊的梦，无数门后透出蓝光，触碰门把手时走廊碎裂——可能是封印空间的隐喻。新闻提到'多地观测到异常大气现象'暗示灵气变化不止发生在江城。"
+}

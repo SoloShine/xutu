@@ -1,0 +1,171 @@
+# Persisted: 2026-05-21 16:30:41
+{
+  "events": [
+    {
+      "id": "E85_01",
+      "title": "四人在巷口喘息评估伤势",
+      "detail": "陆远靠着墙蹲下后背命门穴渗血。老周嘴角流血滑坐墙根。苏晚灵力耗尽被大壮背到墙根闭眼呼吸浅。大壮膝盖灵力碾压后恢复行动。四人坐在巷口月光下。地下闷响持续归墟与阁主仍在交战。",
+      "event_type": "transition",
+      "chapter": 85,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E85_02",
+      "title": "发现铜镜碎片被封印核心自动吸收",
+      "detail": "陆远发现掌心有十二块铜镜碎片。不是他捡的而是封印核心自动吸收的。苏晚解释封印核心与铜镜同频碎片被同频灵力源吸引。碎片是母亲意识的锚点只要碎片发光母亲意识不会散。",
+      "event_type": "revelation",
+      "chapter": 85,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E85_03",
+      "title": "母亲揭示铜镜可以修复是她的后手",
+      "detail": "母亲说碎片完整率超七成可以修复。用封印核心灵力与碎片共振纹路对齐铜镜会自愈需两个时辰连续灵力输出。苏晚冰蚕丝银针是本命灵器恢复速度是普通修士三倍两成灵力够辅助。上界至宝一直在母亲体内和意识绑在一起阁主拿不到母亲就拿不到。",
+      "event_type": "revelation",
+      "chapter": 85,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E85_04",
+      "title": "归墟灵力波动消失阁主仍在地下搜查",
+      "detail": "地下连续震动后暗红光从地面裂缝渗出然后消失。归墟灵力波动彻底消失。母亲说归墟不会消失因为是她的一部分只要她在归墟就在只是暂时无法行动。阁主仍在地下搜灵脉源头残余灵力。",
+      "event_type": "escalation",
+      "chapter": 85,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E85_05",
+      "title": "苏晚引导陆远开始修复铜镜",
+      "detail": "苏晚用仅存灵力做引导找到共振频率每四秒一次与封印核心同频。陆远引灵力从胸口到掌心碎片开始吸收灵力蓝光亮了三倍。老周揭示母亲三十年前在地面刻的四排字最后一句是七步棋局第七步是活棋。铜镜修复开始。",
+      "event_type": "climax",
+      "chapter": 85,
+      "is_gap": false,
+      "gap_level": 0
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E85_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E85_01",
+      "character": "老周"
+    },
+    {
+      "event_id": "E85_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E85_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E85_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E85_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E85_03",
+      "character": "铜音"
+    },
+    {
+      "event_id": "E85_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E85_04",
+      "character": "归墟"
+    },
+    {
+      "event_id": "E85_04",
+      "character": "天机阁阁主"
+    },
+    {
+      "event_id": "E85_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E85_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E85_05",
+      "character": "老周"
+    },
+    {
+      "event_id": "E85_05",
+      "location": "城南旧居巷口"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "thread_updates": [
+    {
+      "thread_id": "ST84_01",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST84_03",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "铜镜修复需要两个时辰连续灵力输出——阁主还在地下随时可能脱身，时间够吗？",
+      "importance": "high",
+      "thread_type": "tension"
+    },
+    {
+      "content": "母亲在地上刻的四排字最后一句'七步棋局第七步是活棋'——母亲的完整计划是什么？",
+      "importance": "high",
+      "thread_type": "mystery"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "goal": "两个时辰内修好铜镜加固母亲意识",
+      "state": "第三层封印已开后背命门穴渗血银针碎片残留掌心引导灵力修复铜镜"
+    },
+    {
+      "name": "苏晚",
+      "goal": "引导共振频率辅助铜镜修复",
+      "state": "灵力即将耗尽仅剩引导级灵力冰蚕丝银针恢复速度三倍"
+    },
+    {
+      "name": "老周",
+      "goal": "守在巷口警戒",
+      "state": "重伤嘴角流血但意识清醒揭示母亲四排字"
+    },
+    {
+      "name": "大壮",
+      "goal": "守在巷口保护众人",
+      "state": "行动恢复体力尚可"
+    },
+    {
+      "name": "归墟",
+      "goal": "被阁主压制后暂时沉默",
+      "state": "灵力波动消失但不会消失是母亲一部分"
+    },
+    {
+      "name": "天机阁阁主",
+      "goal": "在地下搜灵脉源头残余灵力",
+      "state": "还在地下搜查不知道上界至宝在母亲体内"
+    },
+    {
+      "name": "铜音",
+      "goal": "指导陆远修复铜镜加固意识",
+      "state": "意识因铜镜碎片锚点而稳定部分声音恢复正常"
+    }
+  ],
+  "motif_mentions": [],
+  "notes": "Ch85收束喘息章。铜镜碎片修复是母亲后手。上界至宝位置揭露（在母亲体内不在灵脉源头）。老周揭示母亲三十年前四排字（七步棋局）。归墟暂时沉默但未消失。阁主在地下搜查。"
+}

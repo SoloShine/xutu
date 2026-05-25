@@ -1,0 +1,291 @@
+# Persisted: 2026-05-21 11:00:03
+{
+  "events": [
+    {
+      "id": "E13_01",
+      "chapter": 13,
+      "title": "凌晨出发前往东湖路灵脉节点",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "凌晨四点城南拆迁区出发，苏晚用医修灵力稳住纹路蔓延速度，四人步行穿过沉睡城区前往东湖路。陆远八道纹路在黑暗中发微弱蓝光，苏晚每隔一段时间检查纹路状态。步行约二十分钟抵达东湖路烂尾楼工地"
+    },
+    {
+      "id": "E13_02",
+      "chapter": 13,
+      "title": "深入东湖路烂尾楼地下三层灵脉节点",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人穿过烂尾楼工地进入地下停车场，沿楼梯下到地下三层灵脉节点空间。地面铺灰白石板，墙壁有自然生长的纹路，灵力浓度比地面高十倍。两名地脉堂灰袍修士（国字脸和圆脸）已在阵法旁等候，用十二块灵石和黑色核心石启动阵法打开灵脉深层封印通道"
+    },
+    {
+      "id": "E13_03",
+      "chapter": 13,
+      "title": "灵力冲击封印核心第九道纹路浮现",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远盘膝坐在阵法中央，引导灵石矿脉灵力冲击胸口封印核心。灵力经脚底涌入丹田再冲向胸口，八道纹路同时发光发热。第九道纹路从胸口正中浮现，深蓝发黑，像钥匙在锁孔里转动，一圈圈扩展与前八道连接。第四次冲击时封印核心打开（非暴力裂开而是锁芯对上自行转动），九道纹路形成完整回路"
+    },
+    {
+      "id": "E13_04",
+      "chapter": 13,
+      "title": "突破觉醒期直达练气中期",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "九道纹路回路中灵力高速循环压缩密度翻倍，撕碎觉醒期瓶颈连续突破练气初期和练气中期。觉醒灵力冲击波震碎地下三层大半石板和四块阵法石，国字脸和圆脸被推到墙边，苏晚周衡安被推到入口墙角。陆远站起时地面碎裂，九道纹路形成完整回路后缓缓暗下，灵力变得像血液一样自然流动"
+    },
+    {
+      "id": "E13_05",
+      "chapter": 13,
+      "title": "天机阁筑基期和灵墟高阶修士同时逼近东湖路",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "觉醒灵力波动传出至少五公里。圆脸感知到两股灵力高速接近：北边一股是筑基期天机阁修士灵力沉如山岳，东边一股灵力结构复杂属于灵墟且不比筑基期弱、灵力质感比灰隼高不止一个层次。两股力量都在一公里以内，三方势力汇聚东湖路"
+    },
+    {
+      "id": "E13_06",
+      "chapter": 13,
+      "title": "紧急撤离东湖路灵脉节点",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远下令撤退，四人沿楼梯冲出地下停车场。地脉堂两修士走另一条撤退路线。练气中期后陆远灵力感知范围扩大十倍，清晰感知两股灵力逼近。冲出地面后天际泛灰白有晨雾，灵脉深层封印重新闭合发出闷响。四人钻入东湖路北小巷，身后天空中白光和暗红灵力痕迹几乎同时抵达地下入口上空"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E13_01",
+      "character": "陆远",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_01",
+      "character": "苏晚",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_01",
+      "character": "周衡安",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_01",
+      "character": "大壮",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "陆远",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "苏晚",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "周衡安",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "大壮",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_03",
+      "character": "陆远",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_03",
+      "character": "苏晚",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_04",
+      "character": "陆远",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_05",
+      "character": "陆远",
+      "location": "东湖路烂尾楼地下三层"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "陆远",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "苏晚",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "周衡安",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "大壮",
+      "location": "东湖路"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "修为从觉醒期突破至练气中期，九道纹路形成完整回路，灵力从外部借用变为血液般自然流动，灵力感知范围扩大十倍"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "胸口封印核心被打开（锁芯对上自行转动而非暴力裂开），第九道纹路从胸口正中浮现连接前八道形成回路"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "觉醒灵力冲击波中被推到墙角脸色发白，但右手仍保持施法手势"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "东湖路烂尾楼地下三层",
+      "type": "灵脉节点",
+      "description": "东湖路南边烂尾楼群中间那栋地下三层，地面铺一米见方灰白石板缝隙渗出灵力波动，墙壁有自然生长的年轮状纹路，灵力浓度比地面高十倍。赵铁山派人用十二块灵石和核心石阵法打开灵脉深层封印通道。觉醒灵力冲击后大半石板碎裂，阵法石碎四块核心石裂成两半"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵石矿脉灵力从脚下涌出，觉醒灵力波动传出至少五公里，被天机阁和灵墟同时感知"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST09_03",
+      "action": "resolved",
+      "evidence": "陆远在灵石矿脉灵力辅助下成功引导灵力冲击封印核心，第九道纹路浮现完成回路，突破觉醒期直达练气中期，封印核心主动打开执行觉醒完成",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "胸口跳动点在觉醒过程中剧烈跳动四下，最终与第九道纹路对接使封印核心像锁芯对上一样自行打开",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "九道纹路从手背延伸到胸口形成完整回路，觉醒后纹路不再发光但能感觉到九条封冻河流般的存在",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST12_02",
+      "action": "advanced",
+      "evidence": "第九道纹路从胸口正中浮现与前八道不同（深蓝发黑），封印核心是打开而非裂开（锁芯对上自行转动），印证封印核心主动执行觉醒指令",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_02",
+      "action": "advanced",
+      "evidence": "天机阁筑基期修士感知到觉醒灵力波动后从北边高速逼近东湖路，灵力沉如山岳",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "觉醒后副作用——突破练气中期后灵力像血液般自然流动，但每次使用灵力时胸口封印核心处传来刺痛，像是还没完全适应新的力量结构",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E13_04"
+    },
+    {
+      "content": "天机阁筑基期和灵墟高阶修士同时抵达东湖路烂尾楼——两方势力在灵脉节点残留灵力波动中发现对方气息，江城修真势力平衡被打破。灵墟来人灵力质感比灰隼高不止一个层次，可能派出了更高阶修士",
+      "importance": "high",
+      "thread_type": "escalation",
+      "planted_event_id": "E13_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E13_01",
+      "to": "E13_02",
+      "type": "decision",
+      "detail": "陆远决定前往东湖路灵脉节点执行赌博式觉醒"
+    },
+    {
+      "from": "E13_02",
+      "to": "E13_03",
+      "type": "consequence",
+      "detail": "地脉堂阵法打开灵脉深层通道后灵力涌出，触发觉醒过程"
+    },
+    {
+      "from": "E13_03",
+      "to": "E13_04",
+      "type": "consequence",
+      "detail": "第九道纹路完成回路后灵力高速循环压缩，撕碎觉醒期瓶颈"
+    },
+    {
+      "from": "E13_04",
+      "to": "E13_05",
+      "type": "escalation",
+      "detail": "觉醒灵力波动传出五公里被天机阁和灵墟同时感知，三方势力汇聚"
+    },
+    {
+      "from": "E13_05",
+      "to": "E13_06",
+      "type": "reaction",
+      "detail": "两股强灵力逼近迫使陆远紧急撤离"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E13_03",
+      "thread_id": "ST01_03",
+      "type": "confirmation",
+      "detail": "胸口跳动点剧烈跳动四下后与第九道纹路对接，确认跳动点是封印核心的感应器"
+    },
+    {
+      "event_id": "E13_04",
+      "thread_id": "ST12_02",
+      "type": "confirmation",
+      "detail": "封印核心打开而非裂开，锁芯对上自行转动，确认封印核心在主动执行觉醒指令"
+    },
+    {
+      "event_id": "E13_05",
+      "thread_id": "ST07_02",
+      "type": "confirmation",
+      "detail": "天机阁筑基期修士确实在觉醒灵力波动后高速逼近东湖路"
+    },
+    {
+      "event_id": "E13_05",
+      "thread_id": "ST12_01",
+      "type": "confirmation",
+      "detail": "灵墟派出的高阶修士灵力质感比灰隼高不止一个层次，印证灰隼信息传回后灵墟升级了追查力度"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "在灵脉节点完成赌博式觉醒突破修为",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "陆远",
+      "goal": "觉醒后立即撤离避开天机阁和灵墟",
+      "type": "fear",
+      "status": "advanced"
+    }
+  ],
+  "notes": "觉醒过程关键细节：封印核心是锁芯对上自行转动而非暴力打开，暗示封印本就有被打开的机制。第九道纹路深蓝发黑与前八道蓝色不同，从胸口正中浮现向外扩展。灵力从借用变为血液般自然流动是修炼体系的重要变化。地脉堂修士使用第二条撤退路线分离撤离"
+}

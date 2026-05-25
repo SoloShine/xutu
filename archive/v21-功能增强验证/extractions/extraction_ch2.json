@@ -1,0 +1,258 @@
+# Persisted: 2026-05-21 00:52:45
+{
+  "events": [
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "方竹带纸条找陶然辨认",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹清晨带纸条到旧货市场找陶然，将夹层中发现的纸条展在陶然摊位的绒布上，请陶然辨认那半行褪色钢笔字迹"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "陶然辨认字迹指向老廖",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陶然用拇指指腹触摸纸条字迹，根据'摆'字最后一笔向上挑的弧度和'时'字'寸'部点的位置，认出这是退休钟表匠老廖的笔迹，透露老廖三年前退休后深居简出，屋里曾经全是钟后来全停了"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "方竹要求陶然带路找老廖",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹让陶然带她去找老廖，陶然眼神中露出一种确认的表情，两人穿过旧货市场和干货巷子前往东风路后面的老廖住处"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "老廖门前敲门无人应答",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陶然在老廖的深褐色双开木门前敲了两次，无人应答。方竹贴耳于门板，听到门内传来密集的多音高钟表嘀嗒声和低频嗡鸣"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "方竹掌心感受门板机械震动",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹将掌心贴上木门，感受到凉而干燥的木门表面传来持续的机械震动，能分辨出至少三种不同频率叠加，像几十只钟的摆轮同时转动通过地板和门框传导"
+    },
+    {
+      "id": "E2_06",
+      "chapter": 2,
+      "title": "方竹追问老廖座钟详情后离开",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回到旧货市场后，方竹向陶然追问老廖座钟数量，陶然描述老廖屋里全是钟但全停着，反问'一个修了一辈子钟的人让所有钟停下来'。方竹骑车离开，纸条折痕对着锁骨"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E2_01",
+      "character": "方竹",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E2_01",
+      "character": "陶然",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "方竹",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "陶然",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "老廖"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "方竹"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "陶然"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "方竹",
+      "location": "老廖住处"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "陶然",
+      "location": "老廖住处"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "方竹",
+      "location": "老廖住处"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "方竹",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "陶然",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "老廖"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "方竹",
+      "field": "state_change",
+      "content": "从单纯发现纸条转为主动追踪，骑车把纸条夹在帆布包侧袋紧贴身体而非放入车筐，显示出对纸条的重视程度"
+    },
+    {
+      "name": "陶然",
+      "field": "new_detail",
+      "content": "走路姿势在摊位后和带路时不同：摊位后晃来晃去无固定方向，带路时走直线肩膀前倾。能通过笔迹辨认人，指腹粗糙指纹磨平"
+    },
+    {
+      "name": "老廖",
+      "field": "new_detail",
+      "content": "退休钟表匠，三年前停止工作。笔迹特征：'摆'字最后一笔向上挑，'时'字'寸'部靠右。耳朵不好。屋里全是钟但全部停着。深居简出不怎么见人"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "老廖住处",
+      "type": "residence",
+      "description": "东风路后面巷子里的老式民居，深褐色双开木门漆面起皮，门框上方有锈蚀铁皮挡雨棚，无门铃。屋内传出密集钟表嘀嗒声，门板能感受到机械震动"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "钟表",
+      "context": "老廖屋内几十只钟的摆轮同时转动产生震动传导到门板，但陶然说老廖让所有钟都停下来"
+    },
+    {
+      "motif": "铜锈",
+      "context": "老廖住处门框上方铁皮挡雨棚锈迹斑斑"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "resolved",
+      "evidence": "陶然辨认出纸条字迹属于老廖，通过'摆'字挑笔和'时'字点的位置确认，纸条内容部分指向了老廖",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "陶然透露他以前收的钟好多是从老廖手里出来的，间接关联了卖钟老头与老廖的关系",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "方竹在老廖门前感受到门板传来多种频率的机械震动，暗示老廖屋内有大量钟在运行",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "陶然说老廖三年前退休，屋里钟全停了是他自己停的，加深了老廖退休原因的神秘",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "老廖屋内的钟到底是走还是停？陶然说全停了，但方竹在门外感受到密集的机械震动和嘀嗒声",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E2_01",
+      "to": "E2_02",
+      "type": "investigation",
+      "detail": "方竹请陶然辨认纸条导致陶然认出老廖笔迹"
+    },
+    {
+      "from": "E2_02",
+      "to": "E2_03",
+      "type": "decision",
+      "detail": "陶然认出老廖字迹后方竹决定亲自去找老廖"
+    },
+    {
+      "from": "E2_03",
+      "to": "E2_04",
+      "type": "consequence",
+      "detail": "方竹和陶然前往老廖住处但敲门无人应"
+    },
+    {
+      "from": "E2_04",
+      "to": "E2_05",
+      "type": "investigation",
+      "detail": "无人应答后方竹主动用触觉感知门板信息"
+    },
+    {
+      "from": "E2_05",
+      "to": "E2_06",
+      "type": "consequence",
+      "detail": "未见到老廖，回到旧货市场继续追问信息"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E2_02",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "陶然确认纸条字迹是老廖的，通过笔画特征辨认"
+    },
+    {
+      "event_id": "E2_02",
+      "thread_id": "ST01_03",
+      "type": "connection",
+      "detail": "陶然收的钟很多从老廖手里出来，暗示卖钟老头可能与老廖有关"
+    },
+    {
+      "event_id": "E2_05",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "门板震动暗示老廖屋内大量钟在运行，与座钟摆轮自晃现象可能有共同原因"
+    },
+    {
+      "event_id": "E2_05",
+      "thread_id": "ST02_01",
+      "type": "clue",
+      "detail": "陶然说钟全停了但门板传来震动，矛盾暗示老廖退休背后有秘密"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "方竹",
+      "goal": "找到纸条的书写者老廖，了解纸条完整含义",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "感官锚点：Ch2以触觉为主导（帆布粗纹路硌掌心、碎石子硌鞋底、门板凉而粗糙、漆皮刮茧子、三种频率震动叠加）。听觉辅助（露水滴落声、塑料衣挂哗啦声、木头敲门声、多音高嘀嗒声叠加嗡鸣）。钟表意象矛盾发展：陶然说全停 vs 方竹感到震动。老廖住处门板温度细节贯穿结尾。"
+}

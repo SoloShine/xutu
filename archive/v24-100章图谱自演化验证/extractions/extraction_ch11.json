@@ -1,0 +1,321 @@
+# Persisted: 2026-05-21 10:45:19
+{
+  "events": [
+    {
+      "id": "E11_01",
+      "chapter": 11,
+      "title": "拆迁区等待周衡安灵力传讯联系地脉堂",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城南拆迁区碎石堆过夜休整，天亮后周衡安用最后一枚碎裂玉简残片通过灵力传讯联系地脉堂中间人钱记茶庄。四人等待三个小时后收到回复：城南老街万福茶楼下午两点，只带一个人。苏晚给陆远换纱布时发现纹路又热了一点，警告不要用灵力"
+    },
+    {
+      "id": "E11_02",
+      "chapter": 11,
+      "title": "陆远周衡安前往万福茶楼赴约",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午一点半陆远和周衡安从拆迁区出发，步行二十分钟到达城南老街万福茶楼。茶楼已废弃三年，两层楼白漆脱落露红砖，招牌福字少一横。一楼布满灰尘，二楼清理过放着刚沏的茶。空气中有灵力燃烧后的檀香残余气息"
+    },
+    {
+      "id": "E11_03",
+      "chapter": 11,
+      "title": "赵铁山登场灵脉矿石试探陆远封印成色",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "地脉堂老大赵铁山带四名灰袍手下到场。赵铁山五六十岁瘦小精干穿旧中山装，三十年前欠周衡安人情。赵铁山用茶楼地下埋设的灵脉矿石引发陆远封印纹路共振发热来试探其实力，确认五天觉醒期击碎灵墟制式灵器后评估从不确定变为值得谈"
+    },
+    {
+      "id": "E11_04",
+      "chapter": 11,
+      "title": "赵铁山透露灵墟悬赏令和神秘买家情报",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵铁山透露灵墟总部三天前发布悬赏令收购觉醒期封印血脉样本，出价三颗金丹期丹药，高到灵墟自己都觉得不正常。买家不是天机阁，灵墟查不到真实身份。天机阁要陆远本人，这个买家要的是封印血脉样本，两个不同目的。赵铁山提出交易：陆远帮忙打开东湖路灵脉节点深层封印换取情报"
+    },
+    {
+      "id": "E11_05",
+      "chapter": 11,
+      "title": "陆远识破赵铁山试探将计就计达成合作",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远通过观察赵铁山微表情和脚底震动判断他还有隐藏条件，主动提出合作：帮开东湖路灵脉节点换取灵墟暗桩位置、天机阁筑基期巡逻路线和悬赏令完整内容。陆远用长期博弈逻辑说服赵铁山不会出卖他。赵铁山临走承认手下用探灵阵记录了陆远灵力频率作为保险"
+    },
+    {
+      "id": "E11_06",
+      "chapter": 11,
+      "title": "谈判后纹路蔓延至七道苏晚诊断倒计时缩短至两天",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "谈判结束后陆远发现第六道纹路旁浮出第七道更粗的纹路，蔓延已过肘弯接近肩膀。苏晚用医修灵力检查后确认蔓延速度比昨晚快近一倍，原因是茶楼灵脉矿石共振激活了封印纹路活性。倒计时从三到四天缩短为两天，可能不到。陆远说那就两天解决"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E11_01",
+      "character": "陆远",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "周衡安",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "苏晚",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "大壮",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E11_02",
+      "character": "陆远",
+      "location": "城南老街"
+    },
+    {
+      "event_id": "E11_02",
+      "character": "周衡安",
+      "location": "城南老街"
+    },
+    {
+      "event_id": "E11_03",
+      "character": "赵铁山",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_03",
+      "character": "陆远",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_03",
+      "character": "周衡安",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_04",
+      "character": "赵铁山",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_04",
+      "character": "陆远",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_05",
+      "character": "陆远",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_05",
+      "character": "赵铁山",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_05",
+      "character": "周衡安",
+      "location": "万福茶楼"
+    },
+    {
+      "event_id": "E11_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E11_06",
+      "character": "苏晚"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "从被动挨打转为主动出击，能够冷静分析对手心理并用博弈逻辑谈判，观察力敏锐（通过脚底震动判断赵铁山隐藏意图）"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "医修感知能力精确，能用绿色灵力隔绷带诊断封印蔓延速度，发现灵脉矿石共振是加速因素"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城南老街",
+      "type": "street",
+      "description": "城南二三十年的旧门面街，卷帘门半拉，卖杂货五金为主，老人坐在门口晒太阳。万福茶楼所在位置"
+    },
+    {
+      "name": "万福茶楼",
+      "type": "building",
+      "description": "城南老街中段废弃茶楼，两层楼白漆脱落露红砖，招牌福字少一横。已废弃三年，一楼布满灰尘，二楼清理过用于秘密会面。地下埋有拳头大灵脉矿石可稳定方圆五十米灵力波动，赵铁山据点之一"
+    },
+    {
+      "name": "钱记茶庄",
+      "type": "building",
+      "description": "城南老街茶叶店，地脉堂中间人姓钱的据点。表面卖茶实际卖消息"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "赵铁山",
+      "role": "antagonist_6",
+      "personality": "地脉堂老大，五六十岁瘦小精干穿旧中山装，头发花白梳得一丝不苟。眼神锐利看人像钉子。做消息和灵石生意，三十年前欠周衡安人情。说话从牙缝里挤字，笑容浅而短。精于算计，任何合作都留后手，用探灵阵记录对方灵力频率当保险。但守信用重长期利益"
+    },
+    {
+      "name": "魏虎",
+      "role": "npc",
+      "personality": "灵墟先遣领队寸头男，练气后期巅峰。通过赵铁山情报首次得知全名"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵脉矿石的灵力场与陆远封印纹路产生共振，激活纹路活性加速蔓延"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "大壮帮陆远看着外卖箱背包，比命都重要"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST07_01",
+      "action": "advanced",
+      "evidence": "赵铁山登场并谈判，地脉堂要陆远帮忙打开东湖路灵脉节点深层封印取灵石",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "赵铁山透露灵墟三天前发布悬赏令收购封印血脉样本，买家身份不明",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_03",
+      "action": "advanced",
+      "evidence": "第七道纹路浮现，蔓延速度加快一倍，倒计时从三四天缩短至两天",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "纹路增至七道蔓延至肩膀附近，灵脉共振是加速因素",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "灵脉矿石能与封印纹路共振，暗示封印与灵脉有深层关联",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST10_01",
+      "action": "advanced",
+      "evidence": "赵铁山确认灵墟先遣领队魏虎的灵器短刃被陆远击碎，灵墟已掌握该情报",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵墟悬赏令背后的神秘买家——不是天机阁，出价三颗金丹期丹药收购封印血脉样本，高到灵墟自己都觉得不正常。灵墟查不到买家真实身份，这个买家到底是谁？要封印血脉样本想干什么？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E11_04"
+    },
+    {
+      "content": "赵铁山用探灵阵记录陆远灵力频率——地脉堂老大在谈判期间让手下用探灵阵记录了陆远封印纹路的灵力频率作为保险和后手，这个数据会被怎么利用？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E11_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E11_01",
+      "to": "E11_02",
+      "type": "decision",
+      "detail": "收到地脉堂回复后决定赴约谈判"
+    },
+    {
+      "from": "E11_03",
+      "to": "E11_04",
+      "type": "revelation",
+      "detail": "试探确认实力后赵铁山开始透露核心情报"
+    },
+    {
+      "from": "E11_04",
+      "to": "E11_05",
+      "type": "decision",
+      "detail": "获得悬赏令情报后陆远决定将计就计合作"
+    },
+    {
+      "from": "E11_05",
+      "to": "E11_06",
+      "type": "consequence",
+      "detail": "茶楼灵脉矿石共振导致封印纹路蔓延加速"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E11_03",
+      "thread_id": "ST07_01",
+      "type": "confirmation",
+      "detail": "确认地脉堂靠收割灵脉节点过活，需要陆远封印力量打开灵脉深层"
+    },
+    {
+      "event_id": "E11_04",
+      "thread_id": "ST09_01",
+      "type": "clue",
+      "detail": "灵墟悬赏令表明灵墟正在高价收购封印血脉，买家身份不明"
+    },
+    {
+      "event_id": "E11_04",
+      "thread_id": "ST01_03",
+      "type": "connection",
+      "detail": "灵脉矿石与封印纹路共振暗示封印与灵脉有深层关联"
+    },
+    {
+      "event_id": "E11_06",
+      "thread_id": "ST09_03",
+      "type": "confirmation",
+      "detail": "纹路蔓延速度加倍，倒计时从三四天缩短至两天"
+    },
+    {
+      "event_id": "E11_05",
+      "thread_id": "ST07_01",
+      "type": "clue",
+      "detail": "赵铁山记录灵力频率作为保险，暗示地脉堂可能在为将来做准备"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "三天内与地脉堂合作打开东湖路灵脉节点换取情报",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "赵铁山",
+      "goal": "获取陆远封印力量打开灵脉深层取灵石",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "赵铁山",
+      "goal": "记录陆远灵力频率作为长期保险",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "赵铁山首次登场，地脉堂老大形象鲜明：瘦小精干、从牙缝里挤字、笑容像划火柴。谈判场景有博弈张力，陆远通过脚底震动判断对方隐藏意图。灵脉矿石共振是新机制，解释了封印纹路加速的原因。魏虎全名首次出现（通过赵铁山情报）。钱记茶庄中间人姓钱未出场。万福茶楼福字少一横的细节呼应废弃状态"
+}

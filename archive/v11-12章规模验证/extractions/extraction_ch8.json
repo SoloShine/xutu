@@ -1,0 +1,145 @@
+{
+  "events": [
+    {
+      "id": "E8_01",
+      "chapter": 8,
+      "title": "冒雨推门",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹鞋底沾满纸浆和铁锈泥，冒雨推开赵建国平房生锈的铁门，带进一阵潮湿冷风。"
+    },
+    {
+      "id": "E8_02",
+      "chapter": 8,
+      "title": "倒影与震颤",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国坐在轮椅上用油布擦拭生锈剔骨刀，手腕高频震颤；刀面最亮处倒映出暗红水盆中一双塞满皮渣的手正在搓洗布料的画面。"
+    },
+    {
+      "id": "E8_03",
+      "chapter": 8,
+      "title": "展示证据",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹走到散发着铁锈和霉变气味的铁皮桌前，从口袋掏出装有暗管凹痕照片的相纸，不顾漏雨拍在桌面上。"
+    },
+    {
+      "id": "E8_04",
+      "chapter": 8,
+      "title": "水毁相纸",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国看到照片上的暗管凹痕与碎布后反应剧烈，手抖幅度骤增打翻搪瓷杯，水流漫过相纸溶解了化学凝结物，破坏了图像。"
+    },
+    {
+      "id": "E8_05",
+      "chapter": 8,
+      "title": "脱力落刀",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国惊恐至极，脸色变成铁皮般的灰白，右手五指依次失去张力，剔骨刀脱手重重砸在铁皮桌面上。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E8_01",
+      "character": "陈若竹",
+      "location": "赵建国的平房"
+    },
+    {
+      "event_id": "E8_02",
+      "character": "赵建国",
+      "location": "赵建国的平房"
+    },
+    {
+      "event_id": "E8_03",
+      "character": "陈若竹",
+      "location": "赵建国的平房"
+    },
+    {
+      "event_id": "E8_04",
+      "character": "赵建国",
+      "location": "赵建国的平房"
+    },
+    {
+      "event_id": "E8_05",
+      "character": "赵建国",
+      "location": "赵建国的平房"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "鞋底沾满沉淀池底部的半流体纸浆和铁锈泥"
+    },
+    {
+      "name": "赵建国",
+      "field": "new_detail",
+      "content": "拇指指甲边缘翻起渗出暗红色血珠，嘴唇从暗紫色变为接近铁皮底色的灰白"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "赵建国的平房",
+      "type": "室内",
+      "description": "石棉瓦屋顶漏雨，地面有裂缝和黑色污水，内有生锈的铁皮桌和轮椅"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "雨水砸在石棉瓦上、水盆里的暗红水、打翻的搪瓷杯水流、滴落的水珠"
+    },
+    {
+      "motif": "铁锈",
+      "context": "瓦楞铁锈、刀刃红褐铁锈、铁皮桌底色、黑褐色铁锈"
+    },
+    {
+      "motif": "手",
+      "context": "陈若竹粗糙的掌纹、赵建国枯树皮般震颤的手、倒影中塞满皮渣洗布的手"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST05_01",
+      "action": "advanced",
+      "evidence": "赵建国擦拭剔骨刀时手腕在极小幅度内高频震颤，频率快到让油布边缘产生虚影，且无法用大拇指压住",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST07_01",
+      "action": "advanced",
+      "evidence": "陈若竹展示的照片上清晰显示出暗管管口的三道新鲜凹痕及金属底色，赵建国见后产生剧烈生理反应",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST07_02",
+      "action": "advanced",
+      "evidence": "照片上清晰呈现凹痕深处卡着的暗红色碎布及其撕裂毛边，赵建国视线锁死在此处并导致失态",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "剔骨刀刀面倒映出暗红水盆中洗布的画面，这是真实的倒影、幻觉还是时空交叠的映射？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E8_02"
+    },
+    {
+      "content": "相纸上的灰白化学凝结物遇水溶解，水流恰好覆盖在暗管凹痕高光区导致图像破坏，这是巧合还是某种刻意掩盖？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E8_04"
+    }
+  ],
+  "notes": "相纸被包裹在塑料袋薄膜中，表面沾有沉淀池底部的灰白化学凝结物；赵建国的反应表现出对暗管凹痕和碎布的极度认知与恐惧，甚至失去对肢体的控制力。"
+}

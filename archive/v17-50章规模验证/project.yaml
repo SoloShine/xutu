@@ -1,0 +1,19 @@
+name: 第六次死亡
+identifier: v17_test
+chapters: 50
+language: 简体中文
+description: 外卖骑手周北死于交通事故后发现自己回到了24小时前——但这已经是他第6次重生。这一次他决定不再逃跑，而是追查谁在"安排"他的死亡。
+novel:
+  writing:
+    prev_text_chars: 3000
+    min_words: 2500
+    max_words: 3500
+    min_words_per_scene: 600
+  extraction:
+    target_events: "5-8"
+    max_events: 10
+    min_events: 3
+  suspense:
+    budget_base: 8
+    budget_multiplier: 2.0
+    staleness_threshold: 5

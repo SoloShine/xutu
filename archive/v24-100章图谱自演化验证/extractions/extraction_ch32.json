@@ -1,0 +1,188 @@
+# Persisted: 2026-05-21 12:36:52
+{
+  "events": [
+    {
+      "id": "E32_01",
+      "chapter": 32,
+      "title": "陆远第二次进入二层沿分支暗流到达三层入口前",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午陆远再次进入二层沿金色纹路共振最强的分支暗流前进，暗流更窄更急灵力密度更高护盾变厚。走到尽头发现小型溶洞，石壁后面透出白色光不是蓝色灵力，嗡鸣声从心跳变成呼吸般清晰的脉动，确认为三层入口"
+    },
+    {
+      "id": "E32_02",
+      "chapter": 32,
+      "title": "陆远尝试主动控制金色纹路护盾遭封印反噬",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在三层入口前小溶洞尝试用意念主动控制金色纹路护盾强度，发现可以控制但每次加强护盾封印核心就传来刺痛。第三次全力加强时护盾暴涨到两米但胸口撕裂般疼痛半跪在河水中，封印核心反噬警告力量与代价的平衡"
+    },
+    {
+      "id": "E32_03",
+      "chapter": 32,
+      "title": "苏晚收到周衡安传讯大壮标记暂时压制四十八小时",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安通过苏晚铜丝传讯术传来消息：大壮灵力标记在赵铁山屏蔽阵法下暂时压制信号降百分之七十，但屏蔽阵法消耗比预想大最多维持四十八小时。之后标记完全激活灵墟可精确定位"
+    },
+    {
+      "id": "E32_04",
+      "chapter": 32,
+      "title": "苏晚判断金色纹路与封印绑定索取越多反噬越重",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远汇报护盾控制实验结果后苏晚分析：金色纹路的力量和封印是绑定的，从金色纹路索取越多封印承受压力越大，这是封印核心反噬的原因"
+    },
+    {
+      "id": "E32_05",
+      "chapter": 32,
+      "title": "陆远决定明天去三层入口试守脉之物",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚建议四十八小时内去试守脉之物，金色纹路有凭证理论上能通过，屏蔽阵法一断安全屋暴露就没机会再来。陆远看着巷外骑手骑电动车赶时间决定明天去三层入口"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E32_01",
+      "character": "陆远",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "event_id": "E32_02",
+      "character": "陆远",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "event_id": "E32_03",
+      "character": "苏晚",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E32_03",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E32_03",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E32_04",
+      "character": "陆远",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E32_04",
+      "character": "苏晚",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E32_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E32_05",
+      "character": "苏晚"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色纹路护盾可以被意念主动控制但每次加强封印核心反噬加重，全力加强一次会半跪在地。金色纹路力量与封印绑定索取越多代价越大"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "巷外电动车上的外卖箱，骑手赶时间，与陆远的外卖骑手身份呼应"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "三层入口前白色光而非蓝色灵力，嗡鸣声如呼吸般清晰脉动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "金色纹路护盾加强三次封印核心反噬加重，第三次全力加强半跪在地",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "金色纹路可被意念主动控制护盾强度，但力量与封印绑定",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_01",
+      "action": "advanced",
+      "evidence": "到达三层入口前小溶洞石壁后透白色光嗡鸣声清晰如呼吸",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST26_01",
+      "action": "advanced",
+      "evidence": "大壮灵力标记在赵铁山屏蔽阵法下暂时压制但只维持四十八小时",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E32_01",
+      "to": "E32_02",
+      "type": "decision",
+      "detail": "到达三层入口后陆远决定试验金色纹路护盾控制"
+    },
+    {
+      "from": "E32_02",
+      "to": "E32_04",
+      "type": "revelation",
+      "detail": "护盾反噬现象由苏晚分析原因"
+    },
+    {
+      "from": "E32_03",
+      "to": "E32_05",
+      "type": "escalation",
+      "detail": "四十八小时时限迫使陆远决定明天就试守脉之物"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E32_02",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "金色纹路加强护盾三次封印反噬加重确认力量代价机制"
+    },
+    {
+      "event_id": "E32_01",
+      "thread_id": "ST27_01",
+      "type": "clue",
+      "detail": "三层入口白色光和呼吸般脉动是守脉之物的新特征"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "明天进入三层入口试守脉之物",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "在四十八小时窗口内帮助陆远通过守脉之物",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "三层入口前小溶洞特征：白色光非蓝色灵力，嗡鸣声从心跳升级为呼吸般清晰脉动。金色纹路护盾控制机制：意念控制可变厚但封印核心反噬，第三次全力加强暴涨两米后半跪。四十八小时时限确立：赵铁山屏蔽阵法维持极限后安全屋暴露"
+}

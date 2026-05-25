@@ -1,0 +1,254 @@
+# Persisted: 2026-05-21 11:47:01
+{
+  "events": [
+    {
+      "id": "E21_01",
+      "chapter": 21,
+      "title": "陆远独自前往松鹤巷14号找赵铁山",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安出门联系赵铁山后，陆远上午十点独自到松鹤巷14号旧货市场后院。苏晚给陆远装了包子水，只说了句小心。大壮右手绑绷带想跟去被陆远拦下"
+    },
+    {
+      "id": "E21_02",
+      "chapter": 21,
+      "title": "赵铁山拒绝帮忙陆远以灵脉暗河利益博弈逼其就范",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵铁山在石料院磨石头，起初拒绝掺和天机阁灵墟的事。陆远指出地脉堂靠灵脉暗河修炼，灵墟若打开灵脉深层地脉堂根基就断了。赵铁山试探说可以直接把陆远交给灵墟，陆远指出他停了三次砂轮说明在犹豫。赵铁山最终松口，提出条件：帮地脉堂做一件待定的事"
+    },
+    {
+      "id": "E21_03",
+      "chapter": 21,
+      "title": "赵铁山带陆远进入废弃纺织厂地下灵脉暗河",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵铁山骑电动三轮带石料掩护，陆远骑共享单车跟在后面。从废弃纺织厂锅炉房铁梯向下六十米到达天然溶洞中的灵脉暗河。河面三米宽泛淡金色光芒，灵力密度是地面二十倍，九道纹路自发亮起"
+    },
+    {
+      "id": "E21_04",
+      "chapter": 21,
+      "title": "灵脉暗河修炼双层回路效率翻四倍练气中期瓶颈松动",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远盘膝在灵脉暗河边引导灵力通过双层回路。蓝色纹路顺畅白色纹路每次通过伴随胸口针刺痛感但痛感在减弱。灵力吸收效率是平时四倍，十分钟等于平时一个时辰。两个时辰后灵力通道变宽变光滑，练气中期瓶颈开始松动"
+    },
+    {
+      "id": "E21_05",
+      "chapter": 21,
+      "title": "修炼中出现第十道金色纹路雏形赵铁山大惊",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "修炼两个时辰后右手背第九道纹路外侧浮现一道极淡金色痕迹，比蓝白都亮微微跳动。赵铁山看到后脸色大变极度恐惧，说九层封印只有九道纹路这不是封印的东西。赵铁山低声说陆远母亲不只是在封印，她留了一扇后门"
+    },
+    {
+      "id": "E21_06",
+      "chapter": 21,
+      "title": "陆远感知第十个跳点和赵铁山约定后天再来",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远攥拳金色痕迹消失但位置微热。感知到九道纹路深处有第十个点在跳动，比封印核心更慢更沉像另一颗心脏。陆远与赵铁山约定后天再来修炼后离开"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E21_01",
+      "character": "陆远",
+      "location": "松鹤巷14号"
+    },
+    {
+      "event_id": "E21_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E21_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E21_02",
+      "character": "陆远",
+      "location": "松鹤巷14号"
+    },
+    {
+      "event_id": "E21_02",
+      "character": "赵铁山"
+    },
+    {
+      "event_id": "E21_03",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    },
+    {
+      "event_id": "E21_03",
+      "character": "赵铁山"
+    },
+    {
+      "event_id": "E21_04",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    },
+    {
+      "event_id": "E21_05",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    },
+    {
+      "event_id": "E21_05",
+      "character": "赵铁山"
+    },
+    {
+      "event_id": "E21_06",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "灵脉暗河修炼后双层回路灵力充实一大截，练气中期瓶颈明显松动，感知到第十个跳点在九道纹路深处跳动"
+    },
+    {
+      "name": "赵铁山",
+      "field": "new_attitude",
+      "content": "看到第十道金色纹路后从冷静变为恐惧，认为陆远母亲不仅封印还留了后门"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "给陆远装包子水只说小心，对陆远单独行动感到担忧"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "灵脉暗河",
+      "type": "underground",
+      "description": "废弃纺织厂锅炉房地下六十米天然溶洞中的上古灵脉暗河，河面三米宽泛淡金色光芒，灵力密度是地面二十倍"
+    },
+    {
+      "name": "废弃纺织厂",
+      "type": "urban_ruin",
+      "description": "城北废弃纺织厂，三年前关闭，厂区荒草丛生树木从屋顶长出，灵脉暗河入口在锅炉房铁板下"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵脉暗河灵力密度是地面二十倍，淡金色光芒从河水里发出，九道纹路自发亮起"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST20_01",
+      "action": "advanced",
+      "evidence": "赵铁山带陆远去灵脉暗河修炼，双层回路效率翻四倍，瓶颈松动",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "白色纹路每次通过伴随胸口针刺痛感，双层回路修炼代价加倍",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "第十道金色纹路出现，赵铁山说母亲留了后门不止封印",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_01",
+      "action": "advanced",
+      "evidence": "赵铁山透露灵脉暗河在纺织厂地下六十米，地脉堂修炼体系靠截取暗河灵力",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "第十道金色纹路——不在九层封印设计之内，在灵脉暗河修炼后浮现，赵铁山说母亲留了后门。金色的光比蓝白都亮，消失后位置微热，陆远感知到第十个跳点在纹路深处跳动",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E21_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E21_01",
+      "to": "E21_02",
+      "type": "decision",
+      "detail": "陆远找赵铁山寻求修炼方法"
+    },
+    {
+      "from": "E21_02",
+      "to": "E21_03",
+      "type": "consequence",
+      "detail": "赵铁山同意带陆远去灵脉暗河修炼"
+    },
+    {
+      "from": "E21_03",
+      "to": "E21_04",
+      "type": "consequence",
+      "detail": "灵脉暗河灵力密度极高使修炼效率翻倍"
+    },
+    {
+      "from": "E21_04",
+      "to": "E21_05",
+      "type": "revelation",
+      "detail": "修炼中第十道金色纹路浮现"
+    },
+    {
+      "from": "E21_05",
+      "to": "E21_06",
+      "type": "reaction",
+      "detail": "赵铁山恐惧后说出母亲留后门，约定继续修炼"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E21_02",
+      "thread_id": "ST07_01",
+      "type": "confirmation",
+      "detail": "确认地脉堂靠灵脉暗河修炼，赵铁山掌握入口"
+    },
+    {
+      "event_id": "E21_04",
+      "thread_id": "ST14_01",
+      "type": "clue",
+      "detail": "双层回路修炼效率翻倍但白色纹路伴随针刺痛感，力量与代价同步增长"
+    },
+    {
+      "event_id": "E21_05",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "第十道金色纹路不在九层封印设计内，赵铁山说母亲留了后门"
+    },
+    {
+      "event_id": "E21_05",
+      "thread_id": "ST20_02",
+      "type": "connection",
+      "detail": "第十道纹路可能是封印分层解锁之外的另一个机制"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "七天之内通过灵脉暗河修炼快速提升实力",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "赵铁山",
+      "goal": "保护地脉堂灵脉暗河不被灵墟破坏",
+      "type": "protect",
+      "status": "advanced"
+    }
+  ],
+  "notes": "灵脉暗河灵力密度是地面二十倍。赵铁山修炼体系靠截取暗河灵力流量。第十道金色纹路比蓝白都亮消失后位置微热。地脉堂帮陆远的条件是事后做一件待定的事。陆远感知第十个跳点比封印核心跳动更慢更沉"
+}

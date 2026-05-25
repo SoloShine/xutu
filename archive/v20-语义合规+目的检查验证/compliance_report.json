@@ -1,0 +1,352 @@
+[
+  {
+    "ch": 1,
+    "overall": "partial",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 10.2
+  },
+  {
+    "ch": 2,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 15.9
+  },
+  {
+    "ch": 3,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 15.3
+  },
+  {
+    "ch": 4,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 12.6
+  },
+  {
+    "ch": 5,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 12.4
+  },
+  {
+    "ch": 6,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 10.2
+  },
+  {
+    "ch": 7,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 10.2
+  },
+  {
+    "ch": 8,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.3
+  },
+  {
+    "ch": 9,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 11.0
+  },
+  {
+    "ch": 10,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 7.7
+  },
+  {
+    "ch": 11,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 5.9
+  },
+  {
+    "ch": 12,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 5.8
+  },
+  {
+    "ch": 13,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.3
+  },
+  {
+    "ch": 14,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.9
+  },
+  {
+    "ch": 15,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 10.2
+  },
+  {
+    "ch": 16,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.6
+  },
+  {
+    "ch": 17,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.9
+  },
+  {
+    "ch": 18,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 12.8
+  },
+  {
+    "ch": 19,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 46.4
+  },
+  {
+    "ch": 20,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 23.0
+  },
+  {
+    "ch": 21,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.0
+  },
+  {
+    "ch": 22,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 21.8
+  },
+  {
+    "ch": 23,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 9.5
+  },
+  {
+    "ch": 24,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 51.3
+  },
+  {
+    "ch": 25,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 16.0
+  },
+  {
+    "ch": 26,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 25.3
+  },
+  {
+    "ch": 27,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 57.1
+  },
+  {
+    "ch": 28,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 24.4
+  },
+  {
+    "ch": 29,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 54.6
+  },
+  {
+    "ch": 30,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 24.4
+  },
+  {
+    "ch": 31,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 21.0
+  },
+  {
+    "ch": 32,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 23.6
+  },
+  {
+    "ch": 33,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 12.4
+  },
+  {
+    "ch": 34,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 16.2
+  },
+  {
+    "ch": 35,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 8.3
+  },
+  {
+    "ch": 36,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 6.6
+  },
+  {
+    "ch": 37,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 11.6
+  },
+  {
+    "ch": 38,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 10.2
+  },
+  {
+    "ch": 39,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 24.5
+  },
+  {
+    "ch": 40,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 9.9
+  },
+  {
+    "ch": 41,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 6.6
+  },
+  {
+    "ch": 42,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 6.7
+  },
+  {
+    "ch": 43,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 5.9
+  },
+  {
+    "ch": 44,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 6.0
+  },
+  {
+    "ch": 45,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 10.5
+  },
+  {
+    "ch": 46,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 6.3
+  },
+  {
+    "ch": 47,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 9.8
+  },
+  {
+    "ch": 48,
+    "overall": "partial",
+    "purpose": "diverged",
+    "confidence": "high",
+    "time": 6.1
+  },
+  {
+    "ch": 49,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 7.8
+  },
+  {
+    "ch": 50,
+    "overall": "followed",
+    "purpose": "aligned",
+    "confidence": "high",
+    "time": 7.8
+  }
+]

@@ -1,0 +1,174 @@
+{
+  "events": [
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "东面墙下的日记本与划痕",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在积水中翻看暗红色日记本，发现第一页红色印记呈胶状硬壳质感，翻页时手背蹭到墙洞边缘，摸到三道被尖锐物抠挖出的粗糙沟壑。"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "纸浆池中捡拾残片",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云在弥漫酸臭蒸汽的纸浆池车间废液中，弓背寻找并抠出一张印有模糊数字的账单残片，将其塞入已经鼓囊的围裙口袋，随后无视换班喊叫离开。"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "宿舍墙角的刻痕与数字",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云回到暗绿色的宿舍，蹲在墙角用劈裂流血的食指在灰泥墙上刻下第三道精确的15厘米划痕，门外老周敲击铁栏杆寻找'皮子'，她将捡来的数字纸片与划痕对齐。"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "被黑水吞噬的数字",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹查看日记本第三页的数字序列(7、14、21、28)，一滴黑水砸下吞噬了数字'21'并渗透下一页，他视线移回积水，发现水面上漂浮着一张印有模糊数字的碎纸片。"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "丈量划痕间距",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹顺墙洞划痕向上看至一米五高处（挖出日记本的位置），用大拇指和中指丈量出三道划痕间距约为四厘米，感受着粗糙颗粒与手上的灰泥粉。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E2_01",
+      "character": "陈若竹",
+      "location": "东面墙处"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "林素云",
+      "location": "纸浆池车间"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "林素云",
+      "location": "纸浆厂宿舍"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "老周"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "陈若竹",
+      "location": "东面墙处"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "陈若竹",
+      "location": "东面墙处"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "触觉极其敏锐且沉浸，能清晰感知胶状硬壳的拉扯感、灰泥粉末掉落的微小波纹以及指尖的粗糙颗粒。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "右手食指指甲劈裂，指甲缝里塞满墙泥和血丝；有收集印有数字的废纸片并藏在粗布围裙口袋的习惯。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_attitude",
+      "content": "对外界极度麻木与专注，无视车间换班指令、老周的寻找以及酸液腐蚀胶鞋的刺激，只执着于刻痕与数字。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "东面墙处",
+      "type": "室内",
+      "description": "漏水的旧房间东面墙根，有墙洞和持续扩大的黑色泥水积水。"
+    },
+    {
+      "name": "纸浆池车间",
+      "type": "工作场所",
+      "description": "充满酸臭白色蒸汽和二氧化硫气味，能见度极低，地面有暗绿色废液和油膜。"
+    },
+    {
+      "name": "纸浆厂宿舍",
+      "type": "居住场所",
+      "description": "光线浑浊暗绿，门缝会挤入纸浆池的酸臭泡沫，墙角有灰泥墙面。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "天花板裂缝喷发的黑色泥水、纸浆池溢出的暗绿色酸液、地面积水与油花。"
+    },
+    {
+      "motif": "手",
+      "context": "陈若竹搓捻红色碎屑、探入划痕、丈量间距；林素云抠挖废纸、在墙上刻出白粉、指甲流血。"
+    },
+    {
+      "motif": "数字",
+      "context": "日记本上被水晕染的密集数字与7/14/21/28序列、林素云捡拾的账单残片数字、水面上漂浮的数字纸片。"
+    },
+    {
+      "motif": "划痕",
+      "context": "东面墙洞边缘的三道粗糙沟壑、宿舍墙上精确的15厘米等距划痕。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "墙洞边缘发现三道指甲抠挖的粗糙沟壑，向上延伸至一米五高（挖出日记本的位置），暗示日记本曾被刻意取出或放回。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "黑色泥水持续喷发，直接滴落在日记本第三页，将数字'21'吞噬并渗透到第四页，对线索造成实质性破坏。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "触摸到红色印记表面的半透明胶状硬壳，指尖沾上发黏的暗红色碎屑并在指纹里拉丝，证实其非普通墨水的物理属性。",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "墙洞边缘与宿舍墙上均出现三道精确的划痕，且宿舍划痕底部残留与林素云围裙相同的灰色棉絮，这两处刻痕有何关联？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E2_01"
+    },
+    {
+      "content": "日记本中的数字序列(7、14、21、28)与林素云冒死收集的数字残片、以及积水中漂浮的数字纸片之间存在怎样的对应关系？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_04"
+    },
+    {
+      "content": "老周在走廊敲击铁栏杆寻找的'皮子'究竟指代什么物品或人？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E2_03"
+    }
+  ],
+  "notes": "日记本第三页右下角有一个被撕裂的缺口，纤维像胡须一样翘起；宿舍墙内刻痕深处露出了一块带有蓝色印记的碎砖块；林素云对齐纸片与划痕的行为暗示数字可能是一种坐标或密码。"
+}

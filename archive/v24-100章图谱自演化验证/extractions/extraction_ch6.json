@@ -1,0 +1,321 @@
+# Persisted: 2026-05-21 06:46:34
+{
+  "events": [
+    {
+      "id": "E6_01",
+      "chapter": 6,
+      "title": "大壮住处清晨手背疤痕发光纹路变化",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远被手背发烫惊醒，淡青色疤痕纹路变清晰，线条从手腕向手指延伸，蓝光从纹路渗出与胸口跳动点节奏一致。大壮持拖把杆闯入看到蓝光，直接质问陆远手上到底怎么回事，坦言当过兵见过不干净的东西，认定这是更大的事。陆远拒绝解释但大壮不退让"
+    },
+    {
+      "id": "E6_02",
+      "chapter": 6,
+      "title": "送外卖途中被黑色商务车灵力使用者跟踪",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "送第三个单子后陆远发现黑色商务车跟踪，深色膜看不清车内。他钻入单行道甩掉尾巴时感知到车内微弱灵气波动，胸口跳动点跟着顿了一下。判断不是天机阁的人（波动感觉不同）。一口气接十二个单绕开东湖路和江边区域"
+    },
+    {
+      "id": "E6_03",
+      "chapter": 6,
+      "title": "深夜渡江赴约废弃船坞遇到苏晚",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远夜走老码头看到对岸三闪灯信号重复，过桥到对岸废弃船坞铁皮棚子。一个穿深灰冲锋衣的年轻女人苏晚现身，自称知道封灵符碎裂、体内封印和天机阁灵力存档的事。苏晚自述苏家医修世家三年前被天机阁以私藏禁药罪名一夜端掉，她是唯一跑出来的幸存者，在江城藏了三年"
+    },
+    {
+      "id": "E6_04",
+      "chapter": 6,
+      "title": "苏晚揭露天机阁调筑基期修士和第三方势力",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚透露废弃工厂被打伤的两人只是天机阁外勤练气巅峰，陆远灵力特征已被存档，总部已调筑基初期修士后天到达。苏晚确认三闪灯是她发的信号，东湖路18号第一次灵脉共鸣她就察觉。苏晚指出跟踪陆远的不是天机阁而是另一拨人，江城至少还有两方势力"
+    },
+    {
+      "id": "E6_05",
+      "chapter": 6,
+      "title": "废弃船坞天机阁灵器追踪二次灵力爆发",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "两名天机阁修士用灵器追踪到船坞，瘦高个亮出黄底红纹符纸威胁，透露筑基期的人后天到。陆远手背疤痕突然发烫，纹路亮起深蓝色光快速延伸新增分支。胸口热流不到一秒冲到指尖，掌心自动释放拳头粗蓝光光柱击中瘦高个，冲击波掀掉铁皮棚半面墙，修士飞出三四米砸在废铁上。矮胖修士恐惧后退称'这不是觉醒期'"
+    },
+    {
+      "id": "E6_06",
+      "chapter": 6,
+      "title": "苏晚告知周衡安被困并留下松鹤巷地址",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "两人从棚子破洞撤离到背街巷子。苏晚告知周衡安没有失联而是被人困住，不是天机阁而是另一拨势力。苏晚解释手背纹路是封印碎片在重组，体内被封的东西在借灵脉共鸣机会重新长出来，苏家世代行医所以了解封印解封。留下写有'松鹤巷14号地下室'的纸条后独自离开"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E6_01",
+      "character": "陆远",
+      "location": "大壮住处"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "大壮",
+      "location": "大壮住处"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "陆远",
+      "location": "城中村巷子"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "陆远",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "苏晚",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "陆远",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "苏晚",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "陆远",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "苏晚",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "天机阁",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_06",
+      "character": "陆远",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_06",
+      "character": "苏晚",
+      "location": "废弃船坞"
+    },
+    {
+      "event_id": "E6_06",
+      "character": "周衡安"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "手背疤痕从淡青色旧伤变为深蓝色纹路，三道线从手腕延伸到中指根部带细小分支，像符文从皮肤底下长出。灵力释放方式从拳头变为掌心自动释放光柱"
+    },
+    {
+      "name": "大壮",
+      "field": "new_attitude",
+      "content": "看到手背蓝光后不再怀疑而是确认陆远卷入了大事，态度从好奇转为坚定跟随，直言'你说不说我都跟你走'"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "苏家医修世家唯一幸存者，颧骨上有浅旧伤疤，身上有常年泡药材的中药味。在江城藏了三年，了解封印解封和血脉觉醒"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "废弃船坞",
+      "type": "auto_registered",
+      "description": "江对岸废弃铁皮棚子，半边塌了露出钢架，后面是江水拍打的水泥桩。苏晚约见的地点"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "陆远感知黑色商务车内微弱灵气波动，判断跟踪者会动用灵力但非天机阁"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远照常送外卖十二单，用日常工作掩护身体异变"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03",
+      "action": "advanced",
+      "evidence": "苏晚自述苏家医修世家三年前被天机阁以私藏禁药罪名一夜端掉，父亲叔父两个堂哥全被带走，她是唯一跑出来的幸存者",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST05_01",
+      "action": "resolved",
+      "evidence": "苏晚确认三闪灯信号是她发的，她一直在监视觉醒者的灵脉活动，在江城藏了三年等能对抗天机阁的人",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "苏晚透露天机阁已调筑基初期修士后天到达江城追查陆远，灵力特征已存档",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "苏晚告知周衡安没有失联而是被人困住，不是天机阁而是另一拨势力，留下松鹤巷14号地下室地址",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "苏晚解释手背纹路是封印碎片在重组，体内被封的东西借灵脉共鸣机会重新长出来，手背纹路从旧伤变为三道深蓝符文线",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "苏晚说天机阁监控所有修真者不只是觉醒者，苏家治病不伤人但天机阁不在乎，他们要的是控制",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "苏晚的医修世家身份——三年前被天机阁端掉，她是唯一幸存者。她的势力有多少人？在江城藏了三年如何避开灵脉监测网？",
+      "importance": "high",
+      "thread_type": "character_arc",
+      "planted_event_id": "E6_03"
+    },
+    {
+      "content": "手背新符文——封印碎片重组形成三道深蓝纹路线，从手腕到中指根部。这是什么符文？是封印的残留还是另一种力量的开始？",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E6_05"
+    },
+    {
+      "content": "周衡安被困——不是天机阁而是另一拨势力困住了周衡安。松鹤巷14号地下室。这拨人是谁？为什么要困住他？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E6_06"
+    },
+    {
+      "content": "江城第三方势力——跟踪陆远的黑色商务车内有微弱灵气波动但非天机阁。苏晚说江城至少还有两方势力。这拨人是谁？目的是什么？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E6_02"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E6_01",
+      "to": "E6_02",
+      "type": "decision",
+      "detail": "手背异变后陆远决定照常送外卖观察情况"
+    },
+    {
+      "from": "E6_02",
+      "to": "E6_03",
+      "type": "investigation",
+      "detail": "白天被跟踪后陆远夜间赴老码头回应三闪灯信号"
+    },
+    {
+      "from": "E6_03",
+      "to": "E6_04",
+      "type": "revelation",
+      "detail": "苏晚现身自述身份后进一步揭露天机阁动态"
+    },
+    {
+      "from": "E6_04",
+      "to": "E6_05",
+      "type": "escalation",
+      "detail": "对话被天机阁灵器追踪打断冲突升级"
+    },
+    {
+      "from": "E6_05",
+      "to": "E6_06",
+      "type": "consequence",
+      "detail": "灵力爆发后紧急撤离苏晚趁机传递周衡安信息"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E6_03",
+      "thread_id": "ST03",
+      "type": "confirmation",
+      "detail": "苏晚亲口证实苏家被天机阁端掉，她是唯一幸存者"
+    },
+    {
+      "event_id": "E6_03",
+      "thread_id": "ST05_01",
+      "type": "confirmation",
+      "detail": "苏晚确认三闪灯信号是她发的"
+    },
+    {
+      "event_id": "E6_04",
+      "thread_id": "ST04_01",
+      "type": "confirmation",
+      "detail": "筑基初期修士后天到达，天机阁升级追查力度"
+    },
+    {
+      "event_id": "E6_04",
+      "thread_id": "ST02",
+      "type": "confirmation",
+      "detail": "天机阁监控所有修真者目的是控制"
+    },
+    {
+      "event_id": "E6_05",
+      "thread_id": "ST01_03",
+      "type": "clue",
+      "detail": "手背纹路在灵力爆发时从旧伤变为完整符文图案"
+    },
+    {
+      "event_id": "E6_06",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "周衡安被第三方势力困住不是失联"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "找到被困的周衡安",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "联合能对抗天机阁的力量",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "避开天机阁灵脉监测网继续隐藏",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "保护陆远跟他走到底",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "手背纹路从淡青色旧伤疤痕→深蓝色三道符文线从手腕到中指根部。灵力释放方式从拳头本能挥拳→掌心自动释放光柱。天机阁修士识别出苏晚是苏家的人（'苏家的人？'）。天机阁修士使用的符纸为黄底红纹比封灵符大一圈，火苗淡黄色。灵力爆发后矮胖修士说'这他妈不是觉醒期'，暗示陆远力量等级远超觉醒期"
+}

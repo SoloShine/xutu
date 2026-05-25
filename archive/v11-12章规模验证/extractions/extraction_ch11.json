@@ -1,0 +1,132 @@
+{
+  "events": [
+    {
+      "id": "E11_01",
+      "chapter": 11,
+      "title": "沉淀池边观察抽水与底片",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "柴油抽水机轰鸣中，陈若竹站在池边刮擦证物袋上的水碱，注视着水位下降和逐渐显露的暗管，听着警察抱怨底部泥太厚。"
+    },
+    {
+      "id": "E11_02",
+      "chapter": 11,
+      "title": "下池陷入纸浆与铁锹受阻",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹无视警察劝阻沿铁梯下到池底，双脚陷入半流质的黑色纸浆沼泽中，尝试用铁锹挖掘但因底层铁锈结块阻力过大而放弃。"
+    },
+    {
+      "id": "E11_03",
+      "chapter": 11,
+      "title": "徒手挖出指向“28”的遗骨手表",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹摘掉手套徒手在刺骨的黑泥中摸索，挖出一截带有尼龙表带残骸的腕骨和一块严重腐蚀的旧手表，表盘上焦黑的分针死死指向“28”，这让她回忆起林素云写下“28”时手腕上正戴着这只走动的手表。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E11_01",
+      "character": "陈若竹",
+      "location": "废弃沉淀池边缘"
+    },
+    {
+      "event_id": "E11_02",
+      "character": "陈若竹",
+      "location": "废弃沉淀池底部"
+    },
+    {
+      "event_id": "E11_03",
+      "character": "陈若竹",
+      "location": "废弃沉淀池底部"
+    },
+    {
+      "event_id": "E11_03",
+      "character": "林素云"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "手掌被铁梯上的粗糙锈渣扎进了纹理"
+    },
+    {
+      "name": "陈若竹",
+      "field": "new_attitude",
+      "content": "面对恶劣环境（恶臭纸浆沼泽）表现出极强的决断力，无视警察劝阻直接下池并徒手挖泥"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "废弃沉淀池边缘",
+      "type": "室外工业废墟",
+      "description": "架设抽水机的池边区域，有刺鼻的柴油味和硫化物味道"
+    },
+    {
+      "name": "废弃沉淀池底部",
+      "type": "密闭/半密闭空间",
+      "description": "由半流质黑色纸浆、铁锈结块和煤渣混合形成的沼泽地，散发极度浓烈的腐臭味"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "浑浊的酱油色水体退去后暴露出黑色纸浆沼泽，坑洞中不断渗出黑水"
+    },
+    {
+      "motif": "手",
+      "context": "陈若竹徒手在黑泥中摸索寻找硬物；回忆中林素云的手写下'28'"
+    },
+    {
+      "motif": "铁锈",
+      "context": "暗管口的黑褐色铁锈结块、铁梯上的锈渣、底层坚硬的废铁屑与铁锈凝结块"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_02",
+      "action": "advanced",
+      "evidence": "挖出的旧手表分针指向“28”，且回忆中林素云戴着这只表写下“28”，暗示数字“28”与该手表及池底遗骨有直接关联",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "陈若竹在池边刮擦底片水碱时，视线再次聚焦于林素云左手攥着的“28”字样残片",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST06_01",
+      "action": "resolved",
+      "evidence": "水位下降后，陈若竹视线沿着暗管的走向水平向前延伸，直接落在正在显露的池底，确认暗管物理上通向此处",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST08_02",
+      "action": "advanced",
+      "evidence": "池底挖出的旧手表玻璃蒙子上也覆盖着一层无法擦除的灰白色化学结晶物，与相纸上的凝结物特征一致",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "池底黑色纸浆中发现的腕骨和指向“28”的旧手表属于谁？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E11_03"
+    },
+    {
+      "content": "手表上覆盖的灰白色化学结晶物与相纸上的凝结物是否同源，为何会出现在池底遗物上？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E11_03"
+    }
+  ],
+  "notes": "手表表盘的焦黑指针停在12和28，与日记本数字序列及林素云收集的残片形成强呼应。池底废纸浆的成分（废纸浆、铁锈、煤渣）提供了极强的工业污染背景细节。"
+}

@@ -1,0 +1,199 @@
+# Persisted: 2026-05-21 15:21:53
+{
+  "events": [
+    {
+      "id": "E69_01",
+      "chapter": 69,
+      "title": "三人从钢厂撤回安全屋路上陆远转述灰衣使者的话",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三人乘出租车从钢厂回安全屋四十分钟。陆远把灰衣使者的话从头到尾告诉苏晚。苏晚重复金丹初期三天元婴级后问陆远怎么想，陆远说还没想好。"
+    },
+    {
+      "id": "E69_02",
+      "chapter": 69,
+      "title": "老周在安全屋等侯揭示'她醒了'是母亲灵识分身苏醒",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周在安全屋等他们。老周揭示'她醒了'指母亲在灵脉暗河的灵识分身。三十年前母亲在暗河留下灵识分身嵌入守脉之物监控灵脉网络。三年前母亲把大部分意识封入暗河外面只留一线维持基本生理。茧碎灵力循环修正后监控任务结束灵识分身苏醒。"
+    },
+    {
+      "id": "E69_03",
+      "chapter": 69,
+      "title": "老周揭示母亲灵识分身恢复后可与陆远沟通但需一两天",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵识分身刚醒太弱需要一两天恢复到能沟通。母亲知道茧碎灵力循环修正封印血脉激活第三层。守脉之物让陆远通过的凭证就是母亲的灵识分身认了母亲和封印血脉的频率。老周称她不说灵识分身。"
+    },
+    {
+      "id": "E69_04",
+      "chapter": 69,
+      "title": "老周交出母亲三年前留下的信封蜡封自动溶解",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周从外套内袋掏出母亲三年前留下的信封，蜡封形状是一只钟。母亲说收到'她醒了'就把信封给陆远。陆远手指碰蜡封时封印核心灵力自动溶解蜡。信封里一张纸只有一行母亲笔迹。陆远看了三遍没告诉老周内容折好放进口袋和笔记本玉简放一起。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E69_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E69_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E69_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E69_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E69_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E69_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E69_03",
+      "character": "老周"
+    },
+    {
+      "event_id": "E69_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E69_04",
+      "character": "老周"
+    },
+    {
+      "event_id": "E69_04",
+      "character": "陆远"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "收到母亲信封里的一行字指示内容未公开但看后站起来封印核心不再像敲门像在等他"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵力循环修正后灵脉节点回到正轨母亲灵识分身苏醒"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST68_02",
+      "action": "resolved",
+      "evidence": "'她醒了'确认为母亲灵脉暗河灵识分身苏醒",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST50_01",
+      "action": "advanced",
+      "evidence": "母亲三年前把大部分意识封入灵脉暗河灵识分身守脉之物身体可能还在某处但意识九成在暗河",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_01",
+      "action": "resolved",
+      "evidence": "守脉之物是天然的但母亲嵌了灵识分身让守脉之物接受她的频率凭证就是灵识分身",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "老周保管母亲三年前留下的信封知道灵识分身苏醒的触发条件比之前知道的更多",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST68_01",
+      "action": "advanced",
+      "evidence": "三天时限仍在灰衣使者要频率图的威胁未解除",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "母亲信封里的一行字——老周转交母亲三年前留下的信封蜡封钟形状封印核心灵力自动溶解。纸上只有一行母亲笔迹陆远看了三遍没告诉任何人内容。这行字是什么指示",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E69_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E69_01",
+      "to": "E69_02",
+      "type": "consequence",
+      "detail": "三人回到安全屋老周等在那里揭示灵识分身"
+    },
+    {
+      "from": "E69_02",
+      "to": "E69_03",
+      "type": "revelation",
+      "detail": "揭示灵识分身后说明恢复状态和沟通可能"
+    },
+    {
+      "from": "E69_03",
+      "to": "E69_04",
+      "type": "decision",
+      "detail": "老周交出母亲留下的信封触发下一步"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E69_02",
+      "thread_id": "ST50_01",
+      "type": "confirmation",
+      "detail": "母亲三年前把大部分意识封入暗河外面只留一线"
+    },
+    {
+      "event_id": "E69_02",
+      "thread_id": "ST68_02",
+      "type": "confirmation",
+      "detail": "'她醒了'确认为母亲灵识分身苏醒"
+    },
+    {
+      "event_id": "E69_02",
+      "thread_id": "ST27_01",
+      "type": "confirmation",
+      "detail": "守脉之物里嵌了母亲灵识分身凭证就是灵识分身认频率"
+    },
+    {
+      "event_id": "E69_04",
+      "thread_id": "ST38_01",
+      "type": "clue",
+      "detail": "老周保管母亲信封知道灵识分身苏醒的触发条件"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "等灵识分身恢复后与母亲沟通",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "执行母亲信封里一行字的指示",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "灵识分身新设定：母亲把十成中九成意识封入暗河只留一线在外面维持生理。守脉之物是天然的但母亲嵌了灵识分身。蜡封钟形状与铁拐李钟表呼应。信封里一行字内容未揭示是后续重要伏笔。封印核心从敲门变为在等他暗示状态变化。"
+}

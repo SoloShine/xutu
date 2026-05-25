@@ -1,0 +1,245 @@
+# Persisted: 2026-05-21 13:07:35
+{
+  "events": [
+    {
+      "id": "E41_01",
+      "chapter": 41,
+      "title": "金色瞳孔首次灵力视觉——看见河底灵脉丝线",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵种融合后陆远首次在金色瞳孔状态下尝试灵力视觉，发现护城河水底有金色丝线从河底延伸出来像树根一样扎入两岸泥土，一条往东一条往南一条穿过脚下连向城区中心，苏晚看不到这些金色丝线确认这是金色瞳孔独有的灵力视觉能力，灵力感知从感应模式变成了直接视觉模式"
+    },
+    {
+      "id": "E41_02",
+      "chapter": 41,
+      "title": "苏晚发现灵力通道壁刻有灵脉节点地图",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用银针医修术检查陆远灵力通道发现通道壁上浮现细密纹路组成有结构图案，进一步读取确认为江城灵脉节点分布图标注七个节点的位置深度灵力密度，包括东湖路老码头松鹤巷三个已知节点和四个未知节点。灵种融合不只强化灵力通道还在通道壁上刻印了地图"
+    },
+    {
+      "id": "E41_03",
+      "chapter": 41,
+      "title": "玉简第三层内容被灵种融合激活",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远握住玉简后竹片表面如瀑布般涌出文字和线条铺满整个表面，线条与灵力通道壁纹路一致。七个节点七条线交织成网，中心在护城河正下方标注核心。陆远判断不是七条灵脉而是一条灵脉的七个节点所有线连向护城河底下"
+    },
+    {
+      "id": "E41_04",
+      "chapter": 41,
+      "title": "大壮报告灵墟高阶修士进入江城",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮从城北公交站来电报告灵墟高阶修士从北边进入城区边界，灵力波动强度远超之前所有人至少筑基中期两到三人，不隐藏灵力像不在乎被发现，直直往城区扎。陆远判断灵墟总部被端后急需证明实力所以派出高阶修士宣告式进入"
+    },
+    {
+      "id": "E41_05",
+      "chapter": 41,
+      "title": "老周揭示灵脉总图——三十年前三份拆分",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远将玉简和灵力通道壁地图告诉老周，老周沉默良久后说这是灵脉总图，三十年前有人把完整灵脉图拆成三份分别藏在江城三处，合在一起能看到整个江城灵脉走向。灵种融合激活了第一份，另外两份位置老周师父没告诉他只说等该知道的时候自然会知道"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E41_01",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_01",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_02",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_02",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_03",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E41_04",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_05",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E41_05",
+      "character": "老周"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "灵力感知从感应模式变成金色瞳孔视觉模式，能看见灵脉丝线和隐藏灵力结构，苏晚看不到说明这是金色瞳孔独有能力"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "灵力通道壁上被灵种刻印了灵脉节点分布图，七个节点所有线连向护城河底下核心位置"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "确认灵种融合改变了陆远灵力感知方式，从感应变为视觉，是两种完全不同的感知机制"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵力变成金色瞳孔可直接看见的彩色丝线从河底延伸连接城市各处灵脉节点"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST40_01",
+      "action": "advanced",
+      "evidence": "金色瞳孔灵力视觉能力首次使用看见灵脉丝线苏晚看不到确认独有性",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST20_02",
+      "action": "advanced",
+      "evidence": "灵种融合自动激活玉简第三层内容灵脉节点分布图",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "灵种融合强化灵力通道三倍后可以承受灵力视觉的灵力消耗但使用灵力时封印状态稳定",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "灵墟派出筑基中期高阶修士进入江城不隐藏灵力宣告式行动",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "灵墟高阶修士进入窗口期可能从十二小时缩短到六小时",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵脉总图——三十年前被拆成三份藏在江城三处，灵种融合激活了第一份，三份合在一起能看到整个江城灵脉走向。护城河底下是所有灵脉节点的核心。另外两份在哪里？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E41_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E41_01",
+      "to": "E41_02",
+      "type": "investigation",
+      "detail": "发现金色瞳孔灵力视觉后苏晚检查灵力通道发现地图纹路"
+    },
+    {
+      "from": "E41_02",
+      "to": "E41_03",
+      "type": "consequence",
+      "detail": "灵力通道壁地图与玉简同步激活第三层内容"
+    },
+    {
+      "from": "E41_04",
+      "to": "E41_05",
+      "type": "decision",
+      "detail": "灵墟高阶修士逼近促使陆远将地图信息告诉老周寻求判断"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E41_01",
+      "thread_id": "ST40_01",
+      "type": "confirmation",
+      "detail": "金色瞳孔灵力视觉首次使用确认灵种融合后感知机制改变"
+    },
+    {
+      "event_id": "E41_01",
+      "thread_id": "ST31_01",
+      "type": "clue",
+      "detail": "金色瞳孔看见灵脉丝线是推开的而非吸引的与苏家记录不一致的变异继续"
+    },
+    {
+      "event_id": "E41_02",
+      "thread_id": "ST20_02",
+      "type": "confirmation",
+      "detail": "灵种融合激活玉简第三层内容确认封印分层解锁机制继续"
+    },
+    {
+      "event_id": "E41_03",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "七条灵脉线连向护城河核心暗示母亲选择护城河设棋眼与灵脉核心有关"
+    },
+    {
+      "event_id": "E41_04",
+      "thread_id": "ST09_01",
+      "type": "confirmation",
+      "detail": "灵墟筑基中期修士进入江城确认灵墟追查升级"
+    },
+    {
+      "event_id": "E41_04",
+      "thread_id": "ST12_01",
+      "type": "confirmation",
+      "detail": "灵墟派更高阶修士前来印证灰隼信息传回后灵墟升级追查力度"
+    },
+    {
+      "event_id": "E41_05",
+      "thread_id": "ST38_01",
+      "type": "confirmation",
+      "detail": "老周师父三十年前知道灵脉总图被拆分确认老周掌握更多母亲布局信息"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "在六小时窗口内找到利用灵脉总图的方法",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "应对灵墟筑基中期修士的追击",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "继续在城北监视灵墟高阶修士动向",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "金色瞳孔灵力视觉是全新的感知方式，能看见苏晚也看不到的灵脉丝线结构。灵脉总图三份拆分设定引入新的收集任务。护城河底下是灵脉核心。灵墟筑基中期修士不隐藏灵力是宣告式行动。"
+}

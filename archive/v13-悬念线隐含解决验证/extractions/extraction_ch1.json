@@ -1,0 +1,145 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "刮除受潮墙纸",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在402室靠北墙根用美工刀刮除受潮发霉的墙纸，积水漫过刮削位置导致刀尖打滑，在距地面一米二处遇到坚硬的空洞反弹。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "墙内挖出异物",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹调整刀片角度撬开石膏板，从墙内拽出一个被油纸和铁丝死死缠绕的长条形物体，物体掉落在积水的木地板上发出沉闷声响。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "辨认胶卷与日记本",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹蹲在积水中观察掉落物，辨认出是一卷布满红褐色锈斑的胶卷，以及旁边掉出的一本受潮膨胀、边缘翻卷的黑色人造革日记本。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "泥水涌入室内",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "楼下传来老周砸断水管的金属撞击声和咒骂声，随后黑黄色泥水从402室门缝下喷涌而出，溅到了陈若竹的小腿和地上的日记本上。"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "翻看日记本第一页",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹剥去日记本烂掉的封皮，用指甲强行撬开黏合的纸页，发现第一页没有文字，只有一张被水晕染开的暗红色圆形印记，形似管口俯视下积水中扩散的污渍。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "老周"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "陈若竹",
+      "location": "402室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "刮墙纸时指腹感受到滑轨铁锈的干涩摩擦，手指沾上湿透的纸浆状墙皮碎屑并在牛仔裤上蹭出水痕。"
+    },
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "蹲在地板上时积水浸透帆布鞋面，冰凉的水渗进袜子里，但为了看物品没有移动脚。"
+    },
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "捏住泡烂的日记本时，黑色胶水变得滑腻导致手指差点打滑，改用拇指和虎口卡住本子厚度。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "402室",
+      "type": "室内",
+      "description": "靠北墙根，梅雨季漏水严重，墙纸受潮发霉，木地板接缝处有积水和灰色粉尘。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "梅雨季持续十二天，积水漫过墙壁刮削位置，随后泥水从门缝喷涌进室内。"
+    },
+    {
+      "motif": "铁锈",
+      "context": "美工刀滑轨里的铁锈摩擦声，胶卷铁丝的红褐色锈斑，以及泥水带来的浓烈铁锈腥气。"
+    },
+    {
+      "motif": "灰尘",
+      "context": "地板接缝积水上浮着一层灰色的粉尘，油纸表面覆着一层细密的沙砾。"
+    },
+    {
+      "motif": "霉菌",
+      "context": "墙纸刮开后露出石膏板上细密的白色霉菌斑点，日记本散发出类似地下室发酵的浓烈霉味。"
+    }
+  ],
+  "thread_updates": [],
+  "new_threads": [
+    {
+      "content": "墙内藏匿的胶卷里记录了什么内容？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_03"
+    },
+    {
+      "content": "日记本第一页的暗红色圆形印记是什么液体留下的？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E1_05"
+    },
+    {
+      "content": "胶卷和日记本为什么会被密封藏在402室的墙体内部？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_02"
+    }
+  ],
+  "notes": "美工刀推钮卡在第三格仅推进半厘米；墙内油纸包用细铁丝捆扎了三圈且已生锈；日记本封皮是劣质黑色人造革，接缝处渗出黑色黏稠胶水；红色圆印中心呈浓重暗红近黑色，边缘带有放射状细微水痕。"
+}

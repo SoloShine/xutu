@@ -1,0 +1,215 @@
+{
+  "events": [
+    {
+      "id": "E5_01",
+      "chapter": 5,
+      "title": "雨后走向岩洞",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "雨停后，林见青走在前面，通过紧攥黄铜钥匙感受其粗粝触感以确认物理存在，周默、白羽和苏蔓跟随其后，走向隐藏在礁石群中的岩洞。"
+    },
+    {
+      "id": "E5_02",
+      "chapter": 5,
+      "title": "深入岩洞",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人挤入岩洞，踩在黏腻海藻上闻到浓烈腥臭与铁锈味。随着深入，温度下降，林见青察觉到身后三人呼吸频率的异常变化：周默压抑着情绪带有哨音，白羽刻板且用力，苏蔓几乎屏住呼吸。"
+    },
+    {
+      "id": "E5_03",
+      "chapter": 5,
+      "title": "发现白大褂与两人异状",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "在岩台发现一件僵硬且布满盐霜的白大褂，上面只有氧化铁锈迹而无血迹。周默因对秩序的病态渴求开始不受控制地反复折叠衣角；林见青用手电筒照白羽，发现锈蚀的胸牌轮廓与白羽身上的一致，确认白大褂属于她，并看到白羽处于极度紧绷、微笑被强行固定的异常状态。"
+    },
+    {
+      "id": "E5_04",
+      "chapter": 5,
+      "title": "钥匙开启墙壁暗格",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青用黄铜钥匙在岩壁上网格化排查，找到一个人工切割的新月形凹槽。将钥匙缺口精准对准并拧动后，打开了一道石板，内部喷涌出与湿冷岩洞割裂的干燥灰尘与霉纸气味。"
+    },
+    {
+      "id": "E5_05",
+      "chapter": 5,
+      "title": "空白的05号病历",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青从绝对干燥的暗格中取出一本异常轻薄的病历。周默停止动作，白羽的心理防线彻底崩塌，微笑瓦解。翻开病历发现内页被透明液体溶解，没有文字，但在光束下浮现出病床俯视轮廓和晕染成的数字“05”。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E5_01",
+      "character": "林见青",
+      "location": "海岸礁石群"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "周默",
+      "location": "海岸礁石群"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "白羽",
+      "location": "海岸礁石群"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "苏蔓",
+      "location": "海岸礁石群"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "林见青",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "周默",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "白羽",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "苏蔓",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "林见青",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "周默",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "白羽",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_04",
+      "character": "林见青",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_05",
+      "character": "林见青",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_05",
+      "character": "周默",
+      "location": "岩洞"
+    },
+    {
+      "event_id": "E5_05",
+      "character": "白羽",
+      "location": "岩洞"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "林见青",
+      "field": "new_attitude",
+      "content": "通过感受物体的粗糙触感来确认物理存在，表现出对现实确定性的极度渴求。"
+    },
+    {
+      "name": "周默",
+      "field": "new_detail",
+      "content": "面对无序与混乱（皱巴巴的白大褂）时，会表现出对秩序的病态渴求，出现不受控制的强迫性重复动作（反复折叠衣角）。"
+    },
+    {
+      "name": "白羽",
+      "field": "state_change",
+      "content": "在岩洞中维持着机械的护士站姿和被物理固定的得体微笑，但在看到自己的白大褂和空白病历后，心理防线彻底崩塌，面部肌肉失控，失去焦距。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "海岸礁石群",
+      "type": "自然地形",
+      "description": "退潮后暴露的黑色礁石，像巨大生物的肋骨，表面有湿滑水膜和杂乱鹅卵石。"
+    },
+    {
+      "name": "岩洞",
+      "type": "隐藏空间",
+      "description": "隐藏在呈“八”字形巨型礁石间的洞穴，内部有倾斜岩盘、厚海藻、腥臭味，深处岩壁内有干燥的暗格。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "黄铜钥匙",
+      "context": "林见青用它摩擦掌心确认存在，并在岩壁上排查找到契合的凹槽打开暗格。"
+    },
+    {
+      "motif": "锈迹",
+      "context": "白大褂上的暗红色斑块被确认为纯粹的氧化铁而非血迹，与生锈的胸牌、生锈的锁芯相呼应。"
+    },
+    {
+      "motif": "05",
+      "context": "空白病历上被溶解的墨水晕染成的病床俯视轮廓及数字05。"
+    },
+    {
+      "motif": "秩序与无序",
+      "context": "周默面对无序的白大褂产生强迫性折叠动作，白羽的机械站姿在面对空白病历时彻底瓦解。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "黄铜钥匙的新月形缺口与岩壁上人工切割的凹槽构成绝对互补，成功打开了暗格。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST05",
+      "action": "advanced",
+      "evidence": "找到了白羽的白大褂，布满盐霜，上面的暗红色斑块是纯粹的氧化铁锈迹，没有血迹。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST04_02",
+      "action": "advanced",
+      "evidence": "岩洞暗格里的空白病历上，被溶解的墨水浮现出病床形状和数字“05”，与周默登记的不存在的床位产生直接联系。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "白大褂上的锈迹被确认为生锈铁器长期接触布料所致，与周默描述的生锈手术刀细节形成物证呼应。",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "病历上的墨水和纸浆被某种高浓度透明液体大面积溶解，这种液体是什么？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E5_05"
+    },
+    {
+      "content": "为什么有人要刻意用化学液体销毁这本藏在严密暗格中的病历？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E5_05"
+    }
+  ],
+  "notes": "岩洞暗格内部极其干燥，与外部湿冷环境完全割裂；白大褂左胸的金属胸牌虽被锈蚀，但轮廓和孔洞与白羽当前的崭新胸牌完全一致，是确认归属的关键物证。"
+}

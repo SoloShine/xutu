@@ -1,0 +1,279 @@
+{
+  "events": [
+    {
+      "id": "E12_01",
+      "chapter": 12,
+      "title": "封控逐步解封",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "封控缓慢放松，镇上生活逐渐恢复正常，渡口船只重新出现"
+    },
+    {
+      "id": "E12_02",
+      "chapter": 12,
+      "title": "陆沉面临回去的决定",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "公司通知复工，陆沉必须回城市，但他尚未做出关于未来的决定"
+    },
+    {
+      "id": "E12_03",
+      "chapter": 12,
+      "title": "陆沉反思自己的被动人生",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆沉意识到自己一直被程序推着走，从未真正选择过，用'都可以'回避'我想要'"
+    },
+    {
+      "id": "E12_04",
+      "chapter": 12,
+      "title": "离开前一天去渡口",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四月春天，陆沉下午去渡口石阶，坐在常坐的最高一级看河"
+    },
+    {
+      "id": "E12_05",
+      "chapter": 12,
+      "title": "整个下午坐在渡口无间隙",
+      "type": "state",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "坐了三个多小时看河，没有间隙体验，没有滑出去，只是一个人坐着"
+    },
+    {
+      "id": "E12_06",
+      "chapter": 12,
+      "title": "想到父亲当年的选择",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆父亲九六九七年站在东风卡车旁笑着，后来选择了回来——那不是退缩而是决定"
+    },
+    {
+      "id": "E12_07",
+      "chapter": 12,
+      "title": "想到陈屿的选择方式",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆陈屿路边摊说的话，陈屿虽然随意但每次都在选——去广东是选的，回来也是选的"
+    },
+    {
+      "id": "E12_08",
+      "chapter": 12,
+      "title": "想到苏晚",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "很久没联系苏晚，她QQ头像是灰的，但她曾说'这条河太小了'——她是第一扇让他看到窗外有东西的窗"
+    },
+    {
+      "id": "E12_09",
+      "chapter": 12,
+      "title": "想到周老师",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆周老师说'做题时别坐忘'，周老师体会过一次间隙后选择留在小县城教书——不追也是一种追"
+    },
+    {
+      "id": "E12_10",
+      "chapter": 12,
+      "title": "重新理解间隙的本质",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆沉终于明白间隙不是能力不是缺陷不是使命不是诅咒，只是他的一部分；间隙没有意图，只是让他看见"
+    },
+    {
+      "id": "E12_11",
+      "chapter": 12,
+      "title": "承认看见不等于做到",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "他在间隙里看见了很多但什么都没做，因为一直在等间隙告诉他该做什么，但间隙从来不是那个力量"
+    },
+    {
+      "id": "E12_12",
+      "chapter": 12,
+      "title": "夕阳下追问'想做什么'",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "石阶上独坐至黄昏，陆沉第一次认真问自己'想做什么'而非'该做什么'或'能做什么'"
+    },
+    {
+      "id": "E12_13",
+      "chapter": 12,
+      "title": "答案浮现：想做具体的事",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "想起封控期间帮父亲分零件时喜欢用双手做具体的事，这个念头是他自己的——不是程序给的，不是别人安排的"
+    },
+    {
+      "id": "E12_14",
+      "chapter": 12,
+      "title": "陆沉做出选择",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "他选择去追这个念头，不是因为知道通向哪里，而是这一次不管换什么都由自己选"
+    },
+    {
+      "id": "E12_15",
+      "chapter": 12,
+      "title": "黄昏离开渡口",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "太阳落到山后，陆沉从石阶走下，经过最下面一级时水汽扑面，没有回头"
+    },
+    {
+      "id": "E12_16",
+      "chapter": 12,
+      "title": "帮父亲修椅子",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回家后帮父亲扶住椅背，父亲用锤子敲紧松了的榫头——一个简单的手工协作场景"
+    },
+    {
+      "id": "E12_17",
+      "chapter": 12,
+      "title": "第一次尝到菜的味道",
+      "type": "turning",
+      "gap_level": 1,
+      "is_gap": true,
+      "detail": "晚饭时陆沉吃得比平时慢，第一次意识到菜是咸的、有一点辣、笋很嫩——以前吃饭只是程序的一部分"
+    },
+    {
+      "id": "E12_18",
+      "chapter": 12,
+      "title": "离别清晨",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "早上六点醒来，天花板不再是世界地图而是浅蓝墙纸，母亲默默检查行李，父亲没去修车铺"
+    },
+    {
+      "id": "E12_19",
+      "chapter": 12,
+      "title": "父亲的告别",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "父亲在门口说'到了打电话'——和十年前火车站一模一样的六个字，陆沉回头看父亲灰白头发佝背的背影"
+    },
+    {
+      "id": "E12_20",
+      "chapter": 12,
+      "title": "大巴上这一次是自己选的",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "坐大巴离开镇子，这次不是被程序推着走，而是自己选了接下来要做什么，方向模糊但属于自己"
+    },
+    {
+      "id": "E12_21",
+      "chapter": 12,
+      "title": "大巴上的短暂间隙",
+      "type": "gap",
+      "gap_level": 2,
+      "is_gap": true,
+      "detail": "大巴引擎声均匀如呼吸的瞬间，他又滑了出去，看到一个大巴上靠窗的年轻人，看了那个年轻人一秒后回来"
+    }
+  ],
+  "event_relations": [
+    {"event_id": "E12_01", "character": "陆沉", "location": "镇上"},
+    {"event_id": "E12_02", "character": "陆沉", "location": "家中"},
+    {"event_id": "E12_03", "character": "陆沉", "location": "家中"},
+    {"event_id": "E12_04", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_05", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_06", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_06", "character": "陆国平", "location": "记忆中"},
+    {"event_id": "E12_07", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_07", "character": "陈屿", "location": "记忆中"},
+    {"event_id": "E12_08", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_08", "character": "苏晚", "location": "记忆中"},
+    {"event_id": "E12_09", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_09", "character": "周老师", "location": "记忆中"},
+    {"event_id": "E12_10", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_11", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_12", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_13", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_14", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_15", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E12_16", "character": "陆沉", "location": "家中院子"},
+    {"event_id": "E12_16", "character": "陆国平", "location": "家中院子"},
+    {"event_id": "E12_17", "character": "陆沉", "location": "家中"},
+    {"event_id": "E12_18", "character": "陆沉", "location": "家中"},
+    {"event_id": "E12_18", "character": "陆国平", "location": "家门口"},
+    {"event_id": "E12_19", "character": "陆沉", "location": "家门口"},
+    {"event_id": "E12_19", "character": "陆国平", "location": "家门口"},
+    {"event_id": "E12_20", "character": "陆沉", "location": "大巴上"},
+    {"event_id": "E12_21", "character": "陆沉", "location": "大巴上"}
+  ],
+  "character_updates": [
+    {
+      "name": "陆沉",
+      "new_details": "首次做出自主选择——想做具体的、用双手做的事（可能是一种手艺或技术）；认识到间隙没有意图，只是让他看见；意识到'看见不等于做到'，一直等外部力量推自己；第一次认真品尝菜的味道，活在当下；决定离职去追寻自己的方向"
+    },
+    {
+      "name": "陆国平",
+      "new_details": "九六或九七年曾在东风卡车旁笑着，后来选择了回小镇——那是一种主动选择而非退缩；本章在家修椅子（非修车），对儿子说'到了打电话'与十年前火车站送别一模一样；离别的早晨没去修车铺，站在门口目送儿子"
+    },
+    {
+      "name": "陈屿",
+      "new_details": "曾在路边摊嚼着鸡中翅认真地说'你有没有觉得你好像一直在想什么但又什么都不做'，然后被一笑盖过；他的选择方式是快速随意但每次都在选——去广东是选的，回来也是选的"
+    },
+    {
+      "name": "苏晚",
+      "new_details": "很久未联系陆沉，QQ头像一直是灰色的；她说过的'这条河太小了'让陆沉第一次看到小镇在别人眼里是小的；她是'一扇打开过的窗'——窗关了，但陆沉知道了窗外有东西"
+    },
+    {
+      "name": "周老师",
+      "new_details": "只体会过一次间隙——小时候在河边钓鱼的时候；后来选择留在小县城教书一辈子；他体会过那个东西然后选了不去追——不追也是一种追"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "大巴",
+      "type": "交通工具",
+      "detail": "空调大巴，从镇上到县城再到城市，全程四个多小时，陆沉坐靠窗位置"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "渡口",
+      "context": "陆沉离开前去渡口坐了整个下午，这是他做选择的地方——在渡口从被动等待转为主动选择"
+    },
+    {
+      "motif": "水",
+      "context": "河面水汽、水花溅到石阶、走下石阶时水汽扑面——水象征流动与变化"
+    },
+    {
+      "motif": "程序",
+      "context": "反复提及'程序重新启动''被程序推着走''程序停了'——陆沉最终选择停止运行程序"
+    },
+    {
+      "motif": "速度",
+      "context": "明确提到'间隙会再次被速度盖住'——速度代表都市生活的惯性"
+    },
+    {
+      "motif": "手",
+      "context": "陆沉发现自己喜欢用双手做具体的事（分零件、扶椅背），手工劳动成为选择的具象化"
+    },
+    {
+      "motif": "灰尘",
+      "context": "间接呼应——'他看见自己轻得像灰尘'出现在回忆中，灰尘隐喻自我渺小感"
+    }
+  ],
+  "notes": "第12章是全书的终章，核心主题是'选择'。陆沉在渡口一下午无间隙体验中完成了最关键的认知转变：间隙只是看见的力量，选择要自己做。叙事上用五个人的回忆（父亲、陈屿、苏晚、周老师、自己）构成对照结构——每个人面对生活的不同选择方式。结尾大巴上的极轻间隙（gap_level=2）是全书最后一次间隙体验，陆沉从外部看到了自己。世界地图被换成浅蓝墙纸是一个重要的象征——'看地图的人'变成了'在房间里做决定的人'。晚饭尝出菜的味道标志着他真正活在当下，是与间隙体验本质相通的微小觉醒。"
+}

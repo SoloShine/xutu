@@ -1,0 +1,251 @@
+{
+  "events": [
+    {
+      "id": "E3_01",
+      "chapter": 3,
+      "title": "地下室走廊的水渍",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "墨绿色地毯上的水渍已经干涸，水分蒸发结晶出暗白色的盐边，空气中弥漫着霉味和老旧管道的铁锈海腥气，雨天的声音被双层玻璃隔绝成沉闷的嗡嗡声。"
+    },
+    {
+      "id": "E3_02",
+      "chapter": 3,
+      "title": "周默在院中修剪黄杨木",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周默用铸铁园艺剪刀精准切断黄杨木，动作机械连贯，间隔一致。他注视并触摸剪刀刃面上的暗红色锈迹，铁锈散发出类似陈年血块的浓烈腥味。"
+    },
+    {
+      "id": "E3_03",
+      "chapter": 3,
+      "title": "林见青翻阅残缺旧书",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青在图书室发现一本旧书的215至218页被粗暴撕毁，残存文字描述了“从侧颈动脉下刀，需避开第七节颈椎的横突……”的细节，他的食指在残页边缘留下冷湿黏腻的指印。"
+    },
+    {
+      "id": "E3_04",
+      "chapter": 3,
+      "title": "苏遥雕刻无脸礁石",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏遥在活动室用生锈刻刀雕刻灰黑色礁石，凿平了面部五官，并在胸腔位置刻下极深的斜向裂痕。礁石的轮廓和裂痕与墙角画中无脸尸体的阴影及致命伤口形成严丝合缝的二维拓印对应。"
+    },
+    {
+      "id": "E3_05",
+      "chapter": 3,
+      "title": "走廊的无言交接",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三人在走廊十字路口相遇，周默放下竹筐，苏遥放上礁石，林见青观察到礁石裂痕和周默手上的铁锈。林见青摸到口袋里一张认罪书草稿，其折痕与残书的弯曲弧度惊人相似，三人默契排成三角阵型走向餐厅。"
+    },
+    {
+      "id": "E3_06",
+      "chapter": 3,
+      "title": "餐厅的沉默晚餐",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三人在餐厅相邻而坐，第五个位置空着但有一碗还在冒热气的紫菜蛋花汤。苏蔓和徐桥对这碗异常的汤毫无反应，处于比沉默更深层的迟钝状态，铁锈、旧纸和石粉的气味在空气中交织发酵。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E3_01",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "周默",
+      "location": "院子"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "林见青",
+      "location": "图书室"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "苏遥",
+      "location": "活动室"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "周默",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "苏遥",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "林见青",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "周默",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "苏遥",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "林见青",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "苏蔓",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "徐桥",
+      "location": "餐厅"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "周默",
+      "field": "new_habit",
+      "content": "修剪植物时动作机械连贯，每一剪间隔完全一致，呼吸保持濒死般的平缓"
+    },
+    {
+      "name": "周默",
+      "field": "new_detail",
+      "content": "手背布满细小紫色血管，指甲修剪得极短贴着肉"
+    },
+    {
+      "name": "林见青",
+      "field": "new_detail",
+      "content": "食指在图书室残页上留下冷湿黏腻的汗液指印"
+    },
+    {
+      "name": "林见青",
+      "field": "new_detail",
+      "content": "口袋里有一张认罪书草稿，纸张材质与旧书不同，但折痕与旧书残页边缘弯曲弧度相似"
+    },
+    {
+      "name": "苏遥",
+      "field": "new_habit",
+      "content": "用生锈刻刀顺着纹理缓慢雕刻礁石，铁锈碎屑混入石粉"
+    },
+    {
+      "name": "苏蔓",
+      "field": "new_attitude",
+      "content": "对第五个位置冒热气的汤视而不见，不询问不处理，处于迟钝状态"
+    },
+    {
+      "name": "徐桥",
+      "field": "new_attitude",
+      "content": "对三人的沉默默契习以为常，处于比沉默更深层的迟钝状态"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "走廊",
+      "type": "室内通道",
+      "description": "铺有墨绿色地毯的地下室走廊，有十字路口和感应灯"
+    },
+    {
+      "name": "院子",
+      "type": "室外空间",
+      "description": "种有黄杨木丛的泥泞院子，雨天潮湿"
+    },
+    {
+      "name": "图书室",
+      "type": "室内房间",
+      "description": "有暖气片和旧书的房间，墙面石灰受热鼓起水泡"
+    },
+    {
+      "name": "活动室",
+      "type": "室内房间",
+      "description": "角落有藤椅，墙角有画架的房间"
+    },
+    {
+      "name": "餐厅",
+      "type": "室内房间",
+      "description": "有长条餐桌、不锈钢餐盘，弥漫消毒水和食物气味"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "地毯上吸饱水分干涸的水渍、结水汽的窗玻璃、连绵阴雨、冒热气的汤"
+    },
+    {
+      "motif": "铁锈",
+      "context": "园艺剪刀刃面的暗红锈迹、生锈刻刀脱落的铁锈碎屑、管道渗出的海腥气、类似陈年血块的铁锈味"
+    },
+    {
+      "motif": "手",
+      "context": "周默贴肉短指甲的手背、林见青滑过残页留下指印的食指、苏遥抹去石粉的大拇指"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "林见青摸到口袋里的认罪书草稿，其折痕与图书室被撕残页的弯曲弧度惊人相似",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "图书室旧书残页出现“从侧颈动脉下刀”的具体描述，且与苏遥雕刻的礁石伤口、画作伤口形成物理对应",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "晚餐时第五个位置再次出现冒热气的汤，无人坐也无人端走",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "苏蔓对冒热气的汤毫无停留和询问，徐桥倒水，两人处于比沉默更深层的迟钝状态",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "画中无脸尸体和伤口并非凭空想象，而是苏遥雕刻的礁石在二维平面的精确拓印",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST03",
+      "action": "advanced",
+      "evidence": "三人在走廊无言交接物证（植物、礁石），排成三角阵型走向餐厅，形成用物证堆砌的日常默契",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "图书室旧书中被撕掉的215至218页去了哪里？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E3_03"
+    },
+    {
+      "content": "林见青口袋里的认罪书草稿材质与旧书不同，它是从哪里来的？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E3_05"
+    }
+  ],
+  "notes": "环境气味形成闭环：走廊的铁锈海腥气、周默剪刀的血块铁锈味、苏遥刻刀的铁锈粉，与结尾提到的铁锈腥味交织。物证形成闭环：周默的植物、苏遥的礁石、林见青的认罪书草稿在走廊完成交接，暗示三人共同参与了某项不可告人的行动。"
+}

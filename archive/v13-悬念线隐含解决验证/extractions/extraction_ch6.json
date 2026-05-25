@@ -1,0 +1,145 @@
+{
+  "events": [
+    {
+      "id": "E6_01",
+      "chapter": 6,
+      "title": "402室遭遇老周砸门",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周在门外猛烈砸门，门框墙皮掉落，门把手脱落。陈若竹紧握拖把杆抵住门板，随着门缝被撑开，他被迫步步后退，最终后背抵住冰凉的窗台。"
+    },
+    {
+      "id": "E6_02",
+      "chapter": 6,
+      "title": "暴雨中日记本遇水显影",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "砸门引发共振导致窗玻璃整块脱落，暴雨灌入室内打湿日记本。第一页暗红印记遇水崩解，陈若竹闻到铁锈腥味与酸腐气，并回想起1999年这扇窗前红砖墙渗出暗红液体的情景。水分饱和后，暗红圆印下方显现出一张精确的暗管图纸，标注了坐标X-14, Y-09及向下箭头，线条由铁锈或体液绘制。"
+    },
+    {
+      "id": "E6_03",
+      "chapter": 6,
+      "title": "老周破门与跳窗逃生",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "木门被砸出大破洞，老周穿着黑色雨衣挤入。陈若竹将湿透滴水的日记本死死按在胸口锁骨处，趁老周扯断门板跨入之际，踩上生锈的窗台直接向前倾倒跳出窗外。"
+    },
+    {
+      "id": "E6_04",
+      "chapter": 6,
+      "title": "泥水洼中艰难逃离",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹重重砸在楼下齐膝深的泥水洼中，膝盖磕在砖石上。他在沼气味中挣扎起身，避开楼上老周扫射的手电光，在泥浆巨大的吸力下深一脚浅一脚地前行，怀里的日记本隔着湿衣传来冰凉刺鼻的铁锈触感。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E6_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "陈若竹",
+      "location": "楼下泥水洼"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "老周",
+      "location": "402室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "手指沾染了日记本上的暗红色液体，感觉滑腻且带有轻微的刺痛感"
+    },
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "在老周破门的绝境中表现出极强的决绝与求生本能，宁可跳楼也死死护住湿透的日记本"
+    },
+    {
+      "name": "老周",
+      "field": "new_attitude",
+      "content": "展现出极强的暴力与目的性，不顾手掌被木刺扎破强行扯破门板，直接索要'底片'"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "楼下泥水洼",
+      "type": "户外",
+      "description": "402室楼下的泥水洼，积水齐膝深，水底有发软的红砖碎块和滑腻青苔，水面漂浮塑料袋和腐烂树叶，散发浓烈的下水道沼气味"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "暴雨直接灌进室内，成为触发日记本暗红印记崩解和图纸显影的关键媒介"
+    },
+    {
+      "motif": "暗红/铁锈",
+      "context": "暗红液体遇水洇染并散发铁锈腥味，最终显影出暗管图纸，同时让陈若竹手指感到刺痛"
+    },
+    {
+      "motif": "泥浆",
+      "context": "楼下泥水洼的淤泥产生巨大的吸力，阻碍陈若竹逃亡，强化了环境的恶劣与窒息感"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "暗红印记遇水像海绵般崩解，散发铁锈腥味与酸腐气，沾染皮肤有滑腻和刺痛感，且被用来绘制精确的暗管图纸",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST05_01",
+      "action": "advanced",
+      "evidence": "老周暴力破门，手扒门洞被木刺扎破，直接索要'底片'，展现出背后势力的极端强硬手段",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "日记本遇水显现的暗管图纸代表什么设施？标注的坐标'X-14, Y-09'和三个递进区域（其中一个通向向下箭头）指向何处？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E6_02"
+    },
+    {
+      "content": "图纸上的暗管交叉点处为何有指甲掐出的深深凹痕？是谁在绘制时留下了这种剧烈的物理痕迹？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E6_02"
+    }
+  ],
+  "notes": "日记本图纸绘制极其精确，连暗管拐角处的法兰盘接口都用极细线条标出；图纸由铁锈或某种体液绘制，具有遇水显影的特性；1999年回忆中红砖墙渗出的暗红液体流经处墙皮起泡发黑并剥落，露出纵横交错的生锈暗管，与图纸内容形成呼应。"
+}

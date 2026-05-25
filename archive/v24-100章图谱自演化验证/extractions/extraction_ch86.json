@@ -1,0 +1,302 @@
+# Persisted: 2026-05-21 16:36:29
+{
+  "events": [
+    {
+      "id": "E86_01",
+      "chapter": 86,
+      "title": "铜镜碎片逐片归位修复进行中",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在巷口连续输出灵力修复铜镜碎片，苏晚辅助维持共振频率。第一到第六片碎片依次归位，每片归位后母亲声音更清晰。修复过半后碎片主动吸收灵力速度加快。"
+    },
+    {
+      "id": "E86_02",
+      "chapter": 86,
+      "title": "归墟灵力核心被阁主击破",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "地下传来剧烈灵力碰撞，归墟暗红灵力消散，阁主破了他的灵力核心。地面路灯熄灭老楼窗户闪动。归墟不会消散但暂时无法行动需要时间恢复。阁主的声音从地下传上来。"
+    },
+    {
+      "id": "E86_03",
+      "chapter": 86,
+      "title": "阁主脱身上地面灵力网城南铺开",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "阁主从地下通道脱身金丹后期灵力如铁板压下。灵力像网一样从北向南铺开搜索铜镜修复的灵力痕迹。阁主方向城南朝陆远逼近。苏晚说明修复中断经脉会断陆远无法逃跑。"
+    },
+    {
+      "id": "E86_04",
+      "chapter": 86,
+      "title": "老周独身北上拖住阁主一刻钟",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "母亲让老周带大壮苏晚往南撤离，老周选择独身往北拖住阁主一刻钟为陆远争取铜镜修复时间。老周说我下棋三十年最擅长拖。大壮背苏晚往南跑。"
+    },
+    {
+      "id": "E86_05",
+      "chapter": 86,
+      "title": "母亲揭示七步棋局前六步",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "母亲在蓝光中讲述七步棋局：第一步落子灵脉暗河埋铜镜和意识，第二步引流三方势力入江城，第三步棋眼九层封印渐进觉醒触发三方冲突，第四步破门三方冲突震松暗河通道，第五步提子撬开封印救出意识，第六步收官铜镜碎片锚定意识。第七步是活棋需要陆远自己选择。"
+    },
+    {
+      "id": "E86_06",
+      "chapter": 86,
+      "title": "母亲揭示第七步的本质是选择",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "母亲说阁主需要陆远自愿打开九层封印激活上界至宝。阁主会给一个值得的理由让陆远面临选择。母亲说前六步是她布局的但第七步不能替陆远做决定。陆远说不会选但母亲说到时候看到的会不一样。"
+    },
+    {
+      "id": "E86_07",
+      "chapter": 86,
+      "title": "第九片碎片归位阁主金色光晕逼近",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "第八第九片碎片归位铜镜成形大半。灵力消耗七成剩三成。苏晚已被大壮背着南撤但共振未断。北边天际线金色光晕从灯变成一团光正在爬升。阁主来了。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E86_01",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_01",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_01",
+      "character": "大壮",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_01",
+      "character": "老周",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_02",
+      "character": "归"
+    },
+    {
+      "event_id": "E86_03",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E86_04",
+      "character": "老周"
+    },
+    {
+      "event_id": "E86_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E86_04",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E86_05",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_06",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_07",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E86_07",
+      "character": "天机阁"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "灵力消耗七成白色纹路蔓延到脖子第三层封印已开命门穴最后一根银针撑着"
+    },
+    {
+      "name": "老周",
+      "field": "state_change",
+      "content": "独身往北面对金丹后期阁主拖一刻钟嘴角色已干嘴角流血仍走"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力几乎见底被大壮背着南撤但远程维持共振频率未断"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "背着苏晚往南撤离到中山路方向"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "阁主金丹后期灵力像网从北向南铺开搜索铜镜修复的灵力痕迹"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST84_01",
+      "action": "resolved",
+      "evidence": "归墟灵力核心被阁主击破暂时无法行动但不会消散",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST84_02",
+      "action": "advanced",
+      "evidence": "母亲揭示阁主需要陆远自愿打开九层封印激活上界至宝会给出值得的理由",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST85_01",
+      "action": "advanced",
+      "evidence": "铜镜修复到第九片碎片还有三片灵力消耗七成阁主正在逼近",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST85_02",
+      "action": "resolved",
+      "evidence": "母亲揭示七步棋局前六步完整内容：落子→布局→借力→顺势→提子→收官，第七步是活棋需要陆远自己做选择",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "老周独身北上拖住阁主一刻钟说我下棋三十年最擅长拖，与母亲棋局布局呼应",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST73_01",
+      "action": "advanced",
+      "evidence": "苏晚灵力见底被大壮背着南撤但远程维持共振",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_02",
+      "action": "advanced",
+      "evidence": "母亲确认上界至宝在她体内和意识绑在一起阁主拿不到她拿不到至宝",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST15_01",
+      "action": "advanced",
+      "evidence": "母亲说第二步引流灵墟天机阁地脉堂三方势力入江城不是偶然是她用频率波动引来的",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "阁主会给陆远一个值得的理由让他自愿打开九层封印——这个理由是什么？母亲说那时候看到的和现在告诉他的不会一样",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E86_06"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E86_02",
+      "to": "E86_03",
+      "type": "consequence",
+      "detail": "归墟被击破后阁主脱身上地面开始追踪"
+    },
+    {
+      "from": "E86_03",
+      "to": "E86_04",
+      "type": "decision",
+      "detail": "阁主逼近迫使老周做出独身拖延的决定"
+    },
+    {
+      "from": "E86_04",
+      "to": "E86_05",
+      "type": "consequence",
+      "detail": "老周拖延争取时间让陆远能继续修复同时母亲揭示棋局"
+    },
+    {
+      "from": "E86_05",
+      "to": "E86_06",
+      "type": "revelation",
+      "detail": "前六步揭示后自然引出第七步活棋的本质"
+    },
+    {
+      "from": "E86_06",
+      "to": "E86_07",
+      "type": "consequence",
+      "detail": "棋局揭示同时阁主逼近修复紧迫"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E86_02",
+      "thread_id": "ST84_01",
+      "type": "confirmation",
+      "detail": "归墟灵力核心被阁主击破确认归墟不敌金丹后期"
+    },
+    {
+      "event_id": "E86_05",
+      "thread_id": "ST85_02",
+      "type": "confirmation",
+      "detail": "母亲完整揭示七步棋局前六步的内容和触发机制"
+    },
+    {
+      "event_id": "E86_06",
+      "thread_id": "ST84_02",
+      "type": "clue",
+      "detail": "阁主需要陆远自愿打开封印且会给出理由暗示阁主掌握某些信息"
+    },
+    {
+      "event_id": "E86_01",
+      "thread_id": "ST85_01",
+      "type": "confirmation",
+      "detail": "铜镜修复进度确认碎片逐片归位速度在加快"
+    },
+    {
+      "event_id": "E86_04",
+      "thread_id": "ST38_01",
+      "type": "confirmation",
+      "detail": "老周的棋局术语与母亲的七步棋局呼应他确实在棋盘上留了活眼"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "完成铜镜最后三片碎片修复",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "老周",
+      "goal": "拖住阁主一刻钟为陆远争取修复时间",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "阁主",
+      "goal": "追到陆远夺取上界至宝",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "七步棋局前六步完整揭示。母亲确认至宝与意识绑定。阁主会给出一个值得的理由是新的关键伏笔。老周的棋局术语（拖、活眼）与母亲棋局设计呼应。苏晚远程维持共振是新的灵力运用方式。"
+}

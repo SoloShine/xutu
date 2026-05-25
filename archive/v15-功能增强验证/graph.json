@@ -1,0 +1,2209 @@
+{
+  "characters": {
+    "陆安": {
+      "role": "主角",
+      "personality": "沉默寡言，对死亡有近乎病态的平静，观察力极强但社交能力差，过去有未交代的创伤",
+      "name": "陆安",
+      "goals": [
+        {
+          "goal": "查明张德明身上缝合线的来源",
+          "type": "pursue",
+          "status": "new",
+          "chapter": 1
+        },
+        {
+          "goal": "确认三具遗体缝合痕迹的关联性",
+          "type": "pursue",
+          "status": "advanced",
+          "chapter": 2
+        },
+        {
+          "goal": "查明老何与缝合计划的全部关系",
+          "type": "pursue",
+          "status": "advanced",
+          "chapter": 5
+        },
+        {
+          "goal": "查明母亲2003年溺水死亡的真相",
+          "type": "pursue",
+          "status": "new",
+          "chapter": 6
+        }
+      ]
+    },
+    "方蕊": {
+      "role": "搭档",
+      "personality": "务实冷静，不迷信但尊重仪式，有轻微洁癖，在男性主导行业中用专业能力赢得尊重",
+      "name": "方蕊",
+      "goals": [
+        {
+          "goal": "确认缝合痕迹是否为医疗行为",
+          "type": "pursue",
+          "status": "new",
+          "chapter": 1
+        },
+        {
+          "goal": "分析缝合位置的几何规律",
+          "type": "pursue",
+          "status": "achieved",
+          "chapter": 4
+        }
+      ]
+    },
+    "老何": {
+      "role": "关键配角",
+      "personality": "表面和善实则城府极深，对小城所有秘密了如指掌，用善意掩盖控制欲",
+      "name": "老何",
+      "goals": [
+        {
+          "goal": "让陆安了解缝合计划的真相",
+          "type": "duty",
+          "status": "advanced",
+          "chapter": 5
+        },
+        {
+          "goal": "让陆安了解全部真相后自行决定",
+          "type": "duty",
+          "status": "achieved",
+          "chapter": 6
+        }
+      ]
+    },
+    "许彤": {
+      "role": "调查者",
+      "personality": "聪明但不谨慎，好奇心重，对真相有执念，做事凭直觉",
+      "name": "许彤",
+      "goals": [
+        {
+          "goal": "查明缝合痕迹背后的真相",
+          "type": "pursue",
+          "status": "new",
+          "chapter": 3
+        },
+        {
+          "goal": "发表缝合计划报道",
+          "type": "pursue",
+          "status": "advanced",
+          "chapter": 6
+        }
+      ]
+    },
+    "赵海燕": {
+      "role": "受害者",
+      "personality": "未知，已故",
+      "name": "赵海燕"
+    },
+    "周姨": {
+      "role": "配角",
+      "personality": "谨慎",
+      "name": "周姨"
+    },
+    "刘桂兰": {
+      "role": "逝者",
+      "personality": "女，六十八岁，脑溢血，缝合在左上腹",
+      "name": "刘桂兰"
+    },
+    "陈学文": {
+      "role": "逝者",
+      "personality": "男，五十九岁，肝癌晚期，缝合在右下腹",
+      "name": "陈学文"
+    }
+  },
+  "locations": {
+    "永宁殡仪馆": {
+      "type": "殡仪馆",
+      "description": "建于80年代的殡仪馆，地下有废弃的标本室，走廊尽头灯永远坏着",
+      "name": "永宁殡仪馆"
+    },
+    "柳河堤": {
+      "type": "户外",
+      "description": "城乡结合部的河边小路，夏天涨水时露出河床下的东西",
+      "name": "柳河堤"
+    },
+    "何氏诊所": {
+      "type": "诊所",
+      "description": "老何开的小诊所，白天看感冒晚上处理一些不能去医院的问题",
+      "name": "何氏诊所"
+    },
+    "青山殡仪": {
+      "type": "殡仪馆",
+      "description": "城东的另一家殡仪馆，赵海燕遗体所在地",
+      "name": "青山殡仪"
+    }
+  },
+  "events": {
+    "E1_01": {
+      "chapter": 1,
+      "title": "夜班到达与例行准备",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安推开殡仪馆后门，注意到空气中甲醛味里混着一丝不寻常的甜味。换好工作服，检查手套弹性，准备开始夜班。",
+      "id": "E1_01"
+    },
+    "E1_02": {
+      "chapter": 1,
+      "title": "为张德明做清洁时发现缝合线",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安在例行检查张德明遗体时，指腹触到腹部一条水平棱。用放大镜观察发现是编织结构的蚕肠线缝合，针距异常均匀，线结为左手打的方结。",
+      "id": "E1_02"
+    },
+    "E1_03": {
+      "chapter": 1,
+      "title": "提取缝合线附近液体样本",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安发现缝合线本身散发甜味，用棉签提取了淡黄色液体样本，密封保存。",
+      "id": "E1_03"
+    },
+    "E1_04": {
+      "chapter": 1,
+      "title": "方蕊到场拍照确认异常",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方蕊到达操作间，用手机拍下缝合线特写。分析照片确认针距异常均匀（7.5-8.5mm），识别缝线为已停产的SX-07型号。",
+      "id": "E1_04"
+    },
+    "E2_01": {
+      "chapter": 2,
+      "title": "陆安翻查遗体登记记录",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "凌晨四点陆安翻查三个月遗体登记簿，从47具中筛选出3具有非正常缝合痕迹的遗体：王秀芬、陈建国、张德明",
+      "id": "E2_01"
+    },
+    "E2_02": {
+      "chapter": 2,
+      "title": "方蕊分析缝合数据",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方蕊分析三具遗体针距比例（6.4-7.9mm），翻出旧照片确认左手单结一致，提供地下室标本室钥匙",
+      "id": "E2_02"
+    },
+    "E2_03": {
+      "chapter": 2,
+      "title": "陆安进入地下室标本室",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "夜间进入地下标本室，从陈建国冷冻遗体上取到第二份SX-07缝线样本，确认编织结构和甜味",
+      "id": "E2_03"
+    },
+    "E2_04": {
+      "chapter": 2,
+      "title": "发现缝合计划档案",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "在档案柜暗格中发现牛皮纸文件夹，封面写着'缝合计划'，日期1987年，内含37页缝合数据表格，记录遗体编号、缝合部位、针数、线材型号",
+      "id": "E2_04"
+    },
+    "E2_05": {
+      "chapter": 2,
+      "title": "地下室嗡鸣声",
+      "type": "discovery",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "地下室墙壁后面传来与走廊日光灯不同频率的嗡鸣声，低一个八度，每四秒一个起伏周期，像呼吸",
+      "id": "E2_05"
+    },
+    "E3_01": {
+      "chapter": 3,
+      "title": "许彤到殡仪馆询问缝合痕迹",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "许彤以记者身份到殡仪馆，列出四个有缝合痕迹的死者名字（含陆安不知道的赵海燕），问及SX-07型号",
+      "id": "E3_01"
+    },
+    "E3_02": {
+      "chapter": 3,
+      "title": "许彤透露赵海燕信息",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "许彤临走时透露赵海燕遗体送往城东青山殡仪，身上的缝合线与陆安见过的相同，暗示她有其他信息来源",
+      "id": "E3_02"
+    },
+    "E3_03": {
+      "chapter": 3,
+      "title": "陆安在柳河堤发现缝合动物骨骼",
+      "type": "discovery",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "退水后河岸露出七块动物骨骼（中型哺乳动物），骨骼上有相同缝合线和甜味，缝合者根据骨骼材质调整了技术（更陡进针角、双半结）",
+      "id": "E3_03"
+    },
+    "E3_04": {
+      "chapter": 3,
+      "title": "许彤查到何氏诊所SX-07采购记录",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "许彤在报社查到何氏诊所药品进货清单：2019-2024年间每隔六个月购入SX-07，持续五年，证明老何在停产后仍系统获取该型号",
+      "id": "E3_04"
+    },
+    "E3_05": {
+      "chapter": 3,
+      "title": "陆安确认骨骼缝线甜味来源",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安再次检查第一块骨骼，确认甜味从缝线线头本身释放，与张德明身上的相同",
+      "id": "E3_05"
+    },
+    "E3_06": {
+      "chapter": 3,
+      "title": "河岸嗡鸣声",
+      "type": "discovery",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "河岸听到水下嗡鸣，不是机械也不是生物发声，频率不稳定，似乎从骨骼本身发出",
+      "id": "E3_06"
+    },
+    "E4_01": {
+      "chapter": 4,
+      "title": "三人地下室汇合分析",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安、方蕊、许彤夜间在地下室汇合，方蕊整理出三个月内三具确认缝合痕迹的遗体：刘桂兰、陈学文、张德明",
+      "id": "E4_01"
+    },
+    "E4_02": {
+      "chapter": 4,
+      "title": "方蕊发现三缝合点构成等腰三角形",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方蕊用描图纸将三具遗体的缝合位置投影到同一平面上，发现三条弧线曲率方向一致，连成等腰三角形：72度-54度-54度",
+      "id": "E4_02"
+    },
+    "E4_03": {
+      "chapter": 4,
+      "title": "与1987年档案三角形重合",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安将1987年缝合计划档案中的三角形与方蕊的描图纸叠合，角度完全重合。档案中有七组坐标（I-VII），其中VII为空白",
+      "id": "E4_03"
+    },
+    "E4_04": {
+      "chapter": 4,
+      "title": "许彤拍到何氏诊所招牌三角形",
+      "type": "confirmation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "许彤展示何氏诊所招牌照片，右下角圆形标志内有一个等腰三角形，与遗体缝合和档案中的图形一致",
+      "id": "E4_04"
+    },
+    "E4_05": {
+      "chapter": 4,
+      "title": "地下室嗡鸣振幅增大",
+      "type": "discovery",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "讨论过程中嗡鸣声振幅增大，从指节叩击变为整个手掌按压桌面的感觉，暗示某种物理关联",
+      "id": "E4_05"
+    },
+    "E4_06": {
+      "chapter": 4,
+      "title": "方蕊推断还需四具遗体完成计划",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "七组坐标中三个已完成，还有四个空位，意味着还需四具遗体才能完成缝合计划的全部图形",
+      "id": "E4_06"
+    },
+    "E5_01": {
+      "chapter": 5,
+      "title": "陆安夜间潜入何氏诊所",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安夜间到何氏诊所，玻璃门未锁。前台有搪瓷杯和老式血压计，走廊骨骼图编号方式特殊（从第七肋开始交替排列）",
+      "id": "E5_01"
+    },
+    "E5_02": {
+      "chapter": 5,
+      "title": "发现器械柜暗格中7卷SX-07",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安打开器械柜抽屉暗格，发现铁盒内7卷SX-07缝线，按年份排列1989-2004，最后一卷标签写着'库存清点·余23卷'",
+      "id": "E5_02"
+    },
+    "E5_03": {
+      "chapter": 5,
+      "title": "老何出现并承认河边骨头是兔子实验",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老何回到诊所，承认河边的骨头是他养的兔子（1986-1987年），用SX-07做缝合练习后放归，没有一只活过三个月",
+      "id": "E5_03"
+    },
+    "E5_04": {
+      "chapter": 5,
+      "title": "老何暗示招聘启事是他写的",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老何说出'你以为你为什么会来这里工作'和'招聘启事是我写的'，暗示陆安来殡仪馆工作不是偶然，而是老何设计的",
+      "id": "E5_04"
+    },
+    "E5_05": {
+      "chapter": 5,
+      "title": "发现缝合计划续笔记本",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老何从手提包取出黑色硬壳笔记本，封面内侧用蓝色圆珠笔写着'缝合计划·续'，笔迹与1987年档案同一人",
+      "id": "E5_05"
+    },
+    "E5_06": {
+      "chapter": 5,
+      "title": "老何指出甜味泄漏后离开",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老何临走前指出陆安口袋里的采样袋密封不够好，甜味会透过塑料。他把笔记本留在桌面上，没有翻开第二页",
+      "id": "E5_06"
+    },
+    "E6_01": {
+      "chapter": 6,
+      "title": "闪回：十年前陆安初到殡仪馆",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "闪回10年前：陆安医学院肄业来殡仪馆面试，老何给他倒凉茶，说'我这里需要懂解剖的人'，当场录用。凉茶苦味贯穿闪回",
+      "id": "E6_01"
+    },
+    "E6_02": {
+      "chapter": 6,
+      "title": "陆安将全部证据交给许彤",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安将三个月收集的证据交给许彤：三具遗体缝合照片、SX-07采购记录、老何诊所地址和时间表、1987年档案复印件、几何图。解释老何是在标记镇上的死亡地点而非伤害死者",
+      "id": "E6_02"
+    },
+    "E6_03": {
+      "chapter": 6,
+      "title": "发现老何留下的笔记本和统计报表",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安回到殡仪馆，方蕊告知老何已离开。桌上留有白色整理箱：缝合计划续笔记本+镇卫生院内部统计报表（1998-2016），最后一页圈出2016年Q4不明原因猝死7人",
+      "id": "E6_03"
+    },
+    "E6_04": {
+      "chapter": 6,
+      "title": "笔记本揭示老何知道陆安母亲死因",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "笔记本倒数第三页是老何写给陆安的话：'你母亲2003年的死亡记录我也查过。溺水，地点是镇东的渡口。我来这个镇上的时候你已经在了。我用了三年才查到你是因为她才来的。'",
+      "id": "E6_04"
+    },
+    "E6_05": {
+      "chapter": 6,
+      "title": "陆安离开殡仪馆，嗡鸣停止",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆安从后门离开，方蕊隔着玻璃目送。走廊的嗡鸣声在那一刻'像一根线被剪断一样'干脆地消失了，甜味也同时散去。只剩福尔马林的气味",
+      "id": "E6_05"
+    }
+  },
+  "themes": {
+    "死亡的边界": {
+      "description": "对死亡的敬畏 vs 对遗体的物化，入殓师作为最后的守门人",
+      "chapters": "1-6",
+      "name": "死亡的边界"
+    },
+    "身体的完整性": {
+      "description": "谁有权决定一个身体的完整？医学、宗教、暴力对身体的争夺",
+      "chapters": "3-6",
+      "name": "身体的完整性"
+    }
+  },
+  "style_guides": {
+    "style_01": {
+      "rule": "零形容词叙事：用动词和名词推进，禁止「恐怖的」「阴森的」等情绪形容词，让场景本身制造恐惧",
+      "id": "style_01"
+    },
+    "style_02": {
+      "rule": "感官驱动：优先写触觉和嗅觉（福尔马林味、皮肤的温度、缝合线的质感），视觉放在最后",
+      "id": "style_02"
+    },
+    "style_03": {
+      "rule": "沉默代替宣告：角色不解释自己的动机，用行为和选择呈现，禁止内心独白宣告决定",
+      "id": "style_03"
+    },
+    "style_04": {
+      "rule": "日常即恐怖：将异常嵌入最平常的工作场景（穿线、翻面、缝合），反差制造不安",
+      "id": "style_04"
+    },
+    "style_05": {
+      "rule": "禁止感叹号和省略号：对话正常说，叙述平铺直叙，情绪通过节奏而非标点传达",
+      "id": "style_05"
+    },
+    "style_06": {
+      "rule": "每章至少一个具体的感官锚点：一种气味、一种触感、一种声音，贯穿全章反复出现",
+      "id": "style_06"
+    },
+    "style_07": {
+      "rule": "限制视角：只从陆安视角叙述，他不知道的读者也不知道，不切换其他角色内心",
+      "id": "style_07"
+    }
+  },
+  "motifs": {
+    "缝合线": {
+      "meaning": "边界、修复与拼接，人的完整性被质疑",
+      "evolution": "缝合线从手术痕迹→仪式标记→身份符号",
+      "name": "缝合线"
+    },
+    "嗡鸣声": {
+      "meaning": "频率不对的日常声音暗示异常",
+      "evolution": "从背景音到信息载体，频率越来越特定",
+      "name": "嗡鸣声"
+    }
+  },
+  "chapter_arcs": {
+    "1": {
+      "purpose": "建立悬念：异常缝合痕",
+      "scenes": "陆安夜班到达殡仪馆做日常准备 → 为一位心梗去世的老人做清洁时发现腹部缝合痕 → 检查缝合线材质确认非医院用线 → 方蕊到场用手机拍下缝合痕特写",
+      "ending": "陆安关掉无影灯，缝合线在暗下来的房间里发出最后的反光，像一条不会愈合的伤口",
+      "thread_plan": "{\"to_plant\": [\"死者身上的非正常缝合痕迹是谁做的\", \"为什么缝合线用的是早已停产的型号\"], \"to_advance\": [], \"to_resolve\": []}",
+      "reasoning": "首章需建立日常与异常的反差，用入殓工作的细节制造不安",
+      "chapter": 1
+    },
+    "2": {
+      "purpose": "推进调查：发现规律",
+      "scenes": "陆安查看最近三个月遗体记录发现三具类似痕迹 → 陆安在方蕊帮助下对比三具遗体的缝合位置和线材 → 陆安潜入地下标本室发现封存的旧档案",
+      "ending": "陆安合上最后一页档案，扉页的日期是1987年，比他出生还早两年，档案封面上用蓝墨水写着两个字：「缝合计划」",
+      "thread_plan": "{\"to_plant\": [\"地下标本室的旧档案中有什么——缝合计划\", \"谁在系统性地处理这些遗体\"], \"to_advance\": [\"ST01_01\", \"ST01_02\"], \"to_resolve\": []}",
+      "reasoning": "承接第1章悬念，陆安从个案扩展到模式识别",
+      "chapter": 2
+    },
+    "3": {
+      "purpose": "外部压力介入：调查者出现",
+      "scenes": "许彤以记者身份来访询问殡仪馆最近死亡异常 → 许彤在报社调查死亡数据统计 → 陆安在柳河堤发现被水冲出的带缝合痕迹的动物骨骼",
+      "ending": "陆安从河堤捡起一块骨头，缝合线还连在上面，依然带着那股甜味",
+      "structure_type": "intercut",
+      "time_jumps": "[{\"position\": \"许彤报社调查场景\", \"target\": \"同一天的白天\", \"type\": \"intercut\"}]",
+      "thread_plan": "{\"to_plant\": [\"柳河堤的动物骨骼是否与死者有关\"], \"to_advance\": [\"ST01_01\"], \"to_resolve\": [\"ST01_02\"]}",
+      "reasoning": "引入许彤增加外部压力，河堤发现将范围从殡仪馆扩展到自然环境",
+      "chapter": 3
+    },
+    "4": {
+      "purpose": "真相逼近：发现图案",
+      "scenes": "陆安和许彤深夜回殡仪馆调取完整记录 → 方蕊分析最新遗体的缝合位置与之前的差异 → 三具遗体的缝合位置叠加形成几何图案",
+      "ending": "方蕊将三具遗体的缝合位置描在透明纸上叠在一起举起对着灯光，连成的形状陆安在1987年的档案里见过",
+      "thread_plan": "{\"to_plant\": [\"缝合图案代表什么\"], \"to_advance\": [\"ST01_01\"], \"to_resolve\": [\"ST02_01\"]}",
+      "reasoning": "从个案关联到整体图案，调查进入质变阶段",
+      "chapter": 4
+    },
+    "5": {
+      "purpose": "对峙升级：老何摊牌",
+      "scenes": "陆安前往何氏诊所暗查被老何发现 → 老何暗示自己知道陆安过去的秘密 → 许彤在外围找到老何采购SX-07线材的物证",
+      "ending": "老何从柜子里取出一本黑色封面的册子放在桌上，封面和1987年档案上同样的蓝墨水笔迹写着「缝合计划·续」",
+      "thread_plan": "{\"to_plant\": [\"陆安过去的秘密是什么\"], \"to_advance\": [\"ST02_02\", \"ST01_01\"], \"to_resolve\": [\"ST03_01\"]}",
+      "reasoning": "嫌疑人直接对峙，信息量大幅释放",
+      "chapter": 5
+    },
+    "6": {
+      "purpose": "高潮与收束：选择与代价",
+      "scenes": "陆安记忆中十年前第一次来殡仪馆面试时老何是面试官 → 陆安将证据交给许彤公开 → 老何的真实动机揭露：缝合是为了记录某种正在消失的东西",
+      "ending": "陆安走出殡仪馆后门的时候走廊的日光灯管发出最后一声嗡鸣然后安静了，甜味也散了，只剩甲醛的旧味搭在脸上",
+      "structure_type": "flashback",
+      "time_jumps": "[{\"position\": \"第一个场景\", \"target\": \"十年前陆安初次到殡仪馆\", \"type\": \"flashback\"}]",
+      "thread_plan": "{\"to_plant\": [], \"to_advance\": [], \"to_resolve\": [\"ST02_02\", \"ST04_01\", \"ST05_01\"]}",
+      "reasoning": "穿插陆安与老何初次见面的记忆，以陆安主动选择公开证据收束",
+      "chapter": 6
+    }
+  },
+  "suspense_threads": {
+    "ST01_01": {
+      "content": "死者身上的非正常缝合痕迹是谁做的——左手结、针距异常均匀、无手术记录",
+      "planted_chapter": 1,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "planted",
+      "id": "ST01_01"
+    },
+    "ST01_02": {
+      "content": "为什么缝合线用的是早已停产的SX-07型号——1994年停产但出现在新遗骸上",
+      "planted_chapter": 1,
+      "importance": "high",
+      "thread_type": "clue",
+      "status": "resolved",
+      "id": "ST01_02",
+      "resolved_chapter": 3
+    },
+    "ST02_01": {
+      "content": "缝合计划始于1987年，在陆安出生前两年，37页记录覆盖多少遗体",
+      "planted_chapter": 2,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "resolved",
+      "id": "ST02_01",
+      "resolved_chapter": 6
+    },
+    "ST03_01": {
+      "content": "许彤的信息来源是什么——讣告栏和旧版系统解释不了她掌握的细节",
+      "planted_chapter": 3,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "resolved",
+      "id": "ST03_01",
+      "resolved_chapter": 6
+    },
+    "ST04_01": {
+      "content": "缝合计划需要七具遗体完成几何图形，目前完成三个，还有四个空位",
+      "planted_chapter": 4,
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "status": "planted",
+      "id": "ST04_01"
+    },
+    "ST06_01": {
+      "content": "陆安母亲2003年在镇东渡口溺水的真正死因——不在老何的缝合范围内，但老何查过",
+      "planted_chapter": 6,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "planted",
+      "id": "ST06_01"
+    },
+    "ST07_01": {
+      "status": "resolved",
+      "id": "ST07_01",
+      "resolved_chapter": 5
+    },
+    "ST03_02": {
+      "content": "河岸边为什么有缝合过的动物骨骼被水冲出",
+      "planted_chapter": 3,
+      "importance": "medium",
+      "thread_type": "clue",
+      "status": "planted",
+      "id": "ST03_02"
+    },
+    "ST04_02": {
+      "content": "第七组坐标为空白——计划在第七步被什么打断",
+      "planted_chapter": 4,
+      "importance": "medium",
+      "thread_type": "mystery",
+      "status": "planted",
+      "id": "ST04_02"
+    },
+    "ST05_01": {
+      "content": "老何为什么安排陆安来殡仪馆工作——招聘启事是他写的，他三年后才知道陆安与母亲的关联",
+      "planted_chapter": 5,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "planted",
+      "id": "ST05_01"
+    },
+    "ST05_02": {
+      "content": "缝合计划续笔记本的内容——老何把它留在桌上但没有翻开第二页",
+      "planted_chapter": 5,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "planted",
+      "id": "ST05_02"
+    },
+    "ST05_03": {
+      "content": "诊所后墙的嗡鸣声来源——稳定持续的医疗设备般的声音",
+      "planted_chapter": 5,
+      "importance": "medium",
+      "thread_type": "mystery",
+      "status": "planted",
+      "id": "ST05_03"
+    }
+  },
+  "outline_entries": {
+    "1": {
+      "purpose": "建立悬念：异常缝合痕",
+      "key_events": "陆安夜班为普通死者做清洁时发现腹部异常缝合痕迹;方蕊到场协助检查确认非正常手术痕迹",
+      "threads_to_plant": "死者身上的非正常缝合痕迹是谁做的;为什么缝合线用的是早已停产的型号",
+      "structure_hint": "linear",
+      "chapter": 1
+    },
+    "2": {
+      "purpose": "推进调查：发现规律",
+      "key_events": "陆安查看最近三个月遗体记录发现三具类似痕迹;陆安潜入地下标本室发现封存的旧档案",
+      "threads_to_plant": "地下标本室的旧档案中有什么;谁在系统性地处理这些遗体",
+      "structure_hint": "linear",
+      "chapter": 2
+    },
+    "3": {
+      "purpose": "外部压力介入：调查者出现",
+      "key_events": "许彤以记者身份来访询问殡仪馆最近死亡异常;陆安在柳河堤发现被水冲出的带缝合痕迹的动物骨骼",
+      "threads_to_plant": "柳河堤的动物骨骼是否与死者有关",
+      "threads_to_resolve": "为什么缝合线用的是早已停产的型号——老何诊所的库存记录",
+      "structure_hint": "intercut:穿插许彤在报社调查和陆安在河堤发现的平行场景",
+      "chapter": 3
+    },
+    "4": {
+      "purpose": "真相逼近：发现图案",
+      "key_events": "陆安和许彤深夜回殡仪馆调取完整记录;方蕊发现最新一具遗体的缝合位置与之前的完全不同但形成某种图案",
+      "threads_to_plant": "缝合图案代表什么",
+      "threads_to_resolve": "谁在系统性地处理这些遗体——指向何氏诊所",
+      "structure_hint": "linear",
+      "chapter": 4
+    },
+    "5": {
+      "purpose": "对峙升级：老何摊牌",
+      "key_events": "陆安前往何氏诊所暗查被老何发现;老何暗示自己知道陆安过去的秘密;许彤在外围找到关键物证",
+      "threads_to_plant": "陆安过去的秘密是什么",
+      "threads_to_resolve": "柳河堤的动物骨骼是否与死者有关——确认是老何的实验动物",
+      "structure_hint": "linear",
+      "chapter": 5
+    },
+    "6": {
+      "purpose": "高潮与收束：选择与代价",
+      "key_events": "陆安选择公开证据;老何的真实身份和动机揭露;结局开放",
+      "threads_to_resolve": "缝合图案代表什么——老何的某种仪式记录;地下标本室的旧档案中有什么——完整的实验记录;陆安过去的秘密是什么——暗示但不完全揭示",
+      "structure_hint": "flashback:穿插陆安记忆中与老何的第一次见面",
+      "chapter": 6
+    }
+  },
+  "time_periods": {
+    "发现期": {
+      "chapter_start": 1,
+      "chapter_end": 3,
+      "years": "现代小城",
+      "theme": "异常初现，从日常中剥离出不安",
+      "label": "发现期"
+    },
+    "深入期": {
+      "chapter_start": 4,
+      "chapter_end": 6,
+      "years": "现代小城",
+      "theme": "主动调查，危机升级，真相逼近",
+      "label": "深入期"
+    }
+  },
+  "relations": [
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "方蕊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_04"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST01_01",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST01_02",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02",
+      "causal_type": "consequence",
+      "detail": "例行准备后开始检查遗体，触觉发现异常"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_03",
+      "causal_type": "investigation",
+      "detail": "发现缝合线后进一步检查，发现甜味并取样"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_04",
+      "causal_type": "reaction",
+      "detail": "方蕊到场后陆安展示发现"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_01",
+      "evidence_type": "clue",
+      "detail": "缝合线本身是直接物证：左手结、异常均匀针距"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_01",
+      "evidence_type": "clue",
+      "detail": "缝合线散发甜味，提取了液体样本"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_02",
+      "evidence_type": "confirmation",
+      "detail": "方蕊确认缝线为SX-07型号，1994年停产"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "方蕊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_05"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST02_01",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_02",
+      "causal_type": "consequence",
+      "detail": "发现三具异常遗体后请方蕊分析"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_03",
+      "causal_type": "investigation",
+      "detail": "方蕊提供钥匙进入地下室取样"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_04",
+      "causal_type": "investigation",
+      "detail": "地下室取样时发现暗格档案"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_01",
+      "evidence_type": "confirmation",
+      "detail": "确认三具遗体缝合痕迹为同一人所为"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_02",
+      "evidence_type": "clue",
+      "detail": "第二份样本确认SX-07编织结构和甜味"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST02_01",
+      "evidence_type": "confirmation",
+      "detail": "1987年缝合计划档案直接证实系统性行为"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_06",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "发现期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "许彤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "柳河堤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "许彤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "柳河堤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_05",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_06"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST03_01",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_01"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST03_02",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_02",
+      "causal_type": "consequence",
+      "detail": "陆安追问信息来源促使许彤透露更多"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_05",
+      "causal_type": "investigation",
+      "detail": "发现骨骼后返回确认甜味来源"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_02",
+      "evidence_type": "confirmation",
+      "detail": "何氏诊所采购记录直接证明老何系统获取SX-07"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST07_01",
+      "evidence_type": "connection",
+      "detail": "动物骨骼缝合暗示有人在做练习实验"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST06_01",
+      "evidence_type": "clue",
+      "detail": "许彤知道赵海燕和SX-07，信息来源不明"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_06",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "方蕊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "许彤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "方蕊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "许彤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_05",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_06"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST04_01",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_06"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST04_02",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_02",
+      "causal_type": "investigation",
+      "detail": "整理数据后方蕊发现几何规律"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_03",
+      "causal_type": "revelation",
+      "detail": "三角形发现后陆安比对1987年档案确认重合"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_06",
+      "causal_type": "consequence",
+      "detail": "七组坐标三完成推断还需四具"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST02_01",
+      "evidence_type": "confirmation",
+      "detail": "三缝合点构成等腰三角形直接证实缝合计划是有预谋的几何图形"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST02_01",
+      "evidence_type": "confirmation",
+      "detail": "与1987年档案三角形完全重合"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST07_01",
+      "evidence_type": "clue",
+      "detail": "老何诊所招牌上的三角形标志直接关联缝合计划"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_06",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "何氏诊所"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "何氏诊所"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "何氏诊所"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_06",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_06"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST05_01",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_04"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST05_02",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_05"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST05_03",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_01"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_02",
+      "causal_type": "investigation",
+      "detail": "进入诊所后检查器械柜发现暗格中的SX-07"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_03",
+      "causal_type": "escalation",
+      "detail": "老何发现陆安在查看铁盒后出现对峙"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_04",
+      "causal_type": "revelation",
+      "detail": "承认兔子实验后进一步透露招聘信息"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_05",
+      "causal_type": "escalation",
+      "detail": "揭示招聘真相后取出笔记本"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST01_02",
+      "evidence_type": "confirmation",
+      "detail": "老何器械柜中保存7卷SX-07，1989-2004年产，余23卷"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST07_01",
+      "evidence_type": "confirmation",
+      "detail": "老何承认河边动物骨骼是他的缝合实验兔子"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST07_01",
+      "evidence_type": "confirmation",
+      "detail": "老何承认招聘启事是他写的，直接关联陆安到来"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST02_01",
+      "evidence_type": "confirmation",
+      "detail": "缝合计划续笔记本证实老何延续了1987年的计划"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "深入期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "许彤"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "方蕊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陆安"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "方蕊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "永宁殡仪馆"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_05"
+    },
+    {
+      "fl": "SuspenseThread",
+      "fk": "id",
+      "fv": "ST06_01",
+      "rt": "PLANTED_IN",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_03",
+      "causal_type": "consequence",
+      "detail": "证据交出后陆安回殡仪馆发现老何已离开并留下物品"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_04",
+      "causal_type": "revelation",
+      "detail": "翻看笔记本发现老何关于陆安母亲的留言"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_05",
+      "causal_type": "decision",
+      "detail": "得知母亲真相后陆安选择离开"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST02_01",
+      "evidence_type": "confirmation",
+      "detail": "全部证据交给许彤，缝合计划完整揭示"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST02_01",
+      "evidence_type": "confirmation",
+      "detail": "笔记本记录每例缝合坐标对应镇上死亡地点，缝合是对死亡地图的标记"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "ST07_01",
+      "evidence_type": "confirmation",
+      "detail": "老何知道陆安母亲2003年溺水死亡，他用了三年才查出陆安的来意"
+    }
+  ]
+}

@@ -1,0 +1,554 @@
+{
+  "events": [
+    {
+      "id": "E16_01",
+      "chapter": 16,
+      "title": "顺顺报丧天保遇难",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "顺顺向老船夫告知天保大老在茨滩淹死的噩耗，老船夫红着眼接过顺顺赠送的烧酒。"
+    },
+    {
+      "id": "E16_02",
+      "chapter": 16,
+      "title": "柳荫下偶遇傩送遭冷遇",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫在河边柳荫下与杨马兵喝酒时谈及二老唱歌，偶遇傩送，老船夫试图用碾坊话题缓和气氛，却被傩送冷遇走开。"
+    },
+    {
+      "id": "E16_03",
+      "chapter": 16,
+      "title": "老船夫告知翠翠死讯",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫回家装作随意地告诉翠翠天保死讯，翠翠察觉祖父神气不对且眼睛红红的，在祖父被喊去过渡后独自哭泣。"
+    },
+    {
+      "id": "E17_01",
+      "chapter": 17,
+      "title": "渡口老船夫试探傩送",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫在渡口与过渡的傩送搭话，提及翠翠梦见虎耳草及不要碾坊要渡船的传闻，翠翠躲藏未出，傩送冷漠走开。"
+    },
+    {
+      "id": "E17_02",
+      "chapter": 17,
+      "title": "傩送吐露对老船夫的怨恨",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傩送在竹林小路上向同行脚夫坦言自己想要渡船，但认为老船夫为人弯弯曲曲，将大老之死归咎于他。"
+    },
+    {
+      "id": "E17_03",
+      "chapter": 17,
+      "title": "翠翠采虎耳草归来",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠采虎耳草归来，老船夫试探她是否认出过渡人，翠翠想起竹林中听来的话，倒出虎耳草后脸红跑开。"
+    },
+    {
+      "id": "E18_01",
+      "chapter": 18,
+      "title": "炎夏白塔下的荒唐梦",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "炎夏中翠翠在白塔下午睡做荒唐梦，老船夫借说梦套话翠翠，又听过渡人闲谈转述给翠翠。"
+    },
+    {
+      "id": "E18_02",
+      "chapter": 18,
+      "title": "黄昏翠翠避见傩送",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "黄昏傩送押货归来，翠翠见之如见猎人般跑掉，老船夫故意迟延后才去渡船，被傩送抱怨。"
+    },
+    {
+      "id": "E18_03",
+      "chapter": 18,
+      "title": "渡船上老船夫独自发泄",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫在渡船上试图与傩送交谈，遭冷淡对待，船靠岸后老船夫看着傩送走远，捏拳威吓发泄。"
+    },
+    {
+      "id": "E19_01",
+      "chapter": 19,
+      "title": "傩送拒碾坊赌气下行",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傩送因哥哥之死对老船夫产生误会，拒绝父亲顺顺要他接受碾坊的安排，赌气决定下桃源。"
+    },
+    {
+      "id": "E19_02",
+      "chapter": 19,
+      "title": "中寨人谎报碾坊消息",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "中寨人过渡时故意欺骗老船夫，称傩送已决定要碾坊不要渡船，并拿天保之死刺痛老船夫。"
+    },
+    {
+      "id": "E19_03",
+      "chapter": 19,
+      "title": "老船夫受打击发痧卧床",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫受骗后精神大受打击，渡船时在溪中心大声唱歌，回家后用碎瓷片扎腿放血，发痧卧床。"
+    },
+    {
+      "id": "E19_04",
+      "chapter": 19,
+      "title": "翠翠照料劝阻老船夫",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠懂事地煎药并照料卧床的老船夫，老船夫因心事欲当天进城，被翠翠苦笑劝阻。"
+    },
+    {
+      "id": "E19_05",
+      "chapter": 19,
+      "title": "顺顺冷拒老船夫说媒",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫午后进城找顺顺问明碾坊一事，遭顺顺冷言拒绝，被明确告知不应再管年轻人婚事，老船夫如受闷拳。"
+    },
+    {
+      "id": "E19_06",
+      "chapter": 19,
+      "title": "祖孙预感风雨将至",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫受打击回家后神气沮丧，黄昏时与翠翠在溪边，预感到晚上的大雷雨。"
+    },
+    {
+      "id": "E20_01",
+      "chapter": 20,
+      "title": "雷雨夜祖孙听雷",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "夜间雷雨大作，翠翠在暗中发抖，祖父起身为其盖布单，两人在巨响中担忧溪岸崩塌与渡船安危。"
+    },
+    {
+      "id": "E20_02",
+      "chapter": 20,
+      "title": "白塔坍塌与老船夫离世",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "次日清晨雨停，翠翠发现渡船被冲走，回头发现白塔坍塌，回屋摇唤祖父才发现其已在雷雨中死去了。"
+    },
+    {
+      "id": "E20_03",
+      "chapter": 20,
+      "title": "路人报信全城皆知",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "路人隔溪喊渡，翠翠哭着告知祖父死讯，路人进城报信，全茶峒随之知晓。"
+    },
+    {
+      "id": "E20_04",
+      "chapter": 20,
+      "title": "杨马兵办丧事守灵",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "顺顺送来米酒猪肉，杨马兵扎竹筏设临时渡船，众人帮忙办丧事，老道士绕棺念经，杨马兵唱丧堂歌。"
+    },
+    {
+      "id": "E20_05",
+      "chapter": 20,
+      "title": "月下杨马兵安抚翠翠",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠月下出神怀疑祖父死去的真实性，杨马兵担心她想不开，出言安抚并承诺会为她安排一切。"
+    },
+    {
+      "id": "E21_01",
+      "chapter": 21,
+      "title": "老船夫白塔后山下葬",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫的白木小棺材被抬到白塔后山安葬，翠翠伏棺干号，事后众人散去，碧溪岨只剩翠翠、杨马兵与陈四四。"
+    },
+    {
+      "id": "E21_02",
+      "chapter": 21,
+      "title": "翠翠拒绝进城留守渡口",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠拒绝顺顺接她去城里的提议，请杨马兵留下陪她，陈四四被打发走，两人与黄狗继续弄渡船。"
+    },
+    {
+      "id": "E21_03",
+      "chapter": 21,
+      "title": "杨马兵道破前因后果",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "黄昏时杨马兵向翠翠讲述其父母旧事及老船夫死前的一切因果，翠翠全盘明白后哭了一个夜晚。"
+    },
+    {
+      "id": "E21_04",
+      "chapter": 21,
+      "title": "白塔重修与无尽等待",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "冬天白塔由众人捐资重修完成，但那个月下唱歌的年轻人仍未归来，翠翠在渡口无尽等待。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E16_01",
+      "character": "老船夫",
+      "location": "河街"
+    },
+    {
+      "event_id": "E16_01",
+      "character": "顺顺",
+      "location": "河街"
+    },
+    {
+      "event_id": "E16_02",
+      "character": "老船夫",
+      "location": "河边柳荫下"
+    },
+    {
+      "event_id": "E16_02",
+      "character": "杨马兵",
+      "location": "河边柳荫下"
+    },
+    {
+      "event_id": "E16_02",
+      "character": "傩送",
+      "location": "河边柳荫下"
+    },
+    {
+      "event_id": "E16_03",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E16_03",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E17_01",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E17_01",
+      "character": "傩送",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E17_01",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E17_02",
+      "character": "傩送",
+      "location": "竹林小路"
+    },
+    {
+      "event_id": "E17_03",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E17_03",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E18_01",
+      "character": "翠翠",
+      "location": "白塔下"
+    },
+    {
+      "event_id": "E18_01",
+      "character": "老船夫",
+      "location": "白塔下"
+    },
+    {
+      "event_id": "E18_02",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E18_02",
+      "character": "傩送",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E18_02",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E18_03",
+      "character": "老船夫",
+      "location": "渡船上"
+    },
+    {
+      "event_id": "E18_03",
+      "character": "傩送",
+      "location": "渡船上"
+    },
+    {
+      "event_id": "E19_01",
+      "character": "傩送",
+      "location": "河街"
+    },
+    {
+      "event_id": "E19_01",
+      "character": "顺顺",
+      "location": "河街"
+    },
+    {
+      "event_id": "E19_02",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E19_02",
+      "character": "中寨王团总"
+    },
+    {
+      "event_id": "E19_03",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E19_03",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E19_04",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E19_04",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E19_05",
+      "character": "老船夫",
+      "location": "河街"
+    },
+    {
+      "event_id": "E19_05",
+      "character": "顺顺",
+      "location": "河街"
+    },
+    {
+      "event_id": "E19_06",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E19_06",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E20_01",
+      "character": "翠翠",
+      "location": "碧溪岨屋中"
+    },
+    {
+      "event_id": "E20_01",
+      "character": "老船夫",
+      "location": "碧溪岨屋中"
+    },
+    {
+      "event_id": "E20_02",
+      "character": "翠翠",
+      "location": "碧溪岨屋外"
+    },
+    {
+      "event_id": "E20_03",
+      "character": "翠翠",
+      "location": "碧溪岨溪边"
+    },
+    {
+      "event_id": "E20_04",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E20_04",
+      "character": "顺顺",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E20_04",
+      "character": "杨马兵",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E20_05",
+      "character": "翠翠",
+      "location": "碧溪岨门外"
+    },
+    {
+      "event_id": "E20_05",
+      "character": "杨马兵",
+      "location": "碧溪岨门外"
+    },
+    {
+      "event_id": "E21_01",
+      "character": "翠翠",
+      "location": "白塔后山"
+    },
+    {
+      "event_id": "E21_01",
+      "character": "顺顺",
+      "location": "白塔后山"
+    },
+    {
+      "event_id": "E21_01",
+      "character": "杨马兵",
+      "location": "白塔后山"
+    },
+    {
+      "event_id": "E21_02",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E21_02",
+      "character": "杨马兵",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E21_03",
+      "character": "翠翠",
+      "location": "碧溪岨门前"
+    },
+    {
+      "event_id": "E21_03",
+      "character": "杨马兵",
+      "location": "碧溪岨门前"
+    },
+    {
+      "event_id": "E21_03",
+      "character": "翠翠母亲"
+    },
+    {
+      "event_id": "E21_04",
+      "character": "翠翠",
+      "location": "渡口"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老船夫",
+      "field": "new_detail",
+      "content": "遇事失去从容时会把两只手搓来搓去，发痧时习惯用碎瓷片在臂腿上扎放乌血。"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_detail",
+      "content": "祖父死后辫子上扎了白线。"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_attitude",
+      "content": "明白所有前因后果后拒绝去顺顺家，选择留在碧溪岨等待。"
+    },
+    {
+      "name": "傩送",
+      "field": "new_attitude",
+      "content": "将哥哥的死归咎于老船夫，对其由冷遇转为怨恨，认为其为人弯弯曲曲。"
+    },
+    {
+      "name": "杨马兵",
+      "field": "new_relationship",
+      "content": "取代老船夫成为翠翠的唯一靠山和监护人。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "河边柳荫下",
+      "type": "户外",
+      "description": "河边沙地柳树荫下，杨马兵放马处"
+    },
+    {
+      "name": "竹林小路",
+      "type": "户外",
+      "description": "碧溪岨小山后曲曲折折的竹林小路"
+    },
+    {
+      "name": "白塔后山",
+      "type": "户外",
+      "description": "倾圮白塔后的山岨，老船夫下葬处"
+    },
+    {
+      "name": "碧溪岨屋中",
+      "type": "室内",
+      "description": "翠翠与老船夫居住的房屋内部"
+    },
+    {
+      "name": "碧溪岨屋外",
+      "type": "户外",
+      "description": "房屋周边及屋后白塔区域"
+    },
+    {
+      "name": "碧溪岨溪边",
+      "type": "户外",
+      "description": "溪流高崖边过渡人喊渡处"
+    },
+    {
+      "name": "碧溪岨门前",
+      "type": "户外",
+      "description": "家中门限外及门前溪边高崖上"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "渡船",
+      "context": "老船夫死后渡船被大水冲走，象征旧生活与守护者的消逝。"
+    },
+    {
+      "motif": "白塔",
+      "context": "雷雨中白塔坍塌，冬天由众人捐资重修，象征时间的流逝与风水的轮回。"
+    },
+    {
+      "motif": "虎耳草",
+      "context": "翠翠采回一大把虎耳草，现实行为与梦中摘草相呼应，象征隐秘的爱意。"
+    },
+    {
+      "motif": "水",
+      "context": "大雷雨引发山水冲刷，冲走渡船并伴随老船夫的离世，水既是灾难也是冲刷一切的力量。"
+    }
+  ],
+  "notes": "中寨人作为米场经纪人，用极有斤两的话语故意扭曲傩送的意思，直接导致了老船夫的心理崩溃；顺顺明确表态不让老船夫再管儿女婚事，认为大老的死与老船夫有关；老船夫的死因是心力交瘁在雷雨夜无声死去；白塔重修资金来源包括过渡人向竹筒中自由投钱。"
+}

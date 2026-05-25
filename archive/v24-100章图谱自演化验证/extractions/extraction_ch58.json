@@ -1,0 +1,259 @@
+# Persisted: 2026-05-21 14:20:56
+{
+  "events": [
+    {
+      "id": "E58_01",
+      "chapter": 58,
+      "title": "归揭示自己与母亲一起设计灵脉总图的真相",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "归自称是母亲的师兄，三十年前一起画了穹顶灵脉总图。母亲画了百分之七十，归负责其余部分。归认出苏晚银针封脉手法并确认纹路设计图。归灵力三十年前耗尽没有纹路没有经脉循环，金色瞳孔是灵脉总图的钥匙机制不是灵种融合。铜座钟频率维持归的生命"
+    },
+    {
+      "id": "E58_02",
+      "chapter": 58,
+      "title": "归揭示灵脉总图分两层频率图藏于第四层",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵脉总图有两层：结构图是第一层（线路节点流向），频率图是第二层（每个节点的运行频率速度控制）。频率图被母亲藏进第四层。第四层是母亲用上界禁术从无到有造出来的人造空间，三年时间在暗河第三层和岩壁之间刻出。藏的东西若被天机阁或追杀归的势力拿到修真界完"
+    },
+    {
+      "id": "E58_03",
+      "chapter": 58,
+      "title": "归揭示被母亲封印在石室是保护三十年前有人追杀",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "归被母亲关在石室是保护非惩罚。三十年前一个未知势力追杀归要灵脉总图的另一半（频率图）。钟走归活入口封住形成完整循环：铜座钟脉冲维持归生命同时保持第四层封印不被侵蚀。钟停归死入口自毁频率图消失。母亲说三十年后有人修钟找到归一起打开入口"
+    },
+    {
+      "id": "E58_04",
+      "chapter": 58,
+      "title": "归激活穹顶灵脉总图显示五个红色偏移节点",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "归金色瞳孔光芒变亮一倍激活穹顶灵脉总图，一百三十七个节点全部点亮。五个城北方向节点呈红色灵力流向反向抽取，三年前出现与母亲消失时间吻合。偏移到八个节点网络平衡打破所有修真者暴露。归把五个红色节点位置通过穹顶投影刻进陆远金色瞳孔永久记忆"
+    },
+    {
+      "id": "E58_05",
+      "chapter": 58,
+      "title": "归揭示打开第四层的方法和代价",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "修复五个偏移节点需要打开第四层拿到频率图用正确频率重写。打开第四层需要两个金色瞳孔同时共振归提供频率陆远提供灵力。但归灵力耗尽只能给共振频率，打开第四层全部灵力靠陆远一人。归说灵墟只是条狗真正的主人还没见过"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E58_01",
+      "character": "归",
+      "location": "灵脉暗河第四层外围石室"
+    },
+    {
+      "event_id": "E58_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E58_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E58_02",
+      "character": "归",
+      "location": "灵脉暗河第四层外围石室"
+    },
+    {
+      "event_id": "E58_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E58_03",
+      "character": "归",
+      "location": "灵脉暗河第四层外围石室"
+    },
+    {
+      "event_id": "E58_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E58_04",
+      "character": "归",
+      "location": "灵脉暗河第四层外围石室"
+    },
+    {
+      "event_id": "E58_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E58_04",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E58_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E58_05",
+      "character": "归",
+      "location": "灵脉暗河第四层外围石室"
+    },
+    {
+      "event_id": "E58_05",
+      "character": "陆远"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "归",
+      "field": "state_change",
+      "content": "灵力三十年前耗尽身体如空壳无经脉循环，金色瞳孔变亮一倍可激活穹顶灵脉总图。食指指腹三十年敲膝盖留有凹痕"
+    },
+    {
+      "name": "归",
+      "field": "new_relationship",
+      "content": "母亲的师兄，三十年前与母亲（铜音）一起设计灵脉总图，母亲画70%归画30%"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "金色瞳孔可通过穹顶灵脉总图投影永久记忆五个红色偏移节点的位置"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "穹顶灵脉总图一百三十七个节点灵力流向可视化，五个红色节点反向抽取灵力流向偏移"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST57_01",
+      "action": "resolved",
+      "evidence": "归是母亲的师兄，三十年前一起设计灵脉总图，金色瞳孔是灵脉总图钥匙机制不是灵种融合",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST40_01",
+      "action": "resolved",
+      "evidence": "金色瞳孔是灵脉总图预设的钥匙机制，只有金色虹膜才能和总图灵力频率共振",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST56_01",
+      "action": "advanced",
+      "evidence": "第四层是母亲用上界禁术人造的空间，藏了频率图（灵脉总图第二层）",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST57_02",
+      "action": "resolved",
+      "evidence": "打开第四层需要两个金色瞳孔同时共振，归提供频率陆远提供灵力",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST46_01",
+      "action": "advanced",
+      "evidence": "穹顶显示五个城北红色节点灵力流向反向抽取，三年前出现与母亲消失吻合",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST50_01",
+      "action": "advanced",
+      "evidence": "母亲进入第四层藏频率图，第四层是人造空间",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_02",
+      "action": "advanced",
+      "evidence": "归说灵墟只是条狗真正的主人还没见过，三十年前有未知势力追杀他要频率图",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "第四层人造空间——母亲用上界禁术三年时间在暗河第三层和岩壁之间刻出来的空间，藏了频率图和一样如果被拿到修真界就完了的东西。打开第四层需要陆远一个人提供全部灵力，他现在的身体状况能承受吗",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E58_02"
+    },
+    {
+      "content": "追杀归的未知势力——不是天机阁不是地脉堂，三十年前追杀归要灵脉总图频率图。归说灵墟只是条狗真正的主人还没见过。这个势力是否就是改写灵力循环的幕后黑手",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E58_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E58_01",
+      "to": "E58_02",
+      "type": "revelation",
+      "detail": "归揭示总图两层结构引出频率图藏于第四层"
+    },
+    {
+      "from": "E58_02",
+      "to": "E58_03",
+      "type": "revelation",
+      "detail": "频率图重要性引出归被追杀保护的原因"
+    },
+    {
+      "from": "E58_03",
+      "to": "E58_04",
+      "type": "escalation",
+      "detail": "归展示穹顶总图发现灵力循环被改写"
+    },
+    {
+      "from": "E58_04",
+      "to": "E58_05",
+      "type": "decision",
+      "detail": "修复节点需要打开第四层引出方法和代价"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E58_02",
+      "thread_id": "ST56_01",
+      "type": "confirmation",
+      "detail": "第四层是人造空间确认与天然灵脉层不同"
+    },
+    {
+      "event_id": "E58_04",
+      "thread_id": "ST46_01",
+      "type": "confirmation",
+      "detail": "穹顶显示五个红色节点与城北据点抽取灵力吻合"
+    },
+    {
+      "event_id": "E58_03",
+      "thread_id": "ST27_02",
+      "type": "connection",
+      "detail": "追杀归的势力可能与灵墟背后神秘势力有关"
+    },
+    {
+      "event_id": "E58_01",
+      "thread_id": "ST40_01",
+      "type": "confirmation",
+      "detail": "金色瞳孔是灵脉总图钥匙机制不是灵种融合"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "打开第四层获取频率图修复五个偏移节点",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "归",
+      "goal": "提供共振频率帮助陆远打开第四层",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "灵脉总图两层结构首次揭示：结构图（线路节点流向）和频率图（运行频率速度控制）。第四层是人造空间母亲用了三年时间上界禁术打造。五个红色偏移节点三年前出现与母亲消失时间吻合。归说灵墟只是条狗暗示幕后势力更深层。打开第四层的灵力代价全靠陆远一人。"
+}

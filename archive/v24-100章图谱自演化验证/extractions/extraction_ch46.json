@@ -1,0 +1,226 @@
+# Persisted: 2026-05-21 13:24:08
+{
+  "events": [
+    {
+      "id": "E46_01",
+      "chapter": 46,
+      "title": "陆远从灵脉暗河返回苏晚确认身体无异常",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从灵脉暗河三层返回地面，苏晚在河堤等候全程银针监测确认灵力通道壁无新增裂痕封印核心稳定。陆远展示两份地图融合后的竹片苏晚分析第三份位置在东湖路觉醒地点"
+    },
+    {
+      "id": "E46_02",
+      "chapter": 46,
+      "title": "陆远在东湖路废弃工厂找到第三份灵脉总图竹片",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远独自翻围墙进入东湖路废弃工厂用金色瞳孔在围墙东北角凹陷处找到灵脉节点残余灵力最亮位置清理碎石后露出不同颜色水泥板金色纹路共鸣开启水泥板下浅坑中第三块竹片"
+    },
+    {
+      "id": "E46_03",
+      "chapter": 46,
+      "title": "三份灵脉总图融合完整地图显现十五节点六主脉线",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三块竹片融合为一体灵脉总图完整金色瞳孔中地图质变十二节点扩展到十五个六条主脉线从护城河核心辐射贯穿江城地下金色通道是灵力通道比灵脉线粗三倍灵力密度十倍从护城河直通城北据点正下方"
+    },
+    {
+      "id": "E46_04",
+      "chapter": 46,
+      "title": "城北据点金色通道被第三方打开灵力流向逆转",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "金色瞳孔捕捉到城北方向节点异常闪烁灵力流向从静止变为从护城河往城北流动像有人在抽水大壮消息天机阁和灵墟在外面打了十几秒被据点内诡异灵力波动打断灵力通道壁共振传导到护城河核心"
+    },
+    {
+      "id": "E46_05",
+      "chapter": 46,
+      "title": "灵力循环被改写五个节点方向偏移陆远折返",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "金色通道灵力流速加快三倍十五个节点中五个出现方向偏移全部指向据点正下方城市地下灵力循环正在被改写陆远判断不是灵墟的人打开了通道他们不知道通道存在老周发消息别去城北陆远折返老周小区"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E46_01",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E46_01",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E46_02",
+      "character": "陆远",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E46_03",
+      "character": "陆远",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E46_04",
+      "character": "陆远",
+      "location": "城北小巷"
+    },
+    {
+      "event_id": "E46_04",
+      "character": "苏晚",
+      "location": "城北小巷"
+    },
+    {
+      "event_id": "E46_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E46_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E46_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E46_05",
+      "character": "老周"
+    }
+  ],
+  "character_updates": [],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "金色瞳孔中灵脉网络灵力流向变化十五节点闪烁偏移"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST41_01",
+      "action": "resolved",
+      "evidence": "三份灵脉总图全部找到融合完成十五节点六主脉线完整地图显现",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "resolved",
+      "evidence": "蓝光位置的凹陷下藏着第三份灵脉总图竹片蓝光是竹片灵力外溢",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST45_01",
+      "action": "advanced",
+      "evidence": "完整地图确认金色通道是灵力通道非天然灵脉线灵力密度十倍有人特意建造灵墟据点建在通道终点上",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST44_01",
+      "action": "advanced",
+      "evidence": "天机阁和灵墟在据点外打了十几秒被据点内诡异波动打断",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST43_01",
+      "action": "advanced",
+      "evidence": "据点内有人打开了金色通道但不是灵墟的人灵墟没有这个能力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_02",
+      "action": "advanced",
+      "evidence": "城北据点内第三方力量打开金色通道能力至少筑基后期可能更高灵墟只是白手套",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "城北据点内第三方力量打开金色通道抽取护城河核心灵力——不是灵墟不是天机阁能力至少筑基后期以上灵墟据点只是掩护真正的主人在里面。五分之一节点灵力流向已偏移城市灵力循环正在被改写",
+      "importance": "high",
+      "thread_type": "escalation",
+      "planted_event_id": "E46_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E46_01",
+      "to": "E46_02",
+      "type": "decision",
+      "detail": "苏晚确认身体无异常后陆远决定立即去取第三份"
+    },
+    {
+      "from": "E46_02",
+      "to": "E46_03",
+      "type": "consequence",
+      "detail": "找到第三份竹片后三份自然融合"
+    },
+    {
+      "from": "E46_03",
+      "to": "E46_04",
+      "type": "revelation",
+      "detail": "完整地图显现后金色瞳孔捕捉到城北异常"
+    },
+    {
+      "from": "E46_04",
+      "to": "E46_05",
+      "type": "escalation",
+      "detail": "灵力流向逆转范围扩大陆远决定折返"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E46_02",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "蓝光位置下面藏着第三份灵脉总图"
+    },
+    {
+      "event_id": "E46_03",
+      "thread_id": "ST41_01",
+      "type": "confirmation",
+      "detail": "三份融合完整地图十五节点六主脉线"
+    },
+    {
+      "event_id": "E46_04",
+      "thread_id": "ST43_01",
+      "type": "clue",
+      "detail": "据点内第三方力量能打开金色通道"
+    },
+    {
+      "event_id": "E46_04",
+      "thread_id": "ST27_02",
+      "type": "connection",
+      "detail": "不是灵墟的人灵墟只是白手套据点里还有别人"
+    },
+    {
+      "event_id": "E46_05",
+      "thread_id": "ST45_01",
+      "type": "confirmation",
+      "detail": "金色通道是灵力通道非天然被第三方利用抽取灵力"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "阻止城市灵力循环被改写",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "弄清城北据点内第三方身份",
+      "type": "investigation",
+      "status": "new"
+    }
+  ],
+  "notes": "ST41_01灵脉总图三份全部找到融合完成可以标记resolved。ST01_02蓝光之谜解决蓝光是第三份竹片灵力外溢。新悬念ST46_01城北据点第三方力量"
+}

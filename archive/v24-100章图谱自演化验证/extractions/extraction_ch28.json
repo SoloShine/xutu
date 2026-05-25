@@ -1,0 +1,235 @@
+# Persisted: 2026-05-21 12:23:33
+{
+  "events": [
+    {
+      "id": "E28_01",
+      "chapter": 28,
+      "title": "陆远灵脉暗河修炼发现金色纹路与灵力流向共鸣",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远清晨前往灵脉暗河修炼两小时，灵力补充速度外面四倍封印刺痛减轻。修炼中发现金色纹路持续发光时灵脉暗河灵力流向微微偏转向他，金色纹路在主动吸引灵脉灵力，这是某种指引而非封印"
+    },
+    {
+      "id": "E28_02",
+      "chapter": 28,
+      "title": "苏晚传讯旧识得知灵墟总部被第三方突袭",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用苏家铜丝石片传讯术联系旧识，得知灵墟撤走原因：三天前灵墟总部被第三方攻击，灵力极强不留痕迹穿透防御阵法未触发警报，灵墟追踪系统未捕捉到灵力频率。攻击者只带走一本名册——灵墟全部交易记录所有买家卖家情报人"
+    },
+    {
+      "id": "E28_03",
+      "chapter": 28,
+      "title": "陆远推测第三方突袭灵墟为寻找神秘买家",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远分析第三方突袭灵墟的目的：名册上有所有交易记录包括三颗金丹期丹药收购封印血脉的神秘买家信息。第三方拿走名册就能查出神秘买家身份，这个第三方可能就是沈轻舟说的灵墟背后更大的势力，至少金丹期实力"
+    },
+    {
+      "id": "E28_04",
+      "chapter": 28,
+      "title": "大壮灵力标记发烫频率加速激活在即",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮右臂灵力标记发烫频率从每天一次变成每半天一次，苏晚检查确认标记在加速激活，灵墟可能在调试追踪系统。按当前速度两到三天后标记激活完成可精确定位安全屋位置"
+    },
+    {
+      "id": "E28_05",
+      "chapter": 28,
+      "title": "周衡安发现天机阁地图标注有人曾通过守脉之物",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安透露天机阁给的灵脉深层地图上三层入口旁有小字标注'曾有人通过'，守脉之物并非不可通过。周衡安决定去查那个人是谁，四人分工应对两到三天的紧迫时间窗口"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E28_01",
+      "character": "陆远",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E28_02",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E28_03",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E28_03",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E28_03",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E28_04",
+      "character": "大壮",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E28_04",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E28_05",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "掌握苏家铜丝石片传讯术，能联系到几个还没断联系的旧识，说明苏家残余网络仍在"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "灵力标记加速激活从每天一次变为每半天一次，两到三天后可被精确定位，主动提出愿意离开安全屋不连累同伴"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "金色纹路发光时灵脉暗河灵力流向偏转共鸣，金色纹路在主动吸引灵脉灵力"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远骑电动车去纺织厂修炼日常保持外卖骑手的都市身份"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST27_01",
+      "action": "advanced",
+      "evidence": "天机阁地图标注'曾有人通过'守脉之物并非不可通过",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "金色纹路持续发光时灵脉暗河灵力流向偏转，金色纹路在主动吸引灵脉灵力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST26_01",
+      "action": "advanced",
+      "evidence": "大壮灵力标记发烫频率从每天一次变为每半天一次两到三天后激活",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_02",
+      "action": "advanced",
+      "evidence": "第三方突袭灵墟总部至少金丹期实力，可能就是沈轻舟说的灵墟背后更大势力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST26_02",
+      "action": "advanced",
+      "evidence": "暗枭灵力轨迹突然消失可能和灵墟总部被突袭有关联",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "第三方突袭灵墟总部只带走名册——灵力极强不留痕迹穿透防御阵法未触发警报，只带走灵墟全部交易名册。至少金丹期实力。拿走名册就能查出所有交易方包括神秘买家身份。什么势力能无声无息攻破灵墟总部？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E28_02"
+    },
+    {
+      "content": "天机阁地图标注'曾有人通过'守脉之物——守脉之物并非不可通过，有人成功通过过。这个人是谁？什么时候通过的？用什么方法通过的？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E28_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E27_03",
+      "to": "E28_01",
+      "type": "decision",
+      "detail": "苏晚建议灵脉暗河修炼延缓封印陆远开始日常修炼"
+    },
+    {
+      "from": "E27_04",
+      "to": "E28_02",
+      "type": "investigation",
+      "detail": "灵墟异常撤走促使苏晚主动联系旧识调查原因"
+    },
+    {
+      "from": "E28_02",
+      "to": "E28_03",
+      "type": "revelation",
+      "detail": "第三方突袭名册信息使陆远推断攻击者目的"
+    },
+    {
+      "from": "E26_02",
+      "to": "E28_04",
+      "type": "escalation",
+      "detail": "大壮灵力标记从发现到加速激活威胁升级"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E28_01",
+      "thread_id": "ST21_01",
+      "type": "clue",
+      "detail": "金色纹路与灵脉共鸣指向灵脉深层，金色纹路可能是通往石门的钥匙或指引"
+    },
+    {
+      "event_id": "E28_02",
+      "thread_id": "ST27_02",
+      "type": "confirmation",
+      "detail": "第三方突袭灵墟总部证实了沈轻舟说的灵墟背后有更大势力"
+    },
+    {
+      "event_id": "E28_02",
+      "thread_id": "ST11_01",
+      "type": "connection",
+      "detail": "名册上有神秘买家信息第三方拿走名册可能是为了找到买家"
+    },
+    {
+      "event_id": "E28_05",
+      "thread_id": "ST27_01",
+      "type": "clue",
+      "detail": "守脉之物有人通过过暗示有方法可以通过不一定要强攻"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "每天灵脉暗河修炼两小时延缓封印裂开",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "周衡安",
+      "goal": "查出曾通过守脉之物的人是谁找到方法",
+      "type": "investigation",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "在标记激活前不连累同伴",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "灵墟总部被突袭是重大转折：灵墟从追猎者变为被猎者，名册丢失等于信誉体系崩塌。苏家传讯术揭示苏晚有残余社交网络。金色纹路共鸣灵脉是新发现可能指引石门方向。大壮的忠诚性格在标记危机中体现。时间线紧迫：灵墟回归+标记激活+所有事情都挤在两三天后"
+}

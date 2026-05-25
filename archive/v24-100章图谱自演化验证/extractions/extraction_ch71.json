@@ -1,0 +1,254 @@
+# Persisted: 2026-05-21 15:33:04
+{
+  "events": [
+    {
+      "id": "E71_01",
+      "chapter": 71,
+      "title": "陆远大壮到达护城河暗河入口大壮留守",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远和大壮到达护城河边暗河入口，陆远用封印核心灵力激活石板打开入口，让大壮守在外面独自进入暗河。大壮叼着烟没点，说我就在这。"
+    },
+    {
+      "id": "E71_02",
+      "chapter": 71,
+      "title": "暗河一二三层灵脉网络恢复正常三层石壁现九道封印浅痕",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远穿过暗河一二三层，灵脉蓝光比上次亮了一倍，茧碎后灵脉网络全部恢复正常。三层最深处石壁上出现九道浅痕对应九层封印，前三道较深发白光与白色纹路一致。"
+    },
+    {
+      "id": "E71_03",
+      "chapter": 71,
+      "title": "封印核心频率与石壁共鸣打开第四层通道",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远手掌按石壁，封印核心以稳定频率跳动与石壁白光同步。白色纹路从手臂到肩膀到封印核心全部亮起，石壁从中间裂开露出通道。通道灵力密度极高，空气变半透明蓝色雾气。"
+    },
+    {
+      "id": "E71_04",
+      "chapter": 71,
+      "title": "五十步通道内经脉承受极限压力银针持续警告",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远独自走进通道，五十步内灵力密度递增。银针在三个穴位上反复震动警告未触发。白色纹路过载发烫，呼吸沉重胸口发闷。石壁在身后合拢无法回头。"
+    },
+    {
+      "id": "E71_05",
+      "chapter": 71,
+      "title": "第四层空间发现缩微城市模型与红色灵力管道",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "第四层是圆形白色空间，中间悬浮一座缩微江城模型，灵脉网络实时流动。模型中央偏北有一根红色灵力管道从外部强行插入灵脉网络，频率与灰衣使者一致指向城北三公里灵墟接应据点。模型东南角安全屋位置被母亲屏蔽为灵力空白区。"
+    },
+    {
+      "id": "E71_06",
+      "chapter": 71,
+      "title": "陆远离开第四层石壁封闭经脉压力消退",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在第四层停留不到十分钟经脉接近极限，确认红色管道和安全屋屏蔽后原路返回。通道五十步银针震动逐渐减弱，石壁在身后合拢九道痕迹恢复静止。封印核心轻跳一下像母亲手指点了一下。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E71_01",
+      "character": "陆远",
+      "location": "西郊护城河"
+    },
+    {
+      "event_id": "E71_01",
+      "character": "大壮",
+      "location": "西郊护城河"
+    },
+    {
+      "event_id": "E71_02",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    },
+    {
+      "event_id": "E71_03",
+      "character": "陆远",
+      "location": "灵脉暗河第四层"
+    },
+    {
+      "event_id": "E71_04",
+      "character": "陆远",
+      "location": "灵脉暗河第四层"
+    },
+    {
+      "event_id": "E71_05",
+      "character": "陆远",
+      "location": "灵脉暗河第四层"
+    },
+    {
+      "event_id": "E71_06",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "进入第四层后发现缩微城市模型和红色灵力管道，经脉接近极限但银针未触发，成功返回三层"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "灵脉暗河第四层",
+      "type": "人造空间",
+      "description": "母亲用上界禁术三年在暗河三层和岩壁间刻出的圆形白色空间，藏有缩微江城模型实时显示灵脉网络"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵脉网络蓝光流动像呼吸，缩微模型上灵力丝线实时流动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST58_01",
+      "action": "advanced",
+      "evidence": "陆远成功打开第四层并发现缩微城市模型",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST70_01",
+      "action": "advanced",
+      "evidence": "银针在通道五十步内反复震动警告但未触发，保险丝保护经脉",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST25_01",
+      "action": "advanced",
+      "evidence": "白色纹路在通道内过载发烫，经脉接近极限但第三层封印未进一步裂开",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST43_01",
+      "action": "advanced",
+      "evidence": "红色灵力管道指向城北三公里灵墟接应据点",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "陆远在第四层停留不到十分钟经脉已达极限，银针持续警告",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST68_01",
+      "action": "advanced",
+      "evidence": "陆远确认三天时限还剩不到四十八小时",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "第四层缩微城市模型上的红色灵力管道——从城市北部边缘强行插入灵脉网络的管道，频率与灰衣使者一致指向城北灵墟接应据点，断口还在颤动像刚被折断。这根管道是谁插的？灵墟还是追杀归的势力？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E71_05"
+    },
+    {
+      "content": "母亲在第四层模型上屏蔽安全屋——蓝光绕过安全屋位置流动，从外部看那个位置没有任何灵力波动。母亲在设计第四层时就已经在保护安全屋的位置",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E71_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E71_01",
+      "to": "E71_02",
+      "type": "decision",
+      "detail": "陆远进入暗河穿行一二三层"
+    },
+    {
+      "from": "E71_02",
+      "to": "E71_03",
+      "type": "investigation",
+      "detail": "发现石壁九道封印浅痕后激活频率打开第四层"
+    },
+    {
+      "from": "E71_03",
+      "to": "E71_04",
+      "type": "consequence",
+      "detail": "打开通道后灵力密度极高导致经脉承受极限压力"
+    },
+    {
+      "from": "E71_04",
+      "to": "E71_05",
+      "type": "consequence",
+      "detail": "走完五十步通道到达第四层发现缩微模型"
+    },
+    {
+      "from": "E71_05",
+      "to": "E71_06",
+      "type": "decision",
+      "detail": "经脉接近极限后主动撤离第四层"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E71_05",
+      "thread_id": "ST43_01",
+      "type": "confirmation",
+      "detail": "红色灵力管道指向城北三公里灵墟接应据点，确认据点位置与灵力管道有关"
+    },
+    {
+      "event_id": "E71_05",
+      "thread_id": "ST58_01",
+      "type": "confirmation",
+      "detail": "第四层空间确认为母亲所造，内藏缩微城市模型实时显示灵脉网络"
+    },
+    {
+      "event_id": "E71_05",
+      "thread_id": "ST55_01",
+      "type": "connection",
+      "detail": "缩微城市模型与灵脉总图功能一致，可能是母亲设计灵脉总图的实物版本"
+    },
+    {
+      "event_id": "E71_04",
+      "thread_id": "ST70_01",
+      "type": "confirmation",
+      "detail": "银针反复震动警告但未触发，保险丝有效保护经脉"
+    },
+    {
+      "event_id": "E71_02",
+      "thread_id": "ST58_01",
+      "type": "confirmation",
+      "detail": "三层石壁九道封印浅痕前三道发白光，对应已解封的三层封印"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "查看第四层内容确认母亲的安排",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "陆远",
+      "goal": "保护经脉不在第四层崩溃",
+      "type": "protect",
+      "status": "achieved"
+    },
+    {
+      "character": "大壮",
+      "goal": "守住暗河入口等待陆远",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "第四层缩微城市模型是重要新设定：实时显示灵脉网络、红色灵力管道、安全屋屏蔽区。模型是活的不是静态。封印核心在第四层的行为变化：从催促变为确认，离开时变为温柔的轻跳。通道五十步是经脉承受力的极限测试。"
+}

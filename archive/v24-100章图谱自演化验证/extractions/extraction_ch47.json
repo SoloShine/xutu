@@ -1,0 +1,233 @@
+# Persisted: 2026-05-21 13:27:07
+{
+  "events": [
+    {
+      "id": "E47_01",
+      "chapter": 47,
+      "title": "老周揭示金色通道真相——通道底端封着比半步金丹巅峰更强的东西",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周看到完整灵脉总图上金色通道后脸色大变回忆三十年前上界来人临走前与师父在护城河边坐一夜的对话：金色通道不是用来通灵力的是封印的一部分如果有人从北边往里灌灵力就是在喂通道底下的东西那东西比上界来人还强"
+    },
+    {
+      "id": "E47_02",
+      "chapter": 47,
+      "title": "灵脉总图融合灵力波动被天机阁传感器捕捉",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周分析陆远拿着地图去东湖路取第三份时三份竹片融合释放的灵力波动被天机阁灵脉节点传感器捕捉到天机阁阁主三年前就知道这条通道下封口令等别人把三份地图凑齐打开通道的不是天机阁也不是灵墟"
+    },
+    {
+      "id": "E47_03",
+      "chapter": 47,
+      "title": "苏晚推断地脉堂在等城北底下东西觉醒后收割灵脉",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚推断地脉堂四个人在城北东面两公里集结不是围堵是在等城北底下的东西醒过来释放巨大灵力波动激活全城灵脉节点后收割老周确认灵墟只是白手套地脉堂只是收割工具真正下棋的人藏在城北据点地下等了至少三十年"
+    },
+    {
+      "id": "E47_04",
+      "chapter": 47,
+      "title": "灵力循环紊乱七个节点偏移增加",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵脉总图显示金色通道灵力流向持续指向城北偏移节点从五个增加到七个灵力循环开始出现紊乱像血管被堵住后血液改道天快亮时城北方向传来一声闷响"
+    },
+    {
+      "id": "E47_05",
+      "chapter": 47,
+      "title": "城北地下封印之物觉醒——金色脉动从城北扩散全城",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城北方向闷响后所有灵力波动瞬间停止两秒后城北节点亮起金色与陆远眼睛和封印核心一样的金色金色沿着灵脉通道从城北向全城扩散陆远金色纹路和封印核心与城北脉动完全同步封印核心跳动加速到每秒五次老周说醒了"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E47_01",
+      "character": "陆远",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_01",
+      "character": "老周",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_01",
+      "character": "苏晚",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_01",
+      "character": "大壮",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_02",
+      "character": "陆远",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_02",
+      "character": "老周",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_03",
+      "character": "苏晚",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_03",
+      "character": "大壮",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_04",
+      "character": "陆远",
+      "location": "老周小区传达室"
+    },
+    {
+      "event_id": "E47_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E47_05",
+      "character": "老周"
+    }
+  ],
+  "character_updates": [],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "金色脉动从城北沿灵脉通道扩散全城与陆远封印核心同步"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST45_01",
+      "action": "advanced",
+      "evidence": "老周确认金色通道是封印的一部分不是灵力通道是封印通道",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST46_01",
+      "action": "advanced",
+      "evidence": "城北据点地下封印之物觉醒金色脉动扩散全城与陆远封印核心同步",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_02",
+      "action": "advanced",
+      "evidence": "老周说灵墟只是白手套地脉堂只是收割工具真正下棋的人藏在城北据点地下等了至少三十年",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_01",
+      "action": "advanced",
+      "evidence": "地脉堂在城北东面集结等城北底下东西觉醒后全城灵脉节点被激活时收割",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST23_01",
+      "action": "advanced",
+      "evidence": "三十年前上界来人知道通道底下封着东西说比他强半步金丹巅峰",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST44_01",
+      "action": "advanced",
+      "evidence": "天机阁堵在外面没进去打开通道的不是他们灵墟地脉堂天机阁都是棋子",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST15_01",
+      "action": "advanced",
+      "evidence": "阁主三年前封口令因为知道这条通道在等有人把三份地图凑齐",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "城北地下封印之物觉醒——金色脉动与陆远封印核心完全同步同一频率，城北地下的东西和陆远体内的封印有直接关联。它是什么？为什么和陆远的血脉封印同步？三十年前上界来人帮陆远母亲留下的东西安全吗",
+      "importance": "high",
+      "thread_type": "escalation",
+      "planted_event_id": "E47_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E47_01",
+      "to": "E47_02",
+      "type": "revelation",
+      "detail": "老周揭示通道真相后推断谁在利用传感器信息"
+    },
+    {
+      "from": "E47_02",
+      "to": "E47_03",
+      "type": "revelation",
+      "detail": "排除天机阁和灵墟后苏晚推断地脉堂角色"
+    },
+    {
+      "from": "E47_03",
+      "to": "E47_04",
+      "type": "escalation",
+      "detail": "棋局分析中灵力循环持续恶化"
+    },
+    {
+      "from": "E47_04",
+      "to": "E47_05",
+      "type": "consequence",
+      "detail": "灵力紊乱达到临界点后封印之物觉醒"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E47_01",
+      "thread_id": "ST45_01",
+      "type": "confirmation",
+      "detail": "金色通道是封印的一部分从北边灌灵力就是在喂它"
+    },
+    {
+      "event_id": "E47_01",
+      "thread_id": "ST23_01",
+      "type": "connection",
+      "detail": "上界来人知道通道底下封着东西说比他强"
+    },
+    {
+      "event_id": "E47_02",
+      "thread_id": "ST15_01",
+      "type": "connection",
+      "detail": "阁主三年前封口令是因为知道这条通道"
+    },
+    {
+      "event_id": "E47_05",
+      "thread_id": "ST46_01",
+      "type": "confirmation",
+      "detail": "金色脉动与陆远封印核心同步确认城北地下东西与陆远有关联"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "阻止城北地下封印之物完全觉醒",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "弄清城北地下封印之物与自身血脉封印的关联",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "城北地下封印之物觉醒金色脉动与陆远封印核心同步这是前半程阶段性高潮的引爆点。ST47_01新悬念"
+}

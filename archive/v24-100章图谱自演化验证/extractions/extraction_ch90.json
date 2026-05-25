@@ -1,0 +1,208 @@
+# Persisted: 2026-05-21 16:47:47
+{
+  "events": [
+    {
+      "id": "E90_01",
+      "chapter": 90,
+      "title": "阁主灵力桥开始转移至宝陆远承受极限",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "阁主双手按在陆远肩上金丹后期灵力做桥母亲双手搭阁主手腕三人相连。至宝力量像压缩恒星冲向封印核心。白色纹路蔓延到半张脸停在鼻梁。阁主精准控制流速十秒。母亲人形从脚底开始蒸发收缩只剩上半身。"
+    },
+    {
+      "id": "E90_02",
+      "chapter": 90,
+      "title": "母亲蓝光人形融入陆远封印核心转移完成",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "最后十秒母亲人形散开蓝光像玻璃碎片一片片落入陆远胸口。最后一片蓝光落在锁骨上消失。至宝与封印核心完全绑定门关着永远不会打开。阁主灵力消耗三成。铜镜化成蓝光融入封印核心。"
+    },
+    {
+      "id": "E90_03",
+      "chapter": 90,
+      "title": "母亲意识融入封印核心在陆远脑内说话",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "母亲人形消失但她的声音出现在陆远脑内最深处。说别哭。叫他送外卖。至宝门关着母亲意识在里面和至宝一起绑定。封印核心跳动频率变成平稳心跳。"
+    },
+    {
+      "id": "E90_04",
+      "chapter": 90,
+      "title": "阁主转身去救老周",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "阁主确认转移完成后说成了。转身往北走去救老周。说有个人等我救。消失在街角。兑现承诺。"
+    },
+    {
+      "id": "E90_05",
+      "chapter": 90,
+      "title": "陆远发动电动车送外卖",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "晨光亮起。苏晚灵力在恢复确认封印核心多了东西。大壮打呼噜。陆远站起身发动电动车。外卖APP弹出订单东湖路到中山路三公里牛肉面加葱油饼。母亲声音在脑内问他送外卖呢。陆远像普通人一样送外卖去了。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E90_01",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E90_01",
+      "character": "天机阁",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E90_02",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E90_03",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E90_04",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E90_05",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E90_05",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E90_05",
+      "character": "大壮",
+      "location": "城南旧居巷口"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "白色纹路覆盖右半张脸停在鼻梁。至宝与封印核心绑定门关着。母亲意识在封印核心内。铜镜消失。灵力恢复中。封印核心跳动变成平稳心跳频率。回归送外卖日常。"
+    },
+    {
+      "name": "天机阁",
+      "field": "state_change",
+      "content": "阁主灵力消耗三成去城北救老周兑现承诺"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力在恢复确认封印核心变了里面有新东西"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "电动车车把上还挂着外卖箱表面看还是普通外卖箱最终章回归送外卖"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "封印核心跳动频率变了不再四秒一次变成平稳心跳与都市节奏融合"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST09_02",
+      "action": "resolved",
+      "evidence": "上界至宝成功转移到陆远封印核心与血脉绑定门关着永远不会激活",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "resolved",
+      "evidence": "至宝转移后封印核心稳定白色纹路停在半张脸不再扩散跳动频率变平稳",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST84_03",
+      "action": "resolved",
+      "evidence": "母亲意识融入封印核心不再散开与至宝一起绑定在陆远体内",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E90_01",
+      "to": "E90_02",
+      "type": "consequence",
+      "detail": "转移过程持续十秒最终完成"
+    },
+    {
+      "from": "E90_02",
+      "to": "E90_03",
+      "type": "consequence",
+      "detail": "转移完成后母亲意识融入"
+    },
+    {
+      "from": "E90_03",
+      "to": "E90_04",
+      "type": "decision",
+      "detail": "转移成功后阁主去救老周"
+    },
+    {
+      "from": "E90_04",
+      "to": "E90_05",
+      "type": "consequence",
+      "detail": "一切结束后陆远回归日常"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E90_02",
+      "thread_id": "ST09_02",
+      "type": "confirmation",
+      "detail": "至宝与封印绑定门关着不激活"
+    },
+    {
+      "event_id": "E90_03",
+      "thread_id": "ST84_03",
+      "type": "confirmation",
+      "detail": "母亲意识融入封印核心不散"
+    },
+    {
+      "event_id": "E90_05",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "封印稳定白色纹路不再扩散"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "回归日常送外卖",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "阁主",
+      "goal": "封印至宝防止激活",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "阁主",
+      "goal": "救老周",
+      "type": "duty",
+      "status": "advanced"
+    }
+  ],
+  "notes": "最终章收束：至宝转移成功绑定封印。母亲意识融入不再散开。阁主去救老周兑现承诺。陆远回归送外卖日常。凡与仙主题完美落地：一个送外卖的人体内藏着一扇通往上界的门但他依然送外卖。白色纹路右半脸停在鼻梁左半脸干净。外卖箱回归日常使用。"
+}

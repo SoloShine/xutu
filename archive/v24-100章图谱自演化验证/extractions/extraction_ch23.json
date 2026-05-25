@@ -1,0 +1,211 @@
+# Persisted: 2026-05-21 11:54:26
+{
+  "events": [
+    {
+      "id": "E23_01",
+      "chapter": 23,
+      "title": "陆远第二次灵脉暗河修炼直接冲击瓶颈",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远早上吃了苏晚者的粥后出门前往灵脉暗河。赵铁山已在锅炉房等候。陆远没坐下来慢慢来而是直接进入河水中盘膝冲击练气中期瓶颈，双层回路全功率运转灵脉暗河金色灵力如瀑布灌入"
+    },
+    {
+      "id": "E23_02",
+      "chapter": 23,
+      "title": "练气后期突破成功第十道金色纹路完全显现",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "瓶颈像玻璃一样碎裂，练气后期灵力如潮水涌入灵力通道扩张重塑。第十道金色痕迹完全显现为纯金色从手背延伸到手臂再到胸口封印核心。灵脉暗河水面上荡着金色涟漪"
+    },
+    {
+      "id": "E23_03",
+      "chapter": 23,
+      "title": "赵铁山透露三十年前见过上界来人的金色纹路",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵铁山说三十年前他二十出头时有个人从上界下来到江城，也是九道封印加一道金色纹路。那人说金色是血脉觉醒标志蓝色是封印白色是通道金色才是真东西。那人说替一个人来把最重要的东西留在江城等主人觉醒金色纹路就会出现"
+    },
+    {
+      "id": "E23_04",
+      "chapter": 23,
+      "title": "赵铁山透露上界来人的警告血脉觉醒者会死在真相之后",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵铁山透露上界来人修炼三天突破后走了再也没回来。那人还说了一句话：血脉觉醒的人不会死在封印上，会死在知道真相以后。陆远问那人和他母亲是否有关系赵铁山说不知道"
+    },
+    {
+      "id": "E23_05",
+      "chapter": 23,
+      "title": "周衡安来电灵墟增援到达三天窗口期提前结束",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安来电：灵墟增援已到城北至少两人灵力感知远超石沉至少练气巅峰可能接近筑基。天机阁监测网也捕捉到新灵力波动可能增援。三天窗口期没了要陆远马上回来"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E23_01",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    },
+    {
+      "event_id": "E23_01",
+      "character": "赵铁山"
+    },
+    {
+      "event_id": "E23_02",
+      "character": "陆远",
+      "location": "灵脉暗河"
+    },
+    {
+      "event_id": "E23_03",
+      "character": "赵铁山"
+    },
+    {
+      "event_id": "E23_04",
+      "character": "赵铁山"
+    },
+    {
+      "event_id": "E23_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E23_05",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E23_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E23_05",
+      "character": "灵墟"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "突破练气后期，灵力通道扩张重塑，第十道金色纹路完全显现为纯金色从手背延伸到胸口"
+    },
+    {
+      "name": "赵铁山",
+      "field": "new_detail",
+      "content": "三十年前二十出头时带过一个从上界下来的人在灵脉暗河修炼，那人也是九道封印加金色纹路，修炼三天突破后走了再没回来"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "突破时灵脉暗河水面上荡着金色涟漪，灵力冲击使河水上涨"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "第十道金色纹路完全显现为纯金色从手背到胸口，赵铁山确认金色是血脉觉醒标志",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "突破练气后期后灵力通道扩张重塑力量倍增",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "灵墟增援到达城北比石沉高至少一个大境界，三天窗口期提前结束",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "赵铁山透露三十年前上界来人也是金色纹路说是替人把最重要的东西留在江城",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "三十年前上界来人——替一个人把最重要的东西留在江城，修炼三天突破后走了再没回来。金色是血脉觉醒标志，警告血脉觉醒者不会死在封印上会死在知道真相以后。这人和陆远母亲有什么关系？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E23_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E23_01",
+      "to": "E23_02",
+      "type": "consequence",
+      "detail": "冲击瓶颈成功突破练气后期"
+    },
+    {
+      "from": "E23_02",
+      "to": "E23_03",
+      "type": "revelation",
+      "detail": "金色纹路完全显现触发赵铁山回忆三十年前的事"
+    },
+    {
+      "from": "E23_03",
+      "to": "E23_04",
+      "type": "revelation",
+      "detail": "赵铁山透露上界来人的警告"
+    },
+    {
+      "from": "E23_04",
+      "to": "E23_05",
+      "type": "escalation",
+      "detail": "突破后收到灵墟增援消息危机升级"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E23_02",
+      "thread_id": "ST21_01",
+      "type": "confirmation",
+      "detail": "第十道金色纹路完全显现为纯金色确认血脉觉醒标志"
+    },
+    {
+      "event_id": "E23_03",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "三十年前上界来人替人把最重要东西留在江城，可能和陆远母亲的上界至宝有关"
+    },
+    {
+      "event_id": "E23_03",
+      "thread_id": "ST09_02",
+      "type": "connection",
+      "detail": "上界来人说的最重要东西可能就是上界至宝"
+    },
+    {
+      "event_id": "E23_05",
+      "thread_id": "ST14_02",
+      "type": "confirmation",
+      "detail": "灵墟增援到达确认三天窗口期提前结束"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "七天之内变强到能自保",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "陆远",
+      "goal": "回到同伴身边应对灵墟增援",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "三天从练气中期到练气后期。金色纹路是血脉觉醒标志不是封印。赵铁山三十年前见过上界来人修炼三天突破后走了。上界来人警告血脉觉醒者会死在知道真相以后。灵墟增援至少两人练气巅峰可能接近筑基。天机阁可能也增援"
+}

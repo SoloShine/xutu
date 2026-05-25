@@ -1,0 +1,307 @@
+# Persisted: 2026-05-21 11:16:30
+{
+  "events": [
+    {
+      "id": "E15_01",
+      "chapter": 15,
+      "title": "安全屋苏晚教陆远灵力精细控制",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "上午在城南安全屋，苏晚教陆远基础医修灵力控制方法——将灵力从丹田引到指尖并压缩。陆远第一次尝试灵力冲过手腕失控，第二次成功将灵力压缩到食指指尖形成蓝色光点，但每次胸口封印核心传来刺痛。苏晚判断这个方法只能延缓裂痕扩大不能治本，完全不碰灵力能撑两到三个月，但以陆远目前处境不现实"
+    },
+    {
+      "id": "E15_02",
+      "chapter": 15,
+      "title": "周衡安带回天机阁阁主三年前封口令情报",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午周衡安从赵铁山渠道拿到天机阁内部情报：阁主三年前九月十七号亲笔签署绝密封口令禁止调查江城灵脉异常数据，违者逐出天机阁；江城灵脉监测网三年内七次异常波动全被标记为设备故障；签发封口令第二天撤走江城所有常驻人员。三年前九月与陆远母亲消失时间吻合，周衡安推测阁主在掩盖与陆远母亲有关的事，陆远判断他们不是不查而是不让别人查"
+    },
+    {
+      "id": "E15_03",
+      "chapter": 15,
+      "title": "大壮外出采购被灵墟残余暗哨尾随",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮出门买方便面和矿泉水，陆远用练气中期灵力感知发现大壮身后三十米有两个练气初期的灵力点在跟踪。陆远判断不是天机阁而是灵墟残余暗哨，决定自己出去接大壮"
+    },
+    {
+      "id": "E15_04",
+      "chapter": 15,
+      "title": "城中村巷道陆远最小灵力制伏两名灵墟暗哨",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在城中村窄巷中精准制伏两名灵墟暗哨：用碎砖声引开灰色卫衣男注意力，掐后颈扣手腕用指尖灵力封锁经脉节点，灵力外放控制在两米内不超过一秒；对黑色夹克矮个子用灵力威压迫使其跪地投降。审讯得知两人是灰隼的人，灰隼在城北有备用点，让他们只定位不正面打。陆远放走两人让他们传话别盯了。三次灵力使用使封印核心又加三道裂痕"
+    },
+    {
+      "id": "E15_05",
+      "chapter": 15,
+      "title": "苏晚发现封印核心深处出现新的分叉线",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傍晚苏晚检查陆远封印状态，发现第九道纹路回路形成后胸口封印核心两侧出现了两条新的微小分叉线。这两条线与九道纹路结构完全不同，更精细更复杂，像是感知和控制的线路而非灵力通道。苏晚分析九道纹路打开第一层封印后露出的不是尽头而是另一道门，封印核心深处还有隐藏结构。医修古籍从未记载过九层封印内部还有隐藏结构，苏晚说第九层打开可能只是打开了一扇大门"
+    },
+    {
+      "id": "E15_06",
+      "chapter": 15,
+      "title": "窗口期第一天结束倒计时剩余一到两天",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傍晚城中村灯光亮起，四人回到安全屋。窗口期两到三天已用掉一天。陆远面对封印核心深处的未知结构说出'那就让它开吧，反正已经回不去了'。大壮问门后面那个东西是好的还是坏的，没有人回答"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E15_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E15_01",
+      "location": "城南安全屋"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E15_02",
+      "location": "城南安全屋"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E15_03",
+      "location": "城南安全屋"
+    },
+    {
+      "event_id": "E15_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E15_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E15_04",
+      "location": "城中村巷道"
+    },
+    {
+      "event_id": "E15_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E15_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E15_05",
+      "location": "城南安全屋"
+    },
+    {
+      "event_id": "E15_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E15_06",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E15_06",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E15_06",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E15_06",
+      "location": "城南安全屋"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "new_habit",
+      "content": "学会将灵力压缩到指尖的精细控制技术，但每次使用胸口封印核心传来刺痛"
+    },
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "面对封印核心深处未知结构选择接受而非抗拒，'那就让它开吧，反正已经回不去了'"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "首次在医修领域表现出困惑，九层封印内部的隐藏结构超出医修世家古籍记载范围"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "陆远用练气中期灵力感知覆盖安全屋周围两百米，能感知城中村每条巷子的人数和狗叫声，灵力感知像手机信号一样覆盖城市"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "天机阁阁主三年前亲笔封口令与陆远母亲消失时间吻合，阁主可能知道封印血脉的真相",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "天机阁阁主亲笔签署封口令禁止调查江城灵脉异常，撤走驻点，三年把异常数据标记为设备故障",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "苏晚教灵力精细控制延缓裂痕但只能撑两三个月，陆远一天内用三次灵力封印核心加三道裂痕",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST12_02",
+      "action": "advanced",
+      "evidence": "第九道纹路回路形成后封印核心内部结构变化，出现两条新的分叉线，封印核心主动打开而非被动崩解的确认",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "窗口期第一天已用掉，剩余一到两天",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST08_01",
+      "action": "advanced",
+      "evidence": "陆远母亲三年前九月消失，天机阁阁主同期下达封口令，时间点精确吻合",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST12_01",
+      "action": "advanced",
+      "evidence": "灰隼在城北有备用点，派两名暗哨盯城南进行定位，等上面派人来处理",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "天机阁阁主三年前的封口令——与陆远母亲消失时间精确吻合（三年前九月），阁主亲笔签署禁止调查江城灵脉异常，次日撤走江城驻点。阁主知道封印血脉的真相且在掩盖，可能与陆远母亲的死有直接关系",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E15_02"
+    },
+    {
+      "content": "封印核心深处的隐藏结构——九层封印只是外壳，第九层打开后封印核心两侧出现两条新的精细分叉线，性质与九道纹路完全不同像是感知和控制的线路。第九层打开可能只是打开了一扇大门，真正被封的东西还在更深处",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E15_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E15_02",
+      "to": "E15_03",
+      "type": "consequence",
+      "detail": "情报讨论后大壮出门采购，灵墟暗哨趁机跟踪"
+    },
+    {
+      "from": "E15_03",
+      "to": "E15_04",
+      "type": "reaction",
+      "detail": "陆远感知到大壮被跟踪后主动出击在巷道制伏暗哨"
+    },
+    {
+      "from": "E15_04",
+      "to": "E15_05",
+      "type": "consequence",
+      "detail": "陆远外出三次灵力使用导致封印核心受冲击，苏晚检查发现新的分叉线"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E15_02",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "天机阁阁主封口令时间与陆远母亲消失吻合，确认血脉封印与天机阁高层有关"
+    },
+    {
+      "event_id": "E15_02",
+      "thread_id": "ST02",
+      "type": "confirmation",
+      "detail": "阁主亲笔封口令+撤走驻点+设备故障归档确认天机阁在主动掩盖江城异常"
+    },
+    {
+      "event_id": "E15_02",
+      "thread_id": "ST08_01",
+      "type": "clue",
+      "detail": "三年前九月时间点精确吻合，阁主可能直接参与了陆远母亲的事"
+    },
+    {
+      "event_id": "E15_04",
+      "thread_id": "ST12_01",
+      "type": "confirmation",
+      "detail": "灰隼确实没跑远在城北有备用点，继续派人盯梢等上面增援"
+    },
+    {
+      "event_id": "E15_05",
+      "thread_id": "ST12_02",
+      "type": "clue",
+      "detail": "第九道纹路回路形成后封印核心内部出现隐藏结构，封印核心主动打开的进一步证据"
+    },
+    {
+      "event_id": "E15_01",
+      "thread_id": "ST14_01",
+      "type": "clue",
+      "detail": "灵力精细控制训练但仍无法避免封印核心刺痛，力量代价矛盾持续加深"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "控制封印核心裂痕扩大速度学会灵力精细使用",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "陆远",
+      "goal": "查清天机阁阁主与母亲消失的关系",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "帮助陆远延缓封印裂痕扩大",
+      "type": "protect",
+      "status": "advanced"
+    }
+  ],
+  "notes": "陆远练气中期灵力感知范围约两百米；苏晚灵力压缩到指尖显示为淡绿色光点陆远为蓝色；灵墟暗哨携带灵力针小型灵器；封印核心两侧的分叉线是新的纹路结构出现于第九道纹路回路形成后；灰隼在城北有备用据点"
+}

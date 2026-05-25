@@ -1,0 +1,178 @@
+# Persisted: 2026-05-21 17:08:40
+{
+  "events": [
+    {
+      "id": "E96_01",
+      "chapter": 96,
+      "title": "清晨起床取餐送外卖",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "五点五十闹钟响。陆远起床刷牙洗脸。背上黄色外卖箱骑车到东湖路老张面馆取牛肉面加葱油饼。封印核心平稳。母亲很安静没说话。"
+    },
+    {
+      "id": "E96_02",
+      "chapter": 96,
+      "title": "经过护城河栏杆短暂停留回忆",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沿江路红灯停了一下。栏杆还是那道栏杆。他坐过这里。回忆雨后傍晚霓虹灯倒映河面。现在只有灰白天光。封印核心跳了一下。母亲问怎么停了，说红灯。绿灯后骑走。"
+    },
+    {
+      "id": "E96_03",
+      "chapter": 96,
+      "title": "经过城北废弃厂房回忆三方势力对峙",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城北废弃厂房外墙爬满爬山虎。三个月前灵墟接应据点天机阁堵外面地脉堂在东边三方对峙。现在什么都没有了。野猫钻进铁门缝。没有灵力波动没有灰色袍子。只有爬山虎和野猫。"
+    },
+    {
+      "id": "E96_04",
+      "chapter": 96,
+      "title": "经过中医院没停",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "六点二十经过中医院。苏晚还没上班。门诊大楼玻璃幕墙倒映晨光。救护车停在急诊门口。他看了一眼没停。"
+    },
+    {
+      "id": "E96_05",
+      "chapter": 96,
+      "title": "中山路写字楼送第一单外卖",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "送到中山路写字楼。穿西装中年男人接过打包盒说谢谢。大堂白色大理石地面阳光照进来。没有人知道他胸口跳着什么。没有人知道城市地下有暗河。写字楼就是写字楼。"
+    },
+    {
+      "id": "E96_06",
+      "chapter": 96,
+      "title": "接第二单继续送外卖融入早高峰",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "弹出第二单中山路到火车站包子豆浆。接单骑车融入早高峰。黄色外卖箱黄色头盔混在一群骑电动车的人里。没有不同。他就是个送外卖的。江城五月天亮得很早。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E96_01",
+      "character": "陆远",
+      "location": "城南旧居出租屋"
+    },
+    {
+      "event_id": "E96_01",
+      "character": "陆远",
+      "location": "老张面馆"
+    },
+    {
+      "event_id": "E96_01",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E96_02",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E96_02",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E96_03",
+      "character": "陆远",
+      "location": "城北废弃厂房"
+    },
+    {
+      "event_id": "E96_04",
+      "character": "陆远",
+      "location": "中医院"
+    },
+    {
+      "event_id": "E96_05",
+      "character": "陆远",
+      "location": "中山路写字楼"
+    },
+    {
+      "event_id": "E96_06",
+      "character": "陆远",
+      "location": "中山路"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "用送外卖路线穿越全部战斗记忆城市恢复普通。外卖箱内层用灵力编织但从外看不出。接受自己就是个送外卖的身份"
+    },
+    {
+      "name": "陆承",
+      "field": "new_detail",
+      "content": "封印核心里的意识可能也需要休息。清晨时很安静不说话"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "老张面馆",
+      "type": "餐饮",
+      "description": "东湖路和解放路交叉口的小面馆，门脸很小，蒸笼冒白烟"
+    },
+    {
+      "name": "中山路写字楼",
+      "type": "商业",
+      "description": "中山路二十几层写字楼，玻璃幕墙旋转门白色大理石大堂"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "黄色外卖箱磕了几道痕漆掉了但结构结实，内层用灵力编织从外看不出"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "城北废弃厂房没有灵力波动了，只有爬山虎和野猫"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST44_01",
+      "action": "advanced",
+      "evidence": "城北废弃厂房恢复平静爬山虎覆盖外墙野猫出没，三方势力痕迹完全消失",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "写字楼大堂没有人知道修真者的存在，城市回归普通",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [],
+  "evidence_links": [
+    {
+      "event_id": "E96_03",
+      "thread_id": "ST44_01",
+      "type": "confirmation",
+      "detail": "城北三方对峙地点完全恢复平静，修真痕迹消失"
+    },
+    {
+      "event_id": "E96_05",
+      "thread_id": "ST02_01",
+      "type": "confirmation",
+      "detail": "写字楼里没有人知道修真世界的存在，隐与显主题落地"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "继续送外卖过普通生活",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "Ch96是送外卖穿越记忆的章节。凡与仙主题终极表达：在每个战斗过的地方送过外卖，城市不记得，只有他记得。外卖箱内层灵力编织从外看不出。清晨五点五十到六点四十的时间线。"
+}

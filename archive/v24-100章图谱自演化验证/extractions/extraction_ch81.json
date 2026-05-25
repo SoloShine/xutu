@@ -1,0 +1,250 @@
+# Persisted: 2026-05-21 16:13:59
+{
+  "events": [
+    {
+      "id": "E81_01",
+      "chapter": 81,
+      "title": "陆远大壮到达城南旧居街口与老周苏晚汇合苏晚发现铜壳屏蔽",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远和大壮到达城南老城区巷口与老周苏晚汇合。苏晚灵脉读脉发现引流管道外面裹着铜质屏蔽层是母亲三十年前加的刻了频率共振纹路和封印核心同一套体系。老周分析归墟在铜壳外面覆盖了暗红灵力在监控等待。地脉堂四人守着据点两筑基初在巷口两练气巅峰在屋里。"
+    },
+    {
+      "id": "E81_02",
+      "chapter": 81,
+      "title": "老周制定共振拔管计划同步七次二十八秒",
+      "type": "decision",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周分析陆远不需要打进去只需要趴在地面用封印核心和铜壳频率同步管道会自己弹出。同步七次每次四秒共二十八秒但第三次同步时地脉堂会发现只有十二秒余量。苏晚警告同步时碰到归墟暗红灵力标记归墟会知道。老周说让他知道也好。陆远决定动手。"
+    },
+    {
+      "id": "E81_03",
+      "chapter": 81,
+      "title": "陆远潜入后院七次同步封印核心打开铜壳拔掉引流管道",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远翻入旧居后院趴在地面按住老砖封印核心调整到每四秒与地下嗡鸣同步。第四次同步时碰到归墟暗红灵力标记封印核心共振半秒归墟感知到了。第五次管道松动第六次管道完全弹出灵力被灵脉网络吸收。第七次地面裂开露出铜锁。东边节点解锁玉牌东边红点暗了。"
+    },
+    {
+      "id": "E81_04",
+      "chapter": 81,
+      "title": "铜锁传出母亲声音'回来'封印核心安静",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "地面裂缝中露出拳头大小铜锁表面绿锈锁眼旁刻Y字纹路与封印核心一致。陆远握住铜锁传来母亲的声音很轻两个字'回来'。铜锁温度与掌心一致。封印核心不再跳动安静下来。"
+    },
+    {
+      "id": "E81_05",
+      "chapter": 81,
+      "title": "苏晚确认铜锁内含钥匙灵力结构城北冲突结束",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚远程分析铜锁灵力属性与封印核心完全一致里面还含另一种灵力结构像是钥匙与母亲三十年前频率共振锁配套。地脉堂松鹤巷据点屏蔽阵法失效暴露在监测网。老周发现城北天机阁灵墟冲突突然停止不管谁赢了下一站就是城南。最后一个红点在陆远脚下门还没开。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E81_01",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_01",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_01",
+      "character": "老周",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_01",
+      "character": "大壮",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_02",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_02",
+      "character": "老周",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_02",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_03",
+      "character": "陆远",
+      "location": "城南旧居后院"
+    },
+    {
+      "event_id": "E81_04",
+      "character": "陆远",
+      "location": "城南旧居后院"
+    },
+    {
+      "event_id": "E81_05",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_05",
+      "character": "老周",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E81_05",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "获得铜锁钥匙含母亲声音'回来'和灵力结构钥匙第五条路最后一道门在脚下"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力完全恢复灵脉读脉能力正常远程监控精准定位引流管道和铜锁属性"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城南旧居",
+      "type": "residence",
+      "description": "城南老城区红砖墙黑瓦顶三十年前陆远母亲住过的房子门窗封死地底有灵脉节点引流管道和铜锁"
+    },
+    {
+      "name": "城南旧居后院",
+      "type": "location",
+      "description": "三平方米杂草齐膝墙角死石榴树老砖地面砖缝青苔地下两米有引流管道铜壳屏蔽和铜锁"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "封印核心频率调整与地下铜壳同步七次每次四秒归墟暗红灵力标记被触碰后共振"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST79_02",
+      "action": "resolved",
+      "evidence": "陆远成功拔掉地脉堂据点引流管道东边节点解锁玉牌红点暗了母亲引导布局完成",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST80_01",
+      "action": "advanced",
+      "evidence": "归墟暗红灵力覆盖在铜壳上同步时被触碰归墟感知到陆远在城南开管道",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST50_01",
+      "action": "advanced",
+      "evidence": "铜锁传出母亲声音'回来'铜锁含灵力结构钥匙指向母亲所在位置",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_01",
+      "action": "advanced",
+      "evidence": "地脉堂四人守城南据点被拔管后往东逃跑据点屏蔽失效暴露在监测网",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "resolved",
+      "evidence": "城北天机阁与灵墟冲突结束窗口期彻底结束不管谁赢下一站城南",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "铜锁内钥匙与母亲声音'回来'——铜锁灵力结构与封印核心一致含频率共振锁配套钥匙和母亲三十年前录下的声音。第五条路最后一道门需要这把钥匙打开。门后面是什么？母亲说'回来'是指回到哪里？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E81_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E81_01",
+      "to": "E81_02",
+      "type": "decision",
+      "detail": "苏晚发现铜壳是母亲做的决定用共振拔管"
+    },
+    {
+      "from": "E81_02",
+      "to": "E81_03",
+      "type": "consequence",
+      "detail": "执行共振拔管计划七次同步打开铜壳"
+    },
+    {
+      "from": "E81_03",
+      "to": "E81_04",
+      "type": "revelation",
+      "detail": "管道拔出后地面裂开露出铜锁传出母亲声音"
+    },
+    {
+      "from": "E81_04",
+      "to": "E81_05",
+      "type": "investigation",
+      "detail": "苏晚分析铜锁属性发现钥匙结构老周感知城北冲突结束"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E81_01",
+      "thread_id": "ST79_02",
+      "type": "confirmation",
+      "detail": "苏晚确认铜壳是母亲三十年前加的引流管道位置是母亲引导的"
+    },
+    {
+      "event_id": "E81_03",
+      "thread_id": "ST80_01",
+      "type": "clue",
+      "detail": "归墟暗红灵力标记在铜壳上被触碰归墟感知到陆远位置"
+    },
+    {
+      "event_id": "E81_04",
+      "thread_id": "ST50_01",
+      "type": "clue",
+      "detail": "铜锁传出母亲声音指向母亲可能的位置"
+    },
+    {
+      "event_id": "E81_05",
+      "thread_id": "ST14_02",
+      "type": "confirmation",
+      "detail": "城北冲突结束天机阁灵墟胜者将转向城南"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "打开第五条路最后一道门找到母亲",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "归墟",
+      "goal": "获取城南旧居地下的东西",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "铜锁Y字纹路与封印核心一致。母亲声音'回来'与ST69_01信封内容和ST20_02第二层文字'等你回来'呼应。地脉堂在江城势力瓦解。城北冲突结束标志全面收束开始。"
+}

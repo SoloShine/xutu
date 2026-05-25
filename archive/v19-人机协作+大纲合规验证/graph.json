@@ -1,0 +1,1894 @@
+{
+  "characters": {
+    "老陈": {
+      "role": "主角",
+      "personality": "退休刑警，沉默寡言，观察力敏锐，有强迫症般的执着",
+      "name": "老陈"
+    },
+    "小何": {
+      "role": "配角",
+      "personality": "镇上唯一的中波维修工，话多但心细",
+      "name": "小何"
+    },
+    "宋姐": {
+      "role": "配角",
+      "personality": "电台前播音员，神情恍惚，似乎隐藏着什么",
+      "name": "宋姐"
+    }
+  },
+  "locations": {
+    "废弃电台": {
+      "type": "废墟",
+      "description": "铁东区山顶的旧中波发射站，1978年停用，铁塔仍在",
+      "name": "废弃电台"
+    },
+    "老陈家": {
+      "type": "住宅",
+      "description": "山脚下的独栋平房，窗户正对电台铁塔",
+      "name": "老陈家"
+    }
+  },
+  "events": {
+    "E1_01": {
+      "title": "观察铁塔",
+      "detail": "老陈从窗口观察山顶废弃中波发射塔，四点十七分塔尖亮一下",
+      "chapter": 1,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E1_01"
+    },
+    "E1_02": {
+      "title": "上山进入电台",
+      "detail": "老陈穿过铁丝网进入废弃发射站走廊，发现地面有新鲜水渍",
+      "chapter": 1,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E1_02"
+    },
+    "E1_03": {
+      "title": "听到杂音",
+      "detail": "机房频率刻度盘指针在550kHz颤动，调大音量后听到有节奏的低沉嗡鸣，偶尔跳出高频音",
+      "chapter": 1,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E1_03"
+    },
+    "E1_04": {
+      "title": "发现记录簿",
+      "detail": "搬开铁柜发现禁区小门，储物间内找到深绿色封面笔记本，封面写着零号机",
+      "chapter": 1,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E1_04"
+    },
+    "E1_05": {
+      "title": "发现禁区",
+      "detail": "铁柜后有红漆写的禁区小门，内部有铁皮箱和笔记本",
+      "chapter": 1,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E1_05"
+    },
+    "E2_01": {
+      "title": "找小何帮忙",
+      "detail": "老陈把零号机记录簿带给小何看，小何立刻同意上山",
+      "chapter": 2,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E2_01"
+    },
+    "E2_02": {
+      "title": "小何闻到松香",
+      "detail": "小何进入机房后闻到松香味道，判断最近有人在内焊接",
+      "chapter": 2,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E2_02"
+    },
+    "E2_03": {
+      "title": "小何检查设备",
+      "detail": "小何拆开设备面板，发现铭牌上写着零号信号捕获装置，1976年制造",
+      "chapter": 2,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E2_03"
+    },
+    "E2_04": {
+      "title": "发现零号代号",
+      "detail": "铭牌显示设备名称为零号信号捕获装置，用途为异常信号捕获，是接收器而非发射器",
+      "chapter": 2,
+      "type": "revelation",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E2_04"
+    },
+    "E2_05": {
+      "title": "杂音停止",
+      "detail": "铭牌被发现后设备嗡鸣突然停止，刻度盘指针归零",
+      "chapter": 2,
+      "type": "turning",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E2_05"
+    },
+    "E3_01": {
+      "title": "找到宋姐",
+      "detail": "老陈找到广播巷宋姐家，提到零号机后宋姐关门拒绝",
+      "chapter": 3,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E3_01"
+    },
+    "E3_02": {
+      "title": "宋姐拒绝回答",
+      "detail": "宋姐关上门，碗碟碎裂声，随后换衣服出来否认一切",
+      "chapter": 3,
+      "type": "confrontation",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E3_02"
+    },
+    "E3_03": {
+      "title": "闻到焦味",
+      "detail": "老陈站在巷子里闻到烧焦塑料的干燥味道，猫竖耳朝向山顶",
+      "chapter": 3,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E3_03"
+    },
+    "E3_04": {
+      "title": "宋姐暗中观察",
+      "detail": "老陈离开时看到宋姐家后窗窗帘动了，她还在看着",
+      "chapter": 3,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E3_04"
+    },
+    "E4_01": {
+      "title": "夜间潜入电台",
+      "detail": "老陈约小何十一点夜间上山，发现铁门被人从内打开，铁丝网上挂着宋姐围裙的布条",
+      "chapter": 4,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E4_01"
+    },
+    "E4_02": {
+      "title": "发现设备自行启动",
+      "detail": "机房内控制台全部亮起绿色荧光，550kHz刻度盘自行运转，内部信号驱动",
+      "chapter": 4,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E4_02"
+    },
+    "E4_03": {
+      "title": "刻度盘显示异常数字",
+      "detail": "指针在550kHz剧烈颤抖后跳动，显示窗出现规律数字组合1704/0921/0315，像倒计时",
+      "chapter": 4,
+      "type": "revelation",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E4_03"
+    },
+    "E4_04": {
+      "title": "禁区有人来过",
+      "detail": "禁区小门开着，铁皮箱被搬动，旁边有新的手印",
+      "chapter": 4,
+      "type": "discovery",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E4_04"
+    },
+    "E4_05": {
+      "title": "设备突然熄灭",
+      "detail": "刻度盘停止，所有仪表同时熄灭，最后的数字定格",
+      "chapter": 4,
+      "type": "turning",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E4_05"
+    },
+    "E5_01": {
+      "title": "宋姐深夜来访",
+      "detail": "宋姐凌晨一点敲老陈门，说它又响了，催促老陈去电台",
+      "chapter": 5,
+      "type": "turning",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E5_01"
+    },
+    "E5_02": {
+      "title": "宋姐透露信号来源",
+      "detail": "宋姐透露白大褂说过信号是从后面来的，不是回声不是延迟，暗示来自未来",
+      "chapter": 5,
+      "type": "revelation",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E5_02"
+    },
+    "E5_03": {
+      "title": "夜间重返电台",
+      "detail": "宋姐领路夜间上山上电台，设备荧光更亮，声音从嗡鸣变为噼啪声",
+      "chapter": 5,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E5_03"
+    },
+    "E5_04": {
+      "title": "设备播放人声碎片",
+      "detail": "设备喇叭播出断续人声：三号库...白大褂...他们说这是演习...宋姐认出是1978年死去的老周的声音",
+      "chapter": 5,
+      "type": "climax",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E5_04"
+    },
+    "E5_05": {
+      "title": "数字定格0315",
+      "detail": "设备播放后人声消失，最后数字定格在0315",
+      "chapter": 5,
+      "type": "turning",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E5_05"
+    },
+    "E6_01": {
+      "title": "宋姐讲述零号真相",
+      "detail": "宋姐讲述老周是零号项目工程师，设备第一次开机听到自己死亡后心脏骤停，白大褂1978年听到0315日期开始做预警",
+      "chapter": 6,
+      "type": "revelation",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E6_01"
+    },
+    "E6_02": {
+      "title": "得知零号接收未来",
+      "detail": "零号设备一直在接收还没发生的事，老周的声音、所有人的声音都能收到",
+      "chapter": 6,
+      "type": "revelation",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E6_02"
+    },
+    "E6_03": {
+      "title": "老陈面对选择",
+      "detail": "老陈站在控制台前考虑是否转旋钮听取未来，最终选择关灯离开",
+      "chapter": 6,
+      "type": "turning",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E6_03"
+    },
+    "E6_04": {
+      "title": "铁塔最后发光",
+      "detail": "铁塔顶端亮了五秒白光，像眼睛完全睁开，然后一切归于黑暗",
+      "chapter": 6,
+      "type": "climax",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E6_04"
+    },
+    "E6_05": {
+      "title": "0315消失设备继续",
+      "detail": "老陈下山后设备刻度盘上0315终于消失，但显示窗里有一个持续不闪烁的光点，设备继续在听",
+      "chapter": 6,
+      "type": "daily",
+      "is_gap": false,
+      "gap_level": 0,
+      "id": "E6_05"
+    }
+  },
+  "themes": {
+    "信号与沉默": {
+      "description": "被压抑的声音终将找到出口，但真相是否值得付出代价",
+      "name": "信号与沉默"
+    }
+  },
+  "style_guides": {
+    "sensory_first": {
+      "rule": "感官驱动叙事：用声音、温度、触感推进场景，避免抽象心理描写。本章必须出现至少3种不同感官体验",
+      "id": "sensory_first"
+    },
+    "no_inner_monologue": {
+      "rule": "禁止内心独白标记：不使用\"他想\"\"她觉得\"\"心中暗想\"等词，用动作和环境细节暗示内心状态",
+      "id": "no_inner_monologue"
+    },
+    "show_dont_tell": {
+      "rule": "展示而非宣告：不说\"他做了决定\"，而是描写他站起来走向门口的动作。不说\"气氛紧张\"，而是写\"茶杯里的水停止了震动\"",
+      "id": "show_dont_tell"
+    },
+    "dash_restriction": {
+      "rule": "破折号限制：整章使用破折号不超过2次",
+      "id": "dash_restriction"
+    },
+    "anti_pattern": {
+      "rule": "禁止\"不是X是Y\"句式（如\"不是恐惧是愤怒\"），每章最多出现0次",
+      "id": "anti_pattern"
+    },
+    "rhythm_variation": {
+      "rule": "节奏变化：场景间用短句过渡（3-5字），场景内用中长句推进，结尾段落不超过50字",
+      "id": "rhythm_variation"
+    }
+  },
+  "motifs": {
+    "中波杂音": {
+      "meaning": "来自过去/未来的信号，象征被忽视的真相",
+      "name": "中波杂音"
+    }
+  },
+  "chapter_arcs": {
+    "1": {
+      "purpose": "建立悬念：老陈在废弃电台听到杂音，发现记录簿",
+      "scenes": "老陈家窗前观察铁塔 → 上山进入废弃电台 → 机房内听到中波杂音 → 角落发现记录簿",
+      "ending": "老陈的手指停在记录簿的封面，灰尘簌簌落在他掌心，露出三个手写的字：零号机",
+      "gap_note": "无间隙",
+      "thread_plan": "{\"to_plant\": [\"零号身份\", \"杂音来源\"], \"to_advance\": [], \"to_resolve\": []}",
+      "reasoning": "首章需建立核心悬念和感官基调，从老陈的日常切入电台",
+      "rhythm": "ascending",
+      "chapter": 1
+    },
+    "2": {
+      "purpose": "推进调查：小何帮忙检查设备，发现零号代号",
+      "scenes": "老陈找小何帮忙 → 二人上山检查机房 → 小何拆开设备面板发现铭牌 → 铭牌上零号代号与异常信号捕获模式",
+      "ending": "铭牌边缘的锈迹被小何的手指蹭掉，露出最后一行小字：接收模式——异常信号捕获",
+      "gap_note": "无间隙",
+      "thread_plan": "{\"to_plant\": [\"宋姐秘密\"], \"to_advance\": [\"ST01_01\"], \"to_resolve\": [\"ST01_02\"]}",
+      "reasoning": "承接ch1记录簿发现，引入小何的技术能力推进杂音来源调查",
+      "rhythm": "tight",
+      "chapter": 2
+    },
+    "3": {
+      "purpose": "意外转折：老陈找到宋姐，得知零号是设备代号",
+      "scenes": "老陈打听宋姐住处 → 找到宋姐家 → 宋姐看到铭牌拓片的反应 → 宋姐含糊透露零号的真正性质",
+      "ending": "宋姐的目光从茶杯移到窗外，铁塔在暮色中变成一道黑色的竖线，她的嘴唇动了动：你以为零号只是个设备？",
+      "gap_note": "无间隙",
+      "thread_plan": "{\"to_plant\": [], \"to_advance\": [\"ST02_01\"], \"to_resolve\": [\"ST01_01\"]}",
+      "reasoning": "承接ch2铭牌发现，找宋姐确认零号真相，同时埋下更深的疑点",
+      "rhythm": "ascending",
+      "chapter": 3
+    },
+    "4": {
+      "purpose": "深入探索：老陈和小何夜间重返电台，发现零号设备自行启动",
+      "scenes": "老陈决定夜间重返 → 约小何上山 → 机房内发现设备自行启动 → 刻度盘显示异常数字",
+      "ending": "小何的手电照在刻度盘上，指针在550kHz的位置剧烈颤抖，然后跳到一个不存在的频率——显示窗里出现了一串数字，不是年份，不是坐标，像是什么东西的倒计时",
+      "gap_note": "无间隙",
+      "thread_plan": "{\"to_plant\": [\"灾难预警\"], \"to_advance\": [\"ST02_01\"], \"to_resolve\": []}",
+      "reasoning": "ch3宋姐拒绝后老陈决定自己调查，夜间重返发现设备异变",
+      "rhythm": "ascending",
+      "chapter": 4
+    },
+    "5": {
+      "purpose": "危机升级：宋姐主动找老陈，设备播放出断续的人声碎片",
+      "scenes": "宋姐深夜来访 → 宋姐透露部分真相 → 两人赶往电台 → 设备播放人声碎片",
+      "ending": "设备的喇叭里挤出一个声音，不是杂音，不是嗡鸣，是人的声音，断断续续，像被水淹过的呼救：...三号库...白大褂...他们说这是演习...",
+      "gap_note": "无间隙",
+      "thread_plan": "{\"to_plant\": [\"选择困境\"], \"to_advance\": [\"ST02_01\"], \"to_resolve\": []}",
+      "reasoning": "ch4数字倒计时后宋姐被迫行动，设备播放语音碎片升级危机",
+      "rhythm": "ascending",
+      "chapter": 5
+    },
+    "6": {
+      "purpose": "结局：宋姐说出零号的真相，老陈在公开与沉默间做出选择",
+      "scenes": "宋姐讲述老周之死和零号真相 → 老陈独自面对设备 → 做出选择 → 铁塔最后发光",
+      "ending": "铁塔顶端亮了一下，不是四点十七分的规律闪光，是一种更长更亮的白光，持续了整整五秒，像一只眼睛终于完全睁开",
+      "gap_note": "无间隙",
+      "thread_plan": "{\"to_plant\": [], \"to_advance\": [], \"to_resolve\": [\"ST01_01\", \"ST02_01\"]}",
+      "reasoning": "ch5人声碎片后真相完全揭露，老陈面临最终抉择",
+      "rhythm": "descending",
+      "chapter": 6
+    }
+  },
+  "suspense_threads": {
+    "ST01_01": {
+      "content": "零号身份：零号机是什么？是人还是设备代号？",
+      "planted_chapter": 1,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "resolved",
+      "id": "ST01_01",
+      "resolved_chapter": 6
+    },
+    "ST01_02": {
+      "content": "杂音来源：550kHz的嗡鸣从何而来？",
+      "planted_chapter": 1,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "resolved",
+      "id": "ST01_02",
+      "resolved_chapter": 2
+    },
+    "ST02_01": {
+      "content": "宋姐秘密：宋姐作为前播音员为何从未提及零号设备？她知道什么？",
+      "planted_chapter": 2,
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "status": "resolved",
+      "id": "ST02_01",
+      "resolved_chapter": 5
+    },
+    "ST04_01": {
+      "content": "灾难预警：刻度盘上的数字组合1704/0921/0315是什么含义？是倒计时还是坐标？",
+      "planted_chapter": 4,
+      "importance": "high",
+      "thread_type": "mystery",
+      "status": "resolved",
+      "id": "ST04_01",
+      "resolved_chapter": 6
+    },
+    "ST05_01": {
+      "content": "选择困境：老陈面临选择——公开来自未来的信号还是像白大褂一样封锁",
+      "planted_chapter": 5,
+      "importance": "high",
+      "thread_type": "moral_dilemma",
+      "status": "planted",
+      "id": "ST05_01"
+    }
+  },
+  "outline_entries": {
+    "1": {
+      "purpose": "建立悬念：老陈在废弃电台听到奇怪的广播杂音，发现一本记录簿",
+      "key_events": "听到杂音,发现记录簿",
+      "threads_to_plant": "零号身份,杂音来源",
+      "structure_hint": "linear",
+      "chapter": 1
+    },
+    "2": {
+      "purpose": "推进调查：小何帮忙检查电台设备，在设备铭牌上发现\"零号\"代号",
+      "key_events": "小何检查设备,发现零号代号",
+      "threads_to_plant": "宋姐秘密",
+      "threads_to_resolve": "杂音来源",
+      "structure_hint": "linear",
+      "chapter": 2
+    },
+    "3": {
+      "purpose": "意外转折：老陈找到宋姐但被拒绝，宋姐的反应暗示她隐瞒着什么",
+      "key_events": "找到宋姐,宋姐拒绝回答",
+      "threads_to_resolve": "零号身份",
+      "structure_hint": "linear",
+      "compliance": "overridden",
+      "revision_reason": "作者编辑了ch3：宋姐拒绝透露任何信息而非讲述零号历史，大纲需要匹配新剧情",
+      "revised_chapter": 3,
+      "chapter": 3
+    },
+    "4": {
+      "purpose": "深入探索：老陈和小何夜间重返电台，发现零号设备自行启动正在接收信号",
+      "key_events": "老陈和小何夜间潜入电台,发现设备自行启动",
+      "threads_to_plant": "灾难预警",
+      "structure_hint": "linear",
+      "compliance": "overridden",
+      "revision_reason": "ch3编辑后宋姐拒绝透露信息，零号身份悬念线未解决，ch4大纲需要重新设计",
+      "revised_chapter": 3,
+      "chapter": 4
+    },
+    "5": {
+      "purpose": "危机升级：宋姐主动找老陈，设备播放出断续的人声碎片",
+      "key_events": "宋姐突然出现,设备播放语音碎片",
+      "threads_to_plant": "选择困境",
+      "threads_to_resolve": "宋姐秘密",
+      "structure_hint": "linear",
+      "compliance": "overridden",
+      "revision_reason": "ch3宋姐拒绝后，ch5改为宋姐主动出现，与原大纲衔接",
+      "revised_chapter": 3,
+      "chapter": 5
+    },
+    "6": {
+      "purpose": "结局：宋姐终于说出零号的真相，老陈在公开与沉默间做出选择",
+      "key_events": "宋姐说出真相,老陈做出选择",
+      "threads_to_resolve": "零号身份,宋姐秘密,选择困境",
+      "structure_hint": "linear",
+      "compliance": "overridden",
+      "revision_reason": "真相揭露推迟到ch6，与宋姐主动出现的ch5衔接",
+      "revised_chapter": 3,
+      "chapter": 6
+    }
+  },
+  "time_periods": {
+    "调查期": {
+      "chapter_start": 1,
+      "chapter_end": 6,
+      "years": "2024深秋",
+      "label": "调查期"
+    }
+  },
+  "relations": [
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "老陈家"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02",
+      "causal_type": "motivation",
+      "detail": "长期观察铁塔引发上山"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_03",
+      "causal_type": "consequence",
+      "detail": "进入机房发现异响"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_05",
+      "causal_type": "investigation",
+      "detail": "追踪声音来源发现禁区"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_05",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_04",
+      "causal_type": "consequence",
+      "detail": "禁区储物间内找到记录簿"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "auto",
+      "evidence_type": "direct",
+      "detail": "杂音首次出现"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_04",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "auto",
+      "evidence_type": "clue",
+      "detail": "零号机记录簿"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "老陈家"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_02",
+      "causal_type": "consequence",
+      "detail": "带小何进入机房"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_03",
+      "causal_type": "investigation",
+      "detail": "松香味道引发检查"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_04",
+      "causal_type": "revelation",
+      "detail": "拆面板发现铭牌"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_04",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E2_05",
+      "causal_type": "consequence",
+      "detail": "发现真相后设备停止"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E2_03",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "auto",
+      "evidence_type": "direct",
+      "detail": "铭牌证实零号是设备代号"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_02",
+      "causal_type": "confrontation",
+      "detail": "零号机触发宋姐激烈反应"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_03",
+      "causal_type": "atmosphere",
+      "detail": "拒绝后气氛变化"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E3_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E3_04",
+      "causal_type": "consequence",
+      "detail": "离开时发现被监视"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "小何"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_02",
+      "causal_type": "consequence",
+      "detail": "夜间进入发现设备已启动"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_03",
+      "causal_type": "revelation",
+      "detail": "设备运转显示异常数字"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_05",
+      "causal_type": "turning",
+      "detail": "数字显示后设备突然停止"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_04",
+      "causal_type": "parallel",
+      "detail": "同时发现禁区被动过"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "EVIDENCES",
+      "tl": "SuspenseThread",
+      "tk": "id",
+      "tv": "auto",
+      "evidence_type": "indirect",
+      "detail": "宋姐围裙布条暗示她来过"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "老陈家"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "老陈家"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_02",
+      "causal_type": "consequence",
+      "detail": "宋姐主动找老陈透露真相"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_03",
+      "causal_type": "motivation",
+      "detail": "得知信号来源后立即上山"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_04",
+      "causal_type": "revelation",
+      "detail": "设备播放死去之人的声音"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E5_04",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E5_05",
+      "causal_type": "consequence",
+      "detail": "声音结束后数字定格"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "HAPPENS_IN",
+      "tl": "TimePeriod",
+      "tk": "label",
+      "tv": "调查期"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "宋姐"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "老陈"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "废弃电台"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_05"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_01",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_02",
+      "causal_type": "revelation",
+      "detail": "老周之死引出零号接收未来的真相"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_02",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_03",
+      "causal_type": "dilemma",
+      "detail": "得知真相后面临选择"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_03",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_04",
+      "causal_type": "consequence",
+      "detail": "选择离开触发铁塔最后发光"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E6_04",
+      "rt": "CAUSES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E6_05",
+      "causal_type": "epilogue",
+      "detail": "发光后设备持续运行"
+    }
+  ]
+}

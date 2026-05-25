@@ -1,0 +1,361 @@
+# Persisted: 2026-05-21 06:55:23
+{
+  "events": [
+    {
+      "id": "E8_01",
+      "chapter": 8,
+      "title": "老城区巷道狂奔周衡安指挥逃生路线",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "筑基期修士从北面高速逼近，压迫感如无形之墙。周衡安带伤指挥路线，利用老城区灵脉混乱、巷道密集的特点干扰筑基期修士的灵力锁定。三人搀扶狂奔，大壮扛着周衡安大半体重"
+    },
+    {
+      "id": "E8_02",
+      "chapter": 8,
+      "title": "修车铺窨井盖潜入地下排水通道",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安指引三人从修车铺后面的窨井盖钻入地下排水通道躲避追击。管道内淤泥味、渗水、污泥，陆远手背纹路在黑暗中发淡蓝光"
+    },
+    {
+      "id": "E8_03",
+      "chapter": 8,
+      "title": "排水通道内周衡安揭示陆远母亲身世和封印真相",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安在管道中揭示：陆远母亲是上界修真者，在凡间躲了二十年嫁给陆远父亲。天机阁找到她时陆远才三岁，体内已有灵力波动。她用自己的修为、记忆和一部分灵魂封住陆远血脉，封印成型时灵魂碎裂化为封印一部分。陆远父亲是普通人，到死不知真相。周衡安听了陆远母亲遗言十六年不接近陆远，直到东湖路觉醒才现身"
+    },
+    {
+      "id": "E8_04",
+      "chapter": 8,
+      "title": "排水通道出口遭遇筑基期修士沈轻舟",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈轻舟在管道出口堵住三人，天机阁内门弟子筑基初期。他看过陆远灵力外放记录，认定陆远不是觉醒期水平。要求陆远跟他走见阁主，被拒绝后食指释放白光攻击"
+    },
+    {
+      "id": "E8_05",
+      "chapter": 8,
+      "title": "大壮挡白光攻击右肋断裂",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮用不锈钢管和身体挡在陆远前面，钢管被弹飞，白光击中大壮胸口，身体腾空飞出三米撞墙。右肋骨断裂，嘴角淌血但还在笑"
+    },
+    {
+      "id": "E8_06",
+      "chapter": 8,
+      "title": "封印第四次异变蓝纹蔓延整条手臂形成屏障挡下致命一击",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远胸口跳动点爆裂式狂跳，蓝色纹路从手背蔓延至整条手臂到肩膀，右半身发光。手臂自动抬起，蓝光凝聚成半透明屏障挡住沈轻舟全力光柱攻击。沈轻舟被震退两步右手发抖，震惊于觉醒期不可能有这种封印防御"
+    },
+    {
+      "id": "E8_07",
+      "chapter": 8,
+      "title": "周衡安捏碎玉简释放定位信号苏晚带人接应",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安拼尽最后力气捏碎碎裂玉简释放定位信号，苏晚带两名蒙面人（一男一女，手上缠暗红布条）从管道侧翼赶到。苏晚认出沈轻舟身份，沈轻舟认出苏晚是苏家幸存者"
+    },
+    {
+      "id": "E8_08",
+      "chapter": 8,
+      "title": "沈轻舟评估形势后暂退并威胁陆远",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈轻舟评估对方人数后选择撤退，临走威胁陆远灵力特征已存档天机阁可追踪到天涯海角，不乖乖来就让整条街的人陪葬。陆远决定不再跑了"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E8_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E8_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E8_01",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E8_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E8_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E8_02",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E8_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E8_03",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E8_04",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E8_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E8_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E8_05",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E8_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E8_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E8_06",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E8_07",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E8_07",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E8_08",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E8_08",
+      "character": "陆远"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "得知母亲是上界修真者、用命封印自己血脉的真相。封印第四次异变，蓝纹从手背蔓延至肩膀，自动形成屏障挡住筑基期攻击。从被动逃跑转为主动决定不再跑了"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "右肋骨被沈轻舟白光击断，嘴角淌血但仍笑着说不比当兵时疼"
+    },
+    {
+      "name": "周衡安",
+      "field": "new_detail",
+      "content": "陆远母亲临死前托人带话给他，让他十六年不接近陆远。一直在远处暗中守护，直到东湖路陆远觉醒才现身"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "接到周衡安定位信号后带两名蒙面手下来接应，被沈轻舟认出苏家幸存者身份"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "老城区排水通道",
+      "type": "infrastructure",
+      "description": "地下排水通道，淤泥味、墙壁渗水冰凉滑腻，脚下硬化污泥嘎吱响。周衡安带陆远和大壮躲入此处逃避筑基期修士追击"
+    },
+    {
+      "name": "修车铺",
+      "type": "building",
+      "description": "老城区修车铺，破木门，内部机油味和铁锈味混合，后面有窨井盖通往地下排水通道"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "沈轻舟",
+      "role": "antagonist_4",
+      "personality": "天机阁内门弟子，筑基初期，二十五六岁年轻男人。穿深灰长袍扎马尾，高傲冷漠看人像看老鼠。实力碾压练气期但对陆远封印力量感到震惊。威胁时不留余地"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "筑基期修士的灵力压迫感如无形之墙，陆远能隔着管道壁感知其位置和移动"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "未提及"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "周衡安揭示陆远母亲是上界修真者，用命封住血脉。母亲灵魂碎裂化为封印一部分",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "周衡安自述听了陆远母亲遗言十六年暗中守护，直到东湖路觉醒才现身",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "胸口跳动点爆裂式狂跳驱动蓝纹从手背蔓延至肩膀形成屏障，封印第四次异变规模最大",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "封印屏障挡住筑基期全力一击并震退沈轻舟两步，沈轻舟震惊于觉醒期不可能有这种防御",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "蓝纹从手背蔓延到整条手臂至肩膀形成发光网，消退速度比之前每次都慢留有余烬",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_02",
+      "action": "advanced",
+      "evidence": "沈轻舟筑基初期抵达管道出口堵截，苏晚和两名蒙面人接应后评估形势撤退",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_01",
+      "action": "advanced",
+      "evidence": "苏晚带两名蒙面人（手上缠暗红布条）前来接应，沈轻舟认出苏家幸存者",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "陆远母亲是上界修真者——她犯了什么事被追到凡间？为什么要用命封住亲生儿子的血脉而不是带他一起逃？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E8_03"
+    },
+    {
+      "content": "苏晚的两名蒙面手下——手上缠暗红布条的人是谁？苏晚在江城藏了三年还有多少势力？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E8_07"
+    },
+    {
+      "content": "沈轻舟的威胁——天机阁能追踪灵力特征到天涯海角，陆远不跑了他打算怎么应对？",
+      "importance": "medium",
+      "thread_type": "character_arc",
+      "planted_event_id": "E8_08"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E8_01",
+      "to": "E8_02",
+      "type": "reaction",
+      "detail": "筑基期逼近迫使三人钻入地下排水通道躲避"
+    },
+    {
+      "from": "E8_02",
+      "to": "E8_03",
+      "type": "revelation",
+      "detail": "管道内封闭环境促成周衡安揭示血脉真相"
+    },
+    {
+      "from": "E8_03",
+      "to": "E8_04",
+      "type": "consequence",
+      "detail": "走到出口时被沈轻舟灵力追踪堵截"
+    },
+    {
+      "from": "E8_04",
+      "to": "E8_05",
+      "type": "escalation",
+      "detail": "沈轻舟白光攻击引发大壮挡刀"
+    },
+    {
+      "from": "E8_05",
+      "to": "E8_06",
+      "type": "reaction",
+      "detail": "大壮受伤触发陆远封印第四次异变自动防御"
+    },
+    {
+      "from": "E8_06",
+      "to": "E8_07",
+      "type": "consequence",
+      "detail": "屏障挡下攻击争取时间让周衡安释放定位信号"
+    },
+    {
+      "from": "E8_07",
+      "to": "E8_08",
+      "type": "consequence",
+      "detail": "苏晚带人到达改变力量对比迫使沈轻舟撤退"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E8_03",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "周衡安确认封印是陆远母亲用命封的，她是上界修真者"
+    },
+    {
+      "event_id": "E8_03",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "周衡安十六年暗中守护的原因是陆远母亲的遗言托付"
+    },
+    {
+      "event_id": "E8_06",
+      "thread_id": "ST04_01",
+      "type": "clue",
+      "detail": "封印力量可挡筑基期全力一击并震退对手，力量远超觉醒期水平"
+    },
+    {
+      "event_id": "E8_06",
+      "thread_id": "ST06_02",
+      "type": "clue",
+      "detail": "蓝纹从手背蔓延到肩膀形成完整防御屏障，纹路消退速度变慢暗示封印在持续扩展"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "不再逃跑，主动应对天机阁追杀",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "保护陆远哪怕用命挡",
+      "type": "protect",
+      "status": "advanced"
+    },
+    {
+      "character": "沈轻舟",
+      "goal": "把陆远带回天机阁见阁主",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "沈轻舟是天机阁内门弟子，筑基初期，名字由苏晚在战斗中点出。大壮肋骨断裂但仍然乐观，体现凡人的勇气主题。陆远封印第四次异变是规模最大的一次，蓝纹从手背扩展到整条手臂，消退速度最慢。周衡安的玉简定位信号是苏晚势力的联络手段。苏晚手下蒙面人手上缠暗红布条，疑似苏家医修势力标记。"
+}

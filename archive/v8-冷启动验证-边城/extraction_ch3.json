@@ -1,0 +1,516 @@
+{
+  "events": [
+    {
+      "id": "E10_01",
+      "chapter": 10,
+      "title": "河街吊脚楼看龙舟及遇二老",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠在乡绅女孩身边看龙舟，听到妇人闲话得知二老将得碾坊陪嫁且不愿，心中迷乱。寻找黄狗时在甬道遇到落水后上楼的二老，二老邀她去看好位子，翠翠心中充满说不分明的情绪，随后在河下找到黄狗并遇到祖父。"
+    },
+    {
+      "id": "E10_02",
+      "chapter": 10,
+      "title": "河街木行前祖孙谈碾坊",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父向翠翠炫耀看到的新碾坊，试探翠翠对二老得碾坊的看法，翠翠装作不明白。祖父笑称二老称赞翠翠美，翠翠说祖父醉了，此时二老走来，三人一同回到吊脚楼。"
+    },
+    {
+      "id": "E11_01",
+      "chapter": 11,
+      "title": "碧溪岨家中与溪边船上提亲",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "碾坊熟人来提亲，老船夫惊惶推托，翠翠跑开，老船夫在船上向翠翠解释车路马路的规矩并提及翠翠母亲的往事，心中隐痛落泪跑开，翠翠则在溪边思索并试图忘掉此事。"
+    },
+    {
+      "id": "E12_01",
+      "chapter": 12,
+      "title": "白塔下菜园地第二次询问",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父在菜园地第二次询问翠翠对提亲的主张，翠翠低头掐葱不理会，祖父见状用笑话岔开话题。"
+    },
+    {
+      "id": "E12_02",
+      "chapter": 12,
+      "title": "渡口夏日日常与夜间沉思",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天气渐热，老船夫准备茶缸草药给过渡人，翠翠烧水吹竹管，媒人再来探口风无果。老船夫夜里思忖翠翠爱二老不爱大老，担忧母女命运重演，到高崖上望星听虫声。"
+    },
+    {
+      "id": "E12_03",
+      "chapter": 12,
+      "title": "河上游造船处与碾坊兄弟摊牌",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天保与傩送在造船处坦白各自爱上翠翠的心事，天保表示要走车路接手渡船，傩送表明自己要渡船不要碾坊。两人走到碾坊时决定在月夜里到碧溪岨轮流唱歌公平竞争，天保自知不擅唱歌但仍决定自己碰运气。"
+    },
+    {
+      "id": "E13_01",
+      "chapter": 13,
+      "title": "白塔下黄昏的幻想与哭闹",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠黄昏看云感到凄凉，幻想自己出走下桃源让祖父寻找，被自己幻想的对话吓怕，跑到渡口要祖父拉船，祖父因过渡人多未理，翠翠在岸边痴哭。"
+    },
+    {
+      "id": "E13_02",
+      "chapter": 13,
+      "title": "家中灶间与高崖月下听故事",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父回家见翠翠哭，教导她要硬扎结实。饭后两人在高崖月光下，祖父讲述了翠翠母亲与父亲当年对歌相爱的故事，以及本地人唱歌的风气。"
+    },
+    {
+      "id": "E14_01",
+      "chapter": 14,
+      "title": "碧溪岨清晨说梦",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠向祖父讲述梦中听到美妙歌声并飞上悬崖摘虎耳草，祖父明知昨晚是二老唱歌，却悲悯地不告诉她真相，心里想着做梦一辈子更好。"
+    },
+    {
+      "id": "E14_02",
+      "chapter": 14,
+      "title": "城里河街找大老",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫去城里送药并找大老，误以为昨晚唱歌的是大老而夸赞。大老冷淡表示把宝贝女儿送给竹雀，决定驾新船下行。老船夫不解其意，见二老在窗口理网，回渡船后对翠翠隐瞒此事。"
+    },
+    {
+      "id": "E15_01",
+      "chapter": 15,
+      "title": "屋内与门外岩石上的月夜对话",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父用笑话试探翠翠若有人走马路唱歌求婚的态度，翠翠避而不答。两人在门外晒热的岩石上坐定，翠翠心里当真愿意听人唱歌，等不到歌声便吹芦管。两人谈论芦管、生死与寻找，祖父吹了那晚听来的歌，翠翠闭眼说又摘了虎耳草。"
+    },
+    {
+      "id": "E16_01",
+      "chapter": 16,
+      "title": "城门边遇杨马兵听闻噩耗",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫进城找二老，在城门边遇杨马兵，得知天保坐下水船在茨滩淹死。老船夫初不信，后从马兵神气上确认为真，惨然感叹天意，匆匆赶到河街顺顺家门前探看。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E10_01",
+      "character": "翠翠",
+      "location": "河街吊脚楼"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "乡绅妻女",
+      "location": "河街吊脚楼"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "傩送",
+      "location": "河街吊脚楼"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "黄狗",
+      "location": "河下"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "老船夫",
+      "location": "河下"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "老船夫",
+      "location": "河街木行前"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "翠翠",
+      "location": "河街木行前"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "傩送",
+      "location": "河街木行前"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "碾坊熟人",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "翠翠",
+      "location": "白塔后"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "老船夫",
+      "location": "碧溪岨渡船"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "翠翠",
+      "location": "碧溪岨渡船"
+    },
+    {
+      "event_id": "E11_01",
+      "character": "翠翠母亲"
+    },
+    {
+      "event_id": "E12_01",
+      "character": "老船夫",
+      "location": "白塔下菜园地"
+    },
+    {
+      "event_id": "E12_01",
+      "character": "翠翠",
+      "location": "白塔下菜园地"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "老船夫",
+      "location": "碧溪岨渡口"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "翠翠",
+      "location": "碧溪岨渡口"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "老船夫",
+      "location": "临溪高崖"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "天保",
+      "location": "河上游造船处"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "傩送",
+      "location": "河上游造船处"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "天保",
+      "location": "王乡绅新碾坊"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "傩送",
+      "location": "王乡绅新碾坊"
+    },
+    {
+      "event_id": "E13_01",
+      "character": "翠翠",
+      "location": "白塔下"
+    },
+    {
+      "event_id": "E13_01",
+      "character": "老船夫",
+      "location": "溪中渡船"
+    },
+    {
+      "event_id": "E13_01",
+      "character": "翠翠",
+      "location": "溪边渡口"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "老船夫",
+      "location": "家中灶间"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "翠翠",
+      "location": "家中灶间"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "老船夫",
+      "location": "门外高崖"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "翠翠",
+      "location": "门外高崖"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "翠翠母亲"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "翠翠",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "老船夫",
+      "location": "碧溪岨家中"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "老船夫",
+      "location": "河街"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "天保",
+      "location": "河街"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "傩送",
+      "location": "河街吊脚楼窗口"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "老船夫",
+      "location": "碧溪岨渡船"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "翠翠",
+      "location": "碧溪岨渡船"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "老船夫",
+      "location": "碧溪岨屋内"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "翠翠",
+      "location": "碧溪岨屋内"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "老船夫",
+      "location": "门外岩石"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "翠翠",
+      "location": "门外岩石"
+    },
+    {
+      "event_id": "E16_01",
+      "character": "老船夫",
+      "location": "城门边"
+    },
+    {
+      "event_id": "E16_01",
+      "character": "碾坊熟人",
+      "location": "城门边"
+    },
+    {
+      "event_id": "E16_01",
+      "character": "老船夫",
+      "location": "河街顺顺家门前"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "翠翠",
+      "field": "new_attitude",
+      "content": "听闻二老得碾坊陪嫁心中迷乱生气，对二老的感情陷入说不分明的状态"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_detail",
+      "content": "梦见听歌飞上悬崖摘虎耳草，听祖父唱歌后说又摘了虎耳草"
+    },
+    {
+      "name": "翠翠",
+      "field": "state_change",
+      "content": "黄昏时感到薄薄凄凉，幻想出走后害怕哭泣"
+    },
+    {
+      "name": "老船夫",
+      "field": "new_habit",
+      "content": "夏日准备茶缸草药给过渡人，自制圆盖竹筒"
+    },
+    {
+      "name": "老船夫",
+      "field": "new_attitude",
+      "content": "意识到翠翠爱二老不爱大老，担忧母女命运重演"
+    },
+    {
+      "name": "老船夫",
+      "field": "new_detail",
+      "content": "误认二老歌声为大老所唱，导致与天保沟通出现严重偏差"
+    },
+    {
+      "name": "天保",
+      "field": "new_attitude",
+      "content": "知道弟弟也爱翠翠后决定月夜唱歌竞争，得知真相后冷淡决定驾船下行离开"
+    },
+    {
+      "name": "傩送",
+      "field": "new_attitude",
+      "content": "向哥哥坦白要渡船不要碾坊的心意，提议月夜轮流唱歌公平竞争"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "河街吊脚楼",
+      "type": "建筑",
+      "description": "顺顺家及乡绅女眷看龙舟的吊脚楼"
+    },
+    {
+      "name": "河下",
+      "type": "水域",
+      "description": "河街吊脚楼下方的水边及甬道"
+    },
+    {
+      "name": "河街木行前",
+      "type": "街道",
+      "description": "河街上卖木材的店铺前"
+    },
+    {
+      "name": "白塔后",
+      "type": "户外",
+      "description": "翠翠家中白塔的后方"
+    },
+    {
+      "name": "碧溪岨渡船",
+      "type": "载具",
+      "description": "老船夫摆渡的方头船"
+    },
+    {
+      "name": "白塔下菜园地",
+      "type": "户外",
+      "description": "白塔附近的菜园子"
+    },
+    {
+      "name": "碧溪岨渡口",
+      "type": "地点",
+      "description": "碧溪岨溪边摆渡的区域及屋门溪边"
+    },
+    {
+      "name": "临溪高崖",
+      "type": "地形",
+      "description": "渡口边高耸的悬崖"
+    },
+    {
+      "name": "河上游造船处",
+      "type": "地点",
+      "description": "河上游打造新船的地方"
+    },
+    {
+      "name": "王乡绅新碾坊",
+      "type": "建筑",
+      "description": "中寨王团总为女儿准备的陪嫁碾坊"
+    },
+    {
+      "name": "溪中渡船",
+      "type": "载具",
+      "description": "停泊在溪流中心的渡船"
+    },
+    {
+      "name": "溪边渡口",
+      "type": "地点",
+      "description": "翠翠站在岸边呼唤祖父的溪边"
+    },
+    {
+      "name": "家中灶间",
+      "type": "室内",
+      "description": "老船夫家中黑黝黝的烧火做饭处"
+    },
+    {
+      "name": "门外高崖",
+      "type": "地形",
+      "description": "家门外月光下说故事的高处岩石"
+    },
+    {
+      "name": "碧溪岨家中",
+      "type": "室内",
+      "description": "老船夫与翠翠居住的房屋内部"
+    },
+    {
+      "name": "河街",
+      "type": "街道",
+      "description": "茶峒城边的沿河街道"
+    },
+    {
+      "name": "河街吊脚楼窗口",
+      "type": "地点",
+      "description": "河街吊脚楼上二老理鱼网的窗口"
+    },
+    {
+      "name": "碧溪岨屋内",
+      "type": "室内",
+      "description": "翠翠点蒿艾驱蚊及与祖父对话的屋内"
+    },
+    {
+      "name": "门外岩石",
+      "type": "地形",
+      "description": "屋外被白天阳光晒热散有余热的岩石"
+    },
+    {
+      "name": "城门边",
+      "type": "地点",
+      "description": "茶峒城门入口处"
+    },
+    {
+      "name": "河街顺顺家门前",
+      "type": "地点",
+      "description": "船总顺顺家门前有人烧纸钱处"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "杨马兵",
+      "role": "中间人",
+      "personality": "消息灵通，直率，作为天保提亲的保山"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "翠翠望着空豆荚在流水中从从容容流去，自己也俨然从容了许多"
+    },
+    {
+      "motif": "渡口",
+      "context": "祖父在渡船上忙个不息，翠翠在渡口听过渡人的杂乱声音"
+    },
+    {
+      "motif": "虎耳草",
+      "context": "翠翠梦中飞上悬崖摘虎耳草，听祖父唱歌后闭眼说又摘了虎耳草"
+    },
+    {
+      "motif": "碾坊",
+      "context": "妇人闲话中提到碾坊陪嫁，老船夫向翠翠描述新碾坊，兄弟二人谈及碾坊归属"
+    },
+    {
+      "motif": "歌",
+      "context": "祖父讲述父母对歌，兄弟决定月夜唱歌竞争，翠翠梦中听歌"
+    }
+  ],
+  "notes": "祖父解释提亲的“车路”（请媒人）与“马路”（唱歌）规矩；大老因不擅唱歌且知道弟弟心意，最终放弃竞争并驾船下行，在茨滩遇难。"
+}

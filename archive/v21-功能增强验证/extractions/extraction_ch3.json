@@ -1,0 +1,263 @@
+# Persisted: 2026-05-21 00:52:26
+{
+  "events": [
+    {
+      "id": "E3_01",
+      "chapter": 3,
+      "title": "方竹沿老巷寻找老廖钟表铺",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹按陶然给的地址沿南华巷寻找老廖钟表铺，穿过剥落墙皮和青苔的老巷，找到一块褪色木板写着'廖记钟表'的半开木门"
+    },
+    {
+      "id": "E3_02",
+      "chapter": 3,
+      "title": "方竹进入满墙挂钟的走廊",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹推门进入，走廊两侧挂满四五十只钟全部在走，嘀嗒声密集如雨，灯光把一切染成琥珀色，老廖从布帘后出现，以手势而非语言邀请她进入"
+    },
+    {
+      "id": "E3_03",
+      "chapter": 3,
+      "title": "方竹向老廖展示纸条",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹进入里间工作区，从帆布包取出夹在纸板间的纸条推到老廖面前，说明是在座钟底座夹层发现的"
+    },
+    {
+      "id": "E3_04",
+      "chapter": 3,
+      "title": "老廖看纸条后沉默但手抖",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老廖用颤抖的右手拿起纸条缓慢阅读，视线在'停摆'二字上停留更久，然后将纸条精确地放回桌面中央（修复师的本能动作），但手持续在抖，始终没有开口说话"
+    },
+    {
+      "id": "E3_05",
+      "chapter": 3,
+      "title": "老廖用棉布保护纸条后说'卯时'进里屋",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老廖从口袋取出棉布展开铺在桌上，用镊子将纸条放在棉布中央（与方竹保护纸条的方式几乎一样），然后转身走向里屋，在门前停顿说了两个字'卯时'——吐字精准但声音沙哑，随即关门"
+    },
+    {
+      "id": "E3_06",
+      "chapter": 3,
+      "title": "方竹发现墙上停摆座钟指向四点零七分",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹独自在满墙钟声中环顾，发现墙上最高处一只老座钟停摆在四点零七分，与她工坊里那只座钟停摆的时刻和指针角度完全一致，她确认没有看错后未碰纸条离开"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E3_01",
+      "character": "方竹",
+      "location": "南华巷"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "方竹",
+      "location": "老廖钟表铺走廊"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "老廖",
+      "location": "老廖钟表铺走廊"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "方竹",
+      "location": "老廖钟表铺工作间"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "老廖",
+      "location": "老廖钟表铺工作间"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "老廖",
+      "location": "老廖钟表铺工作间"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "方竹",
+      "location": "老廖钟表铺工作间"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "老廖",
+      "location": "老廖钟表铺工作间"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "方竹",
+      "location": "老廖钟表铺工作间"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "方竹",
+      "location": "老廖钟表铺工作间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老廖",
+      "field": "new_detail",
+      "content": "矮个瘦削，头发全白剃得很短，穿洗得发白的灰色工装，小臂上布满细小伤疤，眼窝深陷但瞳仁很亮，比照片上老了不止十岁"
+    },
+    {
+      "name": "老廖",
+      "field": "new_detail",
+      "content": "几乎不说话，用侧身让位的手势代替语言邀请，用镊子和棉布保护纸条的方式与方竹完全一致（同为修复师本能）"
+    },
+    {
+      "name": "老廖",
+      "field": "new_habit",
+      "content": "右手有持续细微震颤，但说话时吐字极为精准，是长期不说话的人偶尔开口的特征"
+    },
+    {
+      "name": "方竹",
+      "field": "new_detail",
+      "content": "很会等待，修复师都擅长等待，等锈蚀松动、等胶水干透、等零件归位"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "南华巷",
+      "type": "street",
+      "description": "老城区深巷，两侧墙皮剥落、墙根长青苔，头顶电线交错挂晾晒衣物，阳光只照到前面几米"
+    },
+    {
+      "name": "老廖钟表铺",
+      "type": "shop",
+      "description": "南华巷17号，褪色木板写着'廖记钟表'，走廊和工作间挂满四五十只钟全部在走，嘀嗒声密集如雨，有Junghans壁钟和Slatoust台钟等名贵钟表，桌面格局与方竹工坊几乎一样"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "钟表",
+      "context": "满墙挂钟全部在走，嘀嗒声密集如雨；墙上最高处一只座钟停摆在四点零七分，与方竹座钟停摆时刻完全一致"
+    },
+    {
+      "motif": "铜锈",
+      "context": "木壳漆面脱落露出深色木纹，与铜锈意象呼应——表面剥落露出底下"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "老廖看纸条后视线在'停摆'二字停留更久，最后说'卯时'二字，确认他知道纸条内容",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "老廖看纸条后手抖、沉默、关门，暗示他与座钟/纸条有深层关联；墙上另一只停摆在四点零七分的座钟进一步暗示",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "老廖墙上最高处一只座钟停摆在四点零七分，与方竹座钟停摆时刻完全一致，暗示两只钟之间的关联",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "老廖墙上停摆的座钟为什么也停在四点零七分？与方竹的座钟有什么关联？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E3_06"
+    },
+    {
+      "content": "老廖钟表铺的秘密：满墙钟全部在走唯独最高处一只停摆，他为什么退休、为什么从不说话",
+      "importance": "medium",
+      "thread_type": "character_arc",
+      "planted_event_id": "E3_02"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E3_01",
+      "to": "E3_02",
+      "type": "investigation",
+      "detail": "方竹找到钟表铺后推门进入"
+    },
+    {
+      "from": "E3_02",
+      "to": "E3_03",
+      "type": "investigation",
+      "detail": "进入工作间后向老廖展示纸条"
+    },
+    {
+      "from": "E3_03",
+      "to": "E3_04",
+      "type": "reaction",
+      "detail": "老廖看到纸条后产生强烈但沉默的反应"
+    },
+    {
+      "from": "E3_04",
+      "to": "E3_05",
+      "type": "escalation",
+      "detail": "老廖保护纸条后以'卯时'二字回应并关门"
+    },
+    {
+      "from": "E3_05",
+      "to": "E3_06",
+      "type": "revelation",
+      "detail": "方竹独自观察时发现停摆座钟的关键线索"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E3_04",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "老廖视线在'停摆'上停留更久，确认他知道纸条内容及其含义"
+    },
+    {
+      "event_id": "E3_05",
+      "thread_id": "ST02_01",
+      "type": "clue",
+      "detail": "老廖用棉布保护纸条的方式与方竹一致，暗示他们有共同的专业背景或关联"
+    },
+    {
+      "event_id": "E3_06",
+      "thread_id": "ST01_01",
+      "type": "connection",
+      "detail": "老廖墙上座钟与方竹座钟停摆在同一时刻，暗示两只钟之间有深层关联"
+    },
+    {
+      "event_id": "E3_04",
+      "thread_id": "ST02_01",
+      "type": "clue",
+      "detail": "老廖看纸条后手抖但不说话，强烈暗示他与座钟的来历有直接关系"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "方竹",
+      "goal": "查明座钟和纸条的来历",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "老廖",
+      "goal": "隐藏或回避与座钟相关的过去",
+      "type": "fear",
+      "status": "new"
+    }
+  ],
+  "notes": "Ch3感官锚点：视觉（琥珀色灯光、影子扫过钟面、明暗分半的脸、阴影中的停摆座钟）。老廖首次以身体出场，不说话的描写高度符合其人物设定。纸条'卯时'与老廖口头重复'卯时'形成回声结构。满墙钟声的描写为后续钟表铺秘密埋下伏笔。"
+}

@@ -1,0 +1,271 @@
+# Persisted: 2026-05-21 06:22:14
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "暴雨天送外卖赶往翡翠湾",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "七月暴雨天，陆远从早上六点半跑到晚上九点共四十二单，流水一百九。接到翡翠湾小区周总的牛排订单，暴雨中骑车赶路，电量只剩两格"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "爬二十七楼送餐被周总刁难",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翡翠湾电梯需刷卡，陆远爬八百六十四级台阶到二十七楼送餐。周总嫌餐凉，当场给差评扣五十分。陆远全程面无表情，拳头攥紧指甲掐进掌心"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "爬楼途中胸口首次异震",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "爬到二十五楼时，陆远感觉心脏旁边有东西在共振，节奏与心跳不同。深呼吸后震感消失，他以为是体力透支所致"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "暴雨中东湖路接单骑行",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "差评后继续接东湖路臭豆腐订单，暴雨天穿越老城区，路面坑洼，电动车碾过大坑险些失控"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "废弃围墙蓝光引觉醒",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "东湖路废弃工厂围墙内透出异常蓝色光芒，陆远注视的瞬间胸口异感爆发十倍强度，热流沿血管冲向四肢，连人带车摔入暗巷。十根指尖冒出淡蓝色光芒，雨水触光蒸发成白汽，蓝光持续约五秒后缩回体内。胸口心脏旁出现新的跳动点，比心脏慢，每跳一下全身肌肉震颤"
+    },
+    {
+      "id": "E1_06",
+      "chapter": 1,
+      "title": "发现周衡安的名片",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "觉醒后在电动车把手上发现一张名片，上写'周衡安'和手写手机号。陆远摔倒进暗巷不超过两分钟，推断有人在旁目击。回头查看暗巷深处什么也没有"
+    },
+    {
+      "id": "E1_07",
+      "chapter": 1,
+      "title": "暴雨中蹬车回站点",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "电动车没电，陆远靠脚蹬穿暴雨回站点。膝盖流血浑身湿透，但感受到从骨头里透出的力量感，嘴角不自觉上扬。胸口异跳持续，名片贴在口袋里"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "陆远",
+      "location": "环城路"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "陆远",
+      "location": "翡翠湾小区C栋27楼"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "周总"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "陆远",
+      "location": "翡翠湾小区C栋楼梯间"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "陆远",
+      "location": "翠微路"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "陆远",
+      "location": "东湖路暗巷"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "陆远",
+      "location": "东湖路暗巷"
+    },
+    {
+      "event_id": "E1_07",
+      "character": "陆远",
+      "location": "环城路"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "住东湖新村地下室单间，月租一千二，上个月欠房东三百。一天跑四十多单，流水约两百左右，只吃一碗六块钱拌面"
+    },
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "体内封印首次松动，心脏旁出现第二个跳动点，指尖能发出淡蓝色光芒。觉醒后感受到从骨头里透出的力量感，情绪从压抑转向隐隐兴奋"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "面对刁难时面无表情、声音平淡，但拳头攥紧指甲掐进掌心，习惯性压抑愤怒"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "翡翠湾小区",
+      "type": "高档住宅",
+      "description": "有门禁的高档小区，电梯需业主卡，保安不让外卖员进"
+    },
+    {
+      "name": "东湖路老城区",
+      "type": "老城区街道",
+      "description": "八九十年代老楼房，路面坑洼，底层是烧烤摊五金铺殡葬用品店，暴雨天像鬼片片场"
+    },
+    {
+      "name": "东湖路暗巷",
+      "type": "废弃巷道",
+      "description": "东湖路旁的暗巷，有废弃工厂围墙，围墙内夜间偶尔透出异常蓝色光芒"
+    },
+    {
+      "name": "东湖新村",
+      "type": "城中村",
+      "description": "陆远租住的城中村，有地下室单间出租"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "周总",
+      "role": "路人NPC",
+      "personality": "刁蛮傲慢的翡翠湾业主，穿丝绸睡衣，花六十八块钱点外卖嫌这嫌那，动辄差评威胁"
+    },
+    {
+      "name": "周衡安",
+      "role": "未知",
+      "personality": "神秘人物，留下名片，字迹古板规矩。在陆远觉醒时目击现场但未现身"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "陆远电动车后座的外卖箱散发麻辣烫煲仔饭奶茶的混合味道，觉醒后翻倒在地臭豆腐洒了一地"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "废弃工厂围墙内透出异常蓝色光芒，普通物理现象无法解释，与陆远体内封印觉醒形成共振触发"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "陆远指尖冒出蓝光、心脏旁出现第二个跳动点、热流沿血管冲向四肢，体内封印首次松动",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "周衡安是谁？他为什么在暗巷目击陆远觉醒却不出手？名片是何时放在电动车上的？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_06"
+    },
+    {
+      "content": "废弃工厂围墙内的蓝光是什么？与陆远体内的力量有关联吗？为什么只有陆远能看到？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E1_05"
+    },
+    {
+      "content": "陆远心脏旁第二个跳动点是什么？封印为何在体力透支和暴雨的叠加下首次松动？",
+      "importance": "high",
+      "thread_type": "character_arc",
+      "planted_event_id": "E1_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E1_01",
+      "to": "E1_02",
+      "type": "consequence",
+      "detail": "暴雨赶路导致超时，被迫爬二十七楼送餐"
+    },
+    {
+      "from": "E1_02",
+      "to": "E1_03",
+      "type": "consequence",
+      "detail": "高强度爬楼体力透支触发体内封印首次异动"
+    },
+    {
+      "from": "E1_03",
+      "to": "E1_05",
+      "type": "escalation",
+      "detail": "首次异震是前兆，注视蓝光后异感爆发十倍"
+    },
+    {
+      "from": "E1_04",
+      "to": "E1_05",
+      "type": "consequence",
+      "detail": "暴雨天继续骑行至东湖路，进入废弃区域遭遇灵气异常"
+    },
+    {
+      "from": "E1_05",
+      "to": "E1_06",
+      "type": "consequence",
+      "detail": "觉醒时被周衡安目击，名片留在电动车上"
+    },
+    {
+      "from": "E1_06",
+      "to": "E1_07",
+      "type": "reaction",
+      "detail": "带着疑惑和残留力量感离开暗巷"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E1_03",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "二十五楼首次异震，心脏旁有东西在共振，封印松动的前兆"
+    },
+    {
+      "event_id": "E1_05",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "指尖蓝光+热流冲向四肢+心脏旁新跳动点，确认体内有被封印的力量"
+    },
+    {
+      "event_id": "E1_05",
+      "thread_id": "ST02",
+      "type": "clue",
+      "detail": "废弃工厂围墙蓝光可能是灵气聚集点，暗示都市中存在灵气监测或控制的痕迹"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "每天跑够流水付房租和吃饭",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "弄清楚身体里发生了什么",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "关键物理设定：蓝光使雨水蒸发成白汽（灵力对物质的影响）。觉醒条件：体力透支+暴雨+灵气聚集点三重触发。陆远面对压迫的反应模式：表面平静但内心愤怒，习惯压抑。周衡安这个名字可能关联老周（导师角色）"
+}

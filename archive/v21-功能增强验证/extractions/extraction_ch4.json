@@ -1,0 +1,279 @@
+# Persisted: 2026-05-21 00:59:36
+{
+  "events": [
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "方竹凌晨两点返回南华巷钟表铺",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹回家后无法入睡，注视座钟两小时后决定骑车返回南华巷，口腔里有铁锈的苦味，巷口路灯已灭，摸黑进入钟表铺"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "发现走廊挂钟全部停摆",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹进入白天来过的走廊，白天全部在走的四五十只挂钟现在全部停了，嘀嗒声消失，空气中涌出浓重的铁锈和机油的苦涩气味"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "穿过布帘发现暗室满墙停摆钟表",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹循着微弱灯光穿过窄走廊，推开一扇门发现暗室：十五平方米无窗，三面墙从地到顶的木架上摆满上百只停摆的钟（座钟/挂钟/闹钟/怀表），唯一光源是尽头工作台上的绿色台灯"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "暗室中与老廖短暂对话",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老廖背对门口坐在拆解的座钟零件前，方竹说白天钟还在走，老廖回答'现在停了'两个字，老廖将齿轮精确放回棉布后双手平放桌面"
+    },
+    {
+      "id": "E4_05",
+      "chapter": 4,
+      "title": "方竹拿起铜壳怀表发现刻字",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹从架子上拿起一只铜壳怀表，铜锈封住铰链打不开，沿接缝发现表壳内侧刻了一行小字被铜锈遮住大半，只能辨认出最后两个字'不走'"
+    },
+    {
+      "id": "E4_06",
+      "chapter": 4,
+      "title": "老廖抬手制止又放下",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老廖见方竹看怀表后抬手五指张开，像制止的姿势，但没有抢回怀表。手慢慢垂下，手指朝门口方向停了一秒后落回桌面，像疲倦的默认"
+    },
+    {
+      "id": "E4_07",
+      "chapter": 4,
+      "title": "方竹领悟老廖在让钟停下而非修复",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹观察老拆解方式后领悟：老廖拆开钟不是为了修，是拆开看一遍再放回去，确认它们不会自己走起来。铁锈苦味一直留在舌尖。方竹退出暗室离开"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E4_01",
+      "character": "方竹",
+      "location": "南华巷"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "方竹",
+      "location": "老廖钟表铺走廊"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "方竹",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "方竹",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "老廖",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "方竹",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_06",
+      "character": "方竹",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_06",
+      "character": "老廖",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_07",
+      "character": "方竹",
+      "location": "老廖钟表铺暗室"
+    },
+    {
+      "event_id": "E4_07",
+      "character": "老廖"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "方竹",
+      "field": "state_change",
+      "content": "领悟老廖不是在修钟而是在让钟停下，对修复的意义产生深层困惑"
+    },
+    {
+      "name": "老廖",
+      "field": "new_detail",
+      "content": "暗室中存放上百只停摆的钟，拆开它们不是为了修复而是确认它们不会再走"
+    },
+    {
+      "name": "老廖",
+      "field": "new_attitude",
+      "content": "对来访者表现出疲倦的默认，抬手制止后又放下，手指朝向门口但不催促"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "老廖钟表铺暗室",
+      "type": "暗室",
+      "description": "老廖钟表铺内隐藏的暗室，约15平方米无窗，三面墙壁从地面到天花板全是木架，摆放上百只停摆的钟（座钟/挂钟/闹钟/怀表），唯一光源是尽头工作台上的绿色灯罩台灯"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "钟表",
+      "context": "暗室中上百只停摆的钟，停在不同时刻，老廖拆开确认它们不会走起来"
+    },
+    {
+      "motif": "铜锈",
+      "context": "铜壳怀表的铜锈封住铰链，表壳内侧刻字被铜锈遮住大半，空气中铁锈苦味渗入口腔"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_01",
+      "action": "resolved",
+      "evidence": "方竹凌晨进入发现走廊挂钟全部停了，老廖亲口确认'现在停了'，白天在走是因为老廖还没让它们停",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST03_02",
+      "action": "advanced",
+      "evidence": "暗室中上百只停摆的钟被老廖刻意保持停摆状态，他不是修不好而是选择让它们停着",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "planted",
+      "evidence": "暗室存在本身就代表老廖的秘密：收藏并维持上百只钟的停摆状态",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST04_02",
+      "action": "planted",
+      "evidence": "方竹领悟老廖选择让钟停下，作为修复师她开始质疑修复是否等于遗忘",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "铜壳怀表上的刻字'不走'是谁刻的？完整内容是什么？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_05"
+    },
+    {
+      "content": "老廖拆开钟确认它们不会再走——他在害怕什么？曾经发生过什么让钟自己走起来的事？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_07"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E4_01",
+      "to": "E4_02",
+      "type": "investigation",
+      "detail": "方竹因白天发现四点零七分线索而夜间返回，发现走廊钟全停"
+    },
+    {
+      "from": "E4_02",
+      "to": "E4_03",
+      "type": "investigation",
+      "detail": "走廊停摆异常，方竹循灯光深入发现暗室"
+    },
+    {
+      "from": "E4_03",
+      "to": "E4_04",
+      "type": "confrontation",
+      "detail": "暗室中发现老廖，两人进行短暂对话"
+    },
+    {
+      "from": "E4_04",
+      "to": "E4_05",
+      "type": "investigation",
+      "detail": "老廖确认钟停了，方竹转而查看架上怀表"
+    },
+    {
+      "from": "E4_05",
+      "to": "E4_06",
+      "type": "reaction",
+      "detail": "方竹发现刻字引起老廖制止反应"
+    },
+    {
+      "from": "E4_06",
+      "to": "E4_07",
+      "type": "revelation",
+      "detail": "老廖的手势和拆解方式让方竹领悟真相"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E4_02",
+      "thread_id": "ST02_01",
+      "type": "confirmation",
+      "detail": "走廊挂钟全部停摆，证实陶然说的'全停了'"
+    },
+    {
+      "event_id": "E4_03",
+      "thread_id": "ST03_02",
+      "type": "confirmation",
+      "detail": "暗室中上百只停摆钟揭示老廖秘密的规模"
+    },
+    {
+      "event_id": "E4_04",
+      "thread_id": "ST02_01",
+      "type": "confirmation",
+      "detail": "老廖亲口确认'现在停了'"
+    },
+    {
+      "event_id": "E4_05",
+      "thread_id": "ST04_01",
+      "type": "clue",
+      "detail": "怀表刻字'不走'暗示停摆是刻意的"
+    },
+    {
+      "event_id": "E4_07",
+      "thread_id": "ST04_02",
+      "type": "confirmation",
+      "detail": "方竹领悟老廖选择让钟停下而非修好，对应修复与遗忘的主题"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "方竹",
+      "goal": "查明老廖与座钟的关联和暗室秘密",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "老廖",
+      "goal": "维持所有钟的停摆状态，不让它们走起来",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "味觉感官锚点：铁锈苦味贯穿全章（口腔铁味→铁锈味渗入嘴里→舌尖铁锈苦味→牙齿间铁锈苦涩）。暗室空间描写完整：15平方米、无窗、三面墙木架、上百只停摆钟、绿色台灯。老廖行为模式揭示：拆开钟不是为了修复而是确认停摆。怀表刻字'不走'是新线索。"
+}

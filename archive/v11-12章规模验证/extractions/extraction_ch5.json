@@ -1,0 +1,176 @@
+{
+  "events": [
+    {
+      "id": "E5_01",
+      "chapter": 5,
+      "title": "暗房红水逼近",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云躲在暗房铁皮柜后，红水一毫米一毫米漫过鞋面，她口袋里的数字纸片被红水浸透泡烂。赵建国拿着生锈铁扳手逼近，手电光束压下，铁皮柜底部三道划痕和灰色棉絮在红水中浮现。"
+    },
+    {
+      "id": "E5_02",
+      "chapter": 5,
+      "title": "402室死守木门",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹用沾满泥水的拖把死死抵住木门，抵御门外老周的铁锤砸击与铁器刮擦。桌上暗红色牛皮日记本被漏水浸湿起毛边，铁锈泥浆顺着地面倾斜角度漫过他的鞋底。"
+    },
+    {
+      "id": "E5_03",
+      "chapter": 5,
+      "title": "宿舍墙角挖洞",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云在宿舍门后忍受门外刮擦声引起的脊背痉挛，看到脚下带有下水道腐臭味的积水里漂浮着泡发成墨团的纸屑。她转而蹲在墙角抠挖受潮鼓包的灰泥，手指划破，准备藏匿怀里的日记本。"
+    },
+    {
+      "id": "E5_04",
+      "chapter": 5,
+      "title": "门缝被撬与护书",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周改变策略用铁器撬门缝，陈若竹在后退撞桌时被迫松开一只手按住滑落的日记本。门板被猛地撬开两指宽，夹杂着铁锈味的冷风灌入，老周满是污垢的手伸进缝隙胡乱划拉。"
+    },
+    {
+      "id": "E5_05",
+      "chapter": 5,
+      "title": "封堵墙缝与时空重合",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云将日记本硬塞进墙缝，用碎砖和灰泥反复抹平伪装成剥落的墙皮。门外砸击加剧，门把手被猛拧到底，两个时空的刮擦尖啸声在这一刻同时撕裂开来。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E5_01",
+      "character": "林素云",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "赵建国",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "林素云",
+      "location": "宿舍"
+    },
+    {
+      "event_id": "E5_04",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E5_04",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E5_05",
+      "character": "林素云",
+      "location": "宿舍"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "围裙口袋里的数字表格纸片被红水彻底泡烂成纸浆，物理信息载体毁灭"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "亲手将暗红色牛皮日记本塞入宿舍墙缝，并用碎砖和灰泥完美封堵伪装"
+    },
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "在危急关头用沾满泥水的拖把柄死死抵住门板，虎口被震麻"
+    },
+    {
+      "name": "赵建国",
+      "field": "new_detail",
+      "content": "拿着铁扳手的手腕出现不可控制的高频抖动，指关节泛白"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "暗房",
+      "type": "室内",
+      "description": "有沉淀池和显影液气味，红水蔓延的封闭房间，内有大铁皮柜"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "红/暗红色",
+      "context": "红水漫过地面、暗红色金属冷光、暗红色铁锈粉末、暗红色牛皮日记本、暗红色的泥，红色调贯穿全章营造血腥与危机感"
+    },
+    {
+      "motif": "水",
+      "context": "红水一毫米一毫米推进、积水带有下水道腐臭味、漏水滴落浸湿日记本、雨水呈线状喷射，水的侵入带来窒息感"
+    },
+    {
+      "motif": "刮擦声/尖啸",
+      "context": "铁器刮擦木板产生的尖锐啸叫声在两个时空中反复出现，成为贯穿双线叙事的恐怖听觉锚点"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "铁皮柜底部的缝隙里，三道平行的划痕被红水灌满，划痕底部的灰色棉絮在水流中漂浮起来",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST02_03",
+      "action": "advanced",
+      "evidence": "老周在砸门时喊出'皮子呢……''交出来……'，表明他正在为了寻找'皮子'而暴力破门",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "resolved",
+      "evidence": "林素云口袋底部的纸片被红水浸透，稍微用力纸浆就在指尖碎裂，物理载体彻底毁灭",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "揭示了日记本被林素云亲手用碎砖和灰泥封入墙缝的过程，解释了藏匿行为本身",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "赵建国拿扳手的手腕不可控制地高频抖动，这是由于极度紧张、生理疾病还是其他异常导致？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E5_01"
+    },
+    {
+      "content": "两个时空的木门刮擦尖啸声同时撕裂，暗示陈若竹与林素云的经历存在怎样的时空共振或宿命联系？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E5_05"
+    }
+  ],
+  "notes": "本章采用双线交叉蒙太奇叙事，林素云（暗房/宿舍）与陈若竹（402室）面临的破门危机相互交织。红水的蔓延速度被刻意放慢（一毫米一毫米），极大增强了压迫感。林素云围裙里的数字纸片彻底损毁，日记本被成功封入墙缝，完成了悬念ST01_01中'墙内藏物'的前置动作。"
+}

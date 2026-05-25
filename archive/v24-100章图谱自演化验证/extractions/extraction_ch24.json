@@ -1,0 +1,254 @@
+# Persisted: 2026-05-21 11:58:13
+{
+  "events": [
+    {
+      "id": "E24_01",
+      "chapter": 24,
+      "title": "陆远突破后赶回城东感知城北灵墟增援灵力",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从纺织厂骑车回城东途中感知到城北方向两股强大灵力在移动：一股像磨盘压着空气另一股尖锐如针，比石沉强不止一个档次。练气后期后灵力感知范围扩大一倍方圆五百米内灵力波动清晰如雷达"
+    },
+    {
+      "id": "E24_02",
+      "chapter": 24,
+      "title": "周衡安通报灵墟暗枭五人和天机阁新条件",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安在铁桌地图上通报：灵墟增援领队代号暗枭练气巅峰接近筑基手下四名练气后期修士。天机阁沈轻舟传来阁主新指令：七天证明实力天机阁愿意合作而非强行索取至宝，提供庇护和资源交换配合保护封印核心"
+    },
+    {
+      "id": "E24_03",
+      "chapter": 24,
+      "title": "陆远向同伴坦白金色纹路和上界来人信息",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远展示手臂上的金色纹路，将赵铁山透露的信息全部告知同伴：三十年前上界来人金色血脉觉醒标志替人把最重要东西留在江城等主人觉醒。苏晚分析金色纹路是封印保护的东西封印解了才出现。周衡安推断陆远母亲是上界的人或上界血统"
+    },
+    {
+      "id": "E24_04",
+      "chapter": 24,
+      "title": "四人商讨决定主动出击引诱暗枭单独对决",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安提出主动出击计划：苏晚外围屏蔽大壮引开暗枭手下至少两个周衡安干扰另一个陆远全力对暗枭速战速决。利用天机阁和灵墟互相牵制的一天空隙明天白天行动。大壮拆了绷带说能打了"
+    },
+    {
+      "id": "E24_05",
+      "chapter": 24,
+      "title": "陆远决定明天先打暗枭练气后期对练气巅峰",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远认为暗枭还以为他是练气中期不会急着打等天机阁先动。计划引暗枭到远离手下的位置单独对决利用九道加一道金色纹路加练气后期灵力加玉简共振的力量。四人最终决定明天主动出击"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E24_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E24_02",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E24_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E24_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E24_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E24_03",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E24_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E24_03",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E24_04",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E24_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E24_04",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E24_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E24_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E24_05",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E24_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E24_05",
+      "character": "大壮"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "练气后期灵力感知范围扩大一倍方圆五百米，灵力通道宽一倍光滑零阻力"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "右手拆了绷带手指能动但有点僵筋伤恢复七成"
+    },
+    {
+      "name": "周衡安",
+      "field": "new_detail",
+      "content": "灵力才恢复三成最多打一个练气后期"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "医修灵力主打辅助真打起来拖不住练气后期"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "练气后期灵力感知范围方圆五百米如雷达，城北两股灵力像磨盘和针"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "灵墟增援暗枭五人到达城北天机阁和灵墟互相牵制一天空隙",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST18_02",
+      "action": "advanced",
+      "evidence": "天机阁阁主新条件七天证明实力改为合作而非强行索取",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "陆远向同伴坦白金色纹路苏晚确认金色是封印保护的东西封印解了才出现",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "周衡安推断陆远母亲是上界的人或上界血统被追杀逃到凡间",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST20_01",
+      "action": "resolved",
+      "evidence": "赵铁山灵脉暗河修炼方法成功使陆远三天从练气中期到练气后期",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E24_01",
+      "to": "E24_02",
+      "type": "consequence",
+      "detail": "感知到灵墟灵力后回到小楼商讨对策"
+    },
+    {
+      "from": "E24_02",
+      "to": "E24_03",
+      "type": "decision",
+      "detail": "情报汇总后陆远决定坦白金色纹路信息"
+    },
+    {
+      "from": "E24_03",
+      "to": "E24_04",
+      "type": "decision",
+      "detail": "全面了解情况后商讨主动出击计划"
+    },
+    {
+      "from": "E24_04",
+      "to": "E24_05",
+      "type": "decision",
+      "detail": "最终决定明天主动出击打暗枭"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E24_03",
+      "thread_id": "ST01",
+      "type": "connection",
+      "detail": "周衡安推断陆远母亲是上界血统与上界来人和上界至宝形成完整链条"
+    },
+    {
+      "event_id": "E24_02",
+      "thread_id": "ST18_02",
+      "type": "confirmation",
+      "detail": "天机阁阁主给出新条件合作取代强行索取"
+    },
+    {
+      "event_id": "E24_03",
+      "thread_id": "ST21_01",
+      "type": "confirmation",
+      "detail": "苏晚确认金色纹路是封印保护的东西非封印本身"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "明天主动出击打败灵墟暗枭",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "引开灵墟手下至少两名修士",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "周衡安",
+      "goal": "干扰灵墟手下一名修士配合行动",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "外围屏蔽防止灵墟追踪到据点",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "灵墟暗枭练气巅峰接近筑基手下四名练气后期。天机阁阁主新条件：七天证明实力改合作。陆远金色纹路向同伴坦白。周衡安推断陆远母亲是上界血统。大壮右手拆绷带恢复七成。苏晚医修主打辅助。四人明天白天主动出击暗枭"
+}

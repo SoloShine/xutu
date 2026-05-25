@@ -1,0 +1,262 @@
+# Persisted: 2026-05-21 11:28:04
+{
+  "events": [
+    {
+      "id": "E17_01",
+      "chapter": 17,
+      "title": "城东据点陆远宣布去天机阁苏晚交出玉简",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "上午城东据点，陆远宣布要去天机阁当面问清三年前母亲的事。周衡安告知天机阁据点在城北江边旧仓库区三号仓库，筑基期修士叫沈轻舟，灵墟增援昨晚到达至少两个练气后期。陆远决定独自前往，大壮要跟被拦下。苏晚将青色玉简交给陆远让他带在身上"
+    },
+    {
+      "id": "E17_02",
+      "chapter": 17,
+      "title": "陆远独自潜入城北仓库区感知灵墟布防",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从城东步行穿越江城进入城北工业区。灵力感知到五股陌生灵力：三个练气初期巡逻哨兵在外围，两个练气后期在仓库区核心守着。天机阁筑基期沈轻舟灵力在三号仓库内部沉如山岳。陆远利用铁路桥和集装箱通道从北边插入仓库区"
+    },
+    {
+      "id": "E17_03",
+      "chapter": 17,
+      "title": "玉简与封印核心共振释放灵力脉冲暴露位置",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "距天机阁据点一公里处玉简突然与胸口封印核心产生共振，频率同步加速无法压制。一道肉眼不可见的灵力脉冲从胸口射出向四面八方扩散，像一颗信号弹暴露位置。灵墟两股练气后期灵力同时转向陆远位置"
+    },
+    {
+      "id": "E17_04",
+      "chapter": 17,
+      "title": "灵墟三名修士围攻陆远精准反击全部制伏",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵墟窄脸（练气后期）从左、灰色冲锋衣（练气后期）从右、一名练气初期从正面三面包围。陆远三十秒内制伏三人：指尖灵力点破练气初期经脉节点→灵力球干扰冲锋衣感知后封锁手腕经脉→纯体术踢窄脸膝盖后封锁颈后经脉节点。三次灵力使用使封印核心新增三道裂痕"
+    },
+    {
+      "id": "E17_05",
+      "chapter": 17,
+      "title": "天机阁三号仓库前沈轻舟灵力威压陆远不退",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远到达三号仓库敲门，沈轻舟从卷帘门内释放筑基期灵力威压，如山岳般压得陆远膝盖发软骨骼嘎嘣响视野发黑。陆远没跪，举出玉简表明来意要问清三年前母亲的事。沈轻舟认出玉简灵力结构后停止威压，卷帘门从里面推开设一条缝说'进来'"
+    },
+    {
+      "id": "E17_06",
+      "chapter": 17,
+      "title": "陆远进入天机阁据点与沈轻舟正面接触",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "卷帘门推开露出昏暗走廊和沈轻舟的灰色长衫黑色靴子，一双冷冰冰的黑石般眼睛从暗处看过来。沈轻舟认出玉简灵力结构后允许陆远进入，正面接触开始"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E17_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E17_01",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E17_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E17_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E17_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E17_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E17_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E17_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E17_05",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E17_05",
+      "location": "江边旧仓库区"
+    },
+    {
+      "event_id": "E17_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E17_06",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E17_06",
+      "location": "江边旧仓库区"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "练气中期三十秒制伏三名灵墟修士（两个练气后期一个练气初期），但三次灵力使用使封印核心又增三道裂痕"
+    },
+    {
+      "name": "沈轻舟",
+      "field": "new_detail",
+      "content": "天机阁监察司筑基期修士，灰色长衫黑色靴子，灵力质感沉如山岳，眼睛冷如黑石。认出玉简灵力结构后允许陆远进入据点"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "江边旧仓库区",
+      "type": "天机阁临时据点",
+      "description": "城北旧仓库区三号仓库，铁皮顶平房蓝色外墙褪色，天机阁筑基期修士沈轻舟驻守。周边灵墟增援布防"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "玉简与封印核心共振释放灵力脉冲像信号弹，灵墟和天机阁同时捕捉"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "大壮蹲门口啃方便面，陆远外出前让他留守，日常与修真的交错"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "三十秒制伏三名修士用了三次灵力，封印核心又增三道裂痕，刺痛持续加剧",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST16_01",
+      "action": "advanced",
+      "evidence": "玉简与封印核心在接近天机阁据点时自动共振，释放灵力脉冲，玉简主动引导而非被动",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST16_02",
+      "action": "resolved",
+      "evidence": "陆远已到达天机阁据点并与沈轻舟正面接触，主动出击计划执行",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "天机阁筑基期修士沈轻舟在据点内，陆远带玉简表明身份要问母亲的事",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "沈轻舟认出玉简灵力结构后停止威压允许进入，天机阁知道封印血脉的事",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "灵墟增援小队两名练气后期一名练气初期围攻陆远被全部制伏",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_02",
+      "action": "advanced",
+      "evidence": "沈轻舟是天机阁监察司筑基期修士，亲自到江城驻守级别很高",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "玉简在接近天机阁据点时主动与封印核心共振——玉简有自己的意志或预设触发条件，在特定距离或特定灵力环境下会自动激活",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E17_03"
+    },
+    {
+      "content": "沈轻舟认出玉简灵力结构后态度转变——从灵力威压试探到停止压制允许进入，天机阁对陆远母亲遗物的反应暗示他们知道更多信息",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E17_06"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E17_01",
+      "to": "E17_02",
+      "type": "decision",
+      "detail": "陆远独自前往天机阁的决定直接导致潜入城北"
+    },
+    {
+      "from": "E17_03",
+      "to": "E17_04",
+      "type": "escalation",
+      "detail": "玉简共振释放脉冲暴露位置引来灵墟围攻"
+    },
+    {
+      "from": "E17_04",
+      "to": "E17_05",
+      "type": "consequence",
+      "detail": "制伏灵墟修士后继续前往天机阁据点"
+    },
+    {
+      "from": "E17_05",
+      "to": "E17_06",
+      "type": "revelation",
+      "detail": "玉简使沈轻舟态度转变从威压到允许进入"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E17_03",
+      "thread_id": "ST16_01",
+      "type": "confirmation",
+      "detail": "玉简有主动触发机制，在接近特定灵力环境时自动共振"
+    },
+    {
+      "event_id": "E17_05",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "天机阁认得玉简灵力结构确认与陆远母亲有关"
+    },
+    {
+      "event_id": "E17_04",
+      "thread_id": "ST04_01",
+      "type": "confirmation",
+      "detail": "练气中期三十秒制伏两名练气后期加一名练气初期，战力远超觉醒期水平"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "问清三年前母亲和天机阁阁主封口令的真相",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "陆远",
+      "goal": "活着进入天机阁据点见到沈轻舟",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "灵墟增援小队三人：窄脸（黑色风衣，练气后期，灵力如钢丝绳）、灰色冲锋衣（练气后期，灵力更沉更厚实）、一名练气初期。沈轻舟灰色长衫黑色靴子，天机阁监察司，灵力质感沉如山岳。周衡安承诺如果陆远回不来会送苏晚大壮出江城"
+}

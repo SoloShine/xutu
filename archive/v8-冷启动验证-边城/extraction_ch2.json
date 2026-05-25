@@ -1,0 +1,464 @@
+{
+  "events": [
+    {
+      "id": "E6_01",
+      "chapter": 6,
+      "title": "渡口争执退钱",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫与卖皮纸的商人因过渡钱发生争执，翠翠和黄狗帮忙拦人，最终老船夫退钱并搭了一大束草烟。"
+    },
+    {
+      "id": "E6_02",
+      "chapter": 6,
+      "title": "渡口听鼓忆端午",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "听到远处端午鼓声，祖父提起去年天保大老送鸭子、落雨打火把回家等事，翠翠假装记不得以掩饰羞恼。"
+    },
+    {
+      "id": "E6_03",
+      "chapter": 6,
+      "title": "迎亲队伍过渡",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "迎亲队伍过渡，翠翠傍花轿欣赏新娘和流苏，祖父收下团总儿子的红纸包封并询问新娘情况，两人被唢呐声牵引了感情。"
+    },
+    {
+      "id": "E6_04",
+      "chapter": 6,
+      "title": "船头吹唢呐午睡",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父在船头吹“娘送女”曲子，翠翠同黄狗躺在门前大岩石上听，白日渐长，祖孙俩与黄狗皆睡着了。"
+    },
+    {
+      "id": "E7_01",
+      "chapter": 7,
+      "title": "屋后小圃商量看船",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖孙俩在屋后小圃商量端午谁去看船，翠翠因牵绊祖父而翻悔不去，两人打趣说笑。"
+    },
+    {
+      "id": "E7_02",
+      "chapter": 7,
+      "title": "翠翠拉船与青春萌动",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠拉船接人，祖父望着她心事重重。翠翠身体发育完全，欢喜看新嫁娘、戴野花、听歌，常独自凝眸天空，内心感到孤独且思绪飘远。"
+    },
+    {
+      "id": "E7_03",
+      "chapter": 7,
+      "title": "祖父忧虑翠翠归宿",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父因翠翠长大而回忆起翠翠母亲的悲剧，担忧自己年老无力再养育翠翠，觉得必须在她出事前给她找个着落。"
+    },
+    {
+      "id": "E7_04",
+      "chapter": 7,
+      "title": "回忆天保大老表白",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父回忆前几天天保大老过渡时直白表示喜欢翠翠，想每夜来为她唱歌，但又担心翠翠娇气不能做家务，祖父听后愁喜交加。"
+    },
+    {
+      "id": "E8_01",
+      "chapter": 8,
+      "title": "雨中黄狗伴守船",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "初五下雨，祖父上城办货，翠翠戴新斗篷守船。黄狗帮忙衔绳头，又去追过渡人带的狗，被翠翠喝止。"
+    },
+    {
+      "id": "E8_02",
+      "chapter": 8,
+      "title": "翠翠想象祖父行程",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠在船上无事，将祖父在城中请人喝酒、买肉拒便宜、去顺顺家等行程在脑中温习得明明白白，心中感到快乐。"
+    },
+    {
+      "id": "E8_03",
+      "chapter": 8,
+      "title": "过渡遇乡绅母女",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "乡绅母女过渡，翠翠注视戴银手镯的小女孩，收下妇人给的一铜子后发痴，随后追上山头将钱还回。"
+    },
+    {
+      "id": "E8_04",
+      "chapter": 8,
+      "title": "翠翠唱民歌迎神歌",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "无人过渡时，翠翠轻轻唱起白鸡关老虎的民歌，又唱起巫师迎神还愿的歌，觉得心上有一丝凄凉。"
+    },
+    {
+      "id": "E9_01",
+      "chapter": 9,
+      "title": "祖父回家酒葫芦被扣",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖父买东西回来，翠翠发现酒葫芦不见了。祖父说被顺顺扣下，翠翠点破是因为祖父请客不是地方。"
+    },
+    {
+      "id": "E9_02",
+      "chapter": 9,
+      "title": "二老送葫芦与祖孙交谈",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "顺顺家派脸黑肩宽的年轻人送回酒葫芦，客人夸翠翠好看，与祖父谈论白鸡关救人和地方风水，并提出找人替他们守船去看龙船。"
+    },
+    {
+      "id": "E9_03",
+      "chapter": 9,
+      "title": "祖父点破二老身份",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠觉得送葫芦的人面善，祖父点破那是顺顺家二老，即前年说大鱼吃她的那个人，祖父品着酒低声赞叹。"
+    },
+    {
+      "id": "E10_01",
+      "chapter": 10,
+      "title": "水手替手与决定进城",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "顺顺派水手来替守渡船，叫他们去看龙船。翠翠本不想去，但愿意陪祖父去，两人遂一同进城。"
+    },
+    {
+      "id": "E10_02",
+      "chapter": 10,
+      "title": "吊脚楼看船与参观碾坊",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "祖孙到城里被请上顺顺吊脚楼，翠翠坐在乡绅女儿身边，祖父则被熟人拉到河上游看新碾坊。"
+    },
+    {
+      "id": "E10_03",
+      "chapter": 10,
+      "title": "碾坊听闻大老提亲",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "熟人带祖父看中寨王团总的新碾坊，提到这是团总女儿的陪嫁，随后转述天保大老托他探听老船夫口气、想要翠翠的真话。"
+    },
+    {
+      "id": "E10_04",
+      "chapter": 10,
+      "title": "祖父定下车路马路之规",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫回复熟人，提出大老若走车路需请媒人正正经经来说，若走马路需在渡口高崖上为翠翠唱三年六个月的歌，决定等大老回来先问翠翠意思。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E6_01",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "黄狗",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "天保"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "黄狗",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E7_01",
+      "character": "老船夫",
+      "location": "屋后塔下"
+    },
+    {
+      "event_id": "E7_01",
+      "character": "翠翠",
+      "location": "屋后塔下"
+    },
+    {
+      "event_id": "E7_02",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E7_02",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E7_03",
+      "character": "老船夫",
+      "location": "屋后塔下"
+    },
+    {
+      "event_id": "E7_03",
+      "character": "翠翠母亲"
+    },
+    {
+      "event_id": "E7_04",
+      "character": "老船夫"
+    },
+    {
+      "event_id": "E7_04",
+      "character": "天保"
+    },
+    {
+      "event_id": "E8_01",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E8_01",
+      "character": "黄狗",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E8_02",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E8_03",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E8_04",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "顺顺"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "老船夫",
+      "location": "家中"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "翠翠",
+      "location": "家中"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "傩送",
+      "location": "家中"
+    },
+    {
+      "event_id": "E9_03",
+      "character": "老船夫",
+      "location": "家中"
+    },
+    {
+      "event_id": "E9_03",
+      "character": "翠翠",
+      "location": "家中"
+    },
+    {
+      "event_id": "E9_03",
+      "character": "傩送"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "老船夫",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "翠翠",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "水手们",
+      "location": "渡口"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "翠翠",
+      "location": "顺顺吊脚楼"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "老船夫",
+      "location": "新碾坊"
+    },
+    {
+      "event_id": "E10_03",
+      "character": "老船夫",
+      "location": "新碾坊"
+    },
+    {
+      "event_id": "E10_03",
+      "character": "天保"
+    },
+    {
+      "event_id": "E10_03",
+      "character": "中寨王团总"
+    },
+    {
+      "event_id": "E10_04",
+      "character": "老船夫",
+      "location": "新碾坊"
+    },
+    {
+      "event_id": "E10_04",
+      "character": "天保"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "翠翠",
+      "field": "state_change",
+      "content": "身体发育完全，有了生理期，开始对爱情和婚姻有朦胧的感知与遐想，常独自凝眸天空。"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_detail",
+      "content": "看到戴银手镯的十三岁乡绅小女孩会发痴并感到歆羡，但依然坚守不收过渡钱的规矩，追上去还钱。"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_habit",
+      "content": "无人过渡时会轻轻哼唱民歌和巫师迎神还愿的歌。"
+    },
+    {
+      "name": "黄狗",
+      "field": "new_detail",
+      "content": "遇到过渡人带的狗会去追，被翠翠喝止后能听懂眼色乖乖回来。"
+    },
+    {
+      "name": "老船夫",
+      "field": "new_attitude",
+      "content": "因翠翠长大而感到紧迫，开始认真思考翠翠的归宿和婚事，对提亲采取谨慎且遵循规矩的态度。"
+    },
+    {
+      "name": "老船夫",
+      "field": "new_detail",
+      "content": "在河街上请客喝酒被顺顺以“不开槽坊”为由扣下酒葫芦。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "屋后塔下",
+      "type": "居家周边",
+      "description": "老船夫家屋后的塔下小圃，种有葱等蔬菜，可眺望远方。"
+    },
+    {
+      "name": "新碾坊",
+      "type": "产业设施",
+      "description": "中寨王团总在河边新建的水碾坊，有圆石片、暗轮、石槽，属于小财主产业，将作为团总女儿的陪嫁。"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "团总儿子",
+      "role": "路人",
+      "personality": "遵循地方规矩，给渡船钱时爽快"
+    },
+    {
+      "name": "乡绅妻女",
+      "role": "路人",
+      "personality": "母亲体面，十三岁的女儿娇气羞怯，戴银手镯"
+    },
+    {
+      "name": "碾坊熟人",
+      "role": "中间人",
+      "personality": "热心多嘴，充当天保大老提亲的探路人"
+    },
+    {
+      "name": "中寨王团总",
+      "role": "背景人物",
+      "personality": "在高山砦子居住却来大河边置办碾坊产业的财主"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "歌声",
+      "context": "翠翠在船上轻轻唱白鸡关老虎的民歌和巫师迎神还愿的歌，声音柔和快乐中微带忧郁。"
+    },
+    {
+      "motif": "唢呐",
+      "context": "迎亲队伍的唢呐声让祖孙俩的感情仿佛追着声音走了很远。"
+    },
+    {
+      "motif": "水",
+      "context": "初五落毛毛雨涨了龙船水，河水全变作豆绿色，溪面一起烟。"
+    }
+  ],
+  "notes": "老船夫提出茶峒人提亲的两种方式：'车路'（请媒人正正经经说）和'马路'（在对溪高崖上唱三年六个月的歌）；新碾坊作为重要财产和陪嫁概念引入，成为后续情节的重要伏笔。"
+}

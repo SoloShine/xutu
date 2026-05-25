@@ -1,0 +1,250 @@
+{
+  "events": [
+    {
+      "id": "E14_01",
+      "chapter": 14,
+      "title": "風雪夜暗屋出發",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "紅燭熄滅後，趙三、平兒、鐵匠、老趙、王婆五人頂開門板，在如冰鐵鍘刀般的風雪夜中依次鑽出暗屋，貼著牆根前行。"
+    },
+    {
+      "id": "E14_02",
+      "chapter": 14,
+      "title": "土道躲避巡邏",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "五人摸到村東頭土道，平兒聽到皮靴聲欲衝出，被趙三死死按在雪窪裡，五人屏息躲過持槍黑影的手電筒掃射。"
+    },
+    {
+      "id": "E14_03",
+      "chapter": 14,
+      "title": "摸至李七家牆外",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "五人穿過廢棄菜園來到漢奸李七家牆外，聽見裡頭狗哼和人打呼嚕的聲音，趙三與鐵匠確認動靜後準備潛入。"
+    },
+    {
+      "id": "E14_04",
+      "chapter": 14,
+      "title": "鐵匠刺殺李七",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "鐵匠潛入屋內，在暗紅炭火映照下，用生鏽的剔骨刀刺入熟睡李七的脖頸，李七掙扎後死亡，暗紅稠血流滿炕席。"
+    },
+    {
+      "id": "E14_05",
+      "chapter": 14,
+      "title": "剝衣奪槍",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "趙三和平兒不顧血污，強行剝下李七僵硬屍體的棉衣棉褲，趙三在炕頭搜出一杆生鏽的老套筒槍。"
+    },
+    {
+      "id": "E14_06",
+      "chapter": 14,
+      "title": "亂墳崗共握一槍",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "五人繞道穿過苞米地躲進亂墳崗背風凹地，鐵匠穿上李七的棉褲，五雙沾著黑紅血冰碴的手在風雪中共同死死攥住那杆槍。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E14_01",
+      "character": "趙三",
+      "location": "出發的暗屋"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "平兒",
+      "location": "出發的暗屋"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "鐵匠",
+      "location": "出發的暗屋"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "老趙",
+      "location": "出發的暗屋"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "王婆",
+      "location": "出發的暗屋"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "趙三",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "平兒",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "鐵匠",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "老趙",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "王婆",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E14_03",
+      "character": "趙三",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_03",
+      "character": "鐵匠",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_04",
+      "character": "鐵匠",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_04",
+      "character": "李七",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "趙三",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "平兒",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "李七",
+      "location": "李七家"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "趙三",
+      "location": "亂墳崗子凹地"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "平兒",
+      "location": "亂墳崗子凹地"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "鐵匠",
+      "location": "亂墳崗子凹地"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "老趙",
+      "location": "亂墳崗子凹地"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "王婆",
+      "location": "亂墳崗子凹地"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "趙三",
+      "field": "new_attitude",
+      "content": "展現出極度冷靜與殘忍的領導力，能精準控制平兒的衝動，面對屍體毫無波瀾地剝衣奪槍。"
+    },
+    {
+      "name": "平兒",
+      "field": "state_change",
+      "content": "衝動的性子被趙三強行壓制，面對剝屍體的血腥場面有生理乾嘔反應，但行動上未退縮。"
+    },
+    {
+      "name": "老趙",
+      "field": "state_change",
+      "content": "從出發時腿打顫、被王婆踢也不敢出聲的極度恐懼，轉變為面如死灰的麻木狀態。"
+    },
+    {
+      "name": "鐵匠",
+      "field": "new_detail",
+      "content": "身體寬厚卻異常靈活，腳步比貓還輕，殺人手法利落，對血腥場面習以為常。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "出發的暗屋",
+      "type": "室內",
+      "description": "五人集合出發的未知黑暗屋子"
+    },
+    {
+      "name": "村東頭土道",
+      "type": "室外",
+      "description": "兩側有矮土牆，積著發黑髒雪的村路"
+    },
+    {
+      "name": "李七家",
+      "type": "室內",
+      "description": "漢奸李七的住所，有半人高的土坯圈子牆，屋內有土炕和灶台"
+    },
+    {
+      "name": "廢棄菜園子",
+      "type": "室外",
+      "description": "位於土道和李七家之間的荒地"
+    },
+    {
+      "name": "苞米地",
+      "type": "室外",
+      "description": "收割後殘留歪斜苞米稈子的雪地"
+    },
+    {
+      "name": "亂墳崗子凹地",
+      "type": "室外",
+      "description": "沒有明顯墳頭，有光禿禿裂開樹皮的榆樹，背風的雪凹地"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "李七",
+      "role": "受害者/漢奸",
+      "personality": "替日本人跑腿抓雞鴨收糧食，前天還幫著拖走李二叔的女人"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "手",
+      "context": "五雙沾著黑紅血冰碴的手死死攥住槍，熱氣融化槍身霜水"
+    },
+    {
+      "motif": "血",
+      "context": "血稠得像糊牆的黃泥，在棉褲上像紅蛇，滴在雪地上結成黑紅色像碎掉琉璃的冰"
+    },
+    {
+      "motif": "狗",
+      "context": "遠處的狗聞到血腥味此起彼伏地乾嚎"
+    },
+    {
+      "motif": "雪/冷",
+      "context": "黑暗像爛泥，風雪像冰鐵鍘刀，天是一整塊死黑的鐵皮，雪沫子打在臉上跟砂紙蹭似的"
+    }
+  ],
+  "notes": "李七前天幫著把李二叔的女人拖上車；奪得的槍是一杆生了鏽的老套筒，槍托掉漆露出發白的木頭。"
+}

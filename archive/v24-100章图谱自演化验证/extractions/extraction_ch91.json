@@ -1,0 +1,196 @@
+# Persisted: 2026-05-21 16:52:25
+{
+  "events": [
+    {
+      "id": "E91_01",
+      "chapter": 91,
+      "title": "陆远送外卖母亲在脑内充当导航",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远回归日常送外卖。母亲意识在脑内直接与他对话，评价他的送餐路线，建议走沿江路少两个红绿灯。陆远还不习惯脑内多了一个声音。上午送了七单，白色纹路被前台误认为纹身。"
+    },
+    {
+      "id": "E91_02",
+      "chapter": 91,
+      "title": "苏晚给陆远把脉检查封印核心确认稳定",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚灵力恢复七成后在滨江公园给陆远把脉。封印核心稳定，至宝与封印绑定紧密，母亲意识信号清晰。经脉壁比昨天厚，灵力上限恢复九成，白色纹路停在鼻梁没有扩散。陆远心跳偏快因为脑内有人说话睡不好。苏晚提醒灵墟残部和地脉堂还没走干净。大壮在安全屋翻苏晚的修真入门笔记。"
+    },
+    {
+      "id": "E91_03",
+      "chapter": 91,
+      "title": "阁主通过铜镜残片传来消息老周三天后能醒",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傍晚陆远回到出租屋。口袋里指甲盖大小的铜镜残片发热，上面刻着阁主的消息：老周灵根修复中，三天后能醒。阁主兑现承诺。陆远第一次真正放松下来，不再咬牙。母亲确认是好消息。"
+    },
+    {
+      "id": "E91_04",
+      "chapter": 91,
+      "title": "母亲在脑内哼歌陆远入睡",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "出租屋夜晚。母亲在脑内帮陆远算送外卖的路线效率。说自己在封印核心里很无聊。母亲提到陆远小时候也这样让她别说话就能睡着。最后母亲哼了一首旧歌，陆远小时候听过的旋律。封印核心像心跳一样平稳跳动。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E91_01",
+      "character": "陆远",
+      "location": "中山路"
+    },
+    {
+      "event_id": "E91_01",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E91_02",
+      "character": "陆远",
+      "location": "滨江公园"
+    },
+    {
+      "event_id": "E91_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E91_02",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E91_03",
+      "character": "陆远",
+      "location": "城南旧居出租屋"
+    },
+    {
+      "event_id": "E91_03",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E91_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E91_04",
+      "character": "陆承"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "灵力上限恢复九成，白色纹路停在鼻梁没有继续扩散。封印核心跳动频率变成平稳心跳。第一次真正放松不再咬牙"
+    },
+    {
+      "name": "陆远",
+      "field": "new_habit",
+      "content": "母亲在脑内说话还不习惯，睡前条件反射让母亲别说话"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力恢复七成，重新能给陆远把脉检查"
+    },
+    {
+      "name": "陆承",
+      "field": "new_habit",
+      "content": "在封印核心里会评价陆远的送餐路线、帮他算效率、哼旧歌。说自己在里面很无聊"
+    },
+    {
+      "name": "大壮",
+      "field": "new_habit",
+      "content": "偷偷翻苏晚的修真入门笔记开始学修真基础"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "滨江公园",
+      "type": "park",
+      "description": "江城沿江路的公园，有梧桐树和长椅"
+    },
+    {
+      "name": "城南旧居出租屋",
+      "type": "residence",
+      "description": "城南旧居后面一楼十五平米的出租屋，陆远的住处"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "外卖箱挂在车把上，灵力波动压制到几乎为零，看起来就是普通塑料箱"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "外卖箱表面灵力波动被压制到几乎为零，不仔细感觉完全就是普通外卖箱"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST50_03",
+      "action": "advanced",
+      "evidence": "母亲意识在脑内与陆远对话、评价路线、哼歌，传承后以新方式存在的承诺正在兑现",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST73_01",
+      "action": "resolved",
+      "evidence": "苏晚灵力恢复七成，能给陆远把脉检查，三天无灵力状态结束",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E90_05",
+      "to": "E91_01",
+      "type": "consequence",
+      "detail": "Ch90陆远开始送外卖，Ch91继续日常回归"
+    },
+    {
+      "from": "E91_01",
+      "to": "E91_02",
+      "type": "consequence",
+      "detail": "上午送外卖后中午苏晚来检查"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E91_02",
+      "thread_id": "ST50_03",
+      "type": "confirmation",
+      "detail": "苏晚把脉确认母亲意识信号清晰，至宝绑定稳定"
+    },
+    {
+      "event_id": "E91_03",
+      "thread_id": "ST50_03",
+      "type": "confirmation",
+      "detail": "阁主兑现承诺救老周，证明各方协议在执行中"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "像普通人一样生活送外卖",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "陆远",
+      "goal": "等老周醒来",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "学习修真基础",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "尾声日常章。铜镜残片还能接收阁主消息（金丹灵力刻字）。母亲在封印核心里能帮陆远计算外卖路线效率。出租屋天花板有蘑菇形水渍。母亲哼的歌是陆远小时候听过的旧旋律。"
+}

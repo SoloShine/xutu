@@ -1,0 +1,273 @@
+# Persisted: 2026-05-22 21:01:56
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "沈渡准备开播",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "深夜十一点，沈渡走进FM97.6直播间，准备《城市暗面》节目。设备老旧但保养良好，他习惯了这份工作一年零四个月。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "节目正常进行",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡播放Leonard Cohen的歌，盯着隔音棉上的水渍。深夜电台的节奏已经烂熟于心。苏岚在导播间工作。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "匿名来电接入",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "一通匿名热线接入，来电者声音异常平静，声称自己在兴安巷。沈渡联想到本地论坛上关于女大学生林小微在兴安巷失踪的帖子。苏岚示意录音。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "来电者描述犯罪现场",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "来电者描述一个男人走进废弃印刷厂，手插口袋。男人出来后手中拿着某种反光金属物品。苏岚报警。来电者透露三年前也曾报警，'也是一条巷子，也是一扇门，也是一个人走进去'。"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "嫌疑人发现来电者",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "巷子里的男人抬头朝来电者方向看去。来电者说'他在往我这个方向看'，然后轻笑说'你在直播，你动了就什么都没有了'，随即挂断电话。"
+    },
+    {
+      "id": "E1_06",
+      "chapter": 1,
+      "title": "通话结束后的沉寂",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "信号追踪失败。沈渡在直播间独处，红色ON AIR灯映在瞳孔里，手心出汗，等待下一首歌结束。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "苏岚",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "无名来电者",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "苏岚",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "无名来电者",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "苏岚",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "无名来电者",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "苏岚",
+      "location": "电台直播间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈渡",
+      "field": "new_detail",
+      "content": "每晚从走廊尽头坏掉的感应灯旁走过，推门进直播间。第三个推子发涩，喜欢那个阻尼声。看天花板水渍发呆。"
+    },
+    {
+      "name": "沈渡",
+      "field": "state_change",
+      "content": "从日常松懈状态被来电者打破，进入高度警觉。手心出汗，手指停在推子上。"
+    },
+    {
+      "name": "苏岚",
+      "field": "new_detail",
+      "content": "通过玻璃窗与沈渡沟通，用口型和手势传递信息。直觉敏锐，第一时间示意录音并报警。"
+    },
+    {
+      "name": "无名来电者",
+      "field": "new_detail",
+      "content": "说话语速均匀如节拍器，呼吸声平稳。在对面的天台上观察巷子。提到三年前也报过警。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "兴安巷对面天台",
+      "type": "室外",
+      "description": "无名来电者观察巷子的位置，能看到废弃印刷厂门口。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "电波杂音",
+      "context": "耳机底噪像砂纸在远处磨，电话里风声变成失真的白噪音"
+    },
+    {
+      "motif": "红光",
+      "context": "ON AIR灯映在瞳孔里像两粒微小的火种"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "来电者描述的男人出现在兴安巷废弃印刷厂，与林小微失踪地点吻合",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "planted",
+      "evidence": "沈渡做电台一年零四个月，因'报道失误'转行",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "来电者三年前也报过警——'也是一条巷子，也是一扇门，也是一个人走进去'——三年前发生了什么？",
+      "importance": "high",
+      "thread_type": "backstory",
+      "planted_event_id": "E1_04"
+    },
+    {
+      "content": "巷子里的男人拿着什么反光金属物品？为什么说'不是刀'？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E1_05"
+    },
+    {
+      "content": "来电者最后说'你在直播，你动了就什么都没有了'——他是威胁还是在保护沈渡？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E1_01",
+      "to": "E1_02",
+      "type": "consequence",
+      "detail": "日常开播后节目正常进行"
+    },
+    {
+      "from": "E1_02",
+      "to": "E1_03",
+      "type": "reaction",
+      "detail": "热线来电打破日常"
+    },
+    {
+      "from": "E1_03",
+      "to": "E1_04",
+      "type": "escalation",
+      "detail": "来电者描述升级为犯罪现场描述"
+    },
+    {
+      "from": "E1_04",
+      "to": "E1_05",
+      "type": "escalation",
+      "detail": "嫌疑人抬头发现观察者"
+    },
+    {
+      "from": "E1_05",
+      "to": "E1_06",
+      "type": "consequence",
+      "detail": "通话突然挂断，沈渡陷入沉默"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E1_03",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "来电者声称在兴安巷，与林小微失踪地点直接关联"
+    },
+    {
+      "event_id": "E1_04",
+      "thread_id": "ST01_01",
+      "type": "connection",
+      "detail": "废弃印刷厂是犯罪现场，与林小微失踪地点相同"
+    },
+    {
+      "event_id": "E1_04",
+      "thread_id": "ST02_01",
+      "type": "clue",
+      "detail": "沈渡联想到本地论坛帖子，展现前记者的信息敏感度"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈渡",
+      "goal": "维持直播同时保护来电者安全",
+      "type": "duty",
+      "status": "new"
+    },
+    {
+      "character": "苏岚",
+      "goal": "追踪来电信号并报警",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "无名来电者",
+      "goal": "通过直播让更多人成为见证者",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "新地点：兴安巷对面天台。新物品：反光金属物（不是刀）。三年前报警伏笔。沈渡的习惯：第三个推子、看水渍、三厘米距离。"
+}

@@ -1,0 +1,141 @@
+# Persisted: 2026-05-21 17:20:05
+{
+  "events": [
+    {
+      "id": "E100_01",
+      "chapter": 100,
+      "title": "第一百次送牛肉面外卖到中山路写字楼",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "五月的最后一天。同样的闹钟同样的路线同样的面馆同样的写字楼。保安换了中年男人还是那个。和Ch96一模一样的流程。没有人知道。送完后没接下一单。"
+    },
+    {
+      "id": "E100_02",
+      "chapter": 100,
+      "title": "护城河边独坐和母亲关于封印的对话",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在护城河栏杆上坐了很久。母亲说在听水。陆远问母亲想回上界吗母亲说不想因为你在这里。问后悔被封在胸口吗母亲说那叫封吗那叫陪着。母亲提到父亲说陆远小时候在河边跑摔了爬起来倔像他。陆远笑了母亲也笑了封印核心跳快零点三秒。两人在河边听水流。"
+    },
+    {
+      "id": "E100_03",
+      "chapter": 100,
+      "title": "城南烧烤摊吃烧烤大壮电话苏晚微信",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午城南烧烤摊。三串羊肉一串鸡翅一瓶啤酒。大壮打电话说老周赢了三盘棋他被剃光头。苏晚发微信说下次带她去。说明天送外卖到中医院记得找她。陆远说好。"
+    },
+    {
+      "id": "E100_04",
+      "chapter": 100,
+      "title": "回到出租屋接明天的单全篇收束",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "骑电动车回城南。路灯在身后一盏一盏亮。外卖箱放桌边手放上去极微弱灵力流动。接了明天的单东湖路牛肉面六点十分。躺下来。封印核心跳着母亲哼歌。霓虹灯亮了红的绿的蓝的。他的故事还在继续只是没人看了。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E100_01",
+      "character": "陆远",
+      "location": "中山路写字楼"
+    },
+    {
+      "event_id": "E100_02",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E100_02",
+      "character": "陆承",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E100_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E100_03",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E100_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E100_03",
+      "character": "老周"
+    },
+    {
+      "event_id": "E100_04",
+      "character": "陆远",
+      "location": "城南旧居出租屋"
+    },
+    {
+      "event_id": "E100_04",
+      "character": "陆承",
+      "location": "城南旧居出租屋"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "全篇最终状态：送外卖护城河坐烧烤摊回家。和母亲的对话从功能性变成日常陪伴。接受并享受这种生活"
+    },
+    {
+      "name": "陆承",
+      "field": "new_attitude",
+      "content": "明确说不想回上界因为你在这里。说被封叫陪着不叫封。提到陆远父亲说他小时候在河边跑倔像他。与陆远关系从母子变成日常陪伴"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "全篇最终意象：黄色的外卖箱磕了几道痕，手放上去极微弱灵力在流动像很深的地下河"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "霓虹灯亮了红的绿的蓝的——灵力波动的都市隐喻，修真世界隐藏在霓虹灯下"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST20_02",
+      "action": "resolved",
+      "evidence": "母亲选择留在陆远身边不回上界。那叫陪着不叫封。封印分层解锁的终极回答是选择不开启",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [],
+  "evidence_links": [
+    {
+      "event_id": "E100_02",
+      "thread_id": "ST20_02",
+      "type": "confirmation",
+      "detail": "母亲说不想回上界因为你在这里，封印对她来说是陪伴不是困束"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "继续送外卖过普通生活",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "陆承",
+      "goal": "陪着儿子",
+      "type": "protect",
+      "status": "achieved"
+    }
+  ],
+  "notes": "第100章最终章。与Ch96形成闭环：同样的路线同样的写字楼同样的中年男人。新增护城河独坐的母子对话解决封印情感线。烧烤摊回归都市日常。苏晚说明天中医院见。大壮说老周赢了三盘棋。全篇以'他的故事还在继续只是没人看了'收束。凡与仙主题终极表达：封印核心=心跳至宝=门=上界=他选择不开的另一种生活。"
+}

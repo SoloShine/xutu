@@ -1,0 +1,177 @@
+{
+  "D:\\novel_test\\.mcp.json": {
+    "mtime": 1779718963.992044,
+    "ast_hash": "c19443f14bf16b6283079f4166857656",
+    "semantic_hash": "c19443f14bf16b6283079f4166857656"
+  },
+  "D:\\novel_test\\.claude\\launch.json": {
+    "mtime": 1779385233.0178485,
+    "ast_hash": "602fa7b9ae6243d4f6dbb9ddf89c4199",
+    "semantic_hash": "602fa7b9ae6243d4f6dbb9ddf89c4199"
+  },
+  "D:\\novel_test\\.claude\\settings.json": {
+    "mtime": 1779721735.172712,
+    "ast_hash": "5d6ecd96cf065b16e8bb9fbf5d7d8f0d",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\config_loader.py": {
+    "mtime": 1779718648.961526,
+    "ast_hash": "a54a73140494be7912efc5213eb427cd",
+    "semantic_hash": "a54a73140494be7912efc5213eb427cd"
+  },
+  "D:\\novel_test\\src\\novel_kg\\core.py": {
+    "mtime": 1779725075.7195888,
+    "ast_hash": "5c8358af159197fa46b815c631c55ad8",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\extractor.py": {
+    "mtime": 1779718863.0692382,
+    "ast_hash": "37f3e7b200afb5089ac3971eb118cc05",
+    "semantic_hash": "37f3e7b200afb5089ac3971eb118cc05"
+  },
+  "D:\\novel_test\\src\\novel_kg\\graph.py": {
+    "mtime": 1779718588.6757154,
+    "ast_hash": "42852cee0bc73b3837d8c2b8e34d958a",
+    "semantic_hash": "42852cee0bc73b3837d8c2b8e34d958a"
+  },
+  "D:\\novel_test\\src\\novel_kg\\kg_json.py": {
+    "mtime": 1779718588.1472113,
+    "ast_hash": "6ba92fabeebc509219553a780e42a6ff",
+    "semantic_hash": "6ba92fabeebc509219553a780e42a6ff"
+  },
+  "D:\\novel_test\\src\\novel_kg\\kg_sync.py": {
+    "mtime": 1779723559.5991447,
+    "ast_hash": "5f078642ddb0aa0c83f32cec2cb1799f",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\llm.py": {
+    "mtime": 1779718841.738738,
+    "ast_hash": "9413ff89ee187848af7cfa557d4cd6eb",
+    "semantic_hash": "9413ff89ee187848af7cfa557d4cd6eb"
+  },
+  "D:\\novel_test\\src\\novel_kg\\main.py": {
+    "mtime": 1779718804.9484344,
+    "ast_hash": "9c53cd7e7882f78cf20b45d692b3d807",
+    "semantic_hash": "9c53cd7e7882f78cf20b45d692b3d807"
+  },
+  "D:\\novel_test\\src\\novel_kg\\mcp_cli.py": {
+    "mtime": 1779718804.9369206,
+    "ast_hash": "7b512eb64f336940d9c67d42aa4323e2",
+    "semantic_hash": "7b512eb64f336940d9c67d42aa4323e2"
+  },
+  "D:\\novel_test\\src\\novel_kg\\mine.py": {
+    "mtime": 1779718804.9608562,
+    "ast_hash": "bc7f2a70ab463c938a807960105ffc20",
+    "semantic_hash": "bc7f2a70ab463c938a807960105ffc20"
+  },
+  "D:\\novel_test\\src\\novel_kg\\prompts.py": {
+    "mtime": 1779718588.5233831,
+    "ast_hash": "8098d62ceb894d0386e6bbce66d8aee0",
+    "semantic_hash": "8098d62ceb894d0386e6bbce66d8aee0"
+  },
+  "D:\\novel_test\\src\\novel_kg\\render_telemetry.py": {
+    "mtime": 1779718789.451269,
+    "ast_hash": "53b5086ff2b2a11901dfda6f89e674b2",
+    "semantic_hash": "53b5086ff2b2a11901dfda6f89e674b2"
+  },
+  "D:\\novel_test\\src\\novel_kg\\server.py": {
+    "mtime": 1779718804.922357,
+    "ast_hash": "a542e446add82faed1102badeaa32548",
+    "semantic_hash": "a542e446add82faed1102badeaa32548"
+  },
+  "D:\\novel_test\\src\\novel_kg\\telemetry.py": {
+    "mtime": 1779718588.2086923,
+    "ast_hash": "08c881e75820bd4b39be5fed6accf24f",
+    "semantic_hash": "08c881e75820bd4b39be5fed6accf24f"
+  },
+  "D:\\novel_test\\src\\novel_kg\\validators.py": {
+    "mtime": 1779718588.6131682,
+    "ast_hash": "c6a0118d1b6d22ff4d4bc0f754a8bdd0",
+    "semantic_hash": "c6a0118d1b6d22ff4d4bc0f754a8bdd0"
+  },
+  "D:\\novel_test\\src\\novel_kg\\__init__.py": {
+    "mtime": 1779718881.5210283,
+    "ast_hash": "52541657c0c74d47db27cb3a22f6407c",
+    "semantic_hash": "52541657c0c74d47db27cb3a22f6407c"
+  },
+  "D:\\novel_test\\tests\\test_e2e.py": {
+    "mtime": 1779718932.9104269,
+    "ast_hash": "cceda1cc0ef3f03b906987ec05bb807b",
+    "semantic_hash": "cceda1cc0ef3f03b906987ec05bb807b"
+  },
+  "D:\\novel_test\\tests\\test_parallel.py": {
+    "mtime": 1779718943.7255688,
+    "ast_hash": "571a11d93b9cfb9e10484ae51dc16964",
+    "semantic_hash": "571a11d93b9cfb9e10484ae51dc16964"
+  },
+  "D:\\novel_test\\tests\\test_telemetry.py": {
+    "mtime": 1779719020.9514306,
+    "ast_hash": "a3411ee99607ee427bb67ef8bc2cd02e",
+    "semantic_hash": "a3411ee99607ee427bb67ef8bc2cd02e"
+  },
+  "D:\\novel_test\\CLAUDE.md": {
+    "mtime": 1779721735.171674,
+    "ast_hash": "49bd2900fa239d3ca7cc4bfbd6ed4a5c",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\.claude\\skills\\novel-creation-wizard.md": {
+    "mtime": 1779218739.6879022,
+    "ast_hash": "13c490f925fd61fff7820239ec6dfc04",
+    "semantic_hash": "13c490f925fd61fff7820239ec6dfc04"
+  },
+  "D:\\novel_test\\docs\\superpowers\\plans\\2026-05-20-human-ai-collaboration.md": {
+    "mtime": 1779283156.7988193,
+    "ast_hash": "ad5314a0bc17ef752cefd197925061ba",
+    "semantic_hash": "ad5314a0bc17ef752cefd197925061ba"
+  },
+  "D:\\novel_test\\docs\\superpowers\\specs\\2026-05-20-human-ai-collaboration-design.md": {
+    "mtime": 1779282633.0975978,
+    "ast_hash": "799be31ae553e1c3d50d805d7d41b612",
+    "semantic_hash": "799be31ae553e1c3d50d805d7d41b612"
+  },
+  "D:\\novel_test\\src\\novel_kg\\config.yaml": {
+    "mtime": 1779718588.734738,
+    "ast_hash": "72e2690c9445fc0c2588ac898d2e9fe8",
+    "semantic_hash": "72e2690c9445fc0c2588ac898d2e9fe8"
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_analysis.py": {
+    "mtime": 1779723574.7376864,
+    "ast_hash": "dff121abe78ca8b3b56a1759074a089a",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_cache.py": {
+    "mtime": 1779723550.5236914,
+    "ast_hash": "70969507efee148e8532e510df8d69d4",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_compliance.py": {
+    "mtime": 1779723542.105369,
+    "ast_hash": "2eb3d12caf977a009a64aeca39787911",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_crud.py": {
+    "mtime": 1779723396.5825808,
+    "ast_hash": "533fce8c96a3d34bf6505535276e2057",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_edits.py": {
+    "mtime": 1779723443.5560832,
+    "ast_hash": "93ef0e2db48ea42c9e4dd2e613bb78ea",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_errors.py": {
+    "mtime": 1779723366.4322317,
+    "ast_hash": "87aebce28a57455af14e520cdd3942e9",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_parallel.py": {
+    "mtime": 1779725075.7334166,
+    "ast_hash": "d031c68e198889239373b401524e9172",
+    "semantic_hash": ""
+  },
+  "D:\\novel_test\\src\\novel_kg\\core_telemetry.py": {
+    "mtime": 1779722661.0663166,
+    "ast_hash": "c1fe4dc5344ee426d1208583bf16137e",
+    "semantic_hash": ""
+  }
+}

@@ -1,0 +1,268 @@
+# Persisted: 2026-05-21 14:39:34
+{
+  "events": [
+    {
+      "id": "E61_01",
+      "chapter": 61,
+      "title": "陆远从崩裂的第四层抢出笔记本和信纸撤离",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "第四面墙裂缝半米宽碎屑落下地板下沉灵力结构崩塌。陆远把笔记本塞进外套内侧口袋信纸叠两折塞入，看最后一眼房间母亲三年生活痕迹。苏晚催促离开通道在收窄"
+    },
+    {
+      "id": "E61_02",
+      "chapter": 61,
+      "title": "归用残存灵力维持通道不塌掩护陆远等人撤离",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "通道壁向内挤压宽度从两人宽变一人宽再变半米。归双手按壁面指尖发白金色瞳孔从亮金色变琥珀色用仅存残存灵力硬撑。归选择留下撑住通道让陆远苏晚先走说三分钟够出去。通道最终闭合像门关上岩壁多了疤痕纹路归被困另一边"
+    },
+    {
+      "id": "E61_03",
+      "chapter": 61,
+      "title": "苏晚用三根银针封堵陆远右手经脉代价是两天无法使用",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "右手经脉三处新裂痕全力输出导致封印纹路撑裂。苏晚拔三根银针扎手肘内侧手腕外侧掌心锁住经脉。整条右臂灵力通道断掉又沉又麻。苏晚判断至少两天恢复期间只能用左手输出灵力"
+    },
+    {
+      "id": "E61_04",
+      "chapter": 61,
+      "title": "笔记本封面右下角露出被灵力遮住的日期三年前九月",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵力散去后封面右下角小字露出：三年前九月十五号母亲离开房间那天。与天机阁阁主封口令时间、母亲从第四层出来时间、灵力循环改写开始时间全部吻合同一个月。五年前追踪网布设三年前母亲出来三年前灵力改写"
+    },
+    {
+      "id": "E61_05",
+      "chapter": 61,
+      "title": "笔记本第三十七行揭示三层封印即可解锁局部频率修正偏移节点",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "母亲工程记录第三十七行刻得比其他行深：九层全开可解锁全部频率三层以上可解锁局部频率足以修正偏移节点。陆远目前解两层差一层。修五个红色节点不需要九层全开三层就够"
+    },
+    {
+      "id": "E61_06",
+      "chapter": 61,
+      "title": "陆远推断母亲出来与阁主封口是同一事件灵力改写由此开始",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远串联时间线：三年前九月母亲走出第四层、阁主签署封口令、灵力循环改写开始不是巧合而是同一件事。母亲出来的原因和阁主封口的原因相同那件事就是改写灵力循环的真正开始"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E61_01",
+      "character": "陆远",
+      "location": "灵脉暗河第四层核心空间"
+    },
+    {
+      "event_id": "E61_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E61_02",
+      "character": "归"
+    },
+    {
+      "event_id": "E61_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E61_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E61_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E61_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E61_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E61_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E61_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E61_01",
+      "character": "大壮"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "右手经脉被苏晚三根银针封堵灵力通道断开至少两天无法使用右手输出灵力只能用左手"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "手指还在抖封堵银针后情绪紧绷对陆远身体状态持续担忧"
+    },
+    {
+      "name": "归",
+      "field": "state_change",
+      "content": "被关闭在通道另一侧金色瞳孔最后闪一下用残存灵力撑住通道掩护撤离生死未知"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "通道壁灵力残留在表面像静电刺痛皮肤灵力流失壁面向内挤压"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST60_01",
+      "action": "resolved",
+      "evidence": "陆远成功带出笔记本和信纸撤离崩塌的第四层空间",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST58_01",
+      "action": "advanced",
+      "evidence": "第四层空间已崩塌但笔记本工程记录保留频率图激活条件：三层以上可解锁局部频率",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "全力输出导致右手经脉三处新裂痕苏晚用银针封堵代价两天无法使用右手",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST25_01",
+      "action": "advanced",
+      "evidence": "陆远差一层就能到三层解锁局部频率修正偏移节点",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST46_01",
+      "action": "advanced",
+      "evidence": "灵力循环改写开始时间与母亲离开第四层时间一致推断两者相关",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST15_01",
+      "action": "advanced",
+      "evidence": "母亲三年前九月十五离开第四层与阁主封口令同月不是巧合是同一事件",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST59_01",
+      "action": "advanced",
+      "evidence": "归用残存灵力撑住通道被关闭另一侧与元婴级追杀势力的关系待揭示",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST50_03",
+      "action": "advanced",
+      "evidence": "陆远封印核心在胸口温柔跳动像敲门与陆承传承后敲门呼应",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "归被关闭在通道另一侧生死未知——用仅存残存灵力撑住通道掩护陆远撤离金色瞳孔最后闪一下通道闭合后岩壁冰冷灵力静止。归还活着吗？三十年独处换来三分钟的代价",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E61_02"
+    },
+    {
+      "content": "频率图只需三层封印解锁即可修正偏移节点——母亲工程记录第三十七行明确三层以上可解锁局部频率但陆远目前只解两层差一层。第三层封印如何打开？主动打开身体能否承受",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E61_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E61_01",
+      "to": "E61_02",
+      "type": "consequence",
+      "detail": "陆远撤离导致归独自撑住通道"
+    },
+    {
+      "from": "E61_01",
+      "to": "E61_03",
+      "type": "consequence",
+      "detail": "全力输出打开第四层的代价右手经脉裂痕必须封堵"
+    },
+    {
+      "from": "E61_04",
+      "to": "E61_06",
+      "type": "revelation",
+      "detail": "日期线索使陆远串联时间线推断因果关系"
+    },
+    {
+      "from": "E61_05",
+      "to": "E61_06",
+      "type": "decision",
+      "detail": "发现三层即可修正节点使修钟计划变得可行"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E61_04",
+      "thread_id": "ST15_01",
+      "type": "confirmation",
+      "detail": "确认母亲离开时间与阁主封口令同月同月不是巧合"
+    },
+    {
+      "event_id": "E61_04",
+      "thread_id": "ST46_01",
+      "type": "connection",
+      "detail": "灵力改写开始时间与母亲离开时间吻合指向同一事件"
+    },
+    {
+      "event_id": "E61_05",
+      "thread_id": "ST58_01",
+      "type": "clue",
+      "detail": "三层以上可解锁局部频率修正偏移节点的关键信息保留在笔记本中"
+    },
+    {
+      "event_id": "E61_03",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "力量代价再次体现全力输出导致经脉封堵"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "打开第三层封印解锁局部频率修正五个红色偏移节点",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "找到母亲弄清楚她三年前九月出来的真正原因",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "苏晚",
+      "goal": "保护陆远身体状况不让灵力反噬致命",
+      "type": "protect",
+      "status": "advanced"
+    }
+  ],
+  "notes": "右手经脉封堵是新状态约束（两天恢复期）。归被困通道另一侧是悬念线留白。封印核心温柔跳动与ST50_03呼应。大壮问归怎么办陆远没回答体现心理层面。灵脉暗河分岔路口石台是新场景锚点。"
+}

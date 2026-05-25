@@ -1,0 +1,120 @@
+{
+  "events": [
+    {
+      "id": "E9_01",
+      "chapter": 9,
+      "title": "铁皮桌前的停滞与倒影",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国看着废毁的相纸，灰白絮状物随水波游动并将暗管凹痕高光区完全覆盖，他右手腕从高频震颤转为间歇性抽搐。剔骨刀倒映出水盆中一双塞满皮渣的手正在搓洗暗红布料的画面，他喃喃吐出'大堤'二字。"
+    },
+    {
+      "id": "E9_02",
+      "chapter": 9,
+      "title": "大堤江水中的绝望跋涉与遭遇",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云在充满工业废渣、比重异常的冰冷江水中艰难跋涉，左脚被碎玻璃割伤，感受到浓重的铁锈与下水道腐臭味。她死死攥着带有数字残片的废纸，但在强风中纸张被剥离沉入漩涡。随后她跪入水中，面对从堤坝阴影处包抄过来的两个黑影，她没有逃跑，而是死死盯住右边那个男人左高右低、深浅不一的怪异步伐。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E9_01",
+      "character": "赵建国",
+      "location": "铁皮桌"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "林素云",
+      "location": "大堤斜坡/江水"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "赵建国",
+      "field": "state_change",
+      "content": "右手震颤从高频转为间歇性抽搐，五指保持半张开状态，视线死盯废毁相纸，嘴唇干瘪开合。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "左脚脚心被混在泥沙里的碎玻璃深深割伤，温热血液在江水中变成暗红细线被泥沙吞噬。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_attitude",
+      "content": "在失去关键线索（数字纸）且被黑影包围的极端困境下，表现出反常的冷静，放弃逃跑转而极其细致地观察敌人的步伐特征。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "大堤斜坡/江水",
+      "type": "户外水域",
+      "description": "充满粗砂和工业废渣、比重远超寻常的浑浊江水及堤坝斜坡，水流阻力极大且冰冷刺骨。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "铁皮桌上蔓延的残水、比重异常且充满铁锈味的浑浊江水、将数字纸吞噬的漩涡。"
+    },
+    {
+      "motif": "铁锈",
+      "context": "铁皮桌面的铁锈斑驳与龟裂纹理、江水及废渣散发的浓重铁锈味。"
+    },
+    {
+      "motif": "数字残片",
+      "context": "林素云死死攥着的废纸上用圆珠笔戳出的数字残片，在水中晕染成蓝黑色斑块后彻底瓦解沉没。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST08_02",
+      "action": "advanced",
+      "evidence": "灰白絮状物随着水波游动，卡在锈迹沟壑里，将暗管凹痕的高光区完全覆盖。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST05_01",
+      "action": "advanced",
+      "evidence": "手腕处的震颤频率从高频转为间歇性的抽搐，手背上的青筋随着抽搐一跳一跳。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST08_01",
+      "action": "advanced",
+      "evidence": "剔骨刀刀面最亮处倒映着水盆里的波纹，水盆底部明确出现一双塞满皮渣的手正在搓洗暗红布料。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "林素云在江水中闻到'铁锈味混杂着下水道发酵的腐臭气味'，与天花板泥水气味高度一致。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST02_02",
+      "action": "advanced",
+      "evidence": "林素云手中紧攥着带有圆珠笔数字残片的废纸，但纸张在江水中彻底瓦解沉没，线索再次断裂。",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "堤坝上下来的两个黑影中，右边那个男人为何呈现出左高右低、深浅不一的怪异步伐？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E9_02"
+    },
+    {
+      "content": "暗红水盆中搓洗暗红色布料的那双'塞满皮渣的手'究竟属于谁？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E9_01"
+    }
+  ],
+  "notes": "江水比重远超寻常且充满工业废渣，暗示该水域受到极其严重的工业污染，可能与前文的工业废料排放背景有关。林素云失去数字纸后没有去追也没有回头，直接跪入水中，这种反常的放弃行为与她对怪异步伐的极度关注形成对比，显示出她可能在寻找某个特定的目标。右边黑影的步伐特征（右脚深陷、左脚轻浮）可能是极其关键的生理或身份特征线索。"
+}

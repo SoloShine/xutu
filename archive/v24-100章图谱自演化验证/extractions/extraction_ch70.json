@@ -1,0 +1,306 @@
+# Persisted: 2026-05-21 15:28:08
+{
+  "events": [
+    {
+      "id": "E70_01",
+      "chapter": 70,
+      "title": "陆远宣布不等三天主动进入暗河第四层四人对峙",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远读完母亲信封后站起宣布不等三天主动进暗河第四层。苏晚立刻反对说经脉裂缝水管状态根本承受不了。大壮从阳台进来听完全程。陆远三次追问老周第四层的门需要什么，态度坚决不被动等待。"
+    },
+    {
+      "id": "E70_02",
+      "chapter": 70,
+      "title": "老周揭示母亲用频率刻蚀禁术三年刻出第四层空间",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周揭示三十年前母亲和他师父一起进暗河布置灵种，暗河三层灵脉节点靠灵种稳固。第四层不是天然空间是母亲用上界禁术频率刻蚀三年刻出来的空间，每一笔消耗一个练气期修士全部灵力。打开第四层需要第三层封印频率，母亲频率和封印血脉同源。代价未知，母亲说让陆远自己决定。"
+    },
+    {
+      "id": "E70_03",
+      "chapter": 70,
+      "title": "苏晚反对无效为陆远安装保险丝银针",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚反对陆远去第四层说经脉裂缝会变断裂永久废经脉。陆远以三天后来的人三十年前一招打飞母亲加归为由坚持。苏晚无法阻止决定做最坏准备，在陆远膻中穴章门穴命门穴扎三根特制青色银针作为保险丝，灵力超限时自动封锁经脉三秒。银针断了经脉也断了。"
+    },
+    {
+      "id": "E70_04",
+      "chapter": 70,
+      "title": "大壮表态跟陆远去暗河入口老周留守安全屋",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮明知灵力未恢复且挡不住金丹初期仍表态跟去守入口。老周揭示暗河入口在西郊护城河边从安全屋走一小时，自己练气巅峰三十年去了拖后腿选择留守安全屋接应。老周给陆远母亲当年走的路线图警告天机阁灵脉监测网还在。"
+    },
+    {
+      "id": "E70_05",
+      "chapter": 70,
+      "title": "陆远大壮出发前往暗河金色瞳孔首次看到完整灵脉网",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远和苏晚告别后与大壮出门，苏晚拉袖子说活着回来是命令。陆远金色瞳孔在夜色中首次看到整张灵脉网完好无损的样子：全蓝色无红色，灵力流动方向速度密度全部正常，像沉睡者的呼吸。茧碎后城市灵脉网络完全恢复。封印核心跳动从催促变成急切像倒计时。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E70_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E70_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E70_01",
+      "character": "老周"
+    },
+    {
+      "event_id": "E70_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E70_01",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E70_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E70_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E70_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E70_02",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E70_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E70_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E70_03",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E70_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E70_04",
+      "character": "老周"
+    },
+    {
+      "event_id": "E70_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E70_04",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E70_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E70_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E70_05",
+      "location": "西郊护城河"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "从反对到接受，苏晚的情绪从怒意到冷静做保险丝准备，收银盒的手指微微发抖暴露内心"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "明知挡不住金丹初期仍坚持跟去守入口，'挡不住也得挡'体现退伍兵的忠诚底色"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "主动出击不再被动等待，用'等下去结果一样'的冷逻辑说服所有人"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "西郊护城河",
+      "type": "暗河入口",
+      "description": "灵脉暗河的入口，位于西郊护城河边，从安全屋步行约一小时。老周师父当年从这里进出暗河"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "陆远金色瞳孔首次看到整张灵脉网完好无损——全蓝色无红色，灵力正常流动像沉睡者的呼吸"
+    },
+    {
+      "motif": "频率",
+      "context": "母亲技术核心是频率：频率刻蚀创造空间、频率控制灵脉节点、频率作为开门钥匙"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST69_01",
+      "action": "advanced",
+      "evidence": "陆远读完信封后立刻追问第四层门需要什么并宣布不等三天，信封内容指引了他行动方向",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST58_01",
+      "action": "advanced",
+      "evidence": "老周揭示第四层用频率刻蚀禁术三年刻成，打开需要第三层封印频率，代价未知",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "老周揭示三十年前和师父一起帮母亲带灵种入暗河布置灵脉节点，师父当年从西郊护城河进出",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST68_01",
+      "action": "advanced",
+      "evidence": "陆远决定不等三天主动进暗河，以三天后来人太强等下去结果一样为由",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST50_01",
+      "action": "advanced",
+      "evidence": "陆远说'她醒了但还在暗河里'要去第四层经过灵识分身也许能说上话",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "苏晚在三个关键穴位扎保险丝银针，灵力超限自动封锁经脉三秒，针断经脉断",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST19_01",
+      "action": "advanced",
+      "evidence": "白色纹路覆盖腹部和胸口像发光地图，第三层封印频率是打开第四层的钥匙",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST46_01",
+      "action": "resolved",
+      "evidence": "陆远金色瞳孔看到整张灵脉网全部恢复蓝色无红色灵力正常流动，茧碎后灵力循环修正完成",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "老周提醒天机阁灵脉监测网还在灵力波动大时会被定位",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "保险丝银针——苏晚在陆远膻中穴章门穴命门穴扎三根特制青色银针，灵力超限自动封锁经脉三秒防止断裂。银针断了经脉也断了。这是陆远进第四层的唯一安全保障也是最后的底线",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E70_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E70_01",
+      "to": "E70_02",
+      "type": "reaction",
+      "detail": "陆远宣布要去第四层迫使老周揭示更多细节"
+    },
+    {
+      "from": "E70_02",
+      "to": "E70_03",
+      "type": "consequence",
+      "detail": "得知需要第三层频率开门后苏晚更激烈反对并做保险丝准备"
+    },
+    {
+      "from": "E70_03",
+      "to": "E70_04",
+      "type": "decision",
+      "detail": "苏晚做保险丝后大壮老周各自表态分工"
+    },
+    {
+      "from": "E70_04",
+      "to": "E70_05",
+      "type": "decision",
+      "detail": "分工完毕后陆远大壮出发前往暗河入口"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E70_02",
+      "thread_id": "ST58_01",
+      "type": "confirmation",
+      "detail": "确认第四层是母亲用频率刻蚀三年刻出，需第三层封印频率开门"
+    },
+    {
+      "event_id": "E70_02",
+      "thread_id": "ST38_01",
+      "type": "clue",
+      "detail": "老周师父三十年前和母亲一起进暗河布置灵种"
+    },
+    {
+      "event_id": "E70_05",
+      "thread_id": "ST46_01",
+      "type": "confirmation",
+      "detail": "灵脉网全蓝色无红色灵力正常流动，修正完成"
+    },
+    {
+      "event_id": "E70_03",
+      "thread_id": "ST14_01",
+      "type": "clue",
+      "detail": "保险丝银针机制说明经脉状况危急"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "主动进入暗河第四层找到频率图和母亲的灵识分身",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "保护陆远经脉不断裂做保险丝银针最后防线",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "守暗河入口为陆远挡住可能的追兵",
+      "type": "duty",
+      "status": "new"
+    },
+    {
+      "character": "老周",
+      "goal": "留守安全屋接应陆远大壮",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "频率作为核心技术的主题贯穿全章：频率刻蚀创造空间、频率控制灵脉节点、频率开门、封印核心跳动频率变化。灵脉网全蓝的视觉是茧碎后的首次全景确认。苏晚拉袖子说'活着回来'的情感节点。封印核心跳动从'催促'到'倒计时'的节奏变化预示紧迫感。"
+}

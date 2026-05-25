@@ -1,0 +1,804 @@
+{
+  "characters": {
+    "林昊": {
+      "role": "protagonist",
+      "personality": "28岁，被裁员的普通上班族，嘴贱心软。能看到人头顶的数字",
+      "name": "林昊"
+    },
+    "苏晴": {
+      "role": "protagonist",
+      "personality": "26岁，创业公司CEO，性格硬气但公司快黄了",
+      "name": "苏晴"
+    },
+    "陈少宏": {
+      "role": "antagonist",
+      "personality": "富二代，投资圈混子，看不起穷人",
+      "name": "陈少宏"
+    },
+    "周涛": {
+      "role": "investor",
+      "personality": "明远资本合伙人",
+      "name": "周涛"
+    }
+  },
+  "locations": {
+    "城中村出租屋": {
+      "description": "林昊租的老破小，楼下是烧烤摊",
+      "name": "城中村出租屋"
+    },
+    "晴创科技办公室": {
+      "description": "苏晴的创业公司",
+      "name": "晴创科技办公室"
+    },
+    "云顶会所": {
+      "description": "高档餐厅，投资人经常出没",
+      "name": "云顶会所"
+    }
+  },
+  "events": {
+    "E1_01": {
+      "title": "林昊被裁",
+      "detail": "在晴创科技被裁员",
+      "chapter": 1,
+      "type": "daily",
+      "id": "E1_01"
+    },
+    "E1_02": {
+      "title": "发现数字能力",
+      "detail": "能看到人头顶数字代表胆气",
+      "chapter": 1,
+      "type": "daily",
+      "id": "E1_02"
+    },
+    "E1_03": {
+      "title": "烧烤摊打脸陈少宏",
+      "detail": "拆穿金链子假的，陈少宏数字归零",
+      "chapter": 1,
+      "type": "daily",
+      "id": "E1_03"
+    },
+    "E1_04": {
+      "title": "看到苏雷新闻",
+      "detail": "晴创科技CEO苏晴公司快倒闭",
+      "chapter": 1,
+      "type": "daily",
+      "id": "E1_04"
+    },
+    "E10_01": {
+      "title": "资金链断裂",
+      "detail": "账上不足八十万",
+      "chapter": 10,
+      "type": "daily",
+      "id": "E10_01"
+    },
+    "E10_02": {
+      "title": "投资人逼宫",
+      "detail": "三个投资人串通要卖公司给陈少宏",
+      "chapter": 10,
+      "type": "daily",
+      "id": "E10_02"
+    },
+    "E10_03": {
+      "title": "苏晴拒绝卖公司",
+      "detail": "当场算账揭穿投资人，拒绝签字",
+      "chapter": 10,
+      "type": "daily",
+      "id": "E10_03"
+    },
+    "E10_04": {
+      "title": "苏晴揭示父亲往事",
+      "detail": "父亲苏建国20年前被陈少宏父亲骗过",
+      "chapter": 10,
+      "type": "daily",
+      "id": "E10_04"
+    },
+    "E4_01": {
+      "title": "研究数字规律",
+      "detail": "发现数字随股价变动",
+      "chapter": 4,
+      "type": "daily",
+      "id": "E4_01"
+    },
+    "E4_02": {
+      "title": "股市赚八万",
+      "detail": "三天两万三炒到八万一",
+      "chapter": 4,
+      "type": "daily",
+      "id": "E4_02"
+    },
+    "E4_03": {
+      "title": "云顶饭局打脸陈少宏",
+      "detail": "精准预判陈少宏投资会亏",
+      "chapter": 4,
+      "type": "daily",
+      "id": "E4_03"
+    },
+    "E4_04": {
+      "title": "陈少宏记恨林昊",
+      "detail": "当众出丑后摔门而去开始记恨",
+      "chapter": 4,
+      "type": "daily",
+      "id": "E4_04"
+    },
+    "E13_01": {
+      "title": "林昊拿到陈少宏证据",
+      "detail": "搞到真实投资流水发现骗了四个项目",
+      "chapter": 13,
+      "type": "daily",
+      "id": "E13_01"
+    },
+    "E13_02": {
+      "title": "发布会",
+      "detail": "苏晴在云顶会所开产品发布会",
+      "chapter": 13,
+      "type": "daily",
+      "id": "E13_02"
+    },
+    "E13_03": {
+      "title": "陈少宏捣乱",
+      "detail": "带人闯入发布会质疑苏晴产品",
+      "chapter": 13,
+      "type": "daily",
+      "id": "E13_03"
+    },
+    "E13_04": {
+      "title": "当众揭穿陈少宏",
+      "detail": "林昊上台展示流水数据揭穿骗局",
+      "chapter": 13,
+      "type": "daily",
+      "id": "E13_04"
+    },
+    "E7_01": {
+      "title": "发现陈少宏骗局",
+      "detail": "云顶资本是壳公司围猎四家创业公司",
+      "chapter": 7,
+      "type": "daily",
+      "id": "E7_01"
+    },
+    "E7_02": {
+      "title": "上门示警被当骗子",
+      "detail": "找苏晴示警被怀疑是陈少宏的人",
+      "chapter": 7,
+      "type": "daily",
+      "id": "E7_02"
+    },
+    "E7_03": {
+      "title": "当场验证赢取信任",
+      "detail": "让苏晴向陈少宏要流水陈少宏全部推脱",
+      "chapter": 7,
+      "type": "daily",
+      "id": "E7_03"
+    },
+    "E7_04": {
+      "title": "苏晴给出名片",
+      "detail": "约明天十点细聊",
+      "chapter": 7,
+      "type": "daily",
+      "id": "E7_04"
+    },
+    "E16_01": {
+      "title": "陈少宏被立案调查",
+      "detail": "在云顶会所被带走涉嫌非法经营商业欺诈",
+      "chapter": 16,
+      "type": "daily",
+      "id": "E16_01"
+    },
+    "E16_02": {
+      "title": "苏晴拿到新融资",
+      "detail": "明远资本决定投资晴创科技",
+      "chapter": 16,
+      "type": "daily",
+      "id": "E16_02"
+    },
+    "E16_03": {
+      "title": "苏晴揭示父亲往事",
+      "detail": "告诉周涛父亲被陈少宏父亲骗过",
+      "chapter": 16,
+      "type": "daily",
+      "id": "E16_03"
+    },
+    "E16_04": {
+      "title": "数字能力消失",
+      "detail": "林昊发现所有人都看不到数字了",
+      "chapter": 16,
+      "type": "daily",
+      "id": "E16_04"
+    },
+    "E16_05": {
+      "title": "路边摊烧烤",
+      "detail": "林昊和苏晴在烧烤摊庆祝回归普通",
+      "chapter": 16,
+      "type": "daily",
+      "id": "E16_05"
+    }
+  },
+  "themes": {
+    "逆风翻盘": {
+      "description": "小人物的逆袭",
+      "chapters": "1,4",
+      "name": "逆风翻盘"
+    },
+    "利益与真心": {
+      "description": "商战中的男女博弈",
+      "chapters": "8,12",
+      "name": "利益与真心"
+    }
+  },
+  "style_guides": {
+    "plain": {
+      "rule": "白话文为主，禁止华丽辞藻",
+      "id": "plain"
+    },
+    "dialogue": {
+      "rule": "对话推动情节",
+      "id": "dialogue"
+    },
+    "pace": {
+      "rule": "节奏快，每章至少一次反转",
+      "id": "pace"
+    },
+    "no_dash": {
+      "rule": "禁止使用破折号",
+      "id": "no_dash"
+    }
+  },
+  "motifs": {},
+  "chapter_arcs": {
+    "1": {
+      "purpose": "出场+发现能力+打脸",
+      "scenes": "1.被裁 2.发现数字 3.烧烤摊打脸",
+      "ending": "数字归零",
+      "rhythm": "tight",
+      "chapter": 1
+    },
+    "4": {
+      "purpose": "赚钱+饭局打脸",
+      "scenes": "1.研究规律 2.赚钱 3.饭局遇陈少宏 4.打脸",
+      "ending": "摔门而去",
+      "rhythm": "ascending",
+      "chapter": 4
+    },
+    "7": {
+      "purpose": "揭穿骗局+合作",
+      "scenes": "1.发现骗局 2.追踪 3.示警 4.验证",
+      "ending": "名片",
+      "rhythm": "ascending",
+      "chapter": 7
+    },
+    "10": {
+      "purpose": "被逼宫+拒绝",
+      "scenes": "1.资金链断 2.逼宫 3.收购 4.拒绝",
+      "ending": "不认输",
+      "rhythm": "tight",
+      "chapter": 10
+    },
+    "13": {
+      "purpose": "发布会揭穿",
+      "scenes": "1.准备 2.拿证据 3.捣乱 4.揭穿",
+      "ending": "掌声雷动",
+      "rhythm": "ascending",
+      "chapter": 13
+    },
+    "16": {
+      "purpose": "收尾+能力消失",
+      "scenes": "1.调查 2.融资 3.能力消失 4.烧烤",
+      "ending": "阳光很好",
+      "rhythm": "descending",
+      "chapter": 16
+    }
+  },
+  "suspense_threads": {
+    "ST01_01": {
+      "content": "林昊的数字能力从哪来？",
+      "planted_chapter": 1,
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "id": "ST01_01"
+    },
+    "ST10_01": {
+      "content": "苏晴父亲被陈少宏父亲骗过",
+      "planted_chapter": 10,
+      "importance": "medium",
+      "thread_type": "backstory",
+      "id": "ST10_01"
+    },
+    "ST04_01": {
+      "content": "陈少宏对林昊的恨意升级",
+      "planted_chapter": 4,
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "id": "ST04_01"
+    }
+  },
+  "outline_entries": {
+    "1": {
+      "purpose": "林昊被裁，发现数字能力，烧烤摊打脸",
+      "chapter": 1,
+      "parallel_group": "A",
+      "parallel_dependencies": []
+    },
+    "4": {
+      "purpose": "林昊股市赚钱，饭局打脸陈少宏",
+      "chapter": 4,
+      "parallel_group": "A",
+      "parallel_dependencies": [
+        1
+      ]
+    },
+    "7": {
+      "purpose": "林昊发现陈少宏骗局，和苏晴合作",
+      "chapter": 7,
+      "parallel_group": "A",
+      "parallel_dependencies": [
+        4
+      ]
+    },
+    "10": {
+      "purpose": "苏晴被逼宫，拒绝卖公司",
+      "chapter": 10,
+      "parallel_group": "B",
+      "parallel_dependencies": []
+    },
+    "13": {
+      "purpose": "苏晴和林昊在发布会上揭穿陈少宏",
+      "chapter": 13,
+      "parallel_group": "B",
+      "parallel_dependencies": [
+        10
+      ]
+    },
+    "16": {
+      "purpose": "陈少宏崩盘，苏晴融资，林昊数字消失",
+      "chapter": 16,
+      "parallel_group": "B",
+      "parallel_dependencies": [
+        13
+      ]
+    }
+  },
+  "time_periods": {},
+  "relations": [
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陈少宏"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "城中村出租屋"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E1_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E1_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陈少宏"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "晴创科技办公室"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E10_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E10_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E10_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E10_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陈少宏"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "云顶会所"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E4_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E4_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陈少宏"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "云顶会所"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E13_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E13_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E13_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E13_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_03",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陈少宏"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_02",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "晴创科技办公室"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E7_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E7_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E7_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E7_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_01",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "陈少宏"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_01",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "云顶会所"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_02",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_04",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "林昊"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_05",
+      "rt": "INVOLVES",
+      "tl": "Character",
+      "tk": "name",
+      "tv": "苏晴"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_05",
+      "rt": "OCCURS_AT",
+      "tl": "Location",
+      "tk": "name",
+      "tv": "城中村出租屋"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_01",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E16_02"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_02",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E16_03"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_03",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E16_04"
+    },
+    {
+      "fl": "Event",
+      "fk": "id",
+      "fv": "E16_04",
+      "rt": "PRECEDES",
+      "tl": "Event",
+      "tk": "id",
+      "tv": "E16_05"
+    }
+  ],
+  "parallel_groups": {}
+}

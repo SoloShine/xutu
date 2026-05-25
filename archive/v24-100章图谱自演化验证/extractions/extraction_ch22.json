@@ -1,0 +1,228 @@
+# Persisted: 2026-05-21 11:51:09
+{
+  "events": [
+    {
+      "id": "E22_01",
+      "chapter": 22,
+      "title": "陆远修炼归来苏晚检查封印状态",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从灵脉暗河修炼回来下午到达城东废弃小楼。苏晚检查封印状态发现双层回路比早上稳定三成灵力充实很多。陆远隐瞒了第十道金色纹路的事"
+    },
+    {
+      "id": "E22_02",
+      "chapter": 22,
+      "title": "大壮和陆远聊外卖站胖姐算命旧事",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮右手绑绷带用左手吃泡面，和陆远聊起外卖站胖姐算命的旧事。胖姐曾说过大壮命中带刀（灵墟来时大壮真攥着碎砖），还说陆远掌纹很奇怪有几条线是后来长上去的"
+    },
+    {
+      "id": "E22_03",
+      "chapter": 22,
+      "title": "陆远天台冲击练气中期瓶颈失败但更近了",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傍晚陆远独自上天台尝试冲击练气中期瓶颈，双层回路灵力加压到极限时胸口传来冰裂声，瓶颈没破但门缝更宽。第十道金色痕迹位置在冲击时跳了几下"
+    },
+    {
+      "id": "E22_04",
+      "chapter": 22,
+      "title": "苏晚透露三年前天机阁端掉苏家全家被带走",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚端卤肉饭上天台两人聊天。苏晚说三年前十九岁时半夜天机阁十几人闯入苏家，她从后窗翻出躲在柴房里看到全家被带走（父亲母亲叔叔两个堂姐爷爷），爷爷看到她但没说。三年来她靠苏家屏蔽阵法在江城隐藏，查不到家人下落"
+    },
+    {
+      "id": "E22_05",
+      "chapter": 22,
+      "title": "陆远透露母亲心脏衰竭与封印有关",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远对苏晚说了父母的事：父亲车祸走的，母亲心脏衰竭突然走的前一天还好好的，后来才知道心脏衰竭与封印有关。苏晚说两人都是为了保护孩子"
+    },
+    {
+      "id": "E22_06",
+      "chapter": 22,
+      "title": "苏晚发现第九道纹路外侧异常灵力跳动陆远否认",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚检查纹路时手指停在第九道外侧，发现有微弱灵力跳动与封印核心频率不同。追问陆远修炼时碰到了什么，陆远说是灵脉暗河残留并否认。苏晚说别自己扛还有我们"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E22_01",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E22_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E22_02",
+      "character": "大壮",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E22_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E22_03",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E22_04",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E22_04",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E22_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E22_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E22_06",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E22_06",
+      "character": "陆远"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "透露三年前十九岁时天机阁半夜闯入苏家，全家被带走她从后窗逃出，爷爷看到她但没说。三年来靠苏家屏蔽阵法隐藏"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "母亲心脏衰竭突然去世与封印有关，前一天还好好的第二天就没醒"
+    },
+    {
+      "name": "大壮",
+      "field": "new_detail",
+      "content": "右手绑绷带用左手吃饭，灵墟来时真攥着碎砖（胖姐算命说命中带刀）"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵脉暗河灵力残留在纹路里，冲击瓶颈时冰裂声，第十道位置在冲击时跳动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03",
+      "action": "advanced",
+      "evidence": "苏晚亲口讲述三年前天机阁半夜闯入苏家带走全家的经过",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_01",
+      "action": "advanced",
+      "evidence": "苏晚靠祖传屏蔽阵法在江城隐藏三年避开灵脉监测网",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "冲击瓶颈时白色纹路剧烈收缩胸口尖锐刺痛，力量与代价同步增长",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "苏晚发现第九道外侧异常灵力跳动与封印核心频率不同，陆远冲击瓶颈时第十道位置跳了几下",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E22_01",
+      "to": "E22_02",
+      "type": "consequence",
+      "detail": "修炼回来后与同伴日常互动"
+    },
+    {
+      "from": "E22_02",
+      "to": "E22_03",
+      "type": "decision",
+      "detail": "聊完后上天台独自冲击瓶颈"
+    },
+    {
+      "from": "E22_03",
+      "to": "E22_04",
+      "type": "consequence",
+      "detail": "冲击失败后苏晚送饭上来引发深入对话"
+    },
+    {
+      "from": "E22_04",
+      "to": "E22_05",
+      "type": "reaction",
+      "detail": "苏晚分享过去后陆远也说了自己的家庭"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E22_04",
+      "thread_id": "ST03",
+      "type": "confirmation",
+      "detail": "苏晚亲述三年前天机阁闯入苏家的详细经过"
+    },
+    {
+      "event_id": "E22_04",
+      "thread_id": "ST06_01",
+      "type": "confirmation",
+      "detail": "确认苏家祖传屏蔽阵法是她隐藏三年的关键"
+    },
+    {
+      "event_id": "E22_06",
+      "thread_id": "ST21_01",
+      "type": "clue",
+      "detail": "苏晚也感知到第九道外侧异常灵力跳动，证实第十道纹路有客观存在"
+    },
+    {
+      "event_id": "E22_05",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "陆远母亲心脏衰竭与封印有关，暗示母亲用生命设封印的代价"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "苏晚",
+      "goal": "找到三年前被天机阁带走的家人下落",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "突破练气中期瓶颈",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "胖姐算命说陆远掌纹有几条线是后来长上去的（对应封印纹路）。苏晚爷爷在全家被带走时看到躲在柴房的她但没说。苏晚说别自己扛还有我们。玉简安静发热像手掌温度。大壮命中带刀应验"
+}

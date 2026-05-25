@@ -1,0 +1,301 @@
+# Persisted: 2026-05-21 10:53:14
+{
+  "events": [
+    {
+      "id": "E12_01",
+      "chapter": 12,
+      "title": "拆迁区夜休整等待赵铁山情报",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城南拆迁区碎石堆过夜休整。大壮带伤啃煎饼守夜，周衡安打坐恢复灵力，苏晚整理药布包。陆远观察手臂七道蓝色纹路发热，苏晚警告越碰蔓延越快。凌晨三点地脉堂中年男人送来赵铁山情报三件套：手画灵墟暗桩分布图（松鹤巷14号为主据点五人练气巅峰队长）、天机阁筑基期巡逻时间表、悬赏令完整抄本"
+    },
+    {
+      "id": "E12_02",
+      "chapter": 12,
+      "title": "陆远决定当夜突袭松鹤巷灵墟据点",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远根据赵铁山情报和增援预警决定不等三天当夜行动。苏晚反对但被陆远用逻辑说服：毁掉精确定位设备可争取两到三天缓冲。苏晚和大壮留守接应，陆远带周衡安夜袭。周衡安打坐恢复的灵力够一场短打"
+    },
+    {
+      "id": "E12_03",
+      "chapter": 12,
+      "title": "夜袭松鹤巷14号以一敌三",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远周衡安步行十五分钟抵达松鹤巷14号地下修车铺。陆远用胸口跳动点感知到五股灵力和精确定位设备。从卷帘门突入地下室监控室，直奔银白色圆盘精确定位设备，被灵力屏障挡住。三名灵墟成员围攻（短匕首灵器、灵力绳索、压缩灵力弹），陆远在狭窄楼梯口地形以一敌三逐一击退，冲到铁桌前一拳击碎精确定位设备"
+    },
+    {
+      "id": "E12_04",
+      "chapter": 12,
+      "title": "灵墟据点队长灰隼出手第八道纹路浮现",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵墟据点队长灰隼（练气巅峰，代号灰隼，灵力密度是寸头男两倍以上）出手，纯粹灵力密度碾压，一道灵力冲击波将陆远震退到楼梯台阶。第二道冲击波时陆远胸口跳动点猛跳，第八道纹路从肩膀上方浮现，比前七道都粗蓝得发黑。右拳灵力暴涨三倍，正面击碎灰隼冲击波并震退其三步打裂三层护体灵光。灰隼震惊撤退，浓烟掩护下两名灵墟成员逃脱两人被周衡安控制"
+    },
+    {
+      "id": "E12_05",
+      "chapter": 12,
+      "title": "苏晚诊断第八道纹路为主通道封印主动打开",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "战后回到拆迁区。陆远发现纹路增至八道蔓延至锁骨下方，第八道末端分出两条支流向胸口方向移动。苏晚用医修灵力检查后判断第八道与前七道性质不同：前七道是封印碎裂的裂缝，第八道是从封印核心直接延伸出的主通道。封印核心在主动打开而非被动崩解，正在执行觉醒指令。倒计时不足二十四小时"
+    },
+    {
+      "id": "E12_06",
+      "chapter": 12,
+      "title": "陆远决定明天一早东湖路灵脉节点赌博式觉醒",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "倒计时紧迫化迫使陆远做出决策：不再被动等待，明天一早去东湖路打开灵脉节点，用灵力冲击封印核心来一次赌博式彻底觉醒。周衡安在看赵铁山的地图目光停在东湖路灵脉节点位置上"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E12_01",
+      "character": "陆远",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E12_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E12_01",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E12_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "陆远",
+      "location": "松鹤巷14号"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E12_04",
+      "character": "陆远",
+      "location": "松鹤巷14号"
+    },
+    {
+      "event_id": "E12_04",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E12_04",
+      "character": "灰隼"
+    },
+    {
+      "event_id": "E12_05",
+      "character": "陆远",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E12_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E12_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E12_06",
+      "character": "周衡安"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "封印纹路从七道增至八道，蔓延至锁骨下方。第八道性质不同是从封印核心直接延伸的主通道。倒计时不足二十四小时"
+    },
+    {
+      "name": "周衡安",
+      "field": "state_change",
+      "content": "打坐恢复部分灵力，经脉仍堵三分之一，够撑一场短打"
+    },
+    {
+      "name": "灰隼",
+      "field": "new_detail",
+      "content": "灵墟松鹤巷14号据点队长，练气巅峰，灵力密度是寸头男两倍以上，深灰色外套寸头颧骨高眼神冷，被陆远第八道纹路爆发击退后撤退"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "松鹤巷14号",
+      "type": "underground_repair_shop",
+      "description": "城南老街往东三条街的地下修车铺，卷帘门拉一半，地面油污，两辆报废面包车。工具墙后有暗门通往三十平地下室，被灵墟改为监控室，三面墙挂地图标红点蓝线，铁桌上摆精确定位设备（银白色圆盘）。精确定位设备被陆远击碎"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "灰隼",
+      "role": "antagonist_7",
+      "personality": "灵墟松鹤巷据点队长，代号灰隼。三十出头寸头颧骨高，穿深灰色外套，眼神冷。练气巅峰灵力密度极高是寸头男两倍以上。战斗风格简洁纯粹灵力密度碾压不用灵器。被觉醒五天的陆远第八道纹路爆发击退后冷静撤退"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "精确定位设备发出规律灵力波动像心跳，被毁后波动消失。灰隼灵力冲击波纯粹灵力密度碾压"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "灵墟松鹤巷14号据点被突袭，精确定位设备被毁，短期内无法精确定位陆远一行",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_03",
+      "action": "advanced",
+      "evidence": "封印纹路七道增至八道，第八道是从封印核心直接延伸的主通道，封印在主动打开，倒计时不足二十四小时",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "第八道纹路浮现时胸口跳动点猛跳如重锤，纹路颜色蓝得发黑像深海，从封印核心直接延伸",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "纹路从七道增至八道蔓延至锁骨下方，第八道是主通道非裂缝，末端分出支流向胸口移动",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST10_01",
+      "action": "advanced",
+      "evidence": "灰隼被第八道纹路爆发击退后震惊撤退，会通过金属牌将觉醒者实力暴增的信息传回灵墟总部",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "陆远以觉醒五天的实力击退练气巅峰的灰隼打裂三层护体灵光，封印爆发力量远超觉醒期",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灰隼逃脱后会将觉醒者封印纹路八道且战斗力超越觉醒期的信息传回灵墟总部，灵墟可能派更高阶修士前来或重新评估悬赏令",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E12_04"
+    },
+    {
+      "content": "第八道纹路与前七道性质不同——前七道是封印碎裂的裂缝，第八道是从封印核心直接延伸出的主通道，封印核心在主动打开执行觉醒指令而非被动崩解",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E12_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E12_01",
+      "to": "E12_02",
+      "type": "decision",
+      "detail": "赵铁山情报显示灵墟增援明天到，促使陆远当夜行动"
+    },
+    {
+      "from": "E12_02",
+      "to": "E12_03",
+      "type": "escalation",
+      "detail": "夜袭松鹤巷14号突入地下室"
+    },
+    {
+      "from": "E12_03",
+      "to": "E12_04",
+      "type": "escalation",
+      "detail": "击碎设备后灰隼出手，战斗升级"
+    },
+    {
+      "from": "E12_04",
+      "to": "E12_05",
+      "type": "consequence",
+      "detail": "第八道纹路浮现导致战后蔓延加速"
+    },
+    {
+      "from": "E12_05",
+      "to": "E12_06",
+      "type": "decision",
+      "detail": "倒计时不足二十四小时迫使陆远决定赌博式觉醒"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E12_01",
+      "thread_id": "ST09_01",
+      "type": "confirmation",
+      "detail": "赵铁山情报确认灵墟松鹤巷14号为主据点有精确定位设备"
+    },
+    {
+      "event_id": "E12_03",
+      "thread_id": "ST09_01",
+      "type": "clue",
+      "detail": "灵墟据点有完整监控室三面墙地图和精确定位设备，显示灵墟组织化程度高"
+    },
+    {
+      "event_id": "E12_04",
+      "thread_id": "ST01_03",
+      "type": "clue",
+      "detail": "第八道纹路从肩膀浮现时胸口跳动点猛跳，颜色蓝得发黑，力量暴涨三倍"
+    },
+    {
+      "event_id": "E12_04",
+      "thread_id": "ST04_01",
+      "type": "confirmation",
+      "detail": "觉醒五天的陆远正面击碎练气巅峰灰隼的冲击波并打裂三层护体灵光"
+    },
+    {
+      "event_id": "E12_05",
+      "thread_id": "ST09_03",
+      "type": "confirmation",
+      "detail": "苏晚确认第八道是封印核心主通道，封印在主动打开，倒计时不足二十四小时"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "明天一早东湖路灵脉节点用灵力冲击封印核心赌博式觉醒",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "毁掉灵墟精确定位能力争取缓冲时间",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "精确定位设备为银白色圆盘巴掌大表面刻满细纹。灵墟成员使用浓烟弹撤退手段。灰隼代号首次出现。赵铁山情报通过灰色工装外套土黄圆章的地脉堂信使传递。悬赏令完整内容为毛笔字迹三颗金丹期丹药不限量收购长期有效，落款灵墟印方章"
+}

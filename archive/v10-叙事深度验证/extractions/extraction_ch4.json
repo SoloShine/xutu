@@ -1,0 +1,161 @@
+{
+  "events": [
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "走廊擦拭新月形凹陷",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "白羽在濒死频闪的走廊灯光下，用冰冷纯水浸透的抹布，以病态的虔诚反复刮擦墙面上一个新月形的凹陷，试图将其边缘抹除、模糊。"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "发现认罪书草稿来源",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青在抽屉深处摸到一张不自然的钴蓝色复写纸底联，确认这是十分钟内凭空出现的认罪书草稿的物理来源，推断有人曾握住他的手强迫书写。"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "抽出黄铜钥匙",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青从复写纸右下角抽出一把布满暗红锈斑的黄铜钥匙，钥匙握柄末端的缺口与白羽擦拭的新月形凹陷在几何拓扑上完全一致。"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "医务室登记与修复",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周默以类似握持手术刀的精准姿势在体温单上写下不存在的05号床数据，笔尖压穿纸面留下一道新月形裂口后，他用医用胶带将其强行抹平修复。"
+    },
+    {
+      "id": "E4_05",
+      "chapter": 4,
+      "title": "洗手间发现手背疤痕",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青在洗手间的镜前发现左手手背静脉交汇处有一道极浅的完美新月形疤痕，脑海中毫无关于这道疤痕的疼痛、流血或包扎记忆，触碰时感到生锈金属划过皮肤的隐痛。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E4_01",
+      "character": "白羽",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "林见青",
+      "location": "林见青的房间"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "林见青",
+      "location": "林见青的房间"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "周默",
+      "location": "医务室"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "林见青",
+      "location": "洗手间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "白羽",
+      "field": "new_detail",
+      "content": "用纯水反复刮擦墙面上特定的新月形凹陷，动作带有病态的虔诚，试图抹除痕迹。"
+    },
+    {
+      "name": "林见青",
+      "field": "new_detail",
+      "content": "发现左手手背静脉交汇处有一道完美的新月形疤痕，无任何相关记忆，触碰时有生锈金属划过的隐痛。"
+    },
+    {
+      "name": "周默",
+      "field": "new_detail",
+      "content": "以类似握持手术刀的精准角度握笔；强迫性地记录不存在的05号床数据，笔尖压破纸张后用胶带强行修复裂口。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "走廊",
+      "type": "室内",
+      "description": "灯光频闪，铺有墨绿色地毯，散发墙体渗水和铁锈海腥味的疗养院走廊"
+    },
+    {
+      "name": "林见青的房间",
+      "type": "室内",
+      "description": "有老旧木头霉味的房间，内有带抽屉的桌子和台灯"
+    },
+    {
+      "name": "医务室",
+      "type": "室内",
+      "description": "有金属办公桌和白炽灯，常年散发来苏水气味"
+    },
+    {
+      "name": "洗手间",
+      "type": "室内",
+      "description": "无窗，有排风扇和不锈钢水槽，镜面边缘泛黑且有腐蚀点"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "新月形",
+      "context": "白羽擦拭的墙面凹陷、黄铜钥匙的缺口、周默压出的纸张裂口、林见青手背的疤痕，四处呈现完全一致的几何拓扑形状"
+    },
+    {
+      "motif": "生锈",
+      "context": "钥匙表面的暗红锈斑带来粗糙扎手的触感，手背疤痕触碰时感受到生锈金属划过皮肤的隐痛"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03_02",
+      "action": "resolved",
+      "evidence": "在抽屉深处发现一张钴蓝色的复写纸底联，确认认罪书草稿并非来自旧书，而是复写纸",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST04",
+      "action": "advanced",
+      "evidence": "在镜中发现手背有一道完美的新月形疤痕，无记忆且触碰有生锈金属感，与钥匙缺口形状一致",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "周默在体温单上写下不存在的05号床记录，与餐厅第五个空位置的汤形成数字对应",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "黄铜钥匙的新月形缺口与墙面凹陷、纸张裂口、手背疤痕完全一致，这把钥匙能打开什么？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E4_03"
+    },
+    {
+      "content": "周默登记的05号床在物理记录中不存在，这个位置上的人去了哪里？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_04"
+    }
+  ],
+  "notes": "本章大量出现“新月形”这一几何图形的复现（墙面、钥匙、纸张、疤痕），形成强烈的视觉与物理联系；林见青对疤痕的无记忆与对认罪书的无记忆形成平行的“身体被入侵”体验；周默修复纸张裂口的行为与白羽抹除墙面凹陷的行为具有同构的掩盖倾向。"
+}

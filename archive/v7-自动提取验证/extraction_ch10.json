@@ -1,0 +1,65 @@
+{
+  "events": [
+    {
+      "id": "E10_01",
+      "chapter": 10,
+      "title": "篱墙外听童谣",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "十年过去，村庄山水、麻雀太阳均未改变，生死轮回如旧。王婆在篱墙外吹着凉风，远听山坡传来的十年前旧童谣，感叹除了平儿和罗圈腿长大成人外，一切如旧。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E10_01",
+      "character": "老王婆",
+      "location": "篱墙外"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "平儿"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "罗圈腿"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "平儿",
+      "field": "new_detail",
+      "content": "十年过去，已经长大成人"
+    },
+    {
+      "name": "罗圈腿",
+      "field": "new_detail",
+      "content": "十年过去，已经长大成人"
+    },
+    {
+      "name": "老王婆",
+      "field": "state_change",
+      "content": "十年过去看似没有改变，在凉风中听山坡传来的童谣"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "篱墙外",
+      "type": "室外",
+      "description": "村庄内的篱笆墙外"
+    },
+    {
+      "name": "村中山坡",
+      "type": "自然景观",
+      "description": "山下小河旁，有牧童唱童谣的山坡"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "童谣",
+      "context": "牧童在山坡唱的十年前旧调：“秋夜长，秋风凉，谁家的孩儿没有娘……月亮满西窗”，暗示悲凉与时间的轮回"
+    }
+  ],
+  "notes": "环境呈现出一种停滞与轮回的基调，十年如一日，村庄的生老病死如同自然循环，只有人物的年龄发生了变化。"
+}

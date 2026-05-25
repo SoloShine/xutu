@@ -1,0 +1,167 @@
+{
+  "events": [
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "暗房显影与数字发现",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在暗房显影盘前冲洗底片，发现四张底片拍摄的同一处暗管标牌上分别标有'7'、'14'、'21'、'28'的数字，他翻开暗红色牛皮日记本，发现里面整齐排列着相同的数字序列。"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "停电后的手电扫视与暗处躲藏",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "暗房白炽灯熄灭陷入黑暗，陈若竹打出手电筒扫视墙壁、水管，光束最终停留在沉淀池边缘生锈的铁皮柜上；与此同时，林素云正紧贴在铁皮柜另一侧躲避，围裙口袋里藏着印有数字表格的纸片，注视着暗管喷出带有化学气味的红水。"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "破解排污记录密码",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹用手电筒照亮日记本，发现数字后跟有铅笔标记，通过对比底片中暗管的启闭状态和水流大小，他推断出圆圈代表关闭、横线代表微开、叉号代表全开，日记本记录的是每月四次固定排污的时间与排量，记录终止于某一年的12月28日。"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "划痕、水垢与逼近的危机",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹关手电前光束扫过铁皮柜，发现侧面有三道平行划痕，底部残留灰色棉絮，柜门内侧的红水水垢纹路与日记本第一页的圆形印记如出一辙；此时赵建国从沉淀池对面的阴影中走出，手电光束逼近铁皮柜折角，红水正一毫米一毫米地向林素云所在的柜底蔓延。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E4_01",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "林素云",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "林素云",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "赵建国",
+      "location": "暗房"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_attitude",
+      "content": "通过对比底片和日记本，展现出极强的逻辑推理能力，成功破译数字与标记代表的排污周期和排量规律。"
+    },
+    {
+      "name": "林素云",
+      "field": "state_change",
+      "content": "极度紧张，后背死死抵住柜体内壁，因恐惧和闷热导致汗水浸湿围裙，口袋里的纸片折痕被汗水泡软，数字开始模糊。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "围裙口袋里藏着一叠从车间废料堆捡来的边角料纸片，上面印有模糊的数字和表格线。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "暗房",
+      "type": "室内工作间",
+      "description": "包含显影盘、晾衣绳、沉淀池、生锈的铁皮柜和暗管，墙面布满霉斑，地面为青砖，有卷帘门。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "暗管中喷出带有刺鼻化学气味和暗淡磷光的红水，像凝固的暗褐色，在沉淀池表面扩散并逐渐向铁皮柜底部蔓延。"
+    },
+    {
+      "motif": "铁锈",
+      "context": "暗房内水管、铁皮柜、暗管标牌均布满铁锈，折角处的锈蚀像干裂的树皮一样翘起，墙角相纸覆盖着铁锈色粉末。"
+    },
+    {
+      "motif": "数字",
+      "context": "底片标牌上的7、14、21、28与日记本中的数字序列及林素云口袋里的数字纸片形成多重对应。"
+    },
+    {
+      "motif": "光束",
+      "context": "手电筒的光束在黑暗的暗房中缓慢移动，像刀片一样切割空间，揭示出水管、划痕和逼近的危机。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "发现红水从暗管口间歇性涌出，带有刺鼻化学气味，且每月固定四次排污周期。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "印记颜色与底片上红水色调完全一致，且柜门内侧红水水垢的纹路与印记如出一辙，推断是红水渗入纸张干涸形成。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "陈若竹在暗房铁皮柜侧面发现间距均匀的三道划痕，底部残留与围裙布料纹理一致的灰色棉絮。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST02_02",
+      "action": "advanced",
+      "evidence": "陈若竹推断出底片数字和日记本数字对应每月的排污日期（7的倍数），日记本后的标记对应排污量（关闭、微开、全开）。",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "林素云冒死藏在围裙口袋里的数字与表格纸片具体记录了什么信息？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_02"
+    },
+    {
+      "content": "赵建国手电筒光束在铁皮柜折角处停顿，他是否已经察觉到柜后的林素云？",
+      "importance": "high",
+      "thread_type": "climax",
+      "planted_event_id": "E4_04"
+    },
+    {
+      "content": "日记本的记录为何突然终止于某一年的12月28日，期间发生了什么？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_03"
+    }
+  ],
+  "notes": "红水具有强烈的化学气味，几乎凝成实体，水面泛着暗淡的磷光；铁皮柜铰链被锈死，仅下半部分有松动并渗入红水；日记本最后一页之后是几页被水浸泡粘连的空白纸。"
+}

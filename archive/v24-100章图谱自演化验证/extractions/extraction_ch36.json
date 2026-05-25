@@ -1,0 +1,238 @@
+# Persisted: 2026-05-21 12:50:21
+{
+  "events": [
+    {
+      "id": "E36_01",
+      "chapter": 36,
+      "title": "陆远苏晚从灵脉暗河返回地面沿隐蔽路线回安全屋",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从铁盖爬出灵脉暗河，金色纹路完全熄灭身体虚弱需苏晚搀扶。两人绕路不走大路避免灵脉监测网，经菜市场后门碎石路返回安全屋，陆远腿发抖但坚持行走"
+    },
+    {
+      "id": "E36_02",
+      "chapter": 36,
+      "title": "苏晚全面检查陆远——封印核心最稳但金色纹路枯竭",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用银针全面检查陆远身体，封印核心比之前任何一次都稳像被卡住，但金色纹路灵力枯竭需至少24小时恢复微弱发光。灵力通道内壁轻微磨损，身体透支状态"
+    },
+    {
+      "id": "E36_03",
+      "chapter": 36,
+      "title": "苏晚研究玉盒——特定频率共鸣但无法打开",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用银针灵力探测玉盒，发现花纹在特定灵力频率下产生微弱共鸣，金色花纹闪了不到半秒又灭了。玉盒无锁无缝隙无机关，整块玉料浑然一体，硬度超过任何灵器，暴力破开可能伤到里面东西"
+    },
+    {
+      "id": "E36_04",
+      "chapter": 36,
+      "title": "大壮来电——安全屋外围两组陌生灵力波动逼近",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮报告安全屋外围两公里出现两组陌生灵力波动，一组东来灵力质感板正疑似天机阁，一组南来灵力质感脏沾泥巴疑似灵墟。两组正向安全屋方向地毯式搜索，预计6-8小时到达，灵脉监测网定位到暗河波动可能更快"
+    },
+    {
+      "id": "E36_05",
+      "chapter": 36,
+      "title": "周衡安短信示警——注意南侧",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安发来四字短信'注意南侧'，与大壮报告的南侧脏灵力波动方向吻合，周衡安似乎在暗中监视局势"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E36_01",
+      "character": "陆远",
+      "location": "灵脉暗河一层"
+    },
+    {
+      "event_id": "E36_01",
+      "character": "苏晚",
+      "location": "灵脉暗河一层"
+    },
+    {
+      "event_id": "E36_02",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_02",
+      "character": "苏晚",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_03",
+      "character": "苏晚",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_03",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E36_04",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_04",
+      "character": "苏晚",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_05",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E36_05",
+      "character": "周衡安"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色纹路灵力完全枯竭需24小时恢复，身体透支灵力通道轻微磨损，封印核心异常稳定像被卡住"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "研究玉盒时发现花纹有灵力共鸣但频率不对，描述共鸣像'隔着墙叫一个人的名字那个人听到但不敢回答'"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "两组灵力波动逼近安全屋，一组板正一组脏，灵脉监测网可能定位到暗河波动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST35_01",
+      "action": "advanced",
+      "evidence": "苏晚用银针灵力探测发现玉盒花纹在特定频率下产生微弱共鸣但无法打开，玉盒整块玉料浑然一体硬度超灵器",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "48小时已用12小时剩36小时，两组灵力波动正地毯式搜索逼近安全屋预计6-8小时到达",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST13_01",
+      "action": "advanced",
+      "evidence": "大壮报告东来灵力波动质感板正疑似天机阁",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "大壮报告南来灵力波动质感脏沾泥巴疑似灵墟，不同于天机阁",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "周衡安发短信'注意南侧'与大壮报告的南侧灵力波动方向吻合",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "金色纹路灵力枯竭需24小时恢复，身体透支灵力通道磨损，封印核心异常稳定被卡住",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "南侧脏灵力波动的具体身份——大壮说不像天机阁灵力质感脏沾泥巴，周衡安特意提醒注意南侧，南来的到底是什么势力？是灵墟还是另一个未知势力",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E36_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E36_01",
+      "to": "E36_02",
+      "type": "consequence",
+      "detail": "返回安全屋后身体虚弱需要全面检查"
+    },
+    {
+      "from": "E36_02",
+      "to": "E36_03",
+      "type": "investigation",
+      "detail": "检查完身体后苏晚转向研究玉盒"
+    },
+    {
+      "from": "E36_04",
+      "to": "E36_05",
+      "type": "confirmation",
+      "detail": "大壮报告南侧灵力波动后周衡安短信确认南侧威胁"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E36_03",
+      "thread_id": "ST35_01",
+      "type": "clue",
+      "detail": "玉盒花纹在特定灵力频率下共鸣但无法打开，需要特定频率或条件"
+    },
+    {
+      "event_id": "E36_04",
+      "thread_id": "ST13_01",
+      "type": "clue",
+      "detail": "东来灵力波动质感板正疑似天机阁仍在搜索"
+    },
+    {
+      "event_id": "E36_04",
+      "thread_id": "ST09_01",
+      "type": "clue",
+      "detail": "南来灵力波动质感脏不像天机阁可能是灵墟"
+    },
+    {
+      "event_id": "E36_05",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "周衡安短信示警南侧与南侧脏灵力波动吻合，周衡安在暗中监视局势"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "在金色纹路恢复前找到打开玉盒的方法",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "研究玉盒打开方式同时控制灵力共鸣不被外面发现",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "在外部势力找到安全屋之前恢复战斗力",
+      "type": "fear",
+      "status": "new"
+    }
+  ],
+  "notes": "48小时倒计时已用12小时剩36小时。陆远觉醒后闻到烟草味就恶心，身体本能排斥低浓度灵力以外的东西。玉盒共鸣被描述为'隔着墙叫一个人的名字那个人听到但不敢回答'"
+}

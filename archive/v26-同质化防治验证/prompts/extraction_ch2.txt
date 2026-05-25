@@ -1,0 +1,146 @@
+# Persisted: 2026-05-22 21:04:15
+你是一个小说结构化数据提取器。请从以下章节文本中提取结构化信息。
+
+## 已有图谱中的人物
+  - 沈渡(主角)
+  - 无名来电者(关键人物)
+  - 苏岚(配角)
+  - 林小微(线索人物)
+  - 陈默(嫌疑人)
+
+## 已有悬念线
+  - ST01_01: 来电者三年前也报过警——'也是一条巷子，也是一扇门，也是一个人走进去'——三年前发生了什么？ [planted]
+  - ST02_01: 沈渡的前记者经历——那篇"报道失误"的真相是什么？这个过去是否与当前事件有隐秘关联？ [planted]
+  - ST03_01: 来电者每次通话都恰好发生在案件的关键时间节点——他似乎能预知下一步。他是如何做到的？ [planted]
+  - ST04_01: 废弃印刷厂地下室里发现了什么？铁门上的锁是谁破坏的？ [planted]
+  - ST01_02: 巷子里的男人拿着什么反光金属物品？为什么说'不是刀'？ [planted]
+  - ST01_03: 来电者最后说'你在直播，你动了就什么都没有了'——他是威胁还是在保护沈渡？ [planted]
+
+## 粒度控制（最重要）
+
+事件按"场景"粒度提取，每章目标5-8个事件。
+
+**合并规则：**
+- 同一地点、同一时段 = 1个事件。如"渡口坐一下午"是1个事件，不要拆成"坐下"+"看河"+"想A"+"想B"
+- 同一场景内的回忆内容放进detail，回忆中涉及的人物放进event_relations（不设location或只设回忆发生的地点）
+- 心理活动和内心变化：如果发生在同一场景中，合并到该场景事件，放进detail
+
+**拆分规则：**
+- 不同地点 = 不同事件。如"渡口坐一下午"和"回家修椅子"是2个事件
+- 同一地点但有明确时间跳跃 = 可拆分。如"渡口下午"和"大巴离开"是2个事件
+- 独立的gap体验 = 独立事件，不管发生在什么场景中
+
+**细节归档：**
+- 人物回忆的具体内容 → character_updates
+- 微小日常细节（如尝到菜味、某个新习惯）→ character_updates
+- 象征性细节、伏笔 → motif_mentions 或 notes
+- 不要为了保留细节而拆分场景
+
+## 间隙的精确定义
+
+间隙（gap）= 意识在停顿中滑出身体，从外部看到自己。特征：世界静音、看到自己的身体、感受到密度/重量。
+
+以下**不是**间隙：
+- 活在当下的觉醒（如尝到菜的味道、第一次注意到某个细节）→ 这是character_updates中的state_change
+- 情感波动或内心变化 → 这是turning事件但is_gap=false
+- 普通的走神或回忆 → 归入所在场景的detail
+
+## 地点规则
+
+- 只使用已有地点或new_locations中声明的新地点
+- 回忆中出现的人物不设location（回忆没有物理地点）
+- 新地点必须在new_locations中同时声明
+- 地点名称保持一致（不要"大巴"和"大巴上"混用）
+
+## 悬念线检测
+
+识别本章中悬念线索的变化：
+- **planted（埋下）**：引入新的未解问题、神秘细节或暗示未来发展的信息
+- **advanced（推进）**：已有悬念出现新的线索或转折
+- **resolved（解决）**：之前的悬念得到了明确答案或收束
+- **隐含解决检测**：如果本章情节使某个悬念线的问题得到回答（即使文中未直接提及该悬念线），也应标记
+- 判断标准：读者读完后是否已经知道答案
+- 例如：悬念"胶卷记录了什么"——本章展示了冲洗后的照片内容，即使没写"胶卷之谜解开了"，也应标记resolved
+- 如果本章没有悬念变化，返回空数组
+
+## 因果链
+
+每个事件不是孤立的，要识别事件之间的因果关系：
+- **causal_links** 记录哪个事件导致了哪个事件，以及因果类型
+- 因果类型：reaction（被动反应）、investigation（主动调查）、escalation（冲突升级）、revelation（真相揭露）、decision（角色决定）、consequence（自然后果）
+- 只记录本章内的事件间因果关系（跨章因果关系已由事件时序隐含）
+- 如果本章事件之间没有明确因果，返回空数组
+
+## 证据链
+
+追踪悬念线的证据支撑：
+- **evidence_links** 记录本章哪些事件为哪些悬念线提供了证据/线索
+- 证据类型：clue（直接线索）、connection（关联发现）、misdirection（误导性线索）、confirmation（确认性证据）
+- 即使悬念线本章没有被推进或解决，也可能产生了新证据
+- 例如：老孟看到排污记录（事件），为"排污持续"这个悬念提供了clue（证据）
+
+## 角色目标
+
+识别本章中角色驱动力：
+- **character_goals** 记录角色的追求或恐惧
+- 目标类型：pursue（主动追求）、fear（害怕/回避）、protect（保护某物/某人）、duty（责任义务）
+- 只记录本章新出现的目标或发生重大变化的目标（已在图谱中的不需要重复）
+
+## 返回格式
+
+返回严格合法的JSON：
+{
+  "events": [
+    {
+      "id": "E{chapter}_01",
+      "chapter": 2,
+      "title": "场景标题",
+      "type": "gap|daily|turning|character|background|climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "一句话描述这个场景发生了什么（可包含该场景内的回忆和思考）"
+    }
+  ],
+  "event_relations": [
+    {"event_id": "E2_01", "character": "陆沉", "location": "渡口"},
+    {"event_id": "E2_01", "character": "回忆中的人物名"}
+  ],
+  "character_updates": [
+    {
+      "name": "人物名",
+      "field": "new_habit|new_attitude|new_detail|new_relationship|state_change",
+      "content": "具体内容"
+    }
+  ],
+  "new_locations": [
+    {"name": "地点名", "type": "类型", "description": "描述"}
+  ],
+  "new_characters": [
+    {"name": "人物名", "role": "角色类型", "personality": "性格描述"}
+  ],
+  "motif_mentions": [
+    {"motif": "手|渡口|水|灰尘|程序|速度", "context": "场景描述"}
+  ],
+  "thread_updates": [
+    {"thread_id": "ST01", "action": "advanced", "evidence": "文本中的依据", "new_status": "planted|partially_resolved|resolved"}
+  ],
+  "new_threads": [
+    {"content": "悬念内容描述", "importance": "high|medium|low", "thread_type": "foreshadowing|clue|mystery|character_arc", "planted_event_id": "E{chapter}_01"}
+  ],
+  "causal_links": [
+    {"from": "E{chapter}_01", "to": "E{chapter}_02", "type": "reaction|investigation|escalation|revelation|decision|consequence", "detail": "简述因果关系"}
+  ],
+  "evidence_links": [
+    {"event_id": "E{chapter}_01", "thread_id": "ST01_01", "type": "clue|connection|misdirection|confirmation", "detail": "该事件为悬念提供了什么证据"}
+  ],
+  "character_goals": [
+    {"character": "人物名", "goal": "目标描述", "type": "pursue|fear|protect|duty", "status": "new|advanced|achieved|abandoned"}
+  ],
+  "notes": "值得记录的新细节：新的人物习惯（如对猫过敏）、新的物品设定、伏笔、环境细节变化等"
+}
+
+## 章节文本
+
+placeholder
+
+请返回纯JSON，不要包含任何其他文字。

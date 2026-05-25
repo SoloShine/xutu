@@ -1,0 +1,260 @@
+# Persisted: 2026-05-21 11:36:16
+{
+  "events": [
+    {
+      "id": "E19_01",
+      "chapter": 19,
+      "title": "陆远全力回援城东感知灵墟包围据点",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从城北江边跑回城东居民区用了二十分钟，途中三次灵力加速使封印刺痛加剧嘴里尝到铁锈味。到达城东时灵力感知到五股灵力已包围据点：两股练气初期、两股练气后期、一股练气后期巅峰（石沉）"
+    },
+    {
+      "id": "E19_02",
+      "chapter": 19,
+      "title": "城东据点被攻破周衡安重伤大壮被打苏晚被捉",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城东据点已被攻破。周衡安在巷道中与灵墟练气后期前锋交手被击伤灵力耗尽半跪在地左肩衣服破一大片青紫淤伤。大壮用纯体术拖住两名练气初期修士被打得嘴角出血右手废了还攥着碎砖。苏晚被两名灵墟修士架着双臂活捉手腕戴黑色灵力锁链"
+    },
+    {
+      "id": "E19_03",
+      "chapter": 19,
+      "title": "石沉以苏晚为人质要封印血脉样本陆远拒绝",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵墟领队石沉出现，深蓝风衣高瘦领子竖起，灵力如烧红铁锭又沉又硬。石沉要陆远交出一滴封印血脉样本换苏晚安全，陆远拒绝。石沉释放灵力压制像一堵移动的墙朝陆远推来"
+    },
+    {
+      "id": "E19_04",
+      "chapter": 19,
+      "title": "九道纹路与玉简深层共振爆发灵力冲击波逼退石沉",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在绝境中往前走一步，玉简突然变得滚烫与封印核心同时炸开热量。九道纹路从手背到胸口同时亮蓝光，手臂脖子脸上都透出蓝光。玉简和封印核心完全合二为一触发的灵力冲击波从胸口扩散，蓝色光圈一环接一环炸开冲碎石沉的灵力压制。石沉后退两步表情从冷静变为震惊"
+    },
+    {
+      "id": "E19_05",
+      "chapter": 19,
+      "title": "陆远救苏晚四人突围第二层封印被动打开",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远趁石沉后退冲向苏晚，指尖灵力碎她手腕灵力锁链。大壮拖周衡安往巷子深处跑。石沉追击释放黑色灵力箭被陆远九道纹路自动屏障挡住。四人穿过棚户区逃到废弃二层小楼。突围中胸口传来冰面裂开的声音，第二层封印裂了一道缝，新的白色纹路从胸口正中浮现"
+    },
+    {
+      "id": "E19_06",
+      "chapter": 19,
+      "title": "废弃小楼内苏晚诊断第二层封印已打开",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "废弃小楼内四人暂时安全。陆远胸口九道纹路暗下去但封印核心位置浮现新的白色纹路（非蓝色），如凝固的闪电。苏晚诊断第二层封印已打开，力量比之前大三倍但疼痛也大三倍。玉简灵力消耗很多纹路变暗，共振仍在继续微弱跳动。七天时限还在"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E19_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E19_02",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E19_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E19_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E19_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E19_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E19_04",
+      "location": "城东据点"
+    },
+    {
+      "event_id": "E19_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E19_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E19_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E19_05",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E19_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E19_06",
+      "character": "苏晚"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "第二层封印被动打开，胸口封印核心浮现白色纹路（非蓝色），力量增强三倍但代价也三倍"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "右手被打废，嘴角受伤，仍坚持战斗"
+    },
+    {
+      "name": "周衡安",
+      "field": "state_change",
+      "content": "灵力耗尽，左肩受伤，被大壮拖着跑"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "被灵墟活捉戴灵力锁链后被陆远救出，诊断陆远第二层封印已打开"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城东废弃小楼",
+      "type": "临时避难所",
+      "description": "城东棚户区废弃二层小楼，四人突围后的临时藏身处"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "九道纹路同时亮蓝光，玉简与封印核心共振触发灵力冲击波，蓝色光圈一环接一环炸开"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "大壮攥着碎砖战斗，日常物品化为武器"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "第二层封印被动打开，胸口浮现白色纹路，力量大三倍但疼痛也大三倍",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "灵墟领队石沉练气后期巅峰接近筑基期，以苏晚为人质要封印血脉样本",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "九道纹路与玉简深层共振爆发出远超练气中期的力量，石沉震惊问'这是什么东西'",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST17_01",
+      "action": "advanced",
+      "evidence": "玉简在极端情绪下与封印核心完全合二为一，触发自动防御机制",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST18_01",
+      "action": "resolved",
+      "evidence": "灵墟调虎离山之计已执行，城东据点被攻破但四人突围成功",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST16_01",
+      "action": "advanced",
+      "evidence": "玉简灵力消耗很多纹路变暗但仍与封印核心保持微弱共振",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "第二层封印被动打开——陆远身体能否承受三层以上的封印力量成为新矛盾，白色纹路性质未知可能与上界至宝有直接关联",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E19_06"
+    },
+    {
+      "content": "灵墟领队石沉亲历灵力冲击波——他看到了九道纹路与玉简共鸣释放的远超练气中期的力量，这个信息会传回灵墟总部",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E19_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E19_01",
+      "to": "E19_02",
+      "type": "escalation",
+      "detail": "陆远赶到时据点已被攻破"
+    },
+    {
+      "from": "E19_03",
+      "to": "E19_04",
+      "type": "escalation",
+      "detail": "石沉以人质威胁导致陆远绝境爆发"
+    },
+    {
+      "from": "E19_04",
+      "to": "E19_05",
+      "type": "consequence",
+      "detail": "灵力冲击波逼退石沉后四人趁乱突围"
+    },
+    {
+      "from": "E19_05",
+      "to": "E19_06",
+      "type": "consequence",
+      "detail": "灵力过度使用导致第二层封印被动打开"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E19_04",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "九道纹路与玉简共鸣释放远超练气中期的力量证明封印核心蕴含极强力量"
+    },
+    {
+      "event_id": "E19_05",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "过度使用灵力导致第二层封印被动打开印证苏晚之前关于代价累积的判断"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "在七天时限内决定是否交出上界至宝同时保护同伴安全",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "适应第二层封印打开后的力量和代价",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "石沉：灵墟领队，练气后期巅峰接近筑基期，高瘦深蓝风衣领子竖起，灵力质感如烧红铁锭。第二层封印打开后浮现白色纹路（前九道为蓝色），性质不同。大壮右手被打废。周衡安灵力耗尽左肩重伤。灵力冲击波是玉简和封印核心自动触发而非陆远主动释放"
+}

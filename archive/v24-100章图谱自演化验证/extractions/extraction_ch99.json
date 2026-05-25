@@ -1,0 +1,118 @@
+# Persisted: 2026-05-21 17:17:19
+{
+  "events": [
+    {
+      "id": "E99_01",
+      "chapter": 99,
+      "title": "陆远和苏晚第二次吃红烧肉",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周五晚上七点城南红烧肉。苏晚换了白色短袖衬衫戴了银色小耳钉。点红烧肉清炒莴笋紫菜蛋花汤。苏晚问陆远有没有想过以后。陆远说没有。苏晚说你就一直送外卖不觉得浪费吗。陆远说这是我的人生。我知道至宝里面有什么门后面是什么但那是另一扇门我可以选择不开。因为我想送外卖。苏晚说你是这个人但语气变了。苏晚给陆远打包了剩下的红烧肉。"
+    },
+    {
+      "id": "E99_02",
+      "chapter": 99,
+      "title": "两个人走路回城南经过大壮出租屋灯关了",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "吃完饭两个人走路回城南。经过大壮出租屋窗户暗着灯关了老周睡了。苏晚问老周身体说还行灵力在消。经过烧烤摊孜然味飘过来。周五晚上的街上人很多。"
+    },
+    {
+      "id": "E99_03",
+      "chapter": 99,
+      "title": "苏晚在巷口告别说明天见",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城南旧居巷口分別。苏晚说明天送外卖到中医院找她带奶茶。陆远说每次都带奶茶怕糖尿病苏晚说你不喝会低血糖。苏晚说明天见。陆远说好。苏晚白色衬衫在路灯下走远消失。"
+    },
+    {
+      "id": "E99_04",
+      "chapter": 99,
+      "title": "陆远回到出租屋和母亲关于偷听的对话",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回到出租屋。手放在外卖箱上极微弱灵力在流动像很深的地下河。接了明天东湖路牛肉面的单。问母亲红烧肉好吃吗。母亲说嗯。陆远说你偷听了吧你笑了封印核心跳快了零点二秒。母亲说是心律不齐。陆远说你闭嘴。母亲在封印核心深处安静地笑着。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E99_01",
+      "character": "陆远",
+      "location": "城南红烧肉店"
+    },
+    {
+      "event_id": "E99_01",
+      "character": "苏晚",
+      "location": "城南红烧肉店"
+    },
+    {
+      "event_id": "E99_02",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E99_02",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E99_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E99_03",
+      "character": "陆远",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E99_03",
+      "character": "苏晚",
+      "location": "城南旧居巷口"
+    },
+    {
+      "event_id": "E99_04",
+      "character": "陆远",
+      "location": "城南旧居出租屋"
+    },
+    {
+      "event_id": "E99_04",
+      "character": "陆承",
+      "location": "城南旧居出租屋"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "穿白色短袖衬衫戴银色小耳钉赴约。给陆远打包红烧肉汤。说你不喝奶茶会低血糖。感情升温但没捅破"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "明确表达选择：我知道至宝里面有什么门后面是什么但那是另一扇门我可以选择不开因为我想送外卖。这是凡与仙的终极态度"
+    },
+    {
+      "name": "陆承",
+      "field": "state_change",
+      "content": "封印核心跳快了零点二秒。在深处安静地笑着。和陆远的互动更加亲密轻松"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "手放在外卖箱上极微弱灵力在流动像很深很安静的地下河"
+    }
+  ],
+  "thread_updates": [],
+  "new_threads": [],
+  "causal_links": [],
+  "evidence_links": [],
+  "character_goals": [],
+  "notes": "凡与仙主题终极落地：陆远明确选择凡人生活不是因为没得选而是主动选择。苏晚感情线温暖推进：打包给陆远说低血糖说明天见。母亲和陆远互动更亲密：偷听拌嘴封印核心笑。红烧肉二刷是感情线收束符号。"
+}

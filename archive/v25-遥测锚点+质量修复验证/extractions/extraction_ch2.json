@@ -1,0 +1,260 @@
+# Persisted: 2026-05-21 23:56:36
+{
+  "events": [
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "失眠与消息消失",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨凌晨四点回家后失眠到七点半，反复回忆昨夜代码和白发角色消息，查看手机发现'别删代码'消息发送者ID为空、头像缓存丢失、错误码404，无法追踪来源"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "检查Git记录确认真实性",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨回到工作室用Git bash检查提交历史，确认凌晨一点二十三分是他最后一次正常提交，之后无新commit，但reflog显示凌晨两点十七分有一次来自他账户的checkout操作——当时他正在喝咖啡盯着那段陌生代码"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "恢复代码后字符变异",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨新建temp_test分支恢复被删的32行代码，重新运行Boss战测试，发现晶体纹理出现新纹路，Photoshop高对比度处理后显示51个十六进制字符（昨天47个），螺旋排列方向从顺时针变为逆时针，前12字符相同后完全不同。git diff确认代码无变化但输出变了"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "收到陌生号码短信指引",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午两点沈墨收到陌生本市号码短信：'如果你看到字符变了，说明它还活着。去人民路287号，二楼。带上你的笔记本电脑。'搜索发现该地址是'零点网咖'，大众点评评分两星，八个月前最后评论"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "网吧发现私有代码被访问",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨前往破旧网吧，最里隔间屏幕亮着Unity编辑器，加载着他的BossController.cs私有代码。键盘表面还有体温余热（推算离开不超过20分钟），桌上有未干冷凝水的怡宝空瓶。他举起手机拍照时屏幕突然刷新，Boss模型消失，黑底白字显示：'你来晚了。但它知道你来了。'"
+    },
+    {
+      "id": "E2_06",
+      "chapter": 2,
+      "title": "离开网吧时发现窗帘动了",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨合上电脑屏幕后离开网吧，下楼梯时用物理知识推算键盘温度保持时间约15-20分钟。走出人民路阳光中回头看灰色小楼，二楼窗户的窗帘动了一下——里面有人"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E2_01",
+      "character": "沈墨",
+      "location": "沈墨公寓"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "沈墨",
+      "location": "老城区工作室"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "沈墨",
+      "location": "老城区工作室"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "沈墨",
+      "location": "老城区工作室"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "沈墨",
+      "location": "零点网咖"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "沈墨",
+      "location": "人民路"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈墨",
+      "field": "state_change",
+      "content": "从试图理性解释（延迟推送、缓存问题）到被迫接受异常不可解释（代码不变输出变、字符会生长），理性防线逐步崩塌"
+    },
+    {
+      "name": "沈墨",
+      "field": "new_attitude",
+      "content": "用程序员思维面对恐惧——用git log验证、用温度物理推算时间、像做code review一样检查历史，恐惧时本能是分析而非逃避"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "沈墨公寓",
+      "type": "residence",
+      "description": "沈墨的住处，空调嗡嗡响，窗帘缝隙漏光，凉地板"
+    },
+    {
+      "name": "零点网咖",
+      "type": "public",
+      "description": "人民路287号二楼，破旧网吧约20台机子，无空调只有老风扇，日光灯管坏了两根，前台落灰，烟味方便面味灰尘混合气味"
+    },
+    {
+      "name": "人民路",
+      "type": "street",
+      "description": "老城区街道，灰色三层小楼，外墙瓷砖脱落，一楼关门五金店，水泥台阶长青苔"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "十六进制字符",
+      "context": "从47个增至51个，螺旋方向反转，前12字符相同后不同，像活的会生长变异"
+    },
+    {
+      "motif": "温度",
+      "context": "键盘表面余温、凉地板、冰凉手机外壳——温度作为存在证据和时间标记"
+    },
+    {
+      "motif": "404",
+      "context": "消息发送者详情页返回404错误码，暗示该角色不存在于系统记录中"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "reflog显示凌晨2:17有沈墨账户的checkout操作但他当时在喝咖啡，代码访问来源持续不明",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "恢复代码后字符从47增至51个且旋转方向反转，代码不变输出变了，字符像会生长变异",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "白发角色消息发送者ID为空、头像缓存丢失、查看详情返回404，消息痕迹正在被消除",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "网吧电脑有人打开沈墨的私有代码做逆向工程，暗示有人在追踪这段代码",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "有人知道字符的变化并主动联系沈墨——陌生号码的短信发送者了解代码异常的细节，指引沈墨去网吧",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E2_04"
+    },
+    {
+      "content": "网吧隔间里有人刚刚打开沈墨的私有代码就离开了，二楼市窗帘动了——那个人还在网吧里或者一直在观察沈墨",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_06"
+    },
+    {
+      "content": "Unity编辑器在沈墨拍照时自动刷新显示'你来晚了。但它知道你来了。'——'它'指什么？是谁在控制屏幕？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E2_01",
+      "to": "E2_02",
+      "type": "investigation",
+      "detail": "失眠和消息消失促使沈墨回工作室验证"
+    },
+    {
+      "from": "E2_02",
+      "to": "E2_03",
+      "type": "investigation",
+      "detail": "确认Git记录异常后决定恢复代码测试"
+    },
+    {
+      "from": "E2_03",
+      "to": "E2_04",
+      "type": "consequence",
+      "detail": "字符变异的震惊时刻收到引导短信"
+    },
+    {
+      "from": "E2_04",
+      "to": "E2_05",
+      "type": "decision",
+      "detail": "短信指引+字符异常双重驱使沈墨前往网吧"
+    },
+    {
+      "from": "E2_05",
+      "to": "E2_06",
+      "type": "reaction",
+      "detail": "目睹私有代码被访问和诡异信息后选择离开但发现追踪者仍在"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E2_02",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "reflog的checkout操作证实代码异常不是幻觉，有不可解释的账户活动"
+    },
+    {
+      "event_id": "E2_03",
+      "thread_id": "ST01_02",
+      "type": "clue",
+      "detail": "字符数量增加和方向反转表明字符具有动态特性，不是静态编码"
+    },
+    {
+      "event_id": "E2_05",
+      "thread_id": "ST02",
+      "type": "connection",
+      "detail": "网吧电脑打开私有代码证实有人在追踪/研究这段代码"
+    },
+    {
+      "event_id": "E2_04",
+      "thread_id": "ST01_02",
+      "type": "connection",
+      "detail": "短信发送者知道字符变了，说明有人在监视代码变化"
+    },
+    {
+      "event_id": "E2_05",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "屏幕自动显示消息暗示白发角色或某种存在可以控制Unity界面"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈墨",
+      "goal": "验证昨夜事件的真实性，找到理性解释",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "沈墨",
+      "goal": "保护《深渊回声》代码不被未知势力获取",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "十六进制字符从47增至51，旋转方向反转，前12字符相同——暗示字符是动态生长的。键盘余温推算（15-20分钟）展现沈墨用逻辑面对恐惧的特质。404错误码与游戏主题呼应（深渊回声→虚无）。'它知道你来了'暗示代码/游戏本身具有某种意识或被某种存在控制。二楼市窗帘动=追踪者未离开，下一章可能正面遭遇。"
+}

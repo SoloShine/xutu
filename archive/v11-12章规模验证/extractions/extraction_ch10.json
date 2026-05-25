@@ -1,0 +1,180 @@
+{
+  "events": [
+    {
+      "id": "E10_01",
+      "chapter": 10,
+      "title": "大堤迎风观片",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在清江大堤迎着江风查看胶片，底片显现林素云被两个男人按入泥水，左手死死攥着写有'28'的残片，右侧男人呈左高右低步伐并握着长条铁器，左上角暗管喷出黑水，陈若竹手指被胶片划破。"
+    },
+    {
+      "id": "E10_02",
+      "chapter": 10,
+      "title": "赵建国现身",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "伴随着金属敲击碎石的声音，赵建国拄着缠着发黑胶布的铁拐杖从堤坝暗处走出，右腿膝盖包裹着发黑渗液的纱布，步伐倾斜，散发着比江风更尖锐的铁锈味。"
+    },
+    {
+      "id": "E10_03",
+      "chapter": 10,
+      "title": "底片引发的震颤",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国看到底片上左高右低的步伐轮廓后喉结滑动，右手从口袋抽出时出现剧烈的高频震颤，手指不受控制地抽搐开合，手背布满紫红色斑块。"
+    },
+    {
+      "id": "E10_04",
+      "chapter": 10,
+      "title": "拐杖落空与暗管遮盖",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国猛扑抢夺底片，江风突然变向使拐杖落空砸在泥地，溅起的泥点恰好黏附在底片左上角那根喷吐黑水的暗管轮廓上，将其出口完全遮盖。"
+    },
+    {
+      "id": "E10_05",
+      "chapter": 10,
+      "title": "失衡倒地与血水交汇",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵建国再次挥击时因右腿单侧发力严重失衡，拐杖卡入砖缝后整个人向右侧栽倒，右膝盖重重砸在混有废铁屑的泥土里发出骨擦音，血水涌出与流向暗管的黑色泥水交汇，陈若竹举着底片静立注视。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E10_01",
+      "character": "陈若竹",
+      "location": "清江大堤"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "赵建国",
+      "location": "清江大堤"
+    },
+    {
+      "event_id": "E10_03",
+      "character": "赵建国",
+      "location": "清江大堤"
+    },
+    {
+      "event_id": "E10_04",
+      "character": "赵建国",
+      "location": "清江大堤"
+    },
+    {
+      "event_id": "E10_04",
+      "character": "陈若竹",
+      "location": "清江大堤"
+    },
+    {
+      "event_id": "E10_05",
+      "character": "赵建国",
+      "location": "清江大堤"
+    },
+    {
+      "event_id": "E10_05",
+      "character": "陈若竹",
+      "location": "清江大堤"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "食指指腹被胶片锋利边缘划破，血珠混在底片水渍里晕开红色水痕。"
+    },
+    {
+      "name": "赵建国",
+      "field": "new_detail",
+      "content": "右腿短了一截，膝盖处包裹着发黑并渗出暗黄色液体的纱布，现实中呈现出与底片一致的左高右低倾斜步态。"
+    },
+    {
+      "name": "赵建国",
+      "field": "new_detail",
+      "content": "看到底片步伐轮廓后情绪失控，右手手腕高频震颤加剧，手背布满紫红色斑块，手指在空气中快速抽搐开合。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "清江大堤",
+      "type": "室外",
+      "description": "混凝土路面，裂缝处有混杂煤渣和碎玻璃的淤泥，靠近江水一侧有排污暗管，背风处有暗影，地面下暗藏废铁屑和废旧金属边角料。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "江水拍打堤坝、泥水按头、积水坑、暗管喷吐黑水、血水与泥水交汇。"
+    },
+    {
+      "motif": "铁/铁锈",
+      "context": "铁锈味弥漫、铁拐杖剥落红粉、废铁屑刺穿膝盖、长条形铁器。"
+    },
+    {
+      "motif": "风",
+      "context": "江风如厚重帆布砸下、风使胶片翻卷划手、风变向导致拐杖落空。"
+    },
+    {
+      "motif": "手",
+      "context": "底片里按住肩膀的手、攥着数字残片的手、赵建国震颤抽搐的手。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "第三张底片清晰显现林素云被按入泥水及两名男子的轮廓，但其中一人的脸被过度曝光烧成白斑。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST05_01",
+      "action": "advanced",
+      "evidence": "赵建国看到底片步伐后，右手手腕震颤加剧，手背出现紫红色斑块，手指不受控制地抽搐开合。",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST07_01",
+      "action": "advanced",
+      "evidence": "底片左上角显现排污暗管出口正喷吐黑水，但随即被溅起的泥点完全遮盖。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "底片定格了右腿短促拖后的左高右低步伐，而现实中赵建国的右腿确实短了一截且呈现相同倾斜步态。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST02_02",
+      "action": "advanced",
+      "evidence": "底片中林素云的左手在水面下死死攥着一张带有'28'字样的废纸残片。",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "底片中另一名（脸部过度曝光烧成白斑）的男人是谁？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E10_01"
+    },
+    {
+      "content": "底片中右侧男人握着的长条形、布满块状锈斑的铁器是什么，在施暴中起了什么作用？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E10_01"
+    }
+  ],
+  "notes": "赵建国右腿膝盖的纱布发黑且渗出暗黄液体，暗示其腿伤并非单纯的旧伤，可能存在感染或与底片中泥水废铁屑相关的隐情；清江大堤的泥土表层下密布工厂倾倒的废旧金属边角料，交代了环境的危险性。"
+}

@@ -1,0 +1,207 @@
+{
+  "events": [
+    {
+      "id": "E13_01",
+      "chapter": 13,
+      "title": "村口干嚎",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "李二叔趴在村口烂泥沟里为被日本人带走的妻子发出非人的干嚎，十指插进带冰碴的泥里翻卷流血，旁边的传单被踩进烂泥与猪粪马尿混杂。"
+    },
+    {
+      "id": "E13_02",
+      "chapter": 13,
+      "title": "黑暗中的碎牙",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵三坐在黑暗的屋里死死咬牙，直到牙茬崩裂流血并咽下血水，他在痛苦中回想起年轻时组织镰刀会失败以及平儿娘难产时自己的懦弱。"
+    },
+    {
+      "id": "E13_03",
+      "chapter": 13,
+      "title": "红烛下的质问",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "王婆进屋点燃原本给死人上供的红蜡烛，用李二叔女人被抓的事以及赵三过去的退缩，像刮铁片般尖锐地逼问赵三还要缩到几时。"
+    },
+    {
+      "id": "E13_04",
+      "chapter": 13,
+      "title": "赵三的爆发",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵三在烛光下猛然抬头，满脸红血丝与血迹，沙哑地吐出'老子……干'，王婆任凭滚烫的蜡油滴在手背上烫出白印也未曾躲避。"
+    },
+    {
+      "id": "E13_05",
+      "chapter": 13,
+      "title": "暗夜来客",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "平儿带着身上的寒气和枯草屑闪进屋内，身后的铁匠和老赵也挤了进来，王婆迅速顶死门并堵住窗户漏风处。"
+    },
+    {
+      "id": "E13_06",
+      "chapter": 13,
+      "title": "死地后生",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵三在烛光下宣告不论死活，铁匠砸下生锈的剔骨尖刀，平儿拔出短斧，老赵解下粗麻绳，五人在摇曳的红光中如野兽般准备反抗。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E13_01",
+      "character": "李二叔",
+      "location": "村口爛泥溝"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "趙三",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_02",
+      "character": "平兒"
+    },
+    {
+      "event_id": "E13_03",
+      "character": "王婆",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_03",
+      "character": "趙三",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_03",
+      "character": "李二叔"
+    },
+    {
+      "event_id": "E13_04",
+      "character": "趙三",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_04",
+      "character": "王婆",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_05",
+      "character": "平兒",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_05",
+      "character": "鐵匠",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_05",
+      "character": "老趙",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_05",
+      "character": "王婆",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "趙三",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "鐵匠",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "平兒",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "老趙",
+      "location": "趙三家"
+    },
+    {
+      "event_id": "E13_06",
+      "character": "王婆",
+      "location": "趙三家"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "李二叔",
+      "field": "state_change",
+      "content": "妻子被日本人抓走后，趴在烂泥里发出非人的干嚎，十指抠泥流血，陷入极度悲恸与无力。"
+    },
+    {
+      "name": "趙三",
+      "field": "state_change",
+      "content": "在极度压抑与王婆的逼迫下，咬碎牙齿咽下血水，从长期的麻木退缩中爆发出反抗的意志。"
+    },
+    {
+      "name": "趙三",
+      "field": "new_attitude",
+      "content": "彻底抛弃过去的懦弱，宣布'不论死活'，重新拾起反抗者的姿态。"
+    },
+    {
+      "name": "王婆",
+      "field": "new_detail",
+      "content": "点燃原本给死人上供的红蜡烛，任凭滚烫的蜡油滴在手背上烫出白印也面不改色，表现出极度的决绝。"
+    },
+    {
+      "name": "鐵匠",
+      "field": "new_detail",
+      "content": "紧张时粗手在油腻的裤腿上反复蹭，拿出生锈的剔骨尖刀作为武器。"
+    },
+    {
+      "name": "平兒",
+      "field": "new_detail",
+      "content": "从裤腿里拔出一把磨得发亮的短斧作为武器。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "村口爛泥溝",
+      "type": "户外废墟",
+      "description": "村口的烂泥沟，有车辙印和浑水，散落着被踩烂的传单和猪粪马尿。"
+    },
+    {
+      "name": "趙三家",
+      "type": "农舍内部",
+      "description": "像棺材一样黑暗闷臭的土屋，有炕沿、灶台、破木门和漏风的窗户，墙上有裂缝和落灰的镰刀绳套。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "红蜡烛",
+      "context": "王婆点燃去年过年剩下给死人上供的红蜡烛，红光照亮众人的脸和生锈的武器，最后燃到尽头爆出火星。"
+    },
+    {
+      "motif": "镰刀",
+      "context": "墙上挂着的镰刀在烛光下影子被拉得又长又扭曲，像张牙舞爪的鬼；赵三回忆起当年组织镰刀会失败。"
+    },
+    {
+      "motif": "血",
+      "context": "李二叔手上的血水、赵三咬碎牙龈渗出的血和嘴里的血红、以及铁锈味的唾液。"
+    },
+    {
+      "motif": "牙",
+      "context": "赵三在黑暗中死死咬牙，直到牙床发出咯嘣声，碎牙茬崩裂并和着血水咽进肚子。"
+    }
+  ],
+  "notes": "赵三将碎牙咽进肚子里的细节象征着他将过去的屈辱和懦弱吞咽消化并转化为反抗的力量；红蜡烛作为原本给死人的供品，在此刻点燃，具有献祭与向死而生的隐喻。"
+}

@@ -1,0 +1,244 @@
+# Persisted: 2026-05-21 12:26:42
+{
+  "events": [
+    {
+      "id": "E29_01",
+      "chapter": 29,
+      "title": "陆远修炼第二天金色纹路能感应二层入口方向",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在灵脉暗河修炼第二天尝试放大金色纹路共鸣，发现金色纹路发光越强越能模糊感知灵脉深层结构，金色纹路像在指路指向二层入口方向。走到石柱分界线附近金色纹路闪了一倍亮，感应到二层入口方向"
+    },
+    {
+      "id": "E29_02",
+      "chapter": 29,
+      "title": "周衡安确认通过守脉之物的是陆远母亲",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安调查回来：赵铁山手绘地图边缘有记录'金色纹路者入三层出未损'二十七年前，天机阁地图标注同样年份。二十七年前有金色纹路的修真者进入灵脉三层通过守脉之物安全返回毫发无损，时间点是陆远出生前两年，那个人就是陆远的母亲"
+    },
+    {
+      "id": "E29_03",
+      "chapter": 29,
+      "title": "苏晚分析金色纹路是母亲通过守脉之物的凭证",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚分析：陆远母亲有金色纹路是血脉觉醒标志也是通过守脉之物的凭证，守脉之物判断的不是灵力强度而是金色纹路。陆远继承了母亲的金色纹路理论上也能通过，但金色纹路被封印压制二十五年不确定与母亲的完全一样"
+    },
+    {
+      "id": "E29_04",
+      "chapter": 29,
+      "title": "大壮灵力标记提前剧烈激活十二到二十四小时",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮右臂灵力标记突然剧烈发烫皮肤变成深红色，频率从每半天一次变成每小时一次。苏晚判断标记提前激活十二到二十四小时内完全激活，安全屋即将暴露。决定让大壮去地脉堂赵铁山的屏蔽阵法压制标记信号"
+    },
+    {
+      "id": "E29_05",
+      "chapter": 29,
+      "title": "大壮和周衡安前往地脉堂陆远苏晚留守",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安决定陪大壮去地脉堂利用赵铁山屏蔽阵法压制标记信号，赵铁山欠周衡安三十年前人情该还了。苏晚用传讯术通知赵铁山，四人暂时分两组行动"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E29_01",
+      "character": "陆远",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E29_02",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_02",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_03",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_03",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_04",
+      "character": "大壮",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_04",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_05",
+      "character": "大壮",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_05",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E29_05",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "知道通过守脉之物的是母亲后金色纹路从封印变成遗嘱，理解母亲留下的路线图意义"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "灵力标记提前剧烈激活频率每小时一次皮肤变深红色像烧红的铁，十二到二十四小时内完全激活"
+    },
+    {
+      "name": "周衡安",
+      "field": "new_detail",
+      "content": "赵铁山欠他三十年前人情，这次让赵铁山还人情帮大壮屏蔽标记"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "金色纹路发光时灵力流向偏转并感知灵脉深层结构像指路"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远骑电动车去灵脉暗河修炼保持日常都市身份"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST28_02",
+      "action": "resolved",
+      "evidence": "赵铁山地图和天机阁地图双重确认通过守脉之物的是陆远母亲二十七年前",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST27_01",
+      "action": "advanced",
+      "evidence": "守脉之物判断依据是金色纹路不是灵力强度陆远继承了母亲金色纹路理论上能通过",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "金色纹路能感应灵脉深层结构和二层入口方向像指路像遗嘱",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "陆远母亲是金色纹路血脉觉醒者二十七年前进入灵脉三层安全返回毫发无损",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST26_01",
+      "action": "advanced",
+      "evidence": "标记提前剧烈激活频率每小时一次十二到二十四小时完全激活安全屋即将暴露",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST23_01",
+      "action": "advanced",
+      "evidence": "三十年前上界来人和二十七年前陆远母亲进入灵脉深层两个时间点拼合出完整时间线",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "陆远母亲的金色纹路凭证——金色纹路是母亲通过守脉之物的凭证守脉之物判断依据是金色纹路不是灵力强度，陆远继承了金色纹路但被封印压制二十五年不确定与母亲的完全一样，理论上能通过但存在不确定性",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E29_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E28_01",
+      "to": "E29_01",
+      "type": "investigation",
+      "detail": "金色纹路共鸣发现后陆远第二天主动放大共鸣测试指路能力"
+    },
+    {
+      "from": "E28_05",
+      "to": "E29_02",
+      "type": "investigation",
+      "detail": "周衡安去查'曾有人通过'的人是谁确认是陆远母亲"
+    },
+    {
+      "from": "E29_02",
+      "to": "E29_03",
+      "type": "revelation",
+      "detail": "母亲身份确认后苏晚分析金色纹路作为守脉凭证的机制"
+    },
+    {
+      "from": "E28_04",
+      "to": "E29_04",
+      "type": "escalation",
+      "detail": "标记从加速激活变为提前剧烈激活危机升级"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E29_01",
+      "thread_id": "ST21_01",
+      "type": "clue",
+      "detail": "金色纹路指路能力进一步证实金色纹路是指引而非封印"
+    },
+    {
+      "event_id": "E29_02",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "陆远母亲是金色纹路血脉觉醒者确认了血脉来源"
+    },
+    {
+      "event_id": "E29_02",
+      "thread_id": "ST23_01",
+      "type": "connection",
+      "detail": "三十年前上界来人和二十七年前母亲两个时间点拼合出完整时间线"
+    },
+    {
+      "event_id": "E29_04",
+      "thread_id": "ST26_01",
+      "type": "confirmation",
+      "detail": "标记提前激活证明灵墟追踪系统确实存在且在加速调试"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "通过守脉之物到达灵脉深层石门完成母亲的遗嘱路线",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "到达地脉堂用屏蔽阵法压制标记避免暴露安全屋",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "重大揭示：通过守脉之物的是陆远母亲二十七年前，拼合出完整时间线：三十年前上界来人替陆远母亲把东西留在灵脉深层→二十七年前母亲亲自进入三层通过守脉之物→二十五年前陆远出生→三年前母亲消失。金色纹路从封印变成遗嘱的叙事意义很大。大壮标记危机升级迫使四人分两组行动制造分离紧张感。赵铁山的人情债终于要还了"
+}

@@ -1,0 +1,146 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "刮墙皮发现生锈胶卷",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在积水的402室刮墙皮，刮到一米五处撞上金属硬物，掏挖墙皮后拽出一卷被油纸包裹、接缝被红褐色锈迹完全封死的黑白胶卷。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "墙洞中摸出暗红日记本",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹再次伸手进墙洞摸索，挖出一本暗红色软质牛皮封皮的日记本，日记本因常年潮湿发黑发硬，长满灰绿霉斑，像吸饱水的海绵般沉甸甸的，散发出浓烈的发酵纸张霉味。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "楼板震动喷发黑色泥水",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "楼下老周施工导致金属断裂，楼板剧烈震动掉落白灰，门框正上方的楼板裂缝突然喷出一股夹杂泥沙和铁锈碎屑的黑色水柱，砸在门框上冲刷掉黑漆。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "泥水截断去路贴墙挪动",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "带有铁锈腥气和下水道腐臭味的泥水飞溅到陈若竹手背上并滑进袖口，他后退时脚底打滑，手背撞墙撑住身体，泥水迅速蔓延截断了走向门口的直线距离，他只能贴着东面墙根侧身挪动。"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "翻开日记本见红色印记",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹靠在墙边擦去手背泥水后翻开日记本，封皮与内页被霉菌菌丝粘连撕裂，第一页没有字和横线，只有一个被水晕染开、呈放射状且表面微微反光如干涸胶状物的暗红色圆形印记。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "陈若竹",
+      "location": "402室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "对环境的物理触感极为敏锐，清晰地感知到积水冰凉渗入帆布鞋、石灰渣扎在指腹、泥水滑进袖口等微小刺激。"
+    },
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "手背沾染了带有铁锈腥气和下水道腐臭味的黑色泥水。"
+    },
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "面对突发危险（泥水喷发、脚底打滑）时身体反应迅速，能立刻伸手撞墙撑住身体并冷静寻找替代路线。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "402室",
+      "type": "室内",
+      "description": "老旧房屋，靠东墙壁内藏有夹层，无玻璃窗框，地板积水，天花板有裂缝，曾喷出黑色泥水"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "窗外梅雨斜打，地板积水两厘米，天花板喷出黑色泥水，雨水落在日记本上被纸纤维吸收形成圆斑"
+    },
+    {
+      "motif": "铁锈",
+      "context": "美工刀滑轨上的暗红锈斑，胶卷盒接缝处厚厚的红褐色锈迹，泥水中的铁锈碎屑和腥气"
+    },
+    {
+      "motif": "灰尘",
+      "context": "墙洞中摸到的油纸表面沾满了灰尘和铁锈渣"
+    },
+    {
+      "motif": "霉",
+      "context": "墙皮发霉变成泥浆，日记本长满灰绿霉斑，内页与封皮被霉菌菌丝粘连，散发发酵霉味"
+    }
+  ],
+  "thread_updates": [],
+  "new_threads": [
+    {
+      "content": "墙内夹层中为何藏有被锈死的黑白胶卷和暗红色牛皮日记本？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_01"
+    },
+    {
+      "content": "天花板裂缝中突然喷出的黑色泥水带有下水道腐臭味，这水从何而来？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_03"
+    },
+    {
+      "content": "日记本第一页没有字，只有被水晕染开、如干涸胶状物般反光的红色圆形印记，其含义是什么？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E1_05"
+    }
+  ],
+  "notes": "值得记录的新细节：402室靠东墙壁一米五高度有夹层；胶卷被锈迹完全封死无法转动；日记本像吸饱水的海绵般沉甸甸；红色印记表面有干涸的胶状物反光；黑色泥水带有下水道腐臭味。"
+}

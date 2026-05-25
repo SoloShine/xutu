@@ -1,0 +1,227 @@
+# Persisted: 2026-05-21 12:29:38
+{
+  "events": [
+    {
+      "id": "E30_01",
+      "chapter": 30,
+      "title": "苏晚给陆远苏家秘制灵力压制药水",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安大壮离开后苏晚给陆远一瓶苏家秘制灵力压制药水，灵力爆发时喝下能短暂压制封印裂开速度撑三十秒。苏晚前天晚上按爷爷的配方制作的，缺的主药通过传讯术让人顺路送来"
+    },
+    {
+      "id": "E30_02",
+      "chapter": 30,
+      "title": "苏晚坦白苏家灭门真相与陆远母亲有关",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚第一次主动说出真相：苏家是医修世家研究封印血脉和灵力回路相互作用三百年，三年前天机阁追查封印血脉持有者追到江城灵脉节点异常信号顺藤摸瓜查到苏家。天机阁发现苏家研究记录有大量金色纹路描述认定苏家秘密研究封印血脉，一夜端掉十七口人。苏晚父亲灭门前传出部分资料"
+    },
+    {
+      "id": "E30_03",
+      "chapter": 30,
+      "title": "苏晚展示苏家研究资料金色纹路记载",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚展示父亲灭门前传出的研究资料：金色纹路是血脉觉醒第一阶段标志出现在封印完全觉醒之前，金色纹路持有者具备穿透灵脉深层屏障的先天条件。但资料只有第一阶段后续不全，大部分被天机阁烧了"
+    },
+    {
+      "id": "E30_04",
+      "chapter": 30,
+      "title": "苏晚坦白来江城是为了等封印血脉持有者觉醒",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚坦白：苏家研究记录显示江城灵脉节点是封印血脉觉醒概率最高区域，她来江城是为了等持有者觉醒。陆远三个月前在中医院附近送外卖时苏晚就知道他体内灵力密度异常但未觉醒。帮他既是延续苏家没做完的事也因为他有用"
+    },
+    {
+      "id": "E30_05",
+      "chapter": 30,
+      "title": "陆远决定明天进二层苏晚要求同行在岸上等",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远决定明天进入灵脉暗河二层适应灵力密度然后去三层入口试守脉之物。苏晚要求同行在岸上等着防止他进二层灵力密度三十倍晕了没人捞。傍晚陆远独自去确认金色纹路指路方向在石柱前做了最后准备"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E30_01",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_01",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_02",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_02",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_03",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_03",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_04",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_04",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E30_05",
+      "character": "陆远",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E30_05",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "苏家研究封印血脉三百年三年前被天机阁端掉十七口人只幸存她一个，来江城是等封印血脉持有者觉醒，三个月前就注意到陆远灵力密度异常"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "理解苏晚帮他动机的复杂性（苏家灭门+延续研究+个人感情），接受苏晚同行要求"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "金色纹路穿透灵脉深层屏障的先天条件，灵力密度三十倍的二层"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远三个月前在中医院附近送外卖被苏晚注意到灵力密度异常，外卖骑手身份的都市感"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03",
+      "action": "resolved",
+      "evidence": "苏晚坦白苏家灭门原因：天机阁追查封印血脉查到苏家研究记录金色纹路描述认定秘密研究封印血脉一夜端掉十七口人",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST06_01",
+      "action": "resolved",
+      "evidence": "苏晚来江城是为等封印血脉持有者觉醒，苏家研究三百年一直关注江城灵脉节点",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "苏家三百年研究记录金色纹路是血脉觉醒第一阶段金色纹路持有者能穿透灵脉深层屏障",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "苏家研究确认金色纹路出现在封印完全觉醒之前是封印核心主动释放前兆",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_01",
+      "action": "advanced",
+      "evidence": "陆远决定明天进二层适应灵力密度后去三层入口试守脉之物用金色纹路凭证",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "苏家研究资料金色纹路阶段记录不全——苏家三百年研究记录金色纹路是血脉觉醒第一阶段但后续阶段资料不全，三年前天机阁烧了大部分只传出几页。金色纹路之后还有没有第二阶段第三阶段？苏家研究不完整意味着陆远面对的不确定性更大",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E30_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E29_05",
+      "to": "E30_01",
+      "type": "consequence",
+      "detail": "大壮周衡安离开后苏晚陆远独处苏晚交付灵力压制药水"
+    },
+    {
+      "from": "E29_02",
+      "to": "E30_02",
+      "type": "revelation",
+      "detail": "母亲身份确认后苏晚坦白苏家灭门与封印血脉的关联"
+    },
+    {
+      "from": "E30_02",
+      "to": "E30_04",
+      "type": "revelation",
+      "detail": "灭门真相引出苏晚来江城的真实目的"
+    },
+    {
+      "from": "E29_01",
+      "to": "E30_05",
+      "type": "decision",
+      "detail": "金色纹路指路能力确认后陆远决定进二层"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E30_02",
+      "thread_id": "ST03",
+      "type": "confirmation",
+      "detail": "苏家灭门原因完整揭示天机阁追查封印血脉查到苏家"
+    },
+    {
+      "event_id": "E30_03",
+      "thread_id": "ST21_01",
+      "type": "confirmation",
+      "detail": "苏家三百年研究记录金色纹路是血脉觉醒第一阶段"
+    },
+    {
+      "event_id": "E30_04",
+      "thread_id": "ST06_01",
+      "type": "confirmation",
+      "detail": "苏晚来江城目的完整揭示是等封印血脉持有者觉醒"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "进入灵脉暗河二层适应灵力密度后去三层入口试守脉之物",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "陪同陆远进入灵脉暗河在岸上等待防止意外",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "ST03苏家灭门真相和ST06_01苏晚身份在本章解决，是整个叙事的重要节点。苏晚坦白过程自然不煽情符合她温柔但倔的性格。灵力压制药水三十秒的设定为后续紧急情况留了后手。两人关系在'有用'的面具下进一步深化。苏家研究三百年关注封印血脉说明这个血脉在修真世界有极长的历史。陆远三个月前就在苏晚的观察范围内这一细节增加了苏晚角色的层次"
+}

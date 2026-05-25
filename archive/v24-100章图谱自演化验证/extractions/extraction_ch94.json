@@ -1,0 +1,141 @@
+# Persisted: 2026-05-21 17:00:57
+{
+  "events": [
+    {
+      "id": "E94_01",
+      "chapter": 94,
+      "title": "陆远送完最后一单在护城河边安静独处",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "雨后傍晚。陆远送完最后一单外卖到东湖路。在护城河边栏杆上坐下来。外卖箱空了。封印核心平稳跳动。母亲很安静说在想事情回忆陆远三岁在河边摔跤。两岸霓虹灯倒映河面。"
+    },
+    {
+      "id": "E94_02",
+      "chapter": 94,
+      "title": "苏晚约陆远吃饭大壮说老周又赢了棋",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚发微信说今天处理了急性阑尾炎带教老师夸她手法好。约陆远七点一起吃城南红烧肉。大壮发语音说老周又赢了棋让陆远明天来。大壮灵力感知已入门能感觉微弱灵力波动。老周恢复比预期快手背青色纹路淡了。"
+    },
+    {
+      "id": "E94_03",
+      "chapter": 94,
+      "title": "陆远答应苏晚骑车往城南去",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "母亲催陆远去赴约。陆远最终答应苏晚七点城南红烧肉。发动电动车往城南去。胸口封印核心平稳跳动。母亲在笑。陆远也笑了。江城傍晚一切正常。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E94_01",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E94_01",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E94_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E94_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E94_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E94_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E94_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E94_03",
+      "character": "陆承"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "灵力感知入门能感觉空气中微弱灵力波动。跟着苏晚认真学不再是蛮干"
+    },
+    {
+      "name": "老周",
+      "field": "state_change",
+      "content": "恢复比预期快。手背青色纹路淡了。能下床走动每天下棋。吃药喝茶"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "在中医院表现好带教老师夸手法比其他实习生好。主动约陆远吃饭"
+    },
+    {
+      "name": "陆承",
+      "field": "new_habit",
+      "content": "开始回忆陆远小时候的事。三岁在护城河边摔跤的往事"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "外卖箱空了灵力波动为零但从外面看就是普通黄色塑料箱边角磕了几道痕"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "大壮已能感知空气中微弱的灵力波动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST50_03",
+      "action": "advanced",
+      "evidence": "母亲安静陪伴陆远回忆他小时候的事传承后以新方式存在的承诺继续兑现",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E93_04",
+      "to": "E94_01",
+      "type": "consequence",
+      "detail": "一切回归正常后一周陆远继续日常送外卖"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E94_01",
+      "thread_id": "ST50_03",
+      "type": "confirmation",
+      "detail": "母亲在封印核心里回忆陆远小时候的事保持完整的个人记忆和情感"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "苏晚",
+      "goal": "和陆远发展关系",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "老周",
+      "goal": "养好灵根教大壮下棋",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "尾声第四周。大壮灵力感知入门。老周恢复比预期快。苏晚主动约陆远吃饭关系推进。外卖箱边角磕了几道痕但灵力深藏。母亲回忆陆远三岁时在护城河摔跤。城南红烧肉是苏晚之前推荐的那家。"
+}

@@ -1,0 +1,151 @@
+# Persisted: 2026-05-21 16:55:19
+{
+  "events": [
+    {
+      "id": "E92_01",
+      "chapter": 92,
+      "title": "陆远收到阁主消息赶往城北天机阁据点",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "阁主通过铜镜残片传来消息'醒了。城北。来。'陆远退掉手中外卖单骑车赶往城北。灵墟残部已撤出江城地脉堂散了。天机阁临时据点在灰色写字楼三楼以上有灵力屏蔽阵。穿灰色长衫的练气巅峰中年人带路。"
+    },
+    {
+      "id": "E92_02",
+      "chapter": 92,
+      "title": "陆远见老周醒来老周说棋下完了",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周靠在枕头上面色蜡黄头发白了很多但眼睛亮。灵根修复七成手背有青色纹路像河流支流。老周用棋语说差点输了但对手最后走了臭棋不该救他。提到阁主修灵根两天时说'你徒弟比你想象的有意思'。灵力上限只剩一半但够用。最后老周握住陆远的手说'棋下完了'。"
+    },
+    {
+      "id": "E92_03",
+      "chapter": 92,
+      "title": "大壮苏晚赶到探望老周",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮跑来眼睛红了说卧槽你终于醒了。苏晚穿白大褂从中医院赶来带养灵根的药。苏晚给老周把脉确认灵根修复七成结构稳定灵力上限到不了以前但灵根本身三个月能养回九成。老周问能下棋能喝茶能活着苏晚都说能。大壮说以后跟着苏晚学。老周嘱咐好好学别丢人。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E92_01",
+      "character": "陆远",
+      "location": "城北写字楼"
+    },
+    {
+      "event_id": "E92_01",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E92_01",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E92_02",
+      "character": "陆远",
+      "location": "城北写字楼"
+    },
+    {
+      "event_id": "E92_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E92_02",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E92_03",
+      "character": "大壮",
+      "location": "城北写字楼"
+    },
+    {
+      "event_id": "E92_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E92_03",
+      "character": "老周"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老周",
+      "field": "state_change",
+      "content": "灵根修复七成苏醒。灵力上限只剩一半。手背有青色纹路灵力修复痕迹。头发白了很多脸色蜡黄但眼睛亮。说话中气不足但思维清晰。"
+    },
+    {
+      "name": "老周",
+      "field": "new_attitude",
+      "content": "对阁主的评价转变：从对手变成欠人情的棋手。阁主救他等于走了步臭棋"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城北写字楼",
+      "type": "headquarters",
+      "description": "城北灰色写字楼，天机阁临时据点，三楼以上有灵力屏蔽阵"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "写字楼三楼以上有灵力屏蔽阵。老周手背青色纹路灵力缓慢流动像快要冻住的河"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST50_03",
+      "action": "advanced",
+      "evidence": "老周醒来并握住陆远的手，传承后换种方式存在的承诺继续兑现",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E91_03",
+      "to": "E92_01",
+      "type": "consequence",
+      "detail": "阁主通知老周醒了，陆远赶去城北"
+    },
+    {
+      "from": "E92_01",
+      "to": "E92_02",
+      "type": "consequence",
+      "detail": "陆远到达据点见到老周"
+    },
+    {
+      "from": "E92_02",
+      "to": "E92_03",
+      "type": "consequence",
+      "detail": "大壮苏晚也赶来探望"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E92_02",
+      "thread_id": "ST50_03",
+      "type": "confirmation",
+      "detail": "老周醒来灵根修复，阁主兑现承诺，各方协议继续执行"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "老周",
+      "goal": "养好灵根恢复灵力",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "跟着苏晚学修真基础",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "灵墟残部撤出江城地脉堂散了。阁主说'你徒弟比你想象的有意思'对陆远的评价。老周灵力上限剩一半但灵根本身三个月能养回九成。苏晚自己配养灵根的药苏家手艺还在。"
+}

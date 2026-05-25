@@ -1,0 +1,118 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "402室积水刮墙皮",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在积水的402室刮除受潮起鼓的碎花墙皮，刀片生涩卡顿，他感受着脚底冰凉的积水和刺鼻的霉味与石灰酸气。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "墙洞掏出胶卷与日记本",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "刮墙遇到金属硬物，陈若竹从墙洞中掏挖出一个被油纸包裹、接缝被锈死无法转动的黑白胶卷，以及一本吸饱水、长满霉斑的暗红色牛皮日记本。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "楼下断裂引发泥水喷发",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "楼下老周施工导致金属断裂，天花板裂缝突然喷出带有下水道腐臭味的黑色泥水柱，阻断房门去路，陈若竹后退滑倒后贴墙站立。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "翻开日记本发现红印",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹贴着东面墙根翻开霉菌粘连的日记本，第一页无字无横线，中央只有一个被水晕染、边缘呈放射状且表面微反光的暗红色圆形印记。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "老周"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "陈若竹",
+      "location": "402室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "手指因掏挖墙洞沾满铁锈粉，手背被飞溅的黑色泥水打湿"
+    },
+    {
+      "name": "老周",
+      "field": "new_detail",
+      "content": "在楼下进行金属管道拆除工作，不慎导致管道锈死断裂"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "402室",
+      "type": "室内",
+      "description": "老旧房间，靠东墙壁受潮起鼓内藏夹层，地板有两厘米深积水，天花板有裂缝，曾喷发黑色泥水"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "窗外斜打的梅雨、地板两厘米深的积水、天花板喷发的黑色泥水、晕染印记的水滴"
+    },
+    {
+      "motif": "锈",
+      "context": "美工刀滑轨上的暗红锈斑、胶卷盒上封死接缝的红褐锈迹、泥水中的铁锈碎屑"
+    }
+  ],
+  "thread_updates": [],
+  "new_threads": [
+    {
+      "content": "墙洞中发现的胶卷记录了什么内容",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_02"
+    },
+    {
+      "content": "日记本第一页的红色圆形印记代表什么",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_04"
+    },
+    {
+      "content": "楼下断裂的金属和喷出的黑色腐臭泥水究竟是什么管道",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E1_03"
+    }
+  ],
+  "notes": "胶卷盒被红褐色锈迹完全封死无法转动；日记本吸饱水重如海绵且散发出发酵纸张的霉味；红色印记表面有干涸胶状物的反光特征。"
+}

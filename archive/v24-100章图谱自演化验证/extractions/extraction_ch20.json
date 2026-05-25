@@ -1,0 +1,232 @@
+# Persisted: 2026-05-21 11:40:04
+{
+  "events": [
+    {
+      "id": "E20_01",
+      "chapter": 20,
+      "title": "废弃小楼清晨苏晚疗伤陆远适应第二层封印",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天亮后苏晚用医修灵力为周衡安疗伤（左肩淤伤消退大半灵力恢复一成），大壮右手缠绷带筋伤需静养一周。陆远在二楼适应第二层封印力量：白色纹路随呼吸扩张伴随钝痛，灵力在蓝色纹路里流得更快，白色纹路里的力量更冷更纯粹"
+    },
+    {
+      "id": "E20_02",
+      "chapter": 20,
+      "title": "苏晚诊断白色与蓝色纹路形成双层回路结构",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚检查陆远封印发现白色纹路是封印第二层的结构线，正在和九道蓝色纹路融合形成双层回路。蓝色是灵力通道，白色是控制流量的阀门，理论上可用更少消耗做更多事。但警告第三层被动打开心脏会停跳，陆远累计十二次灵力使用开了第二层，再六到八次全力出手会开第三层"
+    },
+    {
+      "id": "E20_03",
+      "chapter": 20,
+      "title": "周衡安陆远讨论七天策略决定变强",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安提出三个选择：交至宝换天机阁保护、继续跑、变强。陆远拒绝交出（母亲用命设的封印且上界追兵威胁太大）和跑（灵墟和天机阁都有追踪技术），选择七天变强。周衡安提到赵铁山和地脉堂可能知道快速提升方法但不好说话"
+    },
+    {
+      "id": "E20_04",
+      "chapter": 20,
+      "title": "玉简解锁新字迹母亲笔迹等你回来",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "第二层封印打开后玉简纹路重新亮起更清晰。表面稳定浮现新字迹（非闪现）：四个字'等你回来'，母亲笔迹最后一笔往上挑。背面更小字'第二层打开后才能看到这些'。封印每开一层玉简解锁新内容，像一封信拆成九段"
+    },
+    {
+      "id": "E20_05",
+      "chapter": 20,
+      "title": "陆远决定找赵铁山七天变强",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远决定去找赵铁山寻求快速提升方法。周衡安去联系赵铁山，嘱咐陆远别动灵墟可能在城东搜索。苏晚帮大壮缠绷带，大壮继续骂街。陆远吃着苏晚扔上来的肉包子，看着窗外苏醒的江城，决定七天之内变强"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E20_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E20_01",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E20_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E20_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E20_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E20_03",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E20_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E20_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E20_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E20_05",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E20_05",
+      "location": "城东废弃小楼"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "白色纹路与蓝色纹路形成双层回路，获得灵力流量调节能力，但再六到八次全力出手会开第三层致命"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "右手筋伤需静养一周，骨头未断"
+    },
+    {
+      "name": "周衡安",
+      "field": "state_change",
+      "content": "灵力恢复一成，左肩淤伤消退大半，精神状态好转"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "白色纹路里的力量更冷更纯粹如冰水，蓝色纹路灵力如涨水的河道"
+    },
+    {
+      "motif": "外卖箱",
+      "content": "楼下巷口有人骑电动车载两袋菜，小女孩背着书包跑过巷口，都市日常与修真并存"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST16_01",
+      "action": "resolved",
+      "evidence": "玉简第二层封印打开后稳定浮现字迹'等你回来'和背面说明'第二层打开后才能看到这些'",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST19_01",
+      "action": "advanced",
+      "evidence": "白色纹路与蓝色纹路融合形成双层回路，白色是控制阀门蓝色是灵力通道，第三层打开会直接致命",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "苏晚精确统计：累计十二次灵力使用开了第二层，再六到八次全力出手会开第三层心脏停跳",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "封印每开一层玉简解锁新内容，像一封信拆成九段，母亲预设了渐进式觉醒路线",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST18_02",
+      "action": "advanced",
+      "evidence": "陆远决定不交至宝而是七天变强，找赵铁山寻求快速提升方法",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_02",
+      "action": "advanced",
+      "evidence": "陆远拒绝交至宝的理由：万一上界追兵追到天机阁，天机阁扛不住则南方灵脉体系崩溃",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "赵铁山可能知道快速提升境界的方法——地脉堂专收割灵脉节点力量，与灵脉深层有关联，七天从练气中期到练气后期的异常路径",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E20_05"
+    },
+    {
+      "content": "封印分层解锁机制——九层封印每开一层玉简解锁新内容，母亲预设渐进式觉醒路线，'等你回来'是第二层的文字，更深层可能还有更多",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E20_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E20_02",
+      "to": "E20_03",
+      "type": "decision",
+      "detail": "苏晚的第三层警告直接促成陆远选择变强而非被动等待"
+    },
+    {
+      "from": "E20_03",
+      "to": "E20_05",
+      "type": "consequence",
+      "detail": "决定找赵铁山寻求快速提升方法"
+    },
+    {
+      "from": "E20_04",
+      "to": "E20_05",
+      "type": "decision",
+      "detail": "母亲遗言增强陆远变强的决心"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E20_02",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "第三层打开致命的警告确认力量与代价主题"
+    },
+    {
+      "event_id": "E20_04",
+      "thread_id": "ST16_01",
+      "type": "confirmation",
+      "detail": "第二层打开后玉简稳定浮现文字确认分层解锁机制"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "七天之内从练气中期提升到练气后期激活传承",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "找赵铁山获取快速提升方法",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "周衡安",
+      "goal": "联系赵铁山安排会面",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "第二层封印的白色纹路功能确认为灵力流量调节阀门。陆远累计灵力使用统计：去天机阁3次+制伏灵墟3人3次+扛威压1次+回援3次+冲击波1次+碎锁链1次=12次。玉简分层解锁：第二层打开后稳定显示'等你回来'+背面'第二层打开后才能看到这些'。大壮右手筋伤需静养一周。周衡安灵力恢复一成"
+}

@@ -1,0 +1,267 @@
+# Persisted: 2026-05-21 14:04:16
+{
+  "events": [
+    {
+      "id": "E55_01",
+      "chapter": 55,
+      "title": "茶馆外分头行动老周去东湖路吸引注意力",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "清晨六人分头行动：老周去东湖路摆棋摊吸引天机阁注意力提供三小时窗口，铁拐李回总控室守钟，陆远带苏晚和大壮前往城北写字楼调查灵力追踪网。大壮主动要求同行因为认识写字楼下路由器摊子老板"
+    },
+    {
+      "id": "E55_02",
+      "chapter": 55,
+      "title": "陆远带大壮苏晚穿越天机阁封锁线",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三人根据周衡安布防图沿探测器盲区穿越第二道封锁线，利用换班窗口十五分钟，探测器朝上扫描地面一米为死角，三人弯腰通过。苏晚分析纹路裂纹二十一处灵力外泄练气初期水平理论上不触发阈值"
+    },
+    {
+      "id": "E55_03",
+      "chapter": 55,
+      "title": "遭遇灵墟筑基后期先遣修士金色瞳孔首次主动全开",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城北方向一道筑基后期灵力轨迹高速掠过，黑色风衣悬浮移动，未发现三人因为自身灵力外泄太强盖过周围信号。陆远主动全开金色瞳孔看清对方灵力运行结构：七条主经脉循环、四肢末端四个压缩节点能量为传承前二十倍，但节点切换有零点三秒间隙护体灵力会闪一帧。金色瞳孔全开代价：纹路裂纹从二十一处扩至二十八处"
+    },
+    {
+      "id": "E55_04",
+      "chapter": 55,
+      "title": "陆远三人潜入写字楼地下三层发现人造灵脉核心",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远用纹路力量开锁进入写字楼地下三层房间，发现玻璃容器中悬浮的人造灵脉核心，表面刻有灵脉总图纹路，脉冲与铜座钟秒针同步。追踪网核心不是仪器而是用人造灵脉核心做的窃听器，泡在培养液里每秒发送灵力丝线"
+    },
+    {
+      "id": "E55_05",
+      "chapter": 55,
+      "title": "容器底座发现母亲代号铜音和今天的日期",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "玻璃容器底座刻着四个字铜音——三十年前母亲在灵脉总图上用的署名代号。代号旁边日期是今天。灵脉总图交给了老周师父保管但被复制了，复制品被用来造窃听器。灵墟筑基后期在写字楼上方盘旋等待"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E55_01",
+      "character": "陆远",
+      "location": "城南废弃茶馆外"
+    },
+    {
+      "event_id": "E55_01",
+      "character": "老周"
+    },
+    {
+      "event_id": "E55_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E55_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E55_01",
+      "character": "铁拐李"
+    },
+    {
+      "event_id": "E55_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E55_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E55_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E55_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E55_04",
+      "character": "陆远",
+      "location": "城北写字楼地下三层"
+    },
+    {
+      "event_id": "E55_04",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E55_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E55_05",
+      "character": "陆远",
+      "location": "城北写字楼地下三层"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色瞳孔首次主动全开代价巨大，纹路裂纹从二十一处扩至二十八处。苏晚警告不能再用"
+    },
+    {
+      "name": "大壮",
+      "field": "new_attitude",
+      "content": "主动要求参与行动不再是被动跟随，退伍兵的判断力开始发挥作用"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力护体收束气息能力提升，能用银针实时监测陆远纹路状态"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城北写字楼地下三层",
+      "type": "设施",
+      "description": "城北写字楼地下三层隐藏灵力追踪网核心的房间，不锈钢操作台配仪器设备，玻璃容器中人造灵脉核心脉冲与铜座钟同步，底座刻有铜音代号和日期"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵墟筑基后期灵力外泄太强自身波动盖过周围信号，探测器感知网覆盖半径三十米"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "大壮认识写字楼下路由器摊子因为去年在那买过二手路由器——外卖骑手的日常覆盖城市角落的细节"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST53_01",
+      "action": "advanced",
+      "evidence": "追踪网核心是人造灵脉核心非仪器，表面刻灵脉总图纹路脉冲与铜座钟同步",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST42_01",
+      "action": "advanced",
+      "evidence": "金色瞳孔首次主动全开看清筑基后期灵力运行结构找到零点三秒切换间隙破绽但代价裂纹扩大",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "金色瞳孔全开代价纹路裂纹从二十一处扩至二十八处苏晚警告不能再用",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST40_01",
+      "action": "advanced",
+      "evidence": "金色瞳孔可主动增强看清灵力运行完整结构包括经脉循环路径和压缩节点位置",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST52_02",
+      "action": "advanced",
+      "evidence": "铜音是母亲在灵脉总图上的代号，归认识铜音，总图被复制用于造窃听器",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST51_02",
+      "action": "advanced",
+      "evidence": "灵墟筑基后期黑色风衣悬浮移动，与此前废弃厂房悬浮人影可能有关联",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "灵脉总图交给老周师父保管但被复制，老周师父下落不明",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "母亲署名铜音的灵脉总图被复制造出人造灵脉核心窃听器——总图交给老周师父保管是谁复制了？三十年前设计图今天日期的巧合意味着什么？灵墟筑基后期在写字楼上方盘旋等人",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E55_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E55_01",
+      "to": "E55_02",
+      "type": "decision",
+      "detail": "分头行动的决定使陆远可以利用老周创造的三小时窗口穿越封锁线"
+    },
+    {
+      "from": "E55_02",
+      "to": "E55_03",
+      "type": "escalation",
+      "detail": "穿越封锁线接近城北时遭遇灵墟筑基后期"
+    },
+    {
+      "from": "E55_03",
+      "to": "E55_04",
+      "type": "investigation",
+      "detail": "金色瞳孔全开看清筑基后期灵力结构后趁对方在楼顶盘旋绕到背面潜入"
+    },
+    {
+      "from": "E55_04",
+      "to": "E55_05",
+      "type": "revelation",
+      "detail": "发现人造灵脉核心后仔细检查发现底座铜音代号和今天的日期"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E55_04",
+      "thread_id": "ST53_01",
+      "type": "confirmation",
+      "detail": "确认追踪网核心是人造灵脉核心非仪器，表面刻灵脉总图纹路"
+    },
+    {
+      "event_id": "E55_05",
+      "thread_id": "ST52_02",
+      "type": "clue",
+      "detail": "铜音代号连接母亲身份与灵脉总图，与归的线索关联"
+    },
+    {
+      "event_id": "E55_03",
+      "thread_id": "ST42_01",
+      "type": "confirmation",
+      "detail": "金色瞳孔主动全开确实能看清灵力运行结构但代价巨大"
+    },
+    {
+      "event_id": "E55_05",
+      "thread_id": "ST38_01",
+      "type": "clue",
+      "detail": "总图交给老周师父保管但被复制，指向老周师父下落"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "调查灵力追踪网核心找到谁在用母亲的图纸",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "老周",
+      "goal": "在东湖路吸引天机阁注意力为陆远创造三小时窗口",
+      "type": "duty",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "控制金色瞳孔使用避免纹路崩溃",
+      "type": "fear",
+      "status": "new"
+    }
+  ],
+  "notes": "铜音——母亲在灵脉总图上的代号，首次出现。人造灵脉核心的概念首次出现：用灵脉总图纸造的假灵脉种子。筑基后期灵力运行结构被金色瞳孔完整解析：七条主经脉循环+四个压缩节点+零点三秒切换间隙。"
+}

@@ -1,0 +1,133 @@
+{
+  "events": [
+    {
+      "id": "E12_01",
+      "chapter": 12,
+      "title": "宣傳「王道」的車隊經過",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "宣傳「王道」的汽車在村莊大道上鬧囂著跑過，車上站著日本人、高麗人和揚威的中國人，向村莊撒下紅綠色紙片般的傳單。"
+    },
+    {
+      "id": "E12_02",
+      "chapter": 12,
+      "title": "王婆門前的追憶與厭棄",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "王婆看著二里半的老山羊走向窪地，觸景生情回想起過去痛苦的日子，覺得今日不如昨日；隨後飛機撒下傳單，王婆取下看後丟在腳下反覆踩踏。"
+    },
+    {
+      "id": "E12_03",
+      "chapter": 12,
+      "title": "樹下的慘淡交談",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "金枝的母親提著兩隻公雞來到樹下，與王婆訴說村中姑娘被日本兵抓走、連雞都無法養活的絕望現狀，最後精神有些癲狂地踏過廢田離去。"
+    },
+    {
+      "id": "E12_04",
+      "chapter": 12,
+      "title": "夜間的搜查",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "夜晚村中傳來女人尖叫、警笛與槍聲，日本兵和中國警察闖入王婆家搜查，用手電筒亂照後決定將王婆帶走。"
+    },
+    {
+      "id": "E12_05",
+      "chapter": 12,
+      "title": "被帶走的女人們",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "王婆被帶出門欄，同時目睹他們在綠色手電光線中牽走另一個曲背如豬的女人，日本兵在女人屁股上急爬了一下，眾人隨之調笑。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E12_02",
+      "character": "老王婆",
+      "location": "王婆門前"
+    },
+    {
+      "event_id": "E12_02",
+      "character": "二里半",
+      "location": "王婆門前"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "老王婆",
+      "location": "王婆門前"
+    },
+    {
+      "event_id": "E12_03",
+      "character": "金枝的母親",
+      "location": "王婆門前"
+    },
+    {
+      "event_id": "E12_04",
+      "character": "老王婆",
+      "location": "王婆家"
+    },
+    {
+      "event_id": "E12_05",
+      "character": "老王婆",
+      "location": "王婆家"
+    },
+    {
+      "event_id": "E12_05",
+      "character": "未知女人",
+      "location": "王婆家"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老王婆",
+      "field": "new_attitude",
+      "content": "對當下現狀感到極度厭惡與無望，認為今日不如昨日，將代表「王道」的傳單反覆踩踏。"
+    },
+    {
+      "name": "金枝的母親",
+      "field": "state_change",
+      "content": "因生活絕境與對日本兵的恐懼，精神變得有些癲狂，手部不斷抹擦面部，步態不穩。"
+    },
+    {
+      "name": "二里半",
+      "field": "new_detail",
+      "content": "二里半的山羊極其老邁，毛色如土，眼神模糊如垂淚，不再尋找食物，只知走向窪地。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "王婆門前",
+      "type": "居住地周邊",
+      "description": "老王婆家門前，有繁茂的樹木，附近有荒蕪的窪地與廢田。"
+    },
+    {
+      "name": "王婆家",
+      "type": "室內",
+      "description": "老王婆居住的茅屋內部，夜間被手電筒的青綠光線掃過。"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "金枝的母親",
+      "role": "次要人物",
+      "personality": "悲慘、焦慮，在絕境與恐懼中精神瀕臨崩潰的農村婦人。"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "紙片",
+      "context": "汽車和飛機撒下的紅綠色紙片，像播種一樣落在村莊各處，最終被王婆踩在腳下。"
+    },
+    {
+      "motif": "廢田",
+      "context": "「王道」之下荒亂的麥田，患著病似的長著短草，被金枝母親無力地踏過，象徵村莊的衰敗與荒蕪。"
+    }
+  ],
+  "notes": "村莊被徹底滲透的細節：中國警察與日本兵共同行動，並幫腔嘲笑；手電筒發出發青的綠色光線，營造出陰森詭異的氛圍；大地上的蟲子停止鳴叫，暗示環境的異樣與壓抑。"
+}

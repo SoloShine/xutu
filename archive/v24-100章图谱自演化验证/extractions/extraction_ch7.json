@@ -1,0 +1,329 @@
+# Persisted: 2026-05-21 06:50:40
+{
+  "events": [
+    {
+      "id": "E7_01",
+      "chapter": 7,
+      "title": "凌晨独自踩点松鹤巷发现第三个灵脉节点",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "凌晨三点陆远独自骑车前往松鹤巷14号踩点，胸口跳动点在14号门前加快，发现地面水泥砖缝隙里有极淡蓝光流动，确认是第三个灵脉节点。14号为黑色铁门四合院，院墙高出半米墙头插碎玻璃。陆远记住位置后退走准备白天再来"
+    },
+    {
+      "id": "E7_02",
+      "chapter": 7,
+      "title": "大壮坚持同行并准备武器",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远回到大壮住处把苏晚留下的纸条摊开，告知大壮周衡安被困在松鹤巷14号地下室。大壮坚持要一起去，从门后抄起一根不锈钢管，表示当兵学的东西打不过修仙者至少能挡两下，兑现之前'跟你走到底'的承诺"
+    },
+    {
+      "id": "E7_03",
+      "chapter": 7,
+      "title": "白天外卖骑手伪装踩点发现灵力禁制",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "白天陆远穿外卖骑手外套推电动车从14号门前走过，用觉醒后感知探查发现围墙内侧有一层透明薄膜状灵力禁制覆盖整个院子，胸口跳动点碰到禁制被弹回并带刺痛。判断地下室入口在正房后面台阶下。之后送八个外卖单子绕远路确认无人跟踪"
+    },
+    {
+      "id": "E7_04",
+      "chapter": 7,
+      "title": "夜间潜入地下室发现周衡安被灵力锁链钉在墙上",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "晚上十一点两人前往松鹤巷，陆远右手贴铁门灌入蓝光弹开门锁同时禁制薄膜裂开。进入院子找到地下室入口，下去发现周衡安被三根灰白色灵力锁链从肩膀两侧和腰间穿过钉在水泥墙上，锁链上密密麻麻的符文每隔几秒跳动。周衡安瘦脱了形，脸色灰白嘴唇干裂，头发乱糟糟，比上次见面老了十岁"
+    },
+    {
+      "id": "E7_05",
+      "chapter": 7,
+      "title": "大壮近身格斗拖住地脉堂瘦高个看守",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "两名穿灰色长袍袖口绣土黄纹路的地脉堂看守者从楼上下来，矮胖和瘦高个都是练气后期。矮胖修士看到陆远以为是轻松活。大壮用钢管横扫被灵光弹开后立即贴身格斗，左手扣手腕外拧右膝顶小腹，用退伍兵近身格斗缠住瘦高个"
+    },
+    {
+      "id": "E7_06",
+      "chapter": 7,
+      "title": "陆远灵力第三次爆发推碎矮胖修士护体灵光并震碎锁链",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远胸口跳动点重重跳了一下，手背纹路全部亮起向手心蔓延，灵力从纹路渗出形成蓝色光膜覆盖右手。推掌释放一面墙一样的蓝光无声拍过去，矮胖修士护体灵光直接灭掉被推滑两米撞上水泥墙石灰粉簌簌掉落，修士灵光散尽无法说话。蓝光自动涌向墙上锁链，符文逐个碎裂，三根锁链断成六截掉落"
+    },
+    {
+      "id": "E7_07",
+      "chapter": 7,
+      "title": "搀扶周衡安撤离感知筑基期修士抵达",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远扶住周衡安，三人搀扶着撤离地下室穿过院子出松鹤巷。身后灰袍人打电话报信提到'地脉堂''觉醒者''灵脉''活捉'。出巷子时陆远胸口跳动点猛跳三下如被攥住心脏，感知到一股远超天机阁外勤的强大灵力从城市北部高速靠近，压迫感隔半座城都能感到。周衡安虚弱说出'筑基期的，到了'"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E7_01",
+      "character": "陆远",
+      "location": "松鹤巷14号"
+    },
+    {
+      "event_id": "E7_02",
+      "character": "陆远",
+      "location": "大壮住处"
+    },
+    {
+      "event_id": "E7_02",
+      "character": "大壮",
+      "location": "大壮住处"
+    },
+    {
+      "event_id": "E7_03",
+      "character": "陆远",
+      "location": "松鹤巷14号"
+    },
+    {
+      "event_id": "E7_04",
+      "character": "陆远",
+      "location": "松鹤巷14号地下室"
+    },
+    {
+      "event_id": "E7_04",
+      "character": "大壮",
+      "location": "松鹤巷14号地下室"
+    },
+    {
+      "event_id": "E7_04",
+      "character": "周衡安",
+      "location": "松鹤巷14号地下室"
+    },
+    {
+      "event_id": "E7_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E7_05",
+      "character": "地脉堂灰袍人"
+    },
+    {
+      "event_id": "E7_06",
+      "character": "陆远",
+      "location": "松鹤巷14号地下室"
+    },
+    {
+      "event_id": "E7_06",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E7_07",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E7_07",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E7_07",
+      "character": "周衡安"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "周衡安",
+      "field": "state_change",
+      "content": "被灵力锁链困在松鹤巷14号地下室数日，瘦脱了形，脸色灰白嘴唇干裂，衣服宽松挂在身上，虚弱但清醒"
+    },
+    {
+      "name": "大壮",
+      "field": "new_detail",
+      "content": "拥有退伍兵近身格斗能力，面对练气后期修真者敢于贴身缠斗，钢管被灵光弹开后立即切换近身格斗扣手腕拧膝盖顶"
+    },
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "手背纹路在第三次灵力爆发时从手腕向手心蔓延，灵力释放方式从拳头粗光柱进化为一面墙一样的蓝光，能自动感应并震碎灵力锁链符文"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "松鹤巷14号",
+      "type": "四合院",
+      "description": "老城区松鹤巷中段，黑色铁门褪色对联，院墙高出半米墙头插碎玻璃。围墙内侧有灵力禁制屏障。灵脉节点位于地面青砖缝隙。地下室约三十平米水泥墙，正房后面铁门入口"
+    },
+    {
+      "name": "松鹤巷14号地下室",
+      "type": "密室",
+      "description": "约三十平米水泥墙地下室，日光灯照明。周衡安曾被三根灰白色灵力锁链钉在墙上，锁链带符文"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "地脉堂",
+      "role": "antagonist_2",
+      "personality": "第三方修真势力，专门收割灵脉节点力量。成员穿灰色长袍袖口绣土黄色纹路，练气后期级别。困住周衡安并试图活捉陆远，因为陆远体内封印力量可以打开灵脉深层"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "松鹤巷14号地面蓝光流动为第三个灵脉节点，围墙禁制为灵力屏障，蓝光可自动感应并震碎锁链符文"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远穿外卖骑手外套伪装踩点松鹤巷，头盔挂在车把上推电动车从14号门前走过"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST06_03",
+      "action": "resolved",
+      "evidence": "陆远和大壮找到松鹤巷14号地下室并救出周衡安，困住周衡安的势力确认为'地脉堂'",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "灵力第三次爆发时手背纹路从手腕向手心蔓延，灵力释放方式进化为墙面蓝光，能自动感应并震碎锁链符文",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "手背纹路在战斗中向手心延伸新增分支，灵力从纹路渗出形成蓝色光膜覆盖右手",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "陆远第三次灵力爆发推碎练气后期护体灵光并震碎锁链符文，灰袍人恐惧不敢追击，感知到筑基期修士从北部高速抵达",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "周衡安获救但极度虚弱，暂未解释为何被地脉堂盯上以及他的真实身份",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "江城存在第三方修真势力地脉堂，加上天机阁和苏晚的势力，至少三方势力活跃在江城",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "地脉堂——专门收割灵脉节点力量的第三方势力，灰袍袖口土黄纹路标记。他们需要陆远体内封印的力量来打开灵脉深层。松鹤巷14号是他们的据点之一",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E7_05"
+    },
+    {
+      "content": "天机阁筑基期修士抵达江城——一股远超练气期的强大灵力从城市北部高速靠近，周衡安确认是筑基期。天机阁升级追查力度",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E7_07"
+    },
+    {
+      "content": "松鹤巷14号是第三个灵脉节点——继东湖路18号和老码头之后陆远发现的第三个灵脉节点，灵脉节点分布规律不明",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E7_01"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E7_01",
+      "to": "E7_03",
+      "type": "investigation",
+      "detail": "凌晨踩点发现灵脉节点后决定白天以外卖骑手伪装详细侦察禁制"
+    },
+    {
+      "from": "E7_03",
+      "to": "E7_04",
+      "type": "decision",
+      "detail": "白天踩点确认禁制和地下室入口后决定夜间行动"
+    },
+    {
+      "from": "E7_04",
+      "to": "E7_05",
+      "type": "escalation",
+      "detail": "发现周衡安被锁链困住后看守者出现冲突爆发"
+    },
+    {
+      "from": "E7_05",
+      "to": "E7_06",
+      "type": "escalation",
+      "detail": "大壮缠住一人后陆远面对另一人灵力爆发"
+    },
+    {
+      "from": "E7_06",
+      "to": "E7_07",
+      "type": "consequence",
+      "detail": "灵力爆发震碎锁链救出周衡安但被灰袍人报信"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E7_01",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "松鹤巷14号为第三个灵脉节点，确认灵脉节点在江城不止一两个"
+    },
+    {
+      "event_id": "E7_04",
+      "thread_id": "ST06_03",
+      "type": "confirmation",
+      "detail": "周衡安确实被困在松鹤巷14号地下室被灵力锁链钉在墙上，苏晚的情报准确"
+    },
+    {
+      "event_id": "E7_06",
+      "thread_id": "ST01_03",
+      "type": "confirmation",
+      "detail": "灵力第三次爆发蓝光自动感应并震碎锁链符文，手背纹路向手心蔓延，体内力量在持续进化"
+    },
+    {
+      "event_id": "E7_05",
+      "thread_id": "ST02_01",
+      "type": "confirmation",
+      "detail": "地脉堂灰袍人确认江城存在天机阁之外的第三方修真势力"
+    },
+    {
+      "event_id": "E7_07",
+      "thread_id": "ST04_01",
+      "type": "confirmation",
+      "detail": "筑基期修士从北部抵达，天机阁对陆远的追查升级到筑基期级别"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "营救被困在松鹤巷的周衡安",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "陆远",
+      "goal": "躲避天机阁筑基期修士的追查",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "战斗中拖住敌人保护陆远",
+      "type": "protect",
+      "status": "achieved"
+    },
+    {
+      "character": "地脉堂",
+      "goal": "活捉陆远获取体内封印力量打开灵脉深层",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "灵力释放方式进化：Ch4拳头粗光柱→Ch6拳头粗光柱→Ch7一面墙一样蓝光，攻击范围和力量持续增强。手背纹路持续蔓延：手腕到中指根部→向手心延伸。陆远开始学会战术规划：先踩点再行动、利用外卖骑手伪装、确认无人跟踪。大壮的战斗定位明确：近身格斗拖住修真者，不是打败而是争取时间"
+}

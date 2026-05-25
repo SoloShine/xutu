@@ -1,0 +1,260 @@
+# Persisted: 2026-05-21 06:41:25
+{
+  "events": [
+    {
+      "id": "E5_01",
+      "chapter": 5,
+      "title": "出租屋内封灵符裂缝持续扩大感官异变加剧",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远整夜未眠，右手封灵符裂缝每隔十几分钟刺痛一次，蓝光从指甲缝外冒烫坏被子。用创可贴和半指手套遮掩后继续送外卖，拒接东湖路订单。嗅觉大幅提升能分辨洗衣液品牌和食用油种类，听觉过载严重可同时听到百米内多层声音"
+    },
+    {
+      "id": "E5_02",
+      "chapter": 5,
+      "title": "大壮在站点质问东湖路蓝光真相并收留陆远",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮在站点直接质问陆远东湖路那天的蓝色光芒，判断不是电焊火星。陆远被迫承认身体出了问题但未透露修真相关。大壮以身体健康为由提出让陆远搬到自己一楼两居室的空房暂住，陆远接受。搬家仅半小时"
+    },
+    {
+      "id": "E5_03",
+      "chapter": 5,
+      "title": "大壮住处下午封灵符继续恶化周衡安仍失联",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在大壮住处休息，发现封灵符裂缝比早上更宽，裂纹边缘从淡青色变为发白发亮。再次拨打周衡安电话仍为忙音。胸口的第二个跳动点战斗后保持缓慢节奏"
+    },
+    {
+      "id": "E5_04",
+      "chapter": 5,
+      "title": "深夜被胸口热流牵引步行至江边老码头",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "晚上十一点四十陆远被胸口第二个跳动点加速惊醒，感知到热流从胸口沿脊柱往正南方流动，像看不见的钩子牵引身体。穿鞋出门趁大壮睡着时离开，一步步循热流方向步行至江边老码头废弃仓库区"
+    },
+    {
+      "id": "E5_05",
+      "chapter": 5,
+      "title": "老码头灵脉节点触发封灵符彻底碎裂",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老码头地面裂缝透出与陆远指尖相同的蓝光，第二个灵脉节点共鸣触发。热流比东湖路18号更强，脚下碎石震动嗡嗡作响。封灵符从花心位置炸裂成十几片后化为粉末飘散，花形印记彻底消失变成一圈淡青色疤痕。十根手指同时涌出强烈蓝光照亮整条巷子，蓝光扩展至八米半径后自行收缩回体内，整个过程约两分钟"
+    },
+    {
+      "id": "E5_06",
+      "chapter": 5,
+      "title": "码头台阶上发现江对岸有人发出三闪灯信号",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远蹲在码头台阶上喘气恢复，手背疤痕触感硬如薄茧，疤痕位置有微弱温度高于体温。攥拳时感觉有东西从疤痕位置往手指上生长。江对岸某栋楼顶有一盏灯均匀闪烁三下后熄灭，陆远判断是人发出的信号，有人看到了他"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E5_01",
+      "character": "陆远",
+      "location": "城中村出租屋"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "陆远",
+      "location": "外卖站点"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "大壮",
+      "location": "外卖站点"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "陆远",
+      "location": "大壮住处"
+    },
+    {
+      "event_id": "E5_04",
+      "character": "陆远",
+      "location": "城中村巷子"
+    },
+    {
+      "event_id": "E5_05",
+      "character": "陆远",
+      "location": "江边老码头"
+    },
+    {
+      "event_id": "E5_06",
+      "character": "陆远",
+      "location": "江边老码头"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "嗅觉大幅提升可分辨洗衣液品牌和食用油种类，听觉过载持续加剧需持续集中注意力过滤，手背封灵符彻底碎裂变为淡青色疤痕，疤痕有微弱温度感"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "觉醒后身体散发烧焦铁锈味，蓝光退入体内后力量感仍存于骨头和血管深处"
+    },
+    {
+      "name": "陆远",
+      "field": "new_habit",
+      "content": "送餐时用左手递东西，接钱时右手藏在裤兜里，刻意避开东湖路区域"
+    },
+    {
+      "name": "大壮",
+      "field": "new_relationship",
+      "content": "成为陆远的合租室友和现实世界的照应人，知道陆远身体有异常但不知道修真之事"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "大壮住处",
+      "type": "residence",
+      "description": "城中村一楼两居室，潮湿，客厅有旧沙发和二十寸老电视，有空房间供陆远暂住"
+    },
+    {
+      "name": "江边老码头",
+      "type": "spiritual",
+      "description": "废弃仓库区，铁皮门生锈，墙上有拆迁公告。地面碎石杂草间有裂缝，裂缝下为灵脉节点，夜间会透出蓝光"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "老码头地面裂缝透出蓝光，第二个灵脉节点共鸣，热流比东湖路18号更强，碎石震动嗡嗡作响，蓝光扩展至八米半径"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远继续送外卖维持日常，用左手递餐右手藏兜的方式掩盖蓝光"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "胸口第二个跳动点从缓慢节奏突然加速牵引陆远步行至灵脉节点，战斗后'吃饱了'的比喻暗示跳动点与体内封印力量直接相关",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "江对岸楼顶有人发出三闪灯信号监视觉醒者灵脉活动，暗示都市中还有天机阁之外的修真势力在暗中观察",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "陆远多次拨打周衡安电话均为忙音，周衡安在陆远最需要帮助时持续失联",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "发现第二个灵脉节点位于江边老码头，地面裂缝蓝光与陆远指尖蓝光一模一样，灵脉节点不止一个",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "江对岸楼顶的三闪灯信号——有人在监视觉醒者的灵脉活动。不是天机阁，是另一方势力。他们是怎么知道老码头灵脉节点会被触发的？",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E5_06"
+    },
+    {
+      "content": "封灵符碎裂后手背疤痕——疤痕触感硬如薄茧，攥拳时有东西从疤痕位置往手指生长。封灵符的消失意味着封印又松了一层，接下来会怎样？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E5_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E5_01",
+      "to": "E5_02",
+      "type": "consequence",
+      "detail": "蓝光外泄无法完全遮掩导致大壮在站点追问真相"
+    },
+    {
+      "from": "E5_02",
+      "to": "E5_03",
+      "type": "consequence",
+      "detail": "大壮收留陆远搬入新住处"
+    },
+    {
+      "from": "E5_03",
+      "to": "E5_04",
+      "type": "reaction",
+      "detail": "封灵符持续恶化和周衡安失联期间胸口热流突然牵引陆远外出"
+    },
+    {
+      "from": "E5_04",
+      "to": "E5_05",
+      "type": "escalation",
+      "detail": "热流牵引陆远到达老码头灵脉节点触发更强共鸣"
+    },
+    {
+      "from": "E5_05",
+      "to": "E5_06",
+      "type": "consequence",
+      "detail": "灵脉节点共鸣的蓝光暴露引来江对岸神秘势力的信号回应"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E5_05",
+      "thread_id": "ST01_03",
+      "type": "confirmation",
+      "detail": "封灵符彻底碎裂证实体内封印力量在持续增强，胸口跳动点牵引身体找到新灵脉节点的能力更加明显"
+    },
+    {
+      "event_id": "E5_04",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "热流牵引陆远找到第二个灵脉节点（老码头），证实东湖路废弃工厂不是唯一的灵脉节点"
+    },
+    {
+      "event_id": "E5_06",
+      "thread_id": "ST02_01",
+      "type": "clue",
+      "detail": "江对岸三闪灯信号暗示天机阁之外还有其他势力在监视觉醒者的灵脉活动"
+    },
+    {
+      "event_id": "E5_03",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "周衡安持续失联，在陆远打伤天机阁修士后正好联系不上，时机可疑"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "隐藏身体异变继续送外卖谋生",
+      "type": "protect",
+      "status": "advanced"
+    },
+    {
+      "character": "陆远",
+      "goal": "弄清楚体内力量和灵脉节点的关系",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "照看陆远确保他的安全",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "陆远觉醒后身体散发的烧焦铁锈味成为新的感官标记。封灵符彻底消失后疤痕替代印记，疤痕有微弱温度和生长感。大壮正式成为陆远现实世界的锚点角色。老码头为第二个灵脉节点，比东湖路更强。三闪灯信号引入天机阁之外的第三方势力暗示。"
+}

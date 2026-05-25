@@ -1,0 +1,317 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "大道边的正午",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "正午城外大道上，山羊在榆树荫下咀嚼树皮，罗圈腿像菌类一样在菜田和高粱地里穿梭玩耍，随后遇到父亲二里半跌脚走过。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "麻面婆的洗涤与生火",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "二里半家院中，麻面婆在树荫下洗衣服，汗水流进眼睛让她看起来像丑角，她进屋取衣服时眼睛晕花，随后毫无条理地用沾满茅草的手去烧饭。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "寻羊与斗殴",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "午后二里半发现山羊丢失，带领村民四处寻找，在井边喝水时遇到老王婆，随后因误踏白菜与红脸长人发生斗殴，草帽像断线风筝般飘落，他拔起小树狼狈逃回家。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "归羊与不祥的兆相",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午二里半坐在炕上，认为丢羊不是好兆相，脑中不断回放被打的屈辱画面，而此时山羊其实已经自己回到了草棚里不断搔痒。"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "麦场夜话与雷雨",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "夜晚麦场上，老王婆在闪电下向邻妇们平静而冷漠地讲述自己当年意外摔死三岁女儿小钟的惨事；随后雷雨突至，赵三惊觉麦子未盖，全村陷入抢收麦子的混乱，二里半摸着光头在雨中走回家。"
+    },
+    {
+      "id": "E1_06",
+      "chapter": 1,
+      "title": "清晨打麦与母子无情",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "清晨赵三门前的麦场上，王婆和平儿用马打麦子，小马贪玩弄洒麦穗被换下，老马默默忍受劳作，不知母子之情的平儿拿着别人给的柿子走到花地里，惹得王婆愤怒去叫他的父亲。"
+    },
+    {
+      "id": "E1_07",
+      "chapter": 1,
+      "title": "福发家的歌声",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "福发家麦场，健壮短小的福发女人叼着烟管耙着麦场，被侄儿在林荫中唱起的寂寞渔歌所感动。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "山羊",
+      "location": "城外大道"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "罗圈腿",
+      "location": "城外大道"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "二里半",
+      "location": "城外大道"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "麻面婆",
+      "location": "二里半家院中"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "二里半",
+      "location": "麦地与井边"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "罗圈腿",
+      "location": "麦地与井边"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "麻面婆",
+      "location": "麦地与井边"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "老王婆",
+      "location": "麦地与井边"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "红脸长人",
+      "location": "麦地与井边"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "二里半",
+      "location": "二里半家院中"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "麻面婆",
+      "location": "二里半家院中"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "老王婆",
+      "location": "夜晚麦场"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "邻妇",
+      "location": "夜晚麦场"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "赵三",
+      "location": "夜晚麦场"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "二里半",
+      "location": "夜晚麦场"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "王婆",
+      "location": "赵三麦场"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "平儿",
+      "location": "赵三麦场"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "小马",
+      "location": "赵三麦场"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "老马",
+      "location": "赵三麦场"
+    },
+    {
+      "event_id": "E1_07",
+      "character": "福发女人",
+      "location": "福发家麦场"
+    },
+    {
+      "event_id": "E1_07",
+      "character": "侄儿",
+      "location": "福发家麦场"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "麻面婆",
+      "field": "new_detail",
+      "content": "汗水流进眼睛时像戏台上的丑角，眼睛大得比牛还可怕，且有着不定的花纹"
+    },
+    {
+      "name": "麻面婆",
+      "field": "new_attitude",
+      "content": "遇到不快或挨骂时就像一摊蜡消融下来，不反抗不争斗，心像永远贮藏悲哀的衰落白棉"
+    },
+    {
+      "name": "二里半",
+      "field": "new_detail",
+      "content": "跌脚时屁股向后斜着，跌出一定的角度，每一步像在踏下一个坑"
+    },
+    {
+      "name": "二里半",
+      "field": "new_attitude",
+      "content": "将丢羊和挨打视为伤脸面的不好兆相，心中反复回放草帽飘落和酱耙子的幻象"
+    },
+    {
+      "name": "老王婆",
+      "field": "new_detail",
+      "content": "讲起悲惨往事时牙齿切得发响，在星光下脸纹发绿、眼睛发青，被孩子们称为猫头鹰"
+    },
+    {
+      "name": "老王婆",
+      "field": "new_attitude",
+      "content": "对生死极其麻木冷酷，亲手摔死女儿后一滴眼泪没淌，只在乎麦子收成，认为孩子死不算一回事"
+    },
+    {
+      "name": "平儿",
+      "field": "new_detail",
+      "content": "是私生子，还没看见过妈妈，因此不懂得老马舔舐小马伤口的母子之情"
+    },
+    {
+      "name": "福发女人",
+      "field": "new_detail",
+      "content": "健壮而短小，随意吸着烟管，会被寂寞的歌声感动"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城外大道",
+      "type": "户外",
+      "description": "被榆树荫蒙蔽的长长大道，连接村庄与城市"
+    },
+    {
+      "name": "二里半家院中",
+      "type": "民居",
+      "description": "土屋周围由树条编做成的墙，院中有一株杨树和羊的草棚"
+    },
+    {
+      "name": "麦地与井边",
+      "type": "农田",
+      "description": "留下短短根苗的黄色麦地，尽头有水井"
+    },
+    {
+      "name": "夜晚麦场",
+      "type": "户外",
+      "description": "村庄的公共打麦场，有喂猪的槽子，夜晚成为村民乘凉讲故事的地方"
+    },
+    {
+      "name": "赵三麦场",
+      "type": "农田",
+      "description": "赵三家门前的平场，用于打麦子，放有石滚"
+    },
+    {
+      "name": "福发家麦场",
+      "type": "农田",
+      "description": "福发家门前的麦场，草堆高过墙头"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "罗圈腿",
+      "role": "次要人物",
+      "personality": "机灵但有些呆傻，走路膝盖分开脚尖向里勾"
+    },
+    {
+      "name": "麻面婆",
+      "role": "主要人物",
+      "personality": "愚蠢、麻木、懦弱，像猪一样发声，做事毫无条理，毫无反抗精神"
+    },
+    {
+      "name": "二里半",
+      "role": "主要人物",
+      "personality": "跌脚的农夫，好面子，有些懦弱，容易受惊吓，对兆相十分迷信"
+    },
+    {
+      "name": "老王婆",
+      "role": "主要人物",
+      "personality": "饱经风霜，冷漠残酷，对生命毫无敬畏，讲述悲剧时带着幽灵般的兴奋与麻木"
+    },
+    {
+      "name": "赵三",
+      "role": "次要人物",
+      "personality": "红脸大手的高大汉子，粗嘎大笑，不甘于种地，总梦想去城里发展事业"
+    },
+    {
+      "name": "平儿",
+      "role": "次要人物",
+      "personality": "私生子，贪玩倔强，不理会大人的管教"
+    },
+    {
+      "name": "福发女人",
+      "role": "次要人物",
+      "personality": "健壮短小，有些寂寞，容易被歌声打动"
+    },
+    {
+      "name": "红脸长人",
+      "role": "龙套",
+      "personality": "暴躁好斗，像魔王一样，因为白菜被踏而用滴酱的耙子追打二里半"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "山羊",
+      "context": "在榆树下咀嚼树皮，后来神秘失踪又自己回到草棚，被二里半视为不祥之兆"
+    },
+    {
+      "motif": "草帽",
+      "context": "二里半的旧草帽在斗殴中像断了线的风筝飘摇到井边，成为他受辱的象征并在脑中反复回放"
+    },
+    {
+      "motif": "麦子",
+      "context": "远看使人悲伤的黄色麦地，老王婆因麦子收成好而忘记死去的女儿，夜晚雷雨时全村惊慌抢收麦子"
+    },
+    {
+      "motif": "蝴蝶",
+      "context": "正午太阳下只有蝴蝶为着花远近翩飞，麻面婆打死了一只蝴蝶溺死在盆中"
+    },
+    {
+      "motif": "灰尘",
+      "context": "一排砖车扬起浪般的灰尘，从林荫走上进城的大道"
+    },
+    {
+      "motif": "老马",
+      "context": "脱了毛的老马默默忍受劳作，用鼻头偎着小马流血的伤口，被绳子皮条在光皮上摩擦"
+    }
+  ],
+  "notes": "罗圈腿的走路姿势（膝盖分开脚尖向里勾）与他得名的原因。麻面婆洗衣服时用裤子擦汗并把裤子浸进泥浆的荒诞细节。老王婆讲述自己曾用钩子或菜刀帮人堕胎/搅出死胎的残忍背景。平儿是私生子的设定，解释了他为何不懂母子之情。半青色的柿子被前村人当作不值钱的贱东西随意抛下。"
+}

@@ -1,0 +1,179 @@
+# Persisted: 2026-05-21 16:58:33
+{
+  "events": [
+    {
+      "id": "E93_01",
+      "chapter": 93,
+      "title": "阁主告别陆远交代四件事后离开江城",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "阁主在城北写字楼三楼空房间等陆远。穿灰色夹克像普通中年男人。交代四件事：天机阁撤出江城但灵脉监测网保留不主动监控陆远；至宝门关着上界定位不到没人找他；母亲意识在封印核心是前所未有的不知道会怎样；最后说好好活着。阁主走前说你母亲的棋局七步她赢了。阁主上车离开江城。铜镜残片上字消失变凉。"
+    },
+    {
+      "id": "E93_02",
+      "chapter": 93,
+      "title": "陆远路过中医院见苏晚",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远送外卖路过中医院。苏晚穿白大褂在门口喝奶茶看手机。苏晚说下次送外卖到中医院找她给带奶茶。苏晚回中医院上班当实习生。两人简短对话。"
+    },
+    {
+      "id": "E93_03",
+      "chapter": 93,
+      "title": "老周在大壮出租屋养伤让大壮买象棋",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周住在大壮租的一室一厅里。灵力修复时经脉发痒像蚂蚁爬。苏晚的药天天在吃苦。让大壮去买副象棋。陆远来看他老周说这盘棋终于下完了。让陆远明天带壶便宜茶。"
+    },
+    {
+      "id": "E93_04",
+      "chapter": 93,
+      "title": "陆远继续送外卖一切回归正常",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傍晚陆远从老周那里出来骑电动车送外卖。火车站方向四公里。沿江路夕阳照在江面霓虹灯开始亮。母亲在脑内问他晚饭想吃什么建议多吃蔬菜。江城傍晚一切回归正常。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E93_01",
+      "character": "陆远",
+      "location": "城北写字楼"
+    },
+    {
+      "event_id": "E93_01",
+      "character": "天机阁"
+    },
+    {
+      "event_id": "E93_02",
+      "character": "陆远",
+      "location": "中医院"
+    },
+    {
+      "event_id": "E93_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E93_03",
+      "character": "老周",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E93_03",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E93_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E93_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E93_04",
+      "character": "陆承"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "天机阁撤出后完全回归日常送外卖。铜镜残片字消失变凉成普通铜片"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "回中医院继续当实习生穿白大褂。主动让陆远送外卖时找她"
+    },
+    {
+      "name": "老周",
+      "field": "new_habit",
+      "content": "灵力修复时经脉发痒像蚂蚁爬睡不着。想下象棋让大壮买"
+    },
+    {
+      "name": "陆承",
+      "field": "new_habit",
+      "content": "开始关心陆远的饮食建议多吃蔬菜"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "大壮出租屋",
+      "type": "residence",
+      "description": "城南一室一厅，大壮租的，老周养伤住在这里"
+    },
+    {
+      "name": "中医院",
+      "type": "medical",
+      "description": "江城中医院，苏晚实习的地方"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "外卖箱在夕阳下照着，灵力波动被压制为零，继续送外卖"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "天机阁灵力屏蔽阵撤了空气干净，灵脉监测网保留但不过滤陆远"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03_01",
+      "action": "resolved",
+      "evidence": "阁主明确说灵脉监测网保留但不主动监控陆远，灵力波动自动过滤。天机阁撤出江城",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E92_02",
+      "to": "E93_01",
+      "type": "consequence",
+      "detail": "老周醒来后阁主完成所有承诺离开江城"
+    },
+    {
+      "from": "E93_01",
+      "to": "E93_03",
+      "type": "consequence",
+      "detail": "阁主离开后老周出院在大壮出租屋养伤"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E93_01",
+      "thread_id": "ST03_01",
+      "type": "confirmation",
+      "detail": "阁主明确交代灵脉监测网处理方式，天机阁对陆远的监控正式结束"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "老周",
+      "goal": "养好灵根下象棋喝茶",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "苏晚",
+      "goal": "当普通实习生继续学医修",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "像普通人一样送外卖",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "天机阁正式撤出江城。阁主穿灰色夹克开黑色轿车离开。铜镜残片失去功能变成普通铜片。阁主交代母亲意识在封印核心是前所未有的情况。老周住大壮出租屋养伤要买象棋。苏晚回中医院实习。"
+}

@@ -1,0 +1,153 @@
+{
+  "events": [
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "积水中的日记本与墙体划痕",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹蹲在402室积水中查看泡水的日记本，触摸暗红色印记时在墙上发现三道平行划痕，回忆起林素云在宿舍忍受剧痛用断裂的指甲在墙角刻下这三道记号的情景。"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "捞起被水冲出的胶卷",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "水压改变导致胶卷被冲出，陈若竹将其捞起，胶卷外壳布满粗糙的红褐色锈斑，由于太滑无法放在腿上，只能塞进膝盖和胸口间用身体固定。"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "触摸印记与废纸堆的回忆",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹用沾满石膏粉的手指按住日记本暗红印记中心，感觉到类似干涸动物胶的僵硬触感，随后回忆起林素云在造纸车间轰鸣的机器下，从废纸堆中秘密翻找并收集印有特定数字的碎纸片。"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "日记本第二页的数字",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹将胶卷放在窗台上，强行撕开粘连的日记本第二页，发现右下角有用圆珠笔写下的极小数字“047 -12”，但纸张承受不住触碰，墨水瞬间晕染成蓝黑色污渍。"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "划痕与蒸汽爆裂的回忆",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹注视着墙上的三道划痕，回忆起林素云刻完划痕后遭遇纸浆池高温蒸汽管道爆裂，滚烫的白色蒸汽瞬间吞噬了整个宿舍，林素云的手指和那道划痕消失在翻滚的蒸汽中。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E2_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E2_01",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E2_01",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "班长"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "林素云"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "指尖沾满白色的石膏粉和黑色的霉菌斑，墨水在指腹上干涸成半透明薄膜让手指发僵。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "在宿舍墙角刻划痕时食指指甲从中间断裂一半，半截甲体挂在甲床上。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "在造纸车间废料堆中秘密收集印有特定数字格式的碎纸片藏在围裙口袋里。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "手",
+      "context": "陈若竹用手指摸索印记和划痕，指腹沾满石膏粉；林素云用指甲刻划痕导致断裂，在废纸堆里翻找。"
+    },
+    {
+      "motif": "水",
+      "context": "黑黄色的泥水漫过脚背浸泡日记本，水压改变冲出胶卷，回忆中高温蒸汽管道爆裂喷出水汽。"
+    },
+    {
+      "motif": "灰尘",
+      "context": "门外的敲击让402室门框上的灰尘簌簌落下，指甲刮过沟壑带下干燥的白色石膏粉。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "陈若竹触摸暗红印记时感觉到类似干涸动物胶的僵硬触感，且回忆中林素云刻划痕时指甲劈裂渗出暗红色血丝混进墙灰",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "日记本第二页和造纸车间碎纸片上同时出现的数字“047 -12”代表什么含义？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E2_04"
+    },
+    {
+      "content": "林素云在宿舍墙角刻下三道平行划痕的真正用意是什么？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_01"
+    }
+  ],
+  "notes": "胶卷外壳布满红褐色锈斑，底部塑料壳裂开露出黑色胶片盘；造纸车间环境恶劣，有漂白剂和硫化钠混合的刺鼻酸臭味，废料堆里的酸水能瞬间在工作服上烧出白斑；纸浆池高温蒸汽管道曾发生严重爆裂事故。"
+}

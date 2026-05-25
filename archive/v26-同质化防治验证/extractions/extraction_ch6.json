@@ -1,0 +1,187 @@
+# Persisted: 2026-05-22 21:15:57
+{
+  "events": [
+    {
+      "id": "E6_01",
+      "chapter": 6,
+      "title": "暗房冲洗底片",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡在照相馆地下室冲洗底片。六张照片揭示：地下室有蜷缩的人形和液体、被砖封死前铁门里有光和一个人影、标注日期11月9日凌晨、铁架上有更多塑料盒、铁门上方曾有金属牌写着'胶片'两个字。"
+    },
+    {
+      "id": "E6_02",
+      "chapter": 6,
+      "title": "沈渡直播公布真相",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡在直播中播放来电者录音片段，描述照片内容（用'液体'而非'血'），公开赵维消失和李国生的故事。他用前记者的话术只说事实不说判断。苏岚在导播间红了眼眶。"
+    },
+    {
+      "id": "E6_03",
+      "chapter": 6,
+      "title": "第三通来电揭示真相",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "来电者揭示：他就是三年前拍底片的人。受害者叫宋莹，26岁，小超市收银员，误入印刷厂地下室发现了洗钱通道。赵维的报道被压。林小微找到了遗漏的底片后也遇到了同样的事。来电者说'忘了名字的人，才有理由重新记起来'。"
+    },
+    {
+      "id": "E6_04",
+      "chapter": 6,
+      "title": "沈渡回归日常",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "直播结束。沈渡把照片和底片锁在抽屉里，创建文档记录所有名字（李国生、宋莹、林小微、赵维）。凌晨一点重新开播，和每一天一样。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E6_01",
+      "character": "沈渡"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "苏岚",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "无名来电者"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "沈渡",
+      "location": "电台直播间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈渡",
+      "field": "state_change",
+      "content": "从旁观者变为记录者。重新记起了李国生的名字，为所有受害者创建了文档。前记者本能完全回归，但这次用在了正确的地方。"
+    },
+    {
+      "name": "无名来电者",
+      "field": "new_detail",
+      "content": "三年前亲自进入印刷厂拍下底片。背景声音从机械嗡鸣变为真正的安静。说话时偶尔失去平稳语调。选择沈渡的原因是'忘了名字的人才有理由重新记起来'。"
+    },
+    {
+      "name": "苏岚",
+      "field": "state_change",
+      "content": "从保护者变为见证者。听完全部直播后红了眼眶但没有干涉。"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "宋莹",
+      "role": "受害者",
+      "personality": "26岁收银员，兴安巷小超市。误入印刷厂地下室通道发现洗钱操作后遇害。"
+    },
+    {
+      "name": "赵维",
+      "role": "次要人物",
+      "personality": "前都市报社会新闻记者。三年前写了印刷厂地下室的报道但被压制，随后辞职消失。"
+    }
+  ],
+  "new_locations": [],
+  "motif_mentions": [
+    {
+      "motif": "红光",
+      "context": "暗房红色安全灯，ON AIR灯，照片浸在红色里。红光从危险信号变为显影工具。"
+    },
+    {
+      "motif": "电波杂音",
+      "context": "底噪消失后回归安静。电波从杂音回归纯净。声音穿过城市，和每一天一样。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "resolved",
+      "evidence": "来电者揭示三年前他拍下底片，受害者宋莹发现洗钱通道后被杀，赵维报道被压",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "resolved",
+      "evidence": "赵维被叫去谈话后辞职，干干净净消失。被压制而非被杀。",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "resolved",
+      "evidence": "来电者的'别动'是保护而非威胁。他选择沈渡是为了让他重新记起遗忘的名字。",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E6_01",
+      "to": "E6_02",
+      "type": "decision",
+      "detail": "照片内容驱使沈渡决定在直播中公布真相"
+    },
+    {
+      "from": "E6_02",
+      "to": "E6_03",
+      "type": "reaction",
+      "detail": "直播触发了来电者的最后一通电话"
+    },
+    {
+      "from": "E6_03",
+      "to": "E6_04",
+      "type": "consequence",
+      "detail": "真相揭示后沈渡选择回归日常但保留证据继续"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E6_01",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "照片证实三年前地下室发生过暴力事件"
+    },
+    {
+      "event_id": "E6_03",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "来电者亲口承认拍了照片，揭示宋莹受害和洗钱通道"
+    },
+    {
+      "event_id": "E6_03",
+      "thread_id": "ST03_01",
+      "type": "confirmation",
+      "detail": "赵维被谈话后消失的完整链条"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈渡",
+      "goal": "记住所有受害者的名字，保留证据继续调查",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "无名来电者",
+      "goal": "让沈渡重新记起被遗忘的名字并公开真相",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "终章闭环：沈渡从遗忘李国生到为所有受害者创建文档。电波意象从杂音回归纯净。ON AIR灯最后暗了又亮，象征回归日常但一切已不同。洗钱通道是核心犯罪动机。宋莹是三年前的受害者。文件名'名字'呼应旁观者罪责主题。"
+}

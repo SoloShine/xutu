@@ -1,0 +1,255 @@
+# Persisted: 2026-05-21 16:20:53
+{
+  "events": [
+    {
+      "id": "E83_01",
+      "chapter": 83,
+      "title": "陆远苏晚联手撬动灵脉源头封印第五秒第三层封印被动打开",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远跪在石室中央封印核心对准地面苏晚双手按背脊灵力同步注入。前四秒封印核心与灵脉源头同步银针生效。第五秒白色纹路裂开第三层封印被动打开金色灵力从裂缝渗出强度远超预期。苏晚灵力消耗加快手在抖但没松开。"
+    },
+    {
+      "id": "E83_02",
+      "chapter": 83,
+      "title": "归墟本人到场要抢铜镜老周切断灵力连接拦住",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "第六秒归墟以实体暗红灵力形态出现不是投影温度骤降。归墟发射灵力尖刺抢铜镜老周精准切断灵力连接散掉尖刺。归墟放灵力墙压过来老周被推撞石壁嘴角流血但挡住了。大壮护住苏晚。"
+    },
+    {
+      "id": "E83_03",
+      "chapter": 83,
+      "title": "第七秒封印核心释放金色灵力撬开灵脉源头铜镜碎裂母亲意识脱出",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "第三层封印打开瞬间金色灵力喷出苏晚被弹开第三根银针碎裂命门穴碎片扎进经脉陆远后背流血。金色灵力灌入地面灵脉源头封印撬动。第八秒铜镜碎成十二片蓝光凝成模糊人形母亲残存意识脱出说'你做到了'。白色纹路蔓延到脖子第三层封印开了陆远还活着。"
+    },
+    {
+      "id": "E83_04",
+      "chapter": 83,
+      "title": "归墟叫出母亲名字铜音母亲说'你以为我不知道你是谁'归墟散开",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "归墟看到母亲意识后停手声音变化有温度叫出'铜音'。母亲说'你以为我不知道你是谁'。归墟暗红轮廓散开像被风拆掉。归墟与母亲有旧关系且母亲知道归墟真实身份。"
+    },
+    {
+      "id": "E83_05",
+      "chapter": 83,
+      "title": "天机阁阁主灵力从地面压入石室天花板开裂",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城北方向灵力穿透地面穿透台阶压进石室不是冲击波是纯粹灵力碾压如山。老周脸色白确认天机阁阁主亲至咳血沫子溅石壁。石室蓝光暗金色灵力消散。苏晚灵力耗尽陆远跪在碎铜镜旁母亲蓝光人形随时会散。天花板出现裂缝灰尘落下。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E83_01",
+      "character": "陆远",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_01",
+      "character": "苏晚",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_02",
+      "character": "归墟",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_02",
+      "character": "老周",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_02",
+      "character": "大壮",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_03",
+      "character": "陆远",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_04",
+      "character": "归墟",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_04",
+      "character": "陆远",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_05",
+      "character": "老周",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_05",
+      "character": "陆远",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_05",
+      "character": "苏晚",
+      "location": "第五条路地下石室"
+    },
+    {
+      "event_id": "E83_05",
+      "character": "大壮",
+      "location": "第五条路地下石室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "第三层封印被动打开白色金色纹路蔓延到脖子第三根银针碎裂命门穴后背流血封印核心释放金色灵力后安静还活着"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力完全耗尽手垂在身侧被金色灵力弹开后靠大壮扶着还能站"
+    },
+    {
+      "name": "老周",
+      "field": "state_change",
+      "content": "被归墟灵力墙压撞石壁嘴角流血被阁主灵力压迫咳血沫子"
+    },
+    {
+      "name": "归墟",
+      "field": "state_change",
+      "content": "叫出母亲名字铜音声音从无感情金属片变为有温度粗糙声音看到母亲后散开"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "第三层封印打开释放金色灵力远超预期金色灵力灌入地面撬动灵脉源头"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST82_01",
+      "action": "resolved",
+      "evidence": "陆远苏晚联手成功撬开灵脉源头封印母亲意识脱出但代价是第三根银针碎裂后背流血苏晚灵力耗尽",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST19_01",
+      "action": "advanced",
+      "evidence": "第三层封印被动打开白色金色纹路蔓延到脖子陆远还活着",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST25_01",
+      "action": "resolved",
+      "evidence": "第三层封印在撬开封印过程中被打开金色灵力释放",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST80_01",
+      "action": "advanced",
+      "evidence": "归墟本人到场抢铜镜被老周拦住看到母亲后停手叫出'铜音'母亲说知道他是谁",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST79_01",
+      "action": "advanced",
+      "evidence": "归墟是实体暗红灵力形态与母亲封印同频叫出母亲名字铜音母亲知道归墟身份",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST70_01",
+      "action": "advanced",
+      "evidence": "三根银针碎了一根命门穴碎片扎进经脉只剩两根银针",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "归墟的真实身份——归墟叫母亲'铜音'声音从无感情变为有温度母亲说'你以为我不知道你是谁'归墟与母亲有旧关系母亲知道归墟真实身份。归墟到底是谁？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E83_04"
+    },
+    {
+      "content": "天机阁阁主亲至城南——阁主灵力穿透地面压入地下石室天花板开裂。陆远刚完成撬封印后背流血苏晚灵力耗尽老周受伤。面对阁主他们毫无还手之力。阁主要什么？",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E83_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E83_01",
+      "to": "E83_02",
+      "type": "escalation",
+      "detail": "撬封印灵力波动吸引归墟到场"
+    },
+    {
+      "from": "E83_02",
+      "to": "E83_03",
+      "type": "consequence",
+      "detail": "老周拦住归墟为陆远争取时间第七秒封印释放"
+    },
+    {
+      "from": "E83_03",
+      "to": "E83_04",
+      "type": "revelation",
+      "detail": "母亲意识脱出后归墟反应揭示两人有旧关系"
+    },
+    {
+      "from": "E83_04",
+      "to": "E83_05",
+      "type": "escalation",
+      "detail": "撬封印和金色灵力释放的波动引来天机阁阁主"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E83_04",
+      "thread_id": "ST80_01",
+      "type": "clue",
+      "detail": "归墟叫母亲铜音母亲说知道他是谁"
+    },
+    {
+      "event_id": "E83_04",
+      "thread_id": "ST79_01",
+      "type": "clue",
+      "detail": "归墟本人以暗红灵力实体形态出现与母亲有旧关系"
+    },
+    {
+      "event_id": "E83_01",
+      "thread_id": "ST25_01",
+      "type": "confirmation",
+      "detail": "第三层封印在撬封印过程中被动打开金色灵力释放"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "保护母亲残存意识不散",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "天机阁阁主",
+      "goal": "获取上界至宝或封印血脉",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "母亲名字铜音被归墟叫出。归墟的声音在看到母亲后从金属片变为有温度说明归墟有感情。母亲说'你以为我不知道你是谁'暗示归墟身份已半解。第三根银针碎裂命门穴两根银针剩余。第三层封印开白色金色纹路到脖子。金色灵力是第三层封印释放的力量远超预期。"
+}

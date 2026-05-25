@@ -1,0 +1,187 @@
+# Persisted: 2026-05-21 12:53:30
+{
+  "events": [
+    {
+      "id": "E37_01",
+      "chapter": 37,
+      "title": "陆远发现封印核心产生极低频灵力脉冲",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "深夜陆远无法入睡独自研究玉盒，集中注意力感受封印核心时发现它在产生极微弱脉冲，约四秒一次极低频灵力波动沿金色纹路流转到指尖消散，苏晚银针检查时被稳定背景噪音掩盖未发现"
+    },
+    {
+      "id": "E37_02",
+      "chapter": 37,
+      "title": "封印核心脉冲触发玉盒花纹逐条亮起",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远将右手掌心贴上玉盒让脉冲自然传导，第六秒玉盒花纹开始亮起金色光芒像电路通电逐条蔓延，苏晚确认封印核心脉冲频率与玉盒共鸣频率完全一致，玉盒不需要金色纹路灵力而是需要封印核心的脉搏"
+    },
+    {
+      "id": "E37_03",
+      "chapter": 37,
+      "title": "玉盒打开——发现透明水滴状物品",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "金色纹路全部亮起后玉盒像拉链一样从一端向另一端打开，里面有一滴不到拇指指甲盖大的透明水滴状物品核心有极淡金色。触碰瞬间封印核心猛跳一下后恢复更深一层稳定。水滴灵力密度比灵脉暗河三层还高，微热微微跳动像另一颗心脏"
+    },
+    {
+      "id": "E37_04",
+      "chapter": 37,
+      "title": "玉盒共鸣灵力泄露导致南侧灵力波动加速逼近",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚发现玉盒共鸣灵力波动不完全封闭有部分向外扩散，玉盒打开后南侧脏灵力波动突然加速到三倍速度缩小到一公里。凌晨两点十五分，48小时还剩不到30小时"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E37_01",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E37_02",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E37_02",
+      "character": "苏晚",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E37_03",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E37_03",
+      "character": "苏晚",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E37_04",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E37_04",
+      "character": "苏晚",
+      "location": "安全屋"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "发现封印核心产生四秒一次极低频灵力脉冲，触碰水滴后封印核心又深一层稳定"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "确认玉盒打开方式是封印核心的脉搏频率而非金色纹路灵力，灵力密度感知确认水滴比灵脉暗河三层还高"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "玉盒共鸣灵力泄露像黑夜里点亮一盏灯，被南侧脏灵力波动捕捉到导致加速逼近"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST35_01",
+      "action": "resolved",
+      "evidence": "陆远发现封印核心四秒一次极低频脉冲是打开玉盒的钥匙，脉冲频率与玉盒花纹共鸣频率完全一致，手掌贴上玉盒让脉冲自然传导后花纹逐条亮起玉盒打开",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "48小时已用18小时剩不到30小时，南侧脏灵力加速到三倍缩短到一公里",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST36_01",
+      "action": "advanced",
+      "evidence": "南侧脏灵力波动感知到玉盒共鸣灵力泄露后加速逼近，确认该势力有灵力监测能力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_02",
+      "action": "advanced",
+      "evidence": "玉盒内物品为一滴透明水滴核心有金色灵力密度比灵脉暗河三层还高可能是上界至宝或其一部分",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "透明水滴是什么——不到拇指指甲盖大像一滴凝固的水通体透明核心有极淡金色，灵力密度比灵脉暗河三层还高，触碰时封印核心猛跳后更深一层稳定，微微跳动像另一颗心脏。这是上界至宝还是其他东西？为什么母亲要把它藏在三重锁（石门+玉盒+封印脉冲）之后",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E37_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E37_01",
+      "to": "E37_02",
+      "type": "revelation",
+      "detail": "发现封印核心脉冲后用手掌传导触发玉盒共鸣"
+    },
+    {
+      "from": "E37_02",
+      "to": "E37_03",
+      "type": "consequence",
+      "detail": "花纹全部亮起后玉盒自动打开"
+    },
+    {
+      "from": "E37_03",
+      "to": "E37_04",
+      "type": "escalation",
+      "detail": "玉盒打开灵力泄露被南侧势力捕捉加速逼近"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E37_01",
+      "thread_id": "ST35_01",
+      "type": "confirmation",
+      "detail": "封印核心脉冲是打开玉盒的关键"
+    },
+    {
+      "event_id": "E37_03",
+      "thread_id": "ST09_02",
+      "type": "clue",
+      "detail": "水滴灵力密度极高可能是上界至宝"
+    },
+    {
+      "event_id": "E37_04",
+      "thread_id": "ST36_01",
+      "type": "confirmation",
+      "detail": "南侧势力确实有灵力监测能力"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "弄清水滴是什么以及如何使用",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "在外部势力到达前帮陆远恢复战斗力",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "玉盒打开方式：封印核心的脉搏（四秒一次极低频脉冲）而非金色纹路灵力。启动后不可逆。玉盒内物品为透明水滴核心金色微热跳动。触碰水滴后封印核心更深一层稳定。凌晨两点十五分，48小时还剩不到30小时。南侧脏灵力加速三倍缩短到一公里"
+}

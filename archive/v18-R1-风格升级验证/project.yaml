@@ -1,0 +1,19 @@
+name: 第六次死亡（V18-R1）
+identifier: v18_r1
+chapters: 6
+language: 简体中文
+description: V18 Round 1验证：prev_text_chars=500 + 12条升级风格指南。对比v17的3000字注入AI味改善效果。
+novel:
+  writing:
+    prev_text_chars: 500
+    min_words: 2500
+    max_words: 3500
+    min_words_per_scene: 600
+  extraction:
+    target_events: "5-8"
+    max_events: 10
+    min_events: 3
+  suspense:
+    budget_base: 8
+    budget_multiplier: 1.5
+    staleness_threshold: 5

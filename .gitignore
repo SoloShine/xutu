@@ -13,13 +13,11 @@ neo4j_logs/
 .env
 *.key
 
-# Generated content (projects + archived verification data)
+# Generated novel outputs (tracked for reference)
 projects/
-archive/
 
 # Legacy directories (pre-restructure)
 novel_kg_mvp/
-novel_mcp_server/
 sheng_si_chang/
 
 # Temp / scratch files
@@ -38,4 +36,8 @@ Desktop.ini
 .DS_Store
 
 # Claude Code
+.claude/settings.json
 .claude/settings.local.json
+
+# Graphify
+graphify-out/cache/

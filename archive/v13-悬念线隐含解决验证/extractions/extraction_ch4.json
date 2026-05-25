@@ -1,0 +1,160 @@
+{
+  "events": [
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "暗房红光下的初步比对",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在暗房红光下用镊子检查底片，发现底片边缘负像数字与日记本第二页的数字阵列对应，确认数字是用力刻写，并刮下第一页暗红印记边缘的粉末，触感如泥沙且带有铁锈腥气。"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "光斑坠落：排污暗管前的记录",
+      "type": "gap",
+      "gap_level": 1,
+      "is_gap": true,
+      "detail": "手电筒光斑猛地坠落后，视角滑入底片场景：林素云蹲在废弃沉淀池的铁皮柜后躲避喷涌的猩红色废水和酸雾，她在极端刺鼻的环境中掏出日记本，用力刻下'047 -12'这组数字。"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "白光下的时间表破译",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "视角回归暗房，陈若竹用白光直射底片显现所有数字标记，在日记本上补全时间格式，破译出这是一张记录凌晨排污起始时间和持续时长的精确时间表，并发现第三页'000 -00'及向下箭头和浅红浸渍。"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "人形轮廓与锈斑的重合",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹将底片人形轮廓与暗红印记重叠，发现胸口位置对应，边缘锯齿状是凝结开裂的物质且散发酸臭味；随后用手电筒照向墙面，发现锈斑形状与暗红印记相似，均有放射状飞溅痕迹。"
+    },
+    {
+      "id": "E4_05",
+      "chapter": 4,
+      "title": "光斑坠落：逼近的搜寻者",
+      "type": "gap",
+      "gap_level": 1,
+      "is_gap": true,
+      "detail": "光斑再次猛地坠落后，视角切回沉淀池：伴随沉重规律的脚步声，一道手电光柱贴着废水面向铁皮柜推进，林素云屏住呼吸，光柱最终定格在铁皮柜边缘的铆钉上，酸性雾气在光束中扭曲翻滚。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E4_01",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "林素云",
+      "location": "废弃沉淀池"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "陈若竹",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "林素云",
+      "location": "废弃沉淀池"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "通过比对底片和日记本，成功将无序的数字破译为精确的排污时间表，认知从困惑转向理性分析。"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "在极端危险的腐蚀性废水和酸雾环境中，仍保持记录数据的冷静与决绝，甚至不惜划破纸背。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "暗房",
+      "type": "室内",
+      "description": "陈若竹冲洗底片的工作室，有遮光布、安全灯、玻璃板，天花板漏水，墙面有锈斑和裂缝。"
+    },
+    {
+      "name": "废弃沉淀池",
+      "type": "工业废墟",
+      "description": "充满积水、暗管和铁皮柜的封闭空间，定期排放带有强腐蚀性的猩红色废液，弥漫酸雾。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "红/猩红色",
+      "context": "底片的安全灯幽光、暗管喷涌的废水、铁管凝结的水珠、锈斑、暗红印记，贯穿全章的视觉主色调。"
+    },
+    {
+      "motif": "手电筒光斑",
+      "context": "作为现实与幻觉/回忆切换的媒介，光斑的坠落标志着意识滑出身体（gap体验）。"
+    },
+    {
+      "motif": "酸臭味",
+      "context": "沉淀池的废水、底片上人形轮廓散发的微弱气味，将两重时空的物体性质联系起来。"
+    },
+    {
+      "motif": "水/积水",
+      "context": "暗房天花板渗水、沉淀池地面的温热积水，水作为腐蚀和蔓延的载体。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_01",
+      "action": "resolved",
+      "evidence": "陈若竹用白光显现底片数字，并在日记本上补全为'04:47，持续12分钟'等格式，明确这是排污时间表。",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "刮下印记粉末有铁锈腥气，底片人形胸口对应印记中心且散发酸臭味，墙面锈斑有放射状飞溅痕迹，暗示印记是腐蚀性废液飞溅干涸后形成。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "人形轮廓边缘呈锯齿状，不是衣服褶皱而是凝结开裂的物质，且带有酸臭味，暗示该物体曾被废液浸泡或污染。",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "确认底片记录了排污管道标牌上的时间数字，以及边缘处带有特殊物质的人形轮廓。",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "日记本第三页的'000 -00'、向下箭头和浅红浸渍代表什么？是排污结束、事故发生还是某种终结的标记？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_03"
+    },
+    {
+      "content": "在废弃沉淀池中拿着手电筒、脚步声如节拍器般规律搜寻的人是谁？",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E4_05"
+    }
+  ],
+  "notes": "本章出现了三次'光斑猛地向下坠去'的断点，作为陈若竹意识解离（gap）的结构性标志，将暗房的现实与底片记录的历史/潜意识场景无缝缝合；排污时间表的破译为故事引入了强烈的工业污染与隐瞒真相的背景设定。"
+}

@@ -1,0 +1,216 @@
+# Persisted: 2026-05-21 13:12:40
+{
+  "events": [
+    {
+      "id": "E43_01",
+      "chapter": 43,
+      "title": "陆远金色瞳孔伏击灵墟修士——击碎筑基中期护体灵光",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在东湖路废弃工厂利用金色瞳孔追踪灵墟修士扫描节奏六秒一次两秒间隙，在第七次扫描间隙突袭从水泥板后三步到达院子中央，金色纹路全力爆发释放金色光球击碎筑基中期修士护体灵光但未能击杀对方第二层灵光正在凝聚，辅助修士灵力反击被金色纹路护盾弹开，陆远五秒内完成突袭后立即撤离"
+    },
+    {
+      "id": "E43_02",
+      "chapter": 43,
+      "title": "灵墟修士撤离——灵力轨迹城北三公里消失",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵墟两个修士受突袭后迅速撤离往东北方向高速移动，灵力轨迹在城北三公里处突然消失与暗枭灵力轨迹消失方式完全相同，两个消失位置差不到五十米确认城北三公里有灵墟接应据点负责接应和屏蔽灵力波动"
+    },
+    {
+      "id": "E43_03",
+      "chapter": 43,
+      "title": "苏晚检查——灵力通道壁两处微小裂痕",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用银针医修术检查陆远身体发现灵力通道壁有两处微小裂痕不深未伤到内壁封印核心仍稳定，要求至少六小时不能用灵力休息恢复，金色纹路全力爆发的代价兑现"
+    },
+    {
+      "id": "E43_04",
+      "chapter": 43,
+      "title": "老周锁定灵墟接应据点位置",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周对比暗枭灵力轨迹消失位置和灵墟修士消失位置两个位置差不到五十米确认城北三公里是灵墟在江城的接应据点有人负责接应和屏蔽灵力波动"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E43_01",
+      "character": "陆远",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E43_01",
+      "character": "苏晚",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E43_02",
+      "character": "陆远",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E43_03",
+      "character": "苏晚",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E43_03",
+      "character": "陆远",
+      "location": "东湖路废弃工厂"
+    },
+    {
+      "event_id": "E43_04",
+      "character": "老周"
+    },
+    {
+      "event_id": "E43_04",
+      "character": "陆远",
+      "location": "东湖路废弃工厂"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色纹路全力爆发可击碎筑基中期护体灵光但灵力通道壁出现微小裂痕需六小时恢复"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "金色瞳孔能力已暴露灵墟知道对手有灵力视觉能力"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵墟灵力扫描变成金色瞳孔中暗红色波纹金色纹路爆发时灵力像开闸洪水"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST42_01",
+      "action": "advanced",
+      "evidence": "金色瞳孔能力在伏击中暴露灵墟修士亲历灵力视觉能力的威力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST40_01",
+      "action": "advanced",
+      "evidence": "金色瞳孔实战应用成功追踪灵力扫描间隙突袭击碎筑基中期护体灵光",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "灵墟筑基中期修士被击碎护体灵光后紧急撤离",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "全力出手后灵力通道壁出现微小裂痕需六小时恢复代价兑现",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST26_02",
+      "action": "advanced",
+      "evidence": "灵墟修士灵力轨迹在城北三公里消失与暗枭消失位置一致确认接应据点",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵墟城北接应据点——城北三公里处灵墟灵力轨迹消失的位置差不到五十米确认有接应据点负责接应和屏蔽灵力波动，谁能瞬间屏蔽筑基中期的全部灵力波动？这个据点里还有什么人？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E43_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E43_01",
+      "to": "E43_02",
+      "type": "consequence",
+      "detail": "伏击击碎护体灵光后灵墟修士紧急撤离"
+    },
+    {
+      "from": "E43_01",
+      "to": "E43_03",
+      "type": "consequence",
+      "detail": "全力爆发后灵力通道壁出现裂痕苏晚检查确认代价"
+    },
+    {
+      "from": "E43_02",
+      "to": "E43_04",
+      "type": "revelation",
+      "detail": "灵力轨迹消失位置对比暗枭消失位置锁定灵墟接应据点"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E43_01",
+      "thread_id": "ST40_01",
+      "type": "confirmation",
+      "detail": "金色瞳孔灵力视觉实战有效精确追踪扫描间隙成功突袭"
+    },
+    {
+      "event_id": "E43_01",
+      "thread_id": "ST42_01",
+      "type": "confirmation",
+      "detail": "金色瞳孔能力在伏击中使用后暴露"
+    },
+    {
+      "event_id": "E43_01",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "全力出手后灵力通道壁出现微小裂痕代价兑现"
+    },
+    {
+      "event_id": "E43_02",
+      "thread_id": "ST26_02",
+      "type": "confirmation",
+      "detail": "灵墟修士灵力轨迹在城北三公里消失与暗枭消失位置一致确认接应据点"
+    },
+    {
+      "event_id": "E43_04",
+      "thread_id": "ST09_01",
+      "type": "clue",
+      "detail": "灵墟城北接应据点位置锁定"
+    },
+    {
+      "event_id": "E43_04",
+      "thread_id": "ST27_02",
+      "type": "connection",
+      "detail": "能屏蔽筑基中期灵力的接应者可能与灵墟背后神秘势力有关"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "六小时内不使用灵力让灵力通道壁裂痕恢复",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "监测陆远灵力通道壁裂痕恢复情况",
+      "type": "protect",
+      "status": "advanced"
+    },
+    {
+      "character": "老周",
+      "goal": "分析灵墟城北接应据点制定下一步策略",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "伏击成功打乱灵墟搜索节奏但金色瞳孔能力暴露。灵力通道壁微小裂痕是灵种融合后首次出现的代价。城北三公里灵墟接应据点位置锁定。老周说找到了。"
+}

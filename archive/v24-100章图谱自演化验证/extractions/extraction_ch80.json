@@ -1,0 +1,342 @@
+# Persisted: 2026-05-21 16:07:01
+{
+  "events": [
+    {
+      "id": "E80_01",
+      "chapter": 80,
+      "title": "老周苏晚分析暗红灵力与母亲封印的频率共振关系",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周分析暗红灵力每四秒脉动与灰色节点一致，频率共振意味着第三方要么是同一人做的要么同一体系。苏晚补充说第三方不是模仿而是接触过母亲的封印或与封印源头有关联。同源不代表同路。"
+    },
+    {
+      "id": "E80_02",
+      "chapter": 80,
+      "title": "陆远决定趁三方混乱立刻去灵墟据点拔引流管道",
+      "type": "decision",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远分析等不起三方打完谁赢都来找他也没地方跑决定趁乱动手。苏晚用灵脉读脉锁定引流管道在灵墟据点正下方两米。陆远安排大壮盯外围苏晚远程监控老周守苏晚。"
+    },
+    {
+      "id": "E80_03",
+      "chapter": 80,
+      "title": "陆远潜入灵墟据点后院找到引流管道石板",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远和大壮九点半走巷子往北到达灵墟据点废弃写字楼外围。陆远感知到楼内两个筑基期灵力波动。大壮在外围盯梢。陆远翻矮墙进入后院搬开碎砖头找到地下石板和引流管道。"
+    },
+    {
+      "id": "E80_04",
+      "chapter": 80,
+      "title": "第三方使者归墟现身以灵力投影形态提出交易",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远提起石板瞬间温度骤降暗红灵力从虚无中涌出凝成人形轮廓自称归墟。归墟以灵力投影出现声音像金属片震动无感情。开出条件：帮陆远打开第五条路最后一扇门找到母亲钥匙但城南旧居地下的东西归他。陆远拒绝归墟警告你会后悔。"
+    },
+    {
+      "id": "E80_05",
+      "chapter": 80,
+      "title": "天机阁灵墟正面冲突升级安全屋暴露老周苏晚撤离",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城北方向灵力冲击波爆发天机阁和灵墟正面打起来。冲击波波及南边安全屋灵力屏蔽被撕开暴露。老周发消息安全屋暴露已和苏晚撤离到城南母亲住过的那条街。灵墟据点两个筑基后期被冲击波吸引离开据点。"
+    },
+    {
+      "id": "E80_06",
+      "chapter": 80,
+      "title": "陆远趁乱拔掉灵墟引流管道北边节点解锁",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "灵墟守卫被冲击波吸引离开据点后陆远抓住机会蹲下搬开石板抓住引流管道边缘用力拔除。灵力从断口涌出被灵脉网络吸收灵墟据点下灵力流向恢复。玉牌上北边红点暗了。封印核心跳了两下像确认了什么。"
+    },
+    {
+      "id": "E80_07",
+      "chapter": 80,
+      "title": "陆远大壮往城南汇合归墟在身后注视",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远和大壮撤离灵墟据点方向城南转移。回头看归墟暗红轮廓在半空飘着没追来只是注视像看棋子走到该去的位置。苏晚发消息城南旧居街口等你地面下面有东西。夜风带泥土味和灰色节点一样。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E80_01",
+      "character": "老周"
+    },
+    {
+      "event_id": "E80_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E80_01",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E80_02",
+      "character": "陆远",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E80_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E80_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E80_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E80_03",
+      "character": "陆远",
+      "location": "灵墟据点"
+    },
+    {
+      "event_id": "E80_03",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E80_04",
+      "character": "陆远",
+      "location": "灵墟据点后院"
+    },
+    {
+      "event_id": "E80_04",
+      "character": "归墟"
+    },
+    {
+      "event_id": "E80_05",
+      "character": "老周"
+    },
+    {
+      "event_id": "E80_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E80_06",
+      "character": "陆远",
+      "location": "灵墟据点后院"
+    },
+    {
+      "event_id": "E80_07",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E80_07",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E80_07",
+      "character": "归墟"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "北边节点解锁后封印核心跳了两下不是和归墟同步是另一种跳动像确认了什么"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "面对归墟的交易条件果断拒绝不信任未在母亲布局中提及的第三方势力"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "灵墟据点后院",
+      "type": "auto_registered",
+      "description": "灵墟城北据点废弃写字楼后面的二十平米小院碎砖头和枯草地面下有引流管道石板"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "归墟",
+      "role": "unknown",
+      "personality": "第三方势力使者以暗红色灵力投影形态出现无实体一米七偏瘦站姿很直。声音像金属片震动无感情无语调。灵力频率每四秒一次与母亲封印和灰色节点同频。了解母亲的布局知道第五条路需要钥匙。想要城南旧居地下的东西。被陆远拒绝后警告你会后悔。"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "天机阁灵墟冲突灵力冲击波波及南边安全屋暴露蓝色灰色灵力缠在一起"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST79_01",
+      "action": "advanced",
+      "evidence": "归墟以暗红灵力投影现身自称名字灵力频率与灰色节点一致封印核心与其同步共振",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST79_02",
+      "action": "advanced",
+      "evidence": "陆远拔掉灵墟据点引流管道北边节点解锁玉牌北边红点暗了",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST75_02",
+      "action": "advanced",
+      "evidence": "天机阁和灵墟正面打起来灵力冲击波波及安全屋方向",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST44_01",
+      "action": "advanced",
+      "evidence": "天机阁灵墟正面冲突升级城北天空一半蓝一半灰冲击波往南扩散",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST51_02",
+      "action": "advanced",
+      "evidence": "归墟的暗红灵力与悬浮人影和突袭灵墟总部的第三方势力相关以灵力投影出现",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "天机阁灵墟不再互相牵制直接打起来安全屋暴露窗口期彻底结束",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST68_01",
+      "action": "advanced",
+      "evidence": "天机阁灵墟冲突和第三方归墟进场使三天时限压力增大",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "老周分析第三方与母亲封印同源频率共振说同源不代表同路",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "归墟的交易条件——第三方使者归墟要求城南旧居地下的东西作为交换帮陆远打开第五条路最后一扇门并提供找到母亲的钥匙。陆远拒绝但归墟警告你会后悔。归墟了解母亲的完整布局知道第五条路需要钥匙。归墟到底是谁？为什么和母亲封印同频？城南旧居地下到底有什么让归墟亲自来谈？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E80_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E80_01",
+      "to": "E80_02",
+      "type": "decision",
+      "detail": "分析完第三方与母亲关联后陆远决定趁乱动手"
+    },
+    {
+      "from": "E80_02",
+      "to": "E80_03",
+      "type": "consequence",
+      "detail": "决定行动后陆远潜入灵墟据点后院"
+    },
+    {
+      "from": "E80_03",
+      "to": "E80_04",
+      "type": "escalation",
+      "detail": "找到石板准备拔管时归墟现身阻止并谈判"
+    },
+    {
+      "from": "E80_04",
+      "to": "E80_05",
+      "type": "consequence",
+      "detail": "谈判破裂时天机阁灵墟冲突突然爆发"
+    },
+    {
+      "from": "E80_05",
+      "to": "E80_06",
+      "type": "decision",
+      "detail": "灵墟守卫被冲击波吸引离开陆远抓住机会拔管"
+    },
+    {
+      "from": "E80_06",
+      "to": "E80_07",
+      "type": "consequence",
+      "detail": "北节点解锁后所有人往城南母亲旧居汇合"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E80_01",
+      "thread_id": "ST79_01",
+      "type": "confirmation",
+      "detail": "老周苏晚确认暗红灵力与母亲封印同源频率共振"
+    },
+    {
+      "event_id": "E80_04",
+      "thread_id": "ST79_01",
+      "type": "clue",
+      "detail": "归墟灵力频率与封印核心完全一致了解母亲布局和第五条路"
+    },
+    {
+      "event_id": "E80_04",
+      "thread_id": "ST51_02",
+      "type": "confirmation",
+      "detail": "归墟的灵力投影形态与悬浮人影和突袭灵墟总部第三方相关"
+    },
+    {
+      "event_id": "E80_06",
+      "thread_id": "ST79_02",
+      "type": "confirmation",
+      "detail": "拔掉灵墟引流管道北边节点解锁玉牌北边红点暗了"
+    },
+    {
+      "event_id": "E80_05",
+      "thread_id": "ST75_02",
+      "type": "confirmation",
+      "detail": "天机阁灵墟正面冲突爆发安全屋暴露"
+    },
+    {
+      "event_id": "E80_05",
+      "thread_id": "ST14_02",
+      "type": "confirmation",
+      "detail": "窗口期彻底结束天机阁灵墟不再牵制直接开打"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "拔掉灵墟据点引流管道解锁北边节点",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "陆远",
+      "goal": "赶往城南母亲旧居与老周苏晚汇合",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "拒绝归墟的交易不把城南旧居地下东西交给第三方",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "老周",
+      "goal": "保护苏晚撤离暴露的安全屋转移到城南",
+      "type": "protect",
+      "status": "achieved"
+    },
+    {
+      "character": "苏晚",
+      "goal": "用灵脉读脉远程锁定引流管道位置指引陆远",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "归墟是新登场的第三方使者角色，以灵力投影出现无实体，声音像金属片震动。灵墟据点后院是新地点。北边节点已解锁（玉牌北边红点暗了），还剩东边地脉堂一个锁和城南一扇门。安全屋已暴露不再是安全据点。城南旧居地面下面有东西且泥土味与灰色节点一致。"
+}

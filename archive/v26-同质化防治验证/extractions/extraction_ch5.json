@@ -1,0 +1,164 @@
+# Persisted: 2026-05-22 21:13:10
+{
+  "events": [
+    {
+      "id": "E5_01",
+      "chapter": 5,
+      "title": "沈渡苏岚争执",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡决定独自去印刷厂，苏岚反对。沈渡揭示他查到了工人的名字：李国生，43岁，架子工，脊椎骨折下肢瘫痪。他强调来电者记得一切而他忘了，以此说服自己必须去。"
+    },
+    {
+      "id": "E5_02",
+      "chapter": 5,
+      "title": "沈渡进入印刷厂一层",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "凌晨三点沈渡进入印刷厂。一层大厅有新旧两种脚印。通往地下室的楼梯口木门把手被拧掉。"
+    },
+    {
+      "id": "E5_03",
+      "chapter": 5,
+      "title": "地下室发现底片和证据",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "地下室铁架上有四个塑料盒，一个装有135胶卷（已抽出，边缘有裂纹），一个装中画幅底片（保存较好）。墙壁上有集中刮痕和暗色痕迹（铁锈味浓）。铁门被砖封死，砖缝里藏着纸条：'不要继续往下。把底片带走。冲洗它。然后停止。这是第三次警告。'"
+    },
+    {
+      "id": "E5_04",
+      "chapter": 5,
+      "title": "沈渡离开印刷厂",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡带走底片和纸条。离开时发现铁门上方墙上有一块发白矩形区域，中央有钉子眼，曾挂过什么东西。他推测林小微来过这里，找到了部分底片，然后消失了。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E5_01",
+      "character": "沈渡"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "苏岚"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "沈渡",
+      "location": "废弃印刷厂"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "沈渡",
+      "location": "废弃印刷厂"
+    },
+    {
+      "event_id": "E5_04",
+      "character": "沈渡",
+      "location": "废弃印刷厂"
+    },
+    {
+      "event_id": "E5_04",
+      "character": "林小微"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈渡",
+      "field": "new_detail",
+      "content": "查到了工人名字：李国生。以这个发现作为必须深入调查的理由。前记者的本能完全回归。"
+    },
+    {
+      "name": "苏岚",
+      "field": "state_change",
+      "content": "从冷静的搭档变为焦虑的保护者，声音里出现了原始的恐惧。但没有阻止沈渡。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "红光",
+      "context": "铁门上方墙上曾挂过的东西留下的矩形痕迹，像被取走的红灯。晨光取代了路灯。"
+    },
+    {
+      "motif": "电波杂音",
+      "context": "鞋底与沙砾的共振在耳道里嗡嗡回荡。纸条上的字是另一种'信号'。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST04_01",
+      "action": "resolved",
+      "evidence": "地下室发现底片和胶片盒，与林小微说的'胶片'吻合。林小微来过地下室，找到了底片。",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "纸条写着'第三次警告'，证明三年前事件是真实的且有人试图阻止调查。墙上的刮痕和暗色痕迹指向暴力。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "纸条可能是赵维留下的。'第三次警告'意味着之前有两次，与赵维的报道和消失吻合。",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E5_01",
+      "to": "E5_02",
+      "type": "decision",
+      "detail": "争执后沈渡决定独自进入"
+    },
+    {
+      "from": "E5_02",
+      "to": "E5_03",
+      "type": "investigation",
+      "detail": "一层的脚印引导沈渡下到地下室"
+    },
+    {
+      "from": "E5_03",
+      "to": "E5_04",
+      "type": "consequence",
+      "detail": "发现物证后离开"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E5_03",
+      "thread_id": "ST04_01",
+      "type": "confirmation",
+      "detail": "底片和胶片盒确认林小微来印刷厂是为了找胶片"
+    },
+    {
+      "event_id": "E5_03",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "纸条的'第三次警告'和墙上的暴力痕迹指向三年前发生过严重事件"
+    },
+    {
+      "event_id": "E5_03",
+      "thread_id": "ST03_01",
+      "type": "connection",
+      "detail": "纸条可能是赵维留下的，与他的消失方式吻合"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈渡",
+      "goal": "冲洗底片，看清胶片记录了什么",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "关键物证：135胶卷+中画幅底片+纸条（'第三次警告'）。墙壁刮痕和暗色痕迹（铁锈味，可能是血）。铁门上方曾有挂牌的痕迹。李国生的名字被找回。白菊花在枯萎。"
+}

@@ -1,0 +1,174 @@
+# Persisted: 2026-05-21 17:11:55
+{
+  "events": [
+    {
+      "id": "E97_01",
+      "chapter": 97,
+      "title": "陆远送完一天外卖买茶叶去大壮出租屋",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午四点半送完最后一单共十九单赚一百四十三。路上经过茶叶店买十块炒青和五块塑料壶。拎着壶和茶叶去大壮出租屋。"
+    },
+    {
+      "id": "E97_02",
+      "chapter": 97,
+      "title": "三人在阳台喝茶老周讲述灵力消退",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周在阳台泡炒青茶。手背青色纹路淡了很多。三十年灵力一场战斗用大半，从巅峰掉到练气中期可能还不到。灵力像存款用完就没了。花完的感觉是很轻走路像踩棉花。老周说轻了就不累了不累就不想打不打就活着。活着就行。大壮带橘子回来。"
+    },
+    {
+      "id": "E97_03",
+      "chapter": 97,
+      "title": "苏晚微信约周五红烧肉",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚发微信约陆远周五七点城南红烧肉。陆远说行。大壮猜到是苏晚。老周在旁边笑说年轻人。"
+    },
+    {
+      "id": "E97_04",
+      "chapter": 97,
+      "title": "老周讲江城灵脉三百年旧事",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "江城灵脉三百年没变过。以前修真者路过歇脚喝口茶就走了从来不留。灵脉太浅养不起大鱼。筑基以上嫌这穷金丹的看都不看。因为来了条大鱼所以现在这么多人来。大鱼还在只是不动了不动就没波纹没波纹就没人来。老周指了指陆远胸口。"
+    },
+    {
+      "id": "E97_05",
+      "chapter": 97,
+      "title": "大壮感知到护城河底下有东西在动",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮闭眼练习灵力感知时感觉到护城河底下有什么东西在动。很微弱一下一下像心跳。老周两次说别瞎感觉没正面回答。陆远封印核心比平时快了零点一秒只有他自己感觉到。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E97_01",
+      "character": "陆远",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E97_02",
+      "character": "老周",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E97_02",
+      "character": "陆远",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E97_02",
+      "character": "大壮",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E97_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E97_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E97_04",
+      "character": "老周",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E97_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E97_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E97_05",
+      "character": "大壮",
+      "location": "大壮出租屋"
+    },
+    {
+      "event_id": "E97_05",
+      "character": "老周"
+    },
+    {
+      "event_id": "E97_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E97_05",
+      "character": "陆承"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老周",
+      "field": "state_change",
+      "content": "灵力从巅峰掉到练气中期可能还不到。手背青色纹路在消退。三十年灵力一场战斗用大半。花完感觉是很轻走路像踩棉花。接受灵力消退说活着就行"
+    },
+    {
+      "name": "大壮",
+      "field": "new_detail",
+      "content": "灵力感知已入门能感觉到护城河底下的微弱脉动"
+    },
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "封印核心在护城河话题时快了零点一秒只有他自己感觉到"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "护城河底下有微弱灵力脉动一下一下像心跳，大壮通过灵力感知感觉到了"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "老周说以前修真者路过江城从来不留，灵脉太浅养不起大鱼",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST50_02",
+      "action": "advanced",
+      "evidence": "老周说大鱼还在只是不动了不动就没波纹没人来，暗示护城河底下的封印核心仍在脉动",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [],
+  "evidence_links": [
+    {
+      "event_id": "E97_04",
+      "thread_id": "ST02_01",
+      "type": "confirmation",
+      "detail": "老周确认江城灵脉三百年历史，修真者路过不停留"
+    },
+    {
+      "event_id": "E97_05",
+      "thread_id": "ST50_02",
+      "type": "clue",
+      "detail": "大壮感知到护城河底下有东西在动，老周说别瞎感觉暗示他知道是什么"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "老周",
+      "goal": "安度余生喝茶下棋养伤",
+      "type": "pursue",
+      "status": "achieved"
+    }
+  ],
+  "notes": "力量与代价主题通过老周灵力消退体现。三十年的修为一场战斗消耗大半。老周接受这一现实。大壮的灵力感知能力有进展。护城河底下的脉动是伏笔。"
+}

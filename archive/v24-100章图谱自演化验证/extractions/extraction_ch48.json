@@ -1,0 +1,207 @@
+# Persisted: 2026-05-21 13:30:06
+{
+  "events": [
+    {
+      "id": "E48_01",
+      "chapter": 48,
+      "title": "全城灵力循环崩溃护城河水面泛金色灵光普通市民围观",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "金色脉动沿灵脉扩散全城十五节点全变金色灵力全部回流城北护城河核心灵力外溢太强金色纹路力量把灵力转化为可见光水面泛金色灵光普通市民围观拍视频以为是河底灯光或排污"
+    },
+    {
+      "id": "E48_02",
+      "chapter": 48,
+      "title": "金色纹路蔓延到胸口苏晚检测发现两股金色力量共振融合趋势",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远金色纹路从手臂蔓延到锁骨往胸口移动苏晚银针检测发现体内金色纹路和城北金色脉动频率相同相位相反正在产生共振共振持续会导致融合身体变成通道的一部分被全城灵力穿过无法切断除非离开江城或城北停止脉动"
+    },
+    {
+      "id": "E48_03",
+      "chapter": 48,
+      "title": "天机阁阁主致电陆远——让它醒完你拦不住",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "阁主用老周号码致电陆远只说了一句不要打断它让它醒完你拦不住老周说阁主三年前也这么干过一次阁主认为觉醒不可逆打断代价更大陆远认为阁主每一步都在等这个结果"
+    },
+    {
+      "id": "E48_04",
+      "chapter": 48,
+      "title": "陆远决定从护城河核心进入金色通道直赴城北地下",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远决定从护城河核心金色通道入口下去直通城北三公里地下大壮跟上苏晚跟在后面老周没有拦但留了一句关键指引你下去之后往南走不要往北——三十年前棋盘上留的活眼"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E48_01",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_01",
+      "character": "大壮",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_01",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_01",
+      "character": "老周",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_02",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_02",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E48_03",
+      "character": "老周"
+    },
+    {
+      "event_id": "E48_04",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_04",
+      "character": "大壮",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_04",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E48_04",
+      "character": "老周",
+      "location": "护城河"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色纹路从手臂蔓延到锁骨正在往胸口移动与城北脉动产生共振融合趋势"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "医修术能检测两股金色力量的共振频率和相位关系"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "全城灵力回流城北护城河灵力外溢转化为可见光金色灵光"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远看到河边赶早班的外卖骑手拍视频他们不知道地下正在发生什么"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST47_01",
+      "action": "advanced",
+      "evidence": "苏晚检测确认体内金色纹路和城北金色脉动频率相同相位相反正在共振融合趋势",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "金色纹路蔓延到胸口封印核心被两股力量拉扯苏晚警告不能全力用灵力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST15_01",
+      "action": "advanced",
+      "evidence": "阁主直接致电陆远让它醒完他每一步都在等这个结果",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "老周留指引往南走不要往北三十年前棋盘上留的活眼",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E48_01",
+      "to": "E48_02",
+      "type": "escalation",
+      "detail": "灵力崩溃导致纹路蔓延共振加剧"
+    },
+    {
+      "from": "E48_02",
+      "to": "E48_03",
+      "type": "reaction",
+      "detail": "共振危机触发阁主来电介入"
+    },
+    {
+      "from": "E48_03",
+      "to": "E48_04",
+      "type": "decision",
+      "detail": "阁主让它醒完的表态反而促使陆远决定亲自去城北"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E48_02",
+      "thread_id": "ST47_01",
+      "type": "confirmation",
+      "detail": "两股金色力量同频率共振确认陆远封印与城北地下东西直接关联"
+    },
+    {
+      "event_id": "E48_03",
+      "thread_id": "ST15_01",
+      "type": "connection",
+      "detail": "阁主主动致电让他醒完暗示他一直在等这一刻"
+    },
+    {
+      "event_id": "E48_04",
+      "thread_id": "ST38_01",
+      "type": "clue",
+      "detail": "老周指引往南走不要往北三十年前留的活眼"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "从护城河核心进入金色通道到达城北地下阻止融合或查明真相",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "天机阁阁主",
+      "goal": "让城北地下封印之物完全觉醒",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "灵力外溢转化为可见光普通市民可以看到这是隐藏世界观首次对普通人暴露。老周关键指引往南走不要往北"
+}

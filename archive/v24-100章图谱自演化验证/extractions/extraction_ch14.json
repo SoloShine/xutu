@@ -1,0 +1,314 @@
+# Persisted: 2026-05-21 11:08:38
+{
+  "events": [
+    {
+      "id": "E14_01",
+      "chapter": 14,
+      "title": "晨雾中撤离东湖路苏晚抹除灵力痕迹",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人从东湖路北小巷晨雾中撤离。苏晚用医修灵力抹除地面残留灵力痕迹，陆远用练气中期灵力感知实时追踪天机阁筑基期和灵墟高阶修士的搜索方向，引导四人避开。两股灵力从北和东两个方向合拢搜捕"
+    },
+    {
+      "id": "E14_02",
+      "chapter": 14,
+      "title": "灵力外放薄膜隐匿躲过天机阁筑基期搜查",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "两股搜索灵力夹击四人被困死巷。陆远首次主动控制九道纹路回路，灵力外放形成隐匿气息薄膜罩住四人。天机阁筑基期修士灵力触手扫到三米外巷口停留三秒后离开未发现。使用后薄膜碎裂胸口封印核心出现钝痛，苏晚诊断封印核心有轻微裂痕"
+    },
+    {
+      "id": "E14_03",
+      "chapter": 14,
+      "title": "穿越老城区遇早市大壮接外卖站长电话",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人翻墙进入老城区居民区，穿过早市街。大壮接到外卖站站长电话催其回去上班，被告知已旷工三天将发辞退通知。大壮在修真逃亡和现实生计之间的荒诞反差。陆远让他先辞了回头再说"
+    },
+    {
+      "id": "E14_04",
+      "chapter": 14,
+      "title": "抵达城南城中村赵铁山安全屋",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人步行半小时抵达城南城中村赵铁山提供的安全屋，三层自建楼房二楼。屋内十五平米只有折叠床、薄被、一箱矿泉水和压缩饼干，遮光窗帘。赵铁山的人提前准备"
+    },
+    {
+      "id": "E14_05",
+      "chapter": 14,
+      "title": "周衡安分析天机阁与灵墟互相牵制两三天窗口期",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安复盘分析：天机阁要活人灵墟要封印血脉样本利益冲突不会合作；双方在城区内都不敢全力出手会互相牵制；天机阁需一天调取灵脉监测网数据反推实力和位置，灵墟需时间重新评估悬赏令风险级别。给出两到三天窗口期，三天后天机阁可能请求增援灵墟可能派更高阶修士"
+    },
+    {
+      "id": "E14_06",
+      "chapter": 14,
+      "title": "陆远测试灵力再次刺痛苏晚诊断九层封印代价",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在安全屋再次测试调动灵力，胸口封印核心传来针扎般刺痛。苏晚买包子回来检查后诊断：陆远母亲设了九层封印目前只解了第一层，每次主动用灵力封印核心受冲击裂痕扩大，用多了可能被动打开第二层，以目前身体强度承受不住。陆远决定不到万不得已不碰封印核心"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E14_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E14_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E14_02",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E14_03",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E14_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E14_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E14_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E14_04",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E14_04",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E14_04",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E14_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E14_06",
+      "character": "苏晚"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "觉醒后首次主动控制九道纹路回路，灵力可外放形成隐匿气息薄膜覆盖四人，但每次使用封印核心受冲击出现刺痛"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "被外卖站站长通知旷工三天将辞退，现实生计被修真逃亡彻底打断"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "诊断封印核心有轻微裂痕，揭示陆远母亲设了九层封印目前只解了第一层，被动打开第二层身体承受不住"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城南城中村安全屋",
+      "type": "安全据点",
+      "description": "赵铁山提供的三层自建楼房二楼，位于城南城中村。外墙白色瓷砖发黄脱落，楼下五金店和棋牌室。屋内十五平米，折叠床、薄被、一箱矿泉水和压缩饼干，厚实遮光窗帘"
+    },
+    {
+      "name": "老城区巷道",
+      "type": "街道",
+      "description": "东湖路北边的老城区小巷，青砖墙爬满发黑地锦，水泥路坑洼不平有水洼，堆满废旧纸箱和塑料桶。拆迁空地有半人高杂草"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "陆远用练气中期灵力感知覆盖大半个老城区，追踪天机阁和灵墟两股搜索灵力的移动方向速度"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "大壮被外卖站站长电话催回去上班，旷工三天将辞退，外卖骑手身份正式结束"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST13_01",
+      "action": "advanced",
+      "evidence": "周衡安分析天机阁和灵墟在东湖路碰面后互相牵制不会合作也不敢全力出手",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST12_02",
+      "action": "advanced",
+      "evidence": "陆远首次主动控制九道纹路回路进行灵力外放，封印核心每次使用受冲击裂痕扩大",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "苏晚诊断九道纹路回路已形成完整回路可主动控制，但使用代价是封印核心裂痕扩大可能打开第二层",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "陆远主动调动灵力时封印核心传来刺痛，苏晚揭示母亲设了九层封印目前只解了第一层",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST07_02",
+      "action": "advanced",
+      "evidence": "天机阁筑基期修士灵力触手在巷口搜索三米外未发现陆远，仍在继续向南搜索",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "陆远觉醒后每次主动使用灵力时胸口封印核心传来刺痛，裂痕会扩大。九层封印目前只解了第一层，被动打开第二层身体承受不住。力量与代价的平衡成为核心矛盾",
+      "importance": "high",
+      "thread_type": "character_arc",
+      "planted_event_id": "E14_06"
+    },
+    {
+      "content": "天机阁与灵墟在东湖路碰面后互相牵制不敢全力出手，给出两到三天窗口期。三天后双方都可能增援，届时局面失控",
+      "importance": "high",
+      "thread_type": "escalation",
+      "planted_event_id": "E14_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E14_01",
+      "to": "E14_02",
+      "type": "escalation",
+      "detail": "两股搜索灵力夹击迫使陆远首次尝试灵力外放隐匿"
+    },
+    {
+      "from": "E14_02",
+      "to": "E14_03",
+      "type": "reaction",
+      "detail": "躲过搜查后四人加速撤离穿越老城区"
+    },
+    {
+      "from": "E14_03",
+      "to": "E14_04",
+      "type": "consequence",
+      "detail": "穿越早市后步行半小时抵达安全屋"
+    },
+    {
+      "from": "E14_04",
+      "to": "E14_05",
+      "type": "decision",
+      "detail": "抵达安全屋后周衡安复盘分析局势给出窗口期判断"
+    },
+    {
+      "from": "E14_05",
+      "to": "E14_06",
+      "type": "consequence",
+      "detail": "局势分析后陆远测试灵力发现使用代价"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E14_02",
+      "thread_id": "ST12_02",
+      "type": "confirmation",
+      "detail": "九道纹路回路可主动控制灵力外放形成隐匿薄膜，证实封印核心主动打开后的力量可被运用"
+    },
+    {
+      "event_id": "E14_02",
+      "thread_id": "ST01_03",
+      "type": "clue",
+      "detail": "灵力外放时封印核心传来刺痛，使用后薄膜碎裂胸口钝痛，力量运用有代价"
+    },
+    {
+      "event_id": "E14_05",
+      "thread_id": "ST13_01",
+      "type": "confirmation",
+      "detail": "周衡安确认天机阁和灵墟在东湖路碰面互相牵制不会合作，利益完全冲突"
+    },
+    {
+      "event_id": "E14_06",
+      "thread_id": "ST01",
+      "type": "clue",
+      "detail": "苏晚揭示陆远母亲设了九层封印目前只解了第一层，封印结构比已知更复杂"
+    },
+    {
+      "event_id": "E14_05",
+      "thread_id": "ST07_02",
+      "type": "clue",
+      "detail": "天机阁筑基期修士需一天调取灵脉监测网数据反推陆远实力和位置"
+    },
+    {
+      "event_id": "E14_05",
+      "thread_id": "ST12_01",
+      "type": "confirmation",
+      "detail": "周衡安确认灰隼信息已传回灵墟总部，灵墟正在重新评估悬赏令风险级别"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "在天机阁和灵墟互相牵制的两三天窗口期内找到下一步行动方向",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "尽量少用灵力避免封印核心裂痕扩大被动打开第二层",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "大壮",
+      "goal": "处理外卖站辞职手续保住上个月工资",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "大壮外卖骑手身份正式结束（旷工三天被辞退），凡人生活线收束。陆远新能力：灵力外放隐匿薄膜。封印结构揭示：九层封印只解了一层。周衡安展现战略分析能力用下棋术语复盘局势。苏晚医修诊断能力再次发挥作用。早市蒸笼热气/包子/豆浆形成修真逃亡与日常生活的反差。城中村安全屋环境细节丰富（麻将声/遛狗/择菜/晾衣绳）"
+}

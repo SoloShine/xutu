@@ -1,0 +1,285 @@
+# Persisted: 2026-05-21 13:45:17
+{
+  "events": [
+    {
+      "id": "E51_01",
+      "chapter": 51,
+      "title": "三人从金色通道返回护城河发现全城灵力动荡",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远苏晚大壮从金色通道返回护城河水面出口，金色瞳孔扫描发现三方势力同时行动：天机阁三道封锁线封锁东湖路、灵墟两组人从城北南下、地脉堂四人从东面朝护城河移动。传承光柱灵力残留被全城修真者探测到"
+    },
+    {
+      "id": "E51_02",
+      "chapter": 51,
+      "title": "苏晚银针检测发现传承力量融合度不足三成",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用三根银针检测陆远身体，发现十二道纹路边缘有二十三处微裂纹，传承力量与身体融合度不足三成。全力输出一次会导致纹路崩溃灵力失控，至少需要两天自动修复，融合度才能到六七成"
+    },
+    {
+      "id": "E51_03",
+      "chapter": 51,
+      "title": "老周灵力传音指引三人去城南旧货市场找铁拐李",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周通过灵力传音联系陆远，告知安全屋已被天机阁布三层感知阵，城南灵墟也有眼线。指引陆远去城南旧货市场找铁拐李，说棋盘上最后一颗子也没看清但大方向不会错"
+    },
+    {
+      "id": "E51_04",
+      "chapter": 51,
+      "title": "三人沿护城河南岸绕行避开三方势力",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三人沿护城河南岸向西步行绕行避开封锁线，陆远金色瞳孔持续扫描周围灵力。纹路在安静状态下缓慢自动修复，速度稳定但慢。护城河核心方向天空仍有金色灵力残留"
+    },
+    {
+      "id": "E51_05",
+      "chapter": 51,
+      "title": "城北废弃厂房顶层发现悬浮人影监视",
+      "type": "escalation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "大壮发现城北方向废弃厂房顶层有人影，金色瞳孔看到那人脚离地面半米悬浮、风衣飘动，没有明显灵力波动但姿态异常。注视五秒后转身消失，身份不明"
+    },
+    {
+      "id": "E51_06",
+      "chapter": 51,
+      "title": "三人抵达城南旧货市场遇到铁拐李",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "旧货市场已打烊，深处有跛脚老头铁拐李喝茶。墙上几十只旧钟表全部停在三点十五分。铁拐李灵力非修真者类型而是精密齿轮般转动。他知道陆远有十二道纹路，说这地方三百年没人找得到，但传承光柱暴露了所有人"
+    },
+    {
+      "id": "E51_07",
+      "chapter": 51,
+      "title": "铁拐李揭示三十年前的三点十五分是陆远母亲定的时间",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "铁拐李说自己是修钟表的，三点十五分是三十年前陆远母亲让他记住的时间，母亲说三十年后会有个人来修这些钟，那个人就是陆远"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E51_01",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E51_01",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E51_01",
+      "character": "大壮",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E51_02",
+      "character": "陆远",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E51_02",
+      "character": "苏晚",
+      "location": "护城河"
+    },
+    {
+      "event_id": "E51_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E51_03",
+      "character": "老周"
+    },
+    {
+      "event_id": "E51_04",
+      "character": "陆远",
+      "location": "护城河南岸"
+    },
+    {
+      "event_id": "E51_04",
+      "character": "苏晚",
+      "location": "护城河南岸"
+    },
+    {
+      "event_id": "E51_04",
+      "character": "大壮",
+      "location": "护城河南岸"
+    },
+    {
+      "event_id": "E51_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E51_06",
+      "character": "陆远",
+      "location": "城南旧货市场"
+    },
+    {
+      "event_id": "E51_06",
+      "character": "苏晚",
+      "location": "城南旧货市场"
+    },
+    {
+      "event_id": "E51_06",
+      "character": "大壮",
+      "location": "城南旧货市场"
+    },
+    {
+      "event_id": "E51_07",
+      "character": "陆远",
+      "location": "城南旧货市场"
+    },
+    {
+      "event_id": "E51_07",
+      "character": "铁拐李",
+      "location": "城南旧货市场"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "传承后十二道纹路有二十三处微裂纹，融合度不足三成，两天内不能全力出手，纹路在安静状态下自动缓慢修复"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "银针检测出二十三处微裂纹和融合度数据，诊断精确度提升"
+    },
+    {
+      "name": "铁拐李",
+      "field": "new_detail",
+      "content": "灵力类型非修真者而是精密齿轮般机械转动，旧货市场三百年不行灵力探测"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城南旧货市场",
+      "type": "hideout",
+      "description": "老城区最旧地带八九十年代筒子楼片区，铁拐李的地盘三百年不行灵力探测，墙上几十只旧钟表停在三点十五分"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "铁拐李",
+      "role": "ally",
+      "personality": "跛脚老头，城南旧货市场的主人，灵力类型非修真者而是精密齿轮般机械转动。三十年前受陆远母亲嘱托记住三点十五分这个时间，与老周相识"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "三方势力灵力轨迹被金色瞳孔可视化，天机阁封锁线灵力探测器在转动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST50_02",
+      "action": "advanced",
+      "evidence": "传承光柱灵力残留被全城感知，天机阁封锁东湖路、灵墟南下、地脉堂东移，三方势力全面反应",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "十二道纹路微裂纹二十三处融合度不足三成，力量代价矛盾升级",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST38_01",
+      "action": "advanced",
+      "evidence": "老周传音说棋盘上最后一颗子也没看清，指引找铁拐李",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "铁拐李与陆远母亲的三十年约定——三点十五分是三十年前陆远母亲让他记住的时间，她说三十年后有人来修钟表。铁拐李的灵力类型非修真者而是精密齿轮转动，他到底是什么人？钟表为什么全停在三点十五分？",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E51_07"
+    },
+    {
+      "content": "城北废弃厂房悬浮人影——脚离地面半米悬浮无灵力波动但姿态异常，注视陆远五秒后消失。不是天机阁不是灵墟已知人物，还有第四方势力在监视",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E51_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E51_01",
+      "to": "E51_02",
+      "type": "consequence",
+      "detail": "三方势力围堵使苏晚必须立即检查陆远身体状况判断能否作战"
+    },
+    {
+      "from": "E51_02",
+      "to": "E51_03",
+      "type": "consequence",
+      "detail": "身体无法作战加三方围堵迫使老周介入指引新路线"
+    },
+    {
+      "from": "E51_03",
+      "to": "E51_04",
+      "type": "decision",
+      "detail": "老周指引方向后三人决定绕行城南"
+    },
+    {
+      "from": "E51_04",
+      "to": "E51_06",
+      "type": "consequence",
+      "detail": "绕行避开封锁线后抵达城南旧货市场"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E51_01",
+      "thread_id": "ST50_02",
+      "type": "confirmation",
+      "detail": "传承光柱灵力残留被三方势力探测确认全面反应"
+    },
+    {
+      "event_id": "E51_02",
+      "thread_id": "ST14_01",
+      "type": "confirmation",
+      "detail": "银针检测量化了力量代价：融合度不足三成、二十三处微裂纹"
+    },
+    {
+      "event_id": "E51_05",
+      "thread_id": "ST27_02",
+      "type": "clue",
+      "detail": "悬浮人影无灵力波动可能是灵墟背后神秘势力的监视者"
+    },
+    {
+      "event_id": "E51_07",
+      "thread_id": "ST38_01",
+      "type": "connection",
+      "detail": "铁拐李与老周相识且受陆远母亲嘱托，证明三十年前布局不止老周师父一人参与"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "两天内稳定纹路修复微裂纹恢复战力",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "找到母亲的下落",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "三点十五分这个时间与陆远母亲三十年前布局直接相关，钟表意象可能暗示时间封印机制。铁拐李的齿轮型灵力是全新的灵力类型，不同于修真者。大壮被灵墟灵力标记(ST26_01)本章未提及"
+}

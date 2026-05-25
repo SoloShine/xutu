@@ -1,0 +1,243 @@
+# Persisted: 2026-05-21 15:50:04
+{
+  "events": [
+    {
+      "id": "E76_01",
+      "chapter": 76,
+      "title": "陆远从暗河出来感知到天机阁和灵墟在城北对峙",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远从暗河出口出来时天已黑，大壮接应。地面传来城北方向的灵力震动。陆远用封印核心感知到城北三公里外有两团灵力在靠近：蓝色稳定的天机阁和灰色浓稠的灵墟。天机阁在灵墟屏蔽断裂后十分钟内捕捉到灵力外泄并派出筑基中期修士。"
+    },
+    {
+      "id": "E76_02",
+      "chapter": 76,
+      "title": "陆远大壮赶回安全屋老周通报城北局势",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周通报天机阁筑基中期已抵达灵墟据点外围，灵墟据点屏蔽完全失效灵力外泄。灵墟据点内至少两名筑基后期激活防御阵法亮了底牌。灵墟不跑是因为撤退前必须销毁所有能追踪总部的线索。"
+    },
+    {
+      "id": "E76_03",
+      "chapter": 76,
+      "title": "苏晚通过冰蚕丝碎片感知城北灵力对抗",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚灵力空窗第二天但仍能通过冰蚕丝碎片感应陆远身上银针状态。编织银针时她的灵力频率留在冰蚕丝里，身上残留碎片能感应两公里范围内银针感知到的灵力变化。手腕内侧出现银色纹路是冰蚕丝碎片痕迹。"
+    },
+    {
+      "id": "E76_04",
+      "chapter": 76,
+      "title": "老周分析天机阁与灵墟僵持局面两天窗口期",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周分析天机阁和灵墟互相牵制，都不想先出手怕灵力波动暴露更多。天机阁等阁主指令，灵墟等总部决定。窗口期最多两天，两天后任何一方先解决对方就会调头找陆远。陆远是棋盘上最值钱的棋子。"
+    },
+    {
+      "id": "E76_05",
+      "chapter": 76,
+      "title": "陆远在地图上找到母亲灵识分身指的灰色节点位置",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在手机地图上找到安全屋东南三百米处的待开发绿地，有一棵歪脖子老槐树。对应母亲在模型上指的灰色节点位置。老周解释灰色节点代表曾经活着但已干涸的灵脉河床，没有灵力也没有堵塞。陆远坚持明天去看，认为母亲灵识分身不会做没有意义的事。"
+    },
+    {
+      "id": "E76_06",
+      "chapter": 76,
+      "title": "老周同意陆远白天去灰色节点大壮留下守苏晚",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周最终同意明天白天去看灰色节点，条件是不用灵力不释放气息只用五官感受。大壮要留下保护灵力空窗期的苏晚。安全屋窗外城北方向天机阁蓝光和灵墟暗脉在僵持，蓝光越来越近。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E76_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E76_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E76_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E76_02",
+      "character": "老周"
+    },
+    {
+      "event_id": "E76_02",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E76_03",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E76_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E76_04",
+      "character": "老周"
+    },
+    {
+      "event_id": "E76_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E76_05",
+      "character": "老周"
+    },
+    {
+      "event_id": "E76_06",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E76_06",
+      "character": "老周"
+    },
+    {
+      "event_id": "E76_06",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E76_06",
+      "character": "苏晚"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "手腕内侧有极细银色纹路是冰蚕丝碎片痕迹，能感应陆远身上银针状态范围两公里"
+    },
+    {
+      "name": "苏晚",
+      "field": "state_change",
+      "content": "灵力空窗第二天脸色更白嘴唇淡粉无血色眼窝凹陷但眼神清醒"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "待开发绿地",
+      "type": "灵脉节点",
+      "description": "安全屋东南三百米处的荒地杂草丛生中间有歪脖子老槐树，对应灵脉模型上灰色死的节点"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "城北天机阁蓝色稳定灵力和灵墟灰色浓稠灵力在夜空对峙，远空气中有干燥电荷的金属味"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST75_02",
+      "action": "advanced",
+      "evidence": "天机阁筑基中期十分钟内抵达灵墟据点外围，灵墟两名筑基后期激活防御阵法不跑了",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST75_01",
+      "action": "advanced",
+      "evidence": "陆远在地图上找到灰色节点对应安全屋东南三百米待开发绿地老槐树位置",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST73_01",
+      "action": "advanced",
+      "evidence": "苏晚灵力空窗第二天更虚弱但通过冰蚕丝碎片远程感知城北灵力对抗",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_02",
+      "action": "advanced",
+      "evidence": "老周确认天机阁灵墟僵持窗口期最多两天任何一方先解决对方就调头找陆远",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST43_01",
+      "action": "advanced",
+      "evidence": "灵墟据点屏蔽断裂后灵力外泄据点内两名筑基后期激活防御阵法",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "causal_links": [
+    {
+      "from": "E76_01",
+      "to": "E76_02",
+      "type": "consequence",
+      "detail": "感知到城北灵力对峙后赶回安全屋了解局势"
+    },
+    {
+      "from": "E76_02",
+      "to": "E76_04",
+      "type": "investigation",
+      "detail": "了解城北局势后老周分析窗口期"
+    },
+    {
+      "from": "E76_04",
+      "to": "E76_05",
+      "type": "decision",
+      "detail": "窗口期确认后陆远决定去看灰色节点"
+    },
+    {
+      "from": "E76_05",
+      "to": "E76_06",
+      "type": "decision",
+      "detail": "陆远坚持要去老周最终同意并安排分工"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E76_01",
+      "thread_id": "ST75_02",
+      "type": "confirmation",
+      "detail": "天机阁在灵墟屏蔽断裂后十分钟内捕捉到灵力外泄并派出修士"
+    },
+    {
+      "event_id": "E76_02",
+      "thread_id": "ST43_01",
+      "type": "confirmation",
+      "detail": "灵墟据点位置完全暴露据点内至少两名筑基后期"
+    },
+    {
+      "event_id": "E76_03",
+      "thread_id": "ST73_01",
+      "type": "clue",
+      "detail": "苏晚通过冰蚕丝碎片远程感知但无法自保"
+    },
+    {
+      "event_id": "E76_05",
+      "thread_id": "ST75_01",
+      "type": "clue",
+      "detail": "灰色节点对应地图上安全屋东南三百米待开发绿地老槐树"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "查看母亲灵识分身指的灰色节点",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "老周",
+      "goal": "在窗口期内保护陆远和苏晚",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "冰蚕丝碎片建立苏晚与陆远之间的远程感知链接，两公里范围。苏晚手腕银色纹路是新细节。灵墟撤退规矩：不留任何能追踪总部的线索。灰色节点像干涸的河床，曾经活着但已死亡。"
+}

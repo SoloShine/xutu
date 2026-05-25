@@ -1,0 +1,201 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "餐厅的沉默晚餐",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "风暴中的礁石餐厅弥漫铁锈味，五副餐具但空出一个位置且汤在冒热气。苏蔓抠桌皮说汤凉了，徐桥机械擦杯，周默坐姿笔直。林见青触碰冰冷瓷碗后感到胃部收缩，最终起身离开。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "阴冷走廊与突发停电",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人走在黏腻冰冷的暗绿色走廊中。走到中段时灯管和绿色指示灯突然熄灭，陷入绝对黑暗，雨声被隔绝，只剩血液流动的嗡嗡声和停滞的呼吸声。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "黑暗中的杀人描述",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "黑暗中周默在林见青身后半米处，极其平淡地描述用生锈手术刀割开颈动脉杀人的细节，包括金属拉扯感、喷血和洗不掉的血迹。备用电源亮起后，苏蔓和徐桥毫无反应，林见青继续向前走。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "房间内的惊人发现",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青回到充满海浪声的房间，拉开书桌抽屉，发现一张自己笔迹写下“我杀死了他”的白纸。通过墨水极轻微的晕染，他判断纸张写于十分钟内，而这十分钟他一直在餐厅且毫无记忆断层，最终陷入彻底的空白。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "林见青",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "苏蔓",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "徐桥",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "周默",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "林见青",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "苏蔓",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "徐桥",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "周默",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "林见青",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "苏蔓",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "徐桥",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "周默",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "林见青",
+      "location": "林见青的房间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏蔓",
+      "field": "new_detail",
+      "content": "低头用指甲刮擦木桌老漆皮并将其碾碎，声音极轻地自言自语"
+    },
+    {
+      "name": "徐桥",
+      "field": "new_detail",
+      "content": "手里捏着干瘪抹布反复擦拭没有水滴的杯子，动作机械僵硬，眼镜蒙上白雾"
+    },
+    {
+      "name": "周默",
+      "field": "new_detail",
+      "content": "双手平放膝盖上脊背挺直，能在黑暗中毫无情绪波动地描述极其血腥的杀人细节"
+    },
+    {
+      "name": "林见青",
+      "field": "state_change",
+      "content": "触碰冰冷瓷碗时感到刺骨冷意和胃部收缩；发现认罪书后大脑陷入彻底纯粹的空白"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "餐厅",
+      "type": "室内",
+      "description": "建在礁石上的旧式建筑，有落地窗、粗橡木桌，弥漫铁锈和海藻腥味"
+    },
+    {
+      "name": "走廊",
+      "type": "室内",
+      "description": "连接餐厅与房间的狭长过道，暗绿色受潮墙纸大面积剥落，只有绿色安全出口指示灯"
+    },
+    {
+      "name": "林见青的房间",
+      "type": "室内",
+      "description": "有木门、老式台灯和木桌抽屉，能听到海浪拍打礁石的沉闷回声"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "苏蔓",
+      "role": "配角",
+      "personality": "沉默寡言，有强迫性小动作（抠漆皮），对异常氛围麻木"
+    },
+    {
+      "name": "徐桥",
+      "role": "配角",
+      "personality": "神经质，动作机械僵硬，试图通过重复动作缓解焦虑"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "铁锈",
+      "context": "餐厅空气中的铁锈味与周默描述的生锈手术刀相呼应"
+    },
+    {
+      "motif": "水",
+      "context": "餐厅桌面的水渍、房间桌角的水渍，以及作为时间线索的墨水晕染"
+    },
+    {
+      "motif": "声音",
+      "context": "风暴雨声、被隔绝的雨声、海浪如心跳的单调回声、林见青异常清晰的吞咽声"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "planted",
+      "evidence": "林见青在抽屉发现自己笔迹的认罪书，墨水晕染证明写于十分钟内，但他这十分钟一直在餐厅且无记忆断层",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "周默在黑暗中描述的用生锈手术刀杀人的细节是真实的吗？死者是谁？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_03"
+    },
+    {
+      "content": "餐厅第五个空位置的汤还在冒热气，这个位置是留给谁的？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E1_01"
+    },
+    {
+      "content": "苏蔓和徐桥对周默描述杀人过程毫无反应，他们是否知情或处于某种异常状态？",
+      "importance": "medium",
+      "thread_type": "character_arc",
+      "planted_event_id": "E1_03"
+    }
+  ],
+  "notes": "林见青的笔迹特征为“横不平竖不直，撇捺尾端习惯性向右上角上扬”；认罪书用黑色碳素墨水写在从旧笔记本上撕下的纸片上。文本中人物“苏蔓”与已有图谱“苏遥”名字不符，暂作新人物处理。"
+}

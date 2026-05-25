@@ -1,0 +1,218 @@
+# Persisted: 2026-05-22 21:04:58
+{
+  "events": [
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "直播结束苏岚分析信号",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "直播结束后苏岚告知沈渡来电信号经过三层转发，有技术背景的人刻意隐藏来源。苏岚暗示沈渡的前记者身份可能是来电者选择他的原因。"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "沈渡调查论坛帖子",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡在办公室搜索林小微失踪帖子的缓存。林小微22岁音乐学院声乐系大四，三周前去老城区买二手唱片后失踪。帖子评论中有一张街景照片，右下角有模糊白色痕迹。沈渡回忆起自己做记者时的报道失误事件——工地事故中引用了'操作失误'的说法，伤者妻子称安全绳被剪断。"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "沈渡实地调查兴安巷",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "凌晨五点沈渡亲自去兴安巷。印刷厂铁门锁被砸开，门前的水泥地上有新鲜刮痕（从里向外），墙根处有暗色干涸痕迹。他拍照记录。"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "沈渡遇到陈默",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈默出现在兴安巷，手里攥着林小微的照片。他声称每天来找林小微，已来过二十多次。他说昨天下午三点锁还完好。沈渡以记者经验审视陈默的反应——陈默无法提供不在场证明，面对质问时出现防御性后退。"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "沈渡搜索三年前案件",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回到电台后，沈渡搜索'三年前兴安巷失踪'，准备挖掘来电者提到的三年前事件的真相。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E2_01",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E2_01",
+      "character": "苏岚",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "沈渡"
+    },
+    {
+      "event_id": "E2_02",
+      "character": "林小微"
+    },
+    {
+      "event_id": "E2_03",
+      "character": "沈渡",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "沈渡",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "陈默",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "林小微"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "沈渡",
+      "location": "电台直播间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈渡",
+      "field": "state_change",
+      "content": "从被动接听转向主动调查，前记者本能被激活。右手食指在桌面敲两下是确认动作的习惯。"
+    },
+    {
+      "name": "陈默",
+      "field": "new_detail",
+      "content": "眼下有重青色，嘴唇干裂。每天来兴安巷找林小微，已来二十多次。无法提供不在场证明，面对质问时出现防御性反应。"
+    },
+    {
+      "name": "苏岚",
+      "field": "new_detail",
+      "content": "对沈渡前记者身份的审视态度，暗示来电者可能特意选择了沈渡。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "电波杂音",
+      "context": "信号经过三层转发，混入杂音的隐喻——真相被层层遮蔽"
+    },
+    {
+      "motif": "红光",
+      "context": "手机屏幕上的照片在阳光下变得更模糊，光源从暗转亮"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "沈渡搜索'三年前兴安巷失踪'，将挖掘来电者提到的旧案",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "闪回揭示报道失误细节：工地事故、'操作失误'引用、伤者妻子跪在报社门口",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "铁门锁被砸开，有新鲜刮痕和暗色痕迹，陈默说昨天下午锁还完好",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "陈默声称昨天下午三点锁还完好，但凌晨锁已被砸——是谁在下午到凌晨之间砸开了锁？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E2_04"
+    },
+    {
+      "content": "论坛帖子被删了两次，谁在压制林小微失踪的信息？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E2_02"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E2_01",
+      "to": "E2_02",
+      "type": "decision",
+      "detail": "苏岚的分析激发沈渡主动调查"
+    },
+    {
+      "from": "E2_02",
+      "to": "E2_03",
+      "type": "investigation",
+      "detail": "论坛信息驱使沈渡实地查看"
+    },
+    {
+      "from": "E2_03",
+      "to": "E2_04",
+      "type": "consequence",
+      "detail": "在兴安巷遇到同样在调查的陈默"
+    },
+    {
+      "from": "E2_04",
+      "to": "E2_05",
+      "type": "investigation",
+      "detail": "陈默提供的时间线让沈渡决定深挖三年前案件"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E2_03",
+      "thread_id": "ST04_01",
+      "type": "clue",
+      "detail": "铁门锁被砸开、新鲜刮痕、暗色干涸痕迹均指向近期有人进入印刷厂"
+    },
+    {
+      "event_id": "E2_04",
+      "thread_id": "ST04_01",
+      "type": "confirmation",
+      "detail": "陈默确认昨天下午锁还完好，锁被砸发生在下午到凌晨之间"
+    },
+    {
+      "event_id": "E2_02",
+      "thread_id": "ST02_01",
+      "type": "connection",
+      "detail": "沈渡的记者经历被重新激活，与来电者事件产生呼应"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈渡",
+      "goal": "调查兴安巷事件和三年前旧案的关联",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陈默",
+      "goal": "每天在兴安巷寻找林小微",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "沈渡记者经历细节：工地事故报道、引用'操作失误'、伤者妻子跪在报社门口、转发两万。陈默的不在场证明缺失是重要线索。论坛帖子被删两次暗示有人压制信息。"
+}

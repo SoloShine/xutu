@@ -1,0 +1,254 @@
+# Persisted: 2026-05-22 00:09:04
+{
+  "events": [
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "深夜下楼检查五金店",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "凌晨一点零七分沈墨第三次听到楼下异响后决定下楼查看，发现五金店卷帘门底部有新鲜撬痕，侧面通风口铁丝网被掰开过，有人从通风口进入过五金店内部"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "钻入通风口进入暗室",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨关灯观察巷子确认无人后侧身钻入通风口，通过向下倾斜的水泥通道到达一道敞开铁门，进入五金店背后的隐藏房间，地面有吸音橡胶垫"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "发现服务器和墙上坐标矩阵",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "暗室中有运行中的19英寸服务器机架和CRT显示器，墙上贴满手写方格纸记录'字符增殖速率追踪v3'，包含字符数量、排列方式、触发条件的图表。第三排中间的手绘城市地图标注五个坐标点，三个用红笔圈出标注'源点''接口''观察者'，'源点'坐标与游戏中显示完全一致，指向他的工作室正上方九米"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "暗室断电后显示器出现字符",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "LED灯管突然熄灭四秒后恢复（亮度减半），CRT显示器亮起显示47/51/63十六进制序列螺旋逆时针排列（与游戏中完全一致），最后显示中文'第四次迭代开始。观察者已到场。'"
+    },
+    {
+      "id": "E4_05",
+      "chapter": 4,
+      "title": "逃离暗室遇到白裙女人背影",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨恐惧逃离暗室，从通风口翻出时余光捕捉到右侧白色身影——齐肩短发白裙子女人背影，裙摆扬起又落下，拐过巷口墙角消失。确认与照片中白裙女人是同一人"
+    },
+    {
+      "id": "E4_06",
+      "chapter": 4,
+      "title": "逃回工作室收到确认短信",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈墨两步一阶冲回三楼工作室反锁门，背靠门板喘气时手机收到陌生号码短信（与指引去网吧的同一号码），内容：'你找到它了'"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E4_01",
+      "character": "沈墨",
+      "location": "老城区工作室"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "沈墨",
+      "location": "五金店暗室"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "沈墨",
+      "location": "五金店暗室"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "沈墨",
+      "location": "五金店暗室"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "沈墨",
+      "location": "老城区工作室"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "白裙女人"
+    },
+    {
+      "event_id": "E4_06",
+      "character": "沈墨",
+      "location": "老城区工作室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈墨",
+      "field": "state_change",
+      "content": "从被动记录者转为主动探查者，深夜独闯五金店暗室，恐惧但仍保持程序员式的观察习惯（注意吸音垫、设备型号、坐标精度）"
+    },
+    {
+      "name": "白裙女人",
+      "field": "new_detail",
+      "content": "首次在物理空间出现，齐肩短发白裙子，在五金店暗室附近巷子中被看到背影后迅速消失"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "五金店暗室",
+      "type": "隐藏空间",
+      "description": "五金店背后约15平方米的隐藏房间，低天花板水泥墙有水渍，地面铺吸音橡胶垫，中央有运行中的19英寸服务器机架和CRT显示器，墙上贴满手写字符增殖追踪图表和手绘坐标矩阵"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "十六进制字符",
+      "context": "暗室服务器屏幕显示47/51/63字符序列，与游戏晶体中完全一致"
+    },
+    {
+      "motif": "坐标",
+      "context": "墙上手绘地图标注五个坐标点，'源点'指向沈墨工作室，'接口'和'观察者'指向城市其他方向"
+    },
+    {
+      "motif": "迭代",
+      "context": "服务器屏幕显示'第四次迭代开始。观察者已到场。'，延续照片背面的三次迭代日期"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "白裙女人在五金店暗室附近巷子中首次以物理实体出现（背影），确认照片中人物真实存在",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_03",
+      "action": "advanced",
+      "evidence": "暗室服务器运行与游戏中完全相同的字符序列，代码的物理空间映射被确认",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST03_02",
+      "action": "advanced",
+      "evidence": "墙上'字符增殖速率追踪v3'图表记录了字符数量递增的完整数据，五个坐标点暗示递增对应多个物理位置",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "陌生号码再次发送短信'你找到它了'，发送者实时掌握沈墨的行踪和发现",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "暗室CRT显示器显示47/51/63字符序列，与游戏晶体中完全一致，字符现象从虚拟蔓延到物理设备",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "五金店暗室墙上手绘地图标注五个坐标点，三个用红笔圈出分别标注'源点''接口''观察者'——这些坐标分别指向哪里？谁在追踪这些位置？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_03"
+    },
+    {
+      "content": "服务器屏幕显示'第四次迭代开始。观察者已到场。'——第四次迭代何时开始？'观察者'指沈墨还是另有其人？谁在定义'迭代'？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E4_01",
+      "to": "E4_02",
+      "type": "investigation",
+      "detail": "发现通风口撬痕后决定钻入探查"
+    },
+    {
+      "from": "E4_02",
+      "to": "E4_03",
+      "type": "revelation",
+      "detail": "进入暗室后发现服务器和墙上坐标矩阵"
+    },
+    {
+      "from": "E4_03",
+      "to": "E4_04",
+      "type": "escalation",
+      "detail": "看到源点坐标指向自己后恐惧触发灯灭和屏幕激活"
+    },
+    {
+      "from": "E4_04",
+      "to": "E4_05",
+      "type": "reaction",
+      "detail": "'第四次迭代开始'消息导致沈墨恐惧逃离"
+    },
+    {
+      "from": "E4_05",
+      "to": "E4_06",
+      "type": "consequence",
+      "detail": "遇到白裙女人后逃回工作室收到确认短信"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E4_03",
+      "thread_id": "ST03_02",
+      "type": "confirmation",
+      "detail": "墙上'字符增殖速率追踪v3'图表确认字符递增有系统性记录，有人在长期追踪这个现象"
+    },
+    {
+      "event_id": "E4_03",
+      "thread_id": "ST02_03",
+      "type": "confirmation",
+      "detail": "暗室服务器运行着与游戏中相同的字符，确认'它'有物理空间的存在"
+    },
+    {
+      "event_id": "E4_04",
+      "thread_id": "ST03_02",
+      "type": "clue",
+      "detail": "'第四次迭代开始'确认迭代仍在继续，与照片上三次迭代日期形成序列"
+    },
+    {
+      "event_id": "E4_05",
+      "thread_id": "ST03_01",
+      "type": "confirmation",
+      "detail": "白裙女人在暗室附近出现，物理存在确认照片人物真实"
+    },
+    {
+      "event_id": "E4_06",
+      "thread_id": "ST02_01",
+      "type": "confirmation",
+      "detail": "陌生号码实时知道沈墨找到暗室，发送者持续监控沈墨行动"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈墨",
+      "goal": "查清五金店暗室中的服务器和坐标矩阵与自己代码异常的关系",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "沈墨",
+      "goal": "安全——逃离暗室后反锁工作室门",
+      "type": "fear",
+      "status": "new"
+    }
+  ],
+  "notes": "关键物理证据：暗室服务器已运行不知多久、墙上'字符增殖速率追踪v3'图表表明有人长期系统追踪字符现象、手绘地图五个坐标点（'源点'=工作室、'接口'和'观察者'未知）、'第四次迭代开始。观察者已到场。'消息暗示沈墨被定义为'观察者'角色。通风口被多次使用（铁丝网顺滑）、吸音处理表明暗室建造者有专业意识。"
+}

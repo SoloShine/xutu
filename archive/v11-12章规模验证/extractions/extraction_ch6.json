@@ -1,0 +1,182 @@
+{
+  "events": [
+    {
+      "id": "E6_01",
+      "chapter": 6,
+      "title": "老周破门追击",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周猛撞门板闯入402室，带着铁锈和汗酸味，抡起铁锤砸断木桌追打陈若竹寻找“皮子”，陈若竹后退至东墙空窗框处。"
+    },
+    {
+      "id": "E6_02",
+      "chapter": 6,
+      "title": "暗房柜底危机",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "暗房内红水漫延，赵建国握着高频抖动的扳手逼近铁皮柜，手电光束停在折角处并向下压，林素云蜷缩在柜后发现底部三道划痕及灰色棉絮。"
+    },
+    {
+      "id": "E6_03",
+      "chapter": 6,
+      "title": "雨水显影管道图",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "窗外梅雨斜打在日记本第一页，干涸的暗红印记遇水溶解膨胀，显现出带有数字坐标(7,14,21,28)的沉淀池内部管道结构图。"
+    },
+    {
+      "id": "E6_04",
+      "chapter": 6,
+      "title": "藏匿与共振尖啸",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林素云在宿舍门后抠墙洞藏日记本，发现墙缝内有与暗房一致的三道划痕和灰色棉絮，此时门外砸击变重，隔壁木门同时传来撕裂的刮擦尖啸声。"
+    },
+    {
+      "id": "E6_05",
+      "chapter": 6,
+      "title": "泥水洼中的逃亡",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老周砸碎窗框，陈若竹护着日记本翻窗坠入楼下泥水洼，在齐膝深的黄泥水中跋涉，身后老周的手电光束在雨幕中追踪他。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E6_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "老周",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "赵建国",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "林素云",
+      "location": "暗房"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "林素云",
+      "location": "宿舍"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "陈若竹",
+      "location": "楼下泥水洼"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "老周",
+      "location": "楼下泥水洼"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "脸颊被老周砸窗飞溅的木刺划破留下一道血痕"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "手指被墙缝里的碎砖锐利边缘划破流血"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "楼下泥水洼",
+      "type": "户外",
+      "description": "满是腐烂树枝、滑腻淤泥和黄泥水的低洼地"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "红水",
+      "context": "赵建国手电光照亮铁皮柜底部的红水，纸屑在红水中打旋"
+    },
+    {
+      "motif": "数字",
+      "context": "日记本遇水后显现出7、14、21、28的数字坐标"
+    },
+    {
+      "motif": "灰色棉絮",
+      "context": "铁皮柜底部划痕上和林素云抠出的墙缝内均出现与围裙一致的灰色棉絮"
+    },
+    {
+      "motif": "管道",
+      "context": "日记本暗红印记溶解后显现出沉淀池的内部管道走向图"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_03",
+      "action": "advanced",
+      "evidence": "老周闯入402室，盯着陈若竹胸前并抡锤砸桌，嘴里念叨着“皮子”",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST05_01",
+      "action": "advanced",
+      "evidence": "赵建国握着生锈铁扳手，手腕不可控制地高频抖动导致扳手磕碰铁皮柜",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST04_02",
+      "action": "advanced",
+      "evidence": "赵建国手电光束停在铁皮柜折角处，光柱边缘照亮纸屑和红水，随后弯腰探向柜底",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "林素云在铁皮柜底和宿舍墙缝内均发现三道精确划痕，且底部残留与围裙一致的灰色棉絮",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "日记本第一页的暗红印记接触雨水后发生物理形变，吸水膨胀并溶解出管道图和数字",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST02_02",
+      "action": "advanced",
+      "evidence": "红色线条边缘浮现出7、14、21、28的数字坐标，与之前的数字残片形成对应",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST05_02",
+      "action": "advanced",
+      "evidence": "林素云门外砸击声变重时，隔壁木门同时传来刮擦尖啸声，两处声音在同一秒撕裂",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "日记本显现的沉淀池管道图中，暗管走向穿过纸面边缘指向墙外的哪个具体位置？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E6_03"
+    }
+  ],
+  "notes": "日记本第一页遇水显现的暗红印记实为沉淀池内部结构图及管道走向；老周鞋底带有铁锈泥浆；林素云藏日记本时划破手指，血滴与积水中的红色杂质混合；陈若竹跳窗后右脚被水底硬物绊住。"
+}

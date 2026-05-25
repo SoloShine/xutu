@@ -1,0 +1,35 @@
+name: 第六次死亡（V18-R2）
+identifier: v18_r2
+chapters: 6
+language: 简体中文
+novel:
+  writing:
+    prev_text_chars: 500
+    min_words: 2500
+    max_words: 3500
+    min_words_per_scene: 600
+  extraction:
+    target_events: "5-8"
+    max_events: 10
+    min_events: 3
+  suspense:
+    budget_base: 8
+    budget_multiplier: 1.5
+    staleness_threshold: 5
+  validation:
+    forbidden_patterns:
+      - pattern: "不是[^。！？\n]+[。！？]是[^。！？\n]+"
+        max_per_chapter: 0
+        description: "不是X。是Y。句式"
+      - pattern: "眼眶[热红]了"
+        max_per_chapter: 0
+        description: "眼眶热/红了"
+      - pattern: "荧光灯[。，]嗡嗡"
+        max_per_chapter: 0
+        description: "荧光灯嗡嗡"
+      - pattern: "^他在想[。，]"
+        max_per_chapter: 0
+        description: "他在想。"
+      - pattern: "手在抖|手握紧|指节发白"
+        max_per_chapter: 1
+        description: "手抖/握紧/指节发白"

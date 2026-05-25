@@ -1,0 +1,257 @@
+# Persisted: 2026-05-21 00:45:27
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "方竹工坊清晨例行检查",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹在工坊中例行检查三台待修物件（铜制烟盒、皮面闹钟、晶体管收音机），观察闹钟背面的铜锈状况并记录标签，展现修复师的日常节奏"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "旧货市场陶然展示座钟",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹骑车到旧货市场，陶然展示一只来历不明的旧座钟——一个穿灰夹克的老头以'随便给'的价格卖出，方竹观察到底座铜锈不均匀和钟面玻璃被粗糙擦拭的痕迹，以三百五十元买下"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "拆解座钟底座发现暗格",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹回到工坊拆解座钟底座，四颗铜螺丝中第四颗因锈蚀卡住，刮擦铜锈后拧开时感觉到异常弹力，抬起铜板发现底座与机芯之间有人为留出的夹层"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "展开夹层纸条发现残缺字迹",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹用镊子从夹层取出折叠纸条并展开，辨认出半行褪色钢笔字：'第七次停摆之后，请在卯时'，后半段被水渍模糊，纸条折痕处墨迹磨损说明存放已久"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "座钟摆轮自行晃动",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "未上发条的座钟机芯发出嘀嗒声，摆轮随后在方竹注视下又晃动一次（游丝颤动带动摆轮左右各摆半个周期后静止），方竹记录此事但未继续拆解"
+    },
+    {
+      "id": "E1_06",
+      "chapter": 1,
+      "title": "方竹追问座钟来历",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "方竹向陶然询问卖钟老头的详情，陶然回忆老头走时回头看了一眼摊位，方竹没有追问，回到工坊继续刮擦机芯铜锈，在笔记本上记录当日发现"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "方竹",
+      "location": "方竹工坊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "方竹",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "陶然",
+      "location": "旧货市场"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "方竹",
+      "location": "方竹工坊"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "方竹",
+      "location": "方竹工坊"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "方竹",
+      "location": "方竹工坊"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "方竹",
+      "location": "方竹工坊"
+    },
+    {
+      "event_id": "E1_06",
+      "character": "陶然"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "方竹",
+      "field": "new_detail",
+      "content": "工坊约二十平米，靠窗长工作台，用放大镜台灯和高脚凳工作，手写标签记录每件待修物件的故障和送修日期"
+    },
+    {
+      "name": "方竹",
+      "field": "new_habit",
+      "content": "习惯用指甲试探物件边缘和翘起处，凭触感判断铜锈程度"
+    },
+    {
+      "name": "方竹",
+      "field": "new_attitude",
+      "content": "对来历不明的物件保持审慎观察态度，不急于触碰，先看再动手"
+    },
+    {
+      "name": "陶然",
+      "field": "new_detail",
+      "content": "摊位在旧货市场最里面靠墙位置，堆满座钟、怀表、黄铜烛台等旧物件，用搪瓷缸子泡枸杞红枣"
+    },
+    {
+      "name": "陶然",
+      "field": "new_detail",
+      "content": "说话时喜欢两只手比划，拍大腿表示成交"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "方竹工坊",
+      "type": "室内",
+      "description": "约二十平米的工作空间，靠窗一张长工作台，工具柜、放大镜台灯、高脚凳，弥漫松香水和旧纸气味"
+    },
+    {
+      "name": "旧货市场",
+      "type": "公共场所",
+      "description": "老城区东边露天棚户区，铁皮顶水泥地面，一百多个摊位卖旧家具旧书旧衣服，周末有收藏爱好者摆摊"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "卖钟老头",
+      "role": "mystery",
+      "personality": "穿灰夹克布鞋，话少，以'随便给'的价格卖出座钟后直接离开，走时回头看了一眼陶然的摊位"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "钟表",
+      "context": "座钟停在四点零七分，摆轮在未上发条状态下自行晃动两次，呼应'停摆'意象的起始阶段"
+    },
+    {
+      "motif": "铜锈",
+      "context": "底座铜板覆满绿色锈蚀，方竹用铜刷刮擦后露出黄铜底色，像旧伤口结痂脱落后露出新皮肤"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "座钟由一个穿灰夹克的老头以'随便给'的价格卖给陶然，老头走时回头看了一眼摊位",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "纸条内容为'第七次停摆之后，请在卯时'，后半段被水渍模糊，折痕处墨迹磨损说明存放已久",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "座钟未上发条但摆轮自行晃动两次，是什么力量驱动的？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_05"
+    },
+    {
+      "content": "纸条上被水渍模糊的完整内容是什么？'请在卯时'之后要做什么？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E1_04"
+    },
+    {
+      "content": "卖钟的老头是谁？为什么以'随便给'的价格卖出？为什么走时回头看了一眼摊位？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E1_02"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E1_01",
+      "to": "E1_02",
+      "type": "reaction",
+      "detail": "陶然发消息叫方竹去看东西，方竹中断例行检查前往旧货市场"
+    },
+    {
+      "from": "E1_02",
+      "to": "E1_03",
+      "type": "consequence",
+      "detail": "方竹买下座钟后带回工坊开始拆解"
+    },
+    {
+      "from": "E1_03",
+      "to": "E1_04",
+      "type": "revelation",
+      "detail": "拆解发现夹层后取出并展开纸条"
+    },
+    {
+      "from": "E1_04",
+      "to": "E1_05",
+      "type": "escalation",
+      "detail": "纸条内容引发悬念，随后未上发条的摆轮自行晃动加剧异常感"
+    },
+    {
+      "from": "E1_05",
+      "to": "E1_06",
+      "type": "investigation",
+      "detail": "摆轮异动后方竹向陶然追问卖钟老头的来历"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E1_02",
+      "thread_id": "ST01_01",
+      "type": "clue",
+      "detail": "老头以'随便给'价格卖出、走时回头看摊位，暗示座钟来历不寻常"
+    },
+    {
+      "event_id": "E1_04",
+      "thread_id": "ST01_02",
+      "type": "clue",
+      "detail": "纸条上'第七次停摆之后，请在卯时'的内容，折痕磨损说明存放已久"
+    },
+    {
+      "event_id": "E1_05",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "座钟未上发条但摆轮自行晃动，确认此钟非普通物件"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "方竹",
+      "goal": "弄清座钟的来历和纸条的含义",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "方竹",
+      "goal": "修复座钟使其恢复正常运转",
+      "type": "duty",
+      "status": "new"
+    }
+  ],
+  "notes": "感官锚点：嗅觉为主（松香水气味、铜锈苦味、旧纸甜腻酸味、泥腥气）。座钟停在四点零七分。纸条'第七次停摆之后，请在卯时'。方竹的笔记本记录习惯。卖钟老头特征：灰夹克、布鞋、话少、回头看摊位。"
+}

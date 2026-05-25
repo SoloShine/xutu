@@ -1,0 +1,176 @@
+# Persisted: 2026-05-21 16:27:23
+{
+  "events": [
+    {
+      "id": "E84_01",
+      "title": "天机阁阁主降临石室",
+      "detail": "金丹后期灵力的阁主走完三十级台阶进入石室，灵力碾压让老周吐血、大壮跪下、苏晚灵力耗尽。阁主揭示等了三年，布局三方对峙只为让陆远撬开母亲封印。",
+      "event_type": "confrontation",
+      "chapter": 84,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E84_02",
+      "title": "阁主揭露全盘计划",
+      "detail": "阁主告知陆远：灵墟是母亲引来的，地脉堂也是，天机阁是他派的。三方混乱让陆远拔掉引流管道，开通第五条路，撬开母亲封印。封印核心是激活上界至宝的钥匙，需九层全开。",
+      "event_type": "revelation",
+      "chapter": 84,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E84_03",
+      "title": "阁主出手抓陆远",
+      "detail": "阁主金色灵力凝成手抓向陆远胸口。第三层封印自动涌出金色灵力屏障被轻松击碎。阁主抓住陆远衣领提起来。",
+      "event_type": "combat",
+      "chapter": 84,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E84_04",
+      "title": "归墟冲入与阁主交战",
+      "detail": "归墟暗红灵力从台阶底部爆炸涌上，撞开阁主的灵力手。归墟揭露真相：母亲三十年前用上界禁术剥离自己暗红灵力制造守护者。归墟是母亲的一部分，与封印同频。",
+      "event_type": "combat",
+      "chapter": 84,
+      "is_gap": false,
+      "gap_level": 0
+    },
+    {
+      "id": "E84_05",
+      "title": "众人撤离石室通道坍塌",
+      "detail": "陆远捧着母亲蓝光意识，大壮背着苏晚，老周撑着伤体，四人沿台阶往地面跑。背后暗红与金色灵力搅在一起，石室坍塌。台阶被碎石封死，归墟还在下面。母亲说归墟是她的一部分不会消失。",
+      "event_type": "escape",
+      "chapter": 84,
+      "is_gap": false,
+      "gap_level": 0
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E84_01",
+      "character": "天机阁阁主"
+    },
+    {
+      "event_id": "E84_01",
+      "location": "灵脉源头石室"
+    },
+    {
+      "event_id": "E84_02",
+      "character": "天机阁阁主"
+    },
+    {
+      "event_id": "E84_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E84_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E84_03",
+      "character": "天机阁阁主"
+    },
+    {
+      "event_id": "E84_04",
+      "character": "归墟"
+    },
+    {
+      "event_id": "E84_04",
+      "character": "天机阁阁主"
+    },
+    {
+      "event_id": "E84_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E84_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E84_05",
+      "character": "老周"
+    },
+    {
+      "event_id": "E84_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E84_05",
+      "character": "铜音"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "thread_updates": [
+    {
+      "thread_id": "ST83_01",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST83_02",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST80_01",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "归墟能否挡住金丹后期的阁主？地下战斗结果如何？",
+      "importance": "high",
+      "thread_type": "tension"
+    },
+    {
+      "content": "阁主要求陆远自愿打开九层封印——陆远会怎么做？",
+      "importance": "high",
+      "thread_type": "dilemma"
+    },
+    {
+      "content": "母亲残存意识能维持多久？蓝光随时会散",
+      "importance": "medium",
+      "thread_type": "tension"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "goal": "带着母亲意识逃离，同时面对阁主逼迫打开九层封印的两难",
+      "state": "封印第三层已开，后背命门穴流血，银针碎片扎在经脉边缘"
+    },
+    {
+      "name": "苏晚",
+      "goal": "灵力耗尽后恢复",
+      "state": "灵力耗尽，被大壮背着"
+    },
+    {
+      "name": "老周",
+      "goal": "保护众人撤离",
+      "state": "重伤，嘴角流血，硬撑着行动"
+    },
+    {
+      "name": "大壮",
+      "goal": "背着苏晚撤离",
+      "state": "膝盖被灵力碾压弯过但恢复行动"
+    },
+    {
+      "name": "归墟",
+      "goal": "挡住阁主，为众人争取撤离时间",
+      "state": "与阁主在地下石室交战，是母亲暗红灵力制造的守护者"
+    },
+    {
+      "name": "天机阁阁主",
+      "goal": "获取上界至宝，需要陆远九层封印全开的灵力激活",
+      "state": "金丹后期，灵力碾压所有人，与归墟交战中"
+    },
+    {
+      "name": "铜音",
+      "goal": "意识延续，保护儿子",
+      "state": "蓝光人形残存意识，极淡，随时会散，被陆远捧着带出地面"
+    }
+  ],
+  "motif_mentions": [],
+  "notes": "Ch84收束加速章节。阁主全盘计划揭露，归墟真实身份揭示（母亲暗红灵力制造的守护者）。三条悬念线解决（ST83_01归墟身份、ST83_02阁主目的、ST80_01归墟与阁主冲突）。新开三条悬念线。"
+}

@@ -1,0 +1,182 @@
+# Persisted: 2026-05-22 21:10:40
+{
+  "events": [
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "沈渡苏岚梳理线索",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏岚打印两段录音波形，分析来电时间节点的精确性。她指出从法律角度看沈渡没有任何可交证据，林小微案被归为人员走失未立案。"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "陈默回忆与林小微争吵",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈默在琴房回忆三个月前在校门口跟踪林小微的争吵。他承认跟踪，林小微警告要报警。她手里拎着唱片。那是他最后一次近距离看到她。"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "沈渡追踪三年前记者",
+      "type": "investigation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡联系到三年前写报道的记者赵维。赵维一年多前辞职，手机停机，社交媒体两年未更新。前同事说'走的时候干干净净，连工位上的杯子都扔了'。荧光灯在3分58秒时闪了，验证了来电者的情报。"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "陈默深夜去兴安巷",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈默提白菊花去兴安巷，放在印刷厂铁门旁。他回忆林小微失踪前两天发给他的消息：'我在兴安巷那家旧书店找到了一张胶片。你一定要来看。'巷子里没有旧书店，只有废弃印刷厂。他从未进过铁门。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E4_01",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E4_01",
+      "character": "苏岚",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "陈默"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "林小微"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "陈默",
+      "location": "老城区兴安巷"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "林小微"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈默",
+      "field": "new_detail",
+      "content": "曾跟踪林小微。林小微失踪前发给他消息提到'兴安巷旧书店'和'胶片'。巷子里没有旧书店。他来过二十多次但从未进过铁门。"
+    },
+    {
+      "name": "林小微",
+      "field": "new_detail",
+      "content": "失踪前两天发消息给陈默，提到在兴安巷找到一张胶片。去的是废弃印刷厂而非旧书店。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "电波杂音",
+      "context": "录音波形图像乐谱，两通电话的频率和间隔被精确分析"
+    },
+    {
+      "motif": "红光",
+      "context": "琴房里只有安全出口指示牌的绿色荧光，红光暂时消失"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "林小微失踪前提到'旧书店'但巷子里没有旧书店，她去的是废弃印刷厂，寻找的是'胶片'",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "三年前记者赵维已辞职、手机停机、社交媒体停更两年，离开时'干干净净'",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST04_01",
+      "action": "advanced",
+      "evidence": "印刷厂铁门仍然开着，陈默放花时确认锁已彻底坏了",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "林小微在失踪前去印刷厂寻找'胶片'——这张胶片拍了什么？她为什么会去那里？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E4_04"
+    },
+    {
+      "content": "陈默从未进过铁门，但林小微进去过——她找到了什么？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E4_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E4_01",
+      "to": "E4_03",
+      "type": "investigation",
+      "detail": "苏岚的法理分析推动沈渡追踪三年前记者"
+    },
+    {
+      "from": "E4_02",
+      "to": "E4_04",
+      "type": "decision",
+      "detail": "回忆林小微的消息驱使陈默深夜去兴安巷"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E4_03",
+      "thread_id": "ST03_01",
+      "type": "confirmation",
+      "detail": "记者赵维的消失方式证实来电者说的'有人消失了'"
+    },
+    {
+      "event_id": "E4_04",
+      "thread_id": "ST02_01",
+      "type": "clue",
+      "detail": "林小微的消息揭示她在失踪前主动去了印刷厂寻找胶片"
+    },
+    {
+      "event_id": "E4_02",
+      "thread_id": "ST02_01",
+      "type": "connection",
+      "detail": "陈默的控制欲和跟踪行为是已知线索，但他的消息暗示他知道林小微去兴安巷的原因"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陈默",
+      "goal": "理解林小微最后那条消息的含义",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "沈渡",
+      "goal": "找到三年前的记者赵维",
+      "type": "pursue",
+      "status": "advanced"
+    }
+  ],
+  "notes": "关键线索：林小微的'胶片'消息。兴安巷没有旧书店。赵维干干净净地消失。陈默从未进过铁门。荧光灯3分58秒验证来电者情报。D小调和弦意象。"
+}

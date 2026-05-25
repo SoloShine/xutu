@@ -1,0 +1,273 @@
+# Persisted: 2026-05-21 12:20:35
+{
+  "events": [
+    {
+      "id": "E27_01",
+      "chapter": 27,
+      "title": "陆远向赵铁山请教玉简石门画面",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远前往纺织厂锅炉房向赵铁山描述玉简石门画面，赵铁山听后沉默取出三十年前手绘地图，确认灵脉暗河分三层，一层修炼溶洞、二层灵力密度翻倍的暗河、三层尽头有石门"
+    },
+    {
+      "id": "E27_02",
+      "chapter": 27,
+      "title": "赵铁山透露灵脉第三层守脉之物",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "赵铁山说明灵脉暗河三层结构：一层是修炼溶洞灵力密度外面十倍，二层全是暗河水急温低灵力密度一层三倍，三层入口在二层最深处有守脉之物像一团雾灵力密度比筑基期高。三十年前上界来人只到三层入口就被弹回断了两根肋骨灵力通道裂了一条"
+    },
+    {
+      "id": "E27_03",
+      "chapter": 27,
+      "title": "苏晚发现灵脉暗河修炼能延缓封印裂开",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚分析陆远封印裂开的原因是双层回路运转速度比普通修真者快三倍灵力消耗跟不上补充。灵脉暗河一层灵力密度是外面十倍每天修炼两小时灵力补充速度能超过消耗速度封印裂开可延缓"
+    },
+    {
+      "id": "E27_04",
+      "chapter": 27,
+      "title": "天机阁沈轻舟秘密来访传达阁主口信",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天机阁沈轻舟三十岁短发灰色风衣女修士秘密来访废弃小楼，传达阁主口信：灵墟背后还有一层比灵墟大比灵墟深，灵墟只是白手套手套后面的手才是真正要命的，那只手比阁主更不想让陆远活着。带来灵脉暗河三层全图作为诚意"
+    },
+    {
+      "id": "E27_05",
+      "chapter": 27,
+      "title": "周衡安分析天机阁意图为坐收渔利",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安分析天机阁给灵脉深层地图的意图：天机阁自己不想折人在守脉之物上，让陆远去探路打开石门后坐收渔利。苏晚确认地图标注与赵铁山说法一致"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E27_01",
+      "character": "陆远",
+      "location": "废弃纺织厂锅炉房"
+    },
+    {
+      "event_id": "E27_01",
+      "character": "赵铁山",
+      "location": "废弃纺织厂锅炉房"
+    },
+    {
+      "event_id": "E27_02",
+      "character": "赵铁山",
+      "location": "废弃纺织厂锅炉房"
+    },
+    {
+      "event_id": "E27_02",
+      "character": "陆远",
+      "location": "废弃纺织厂锅炉房"
+    },
+    {
+      "event_id": "E27_03",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_03",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_04",
+      "character": "沈轻舟",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_04",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_04",
+      "character": "陆远",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_04",
+      "character": "大壮",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_05",
+      "character": "周衡安",
+      "location": "城东废弃小楼"
+    },
+    {
+      "event_id": "E27_05",
+      "character": "苏晚",
+      "location": "城东废弃小楼"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "赵铁山",
+      "field": "new_detail",
+      "content": "藏有灵脉暗河三层手绘地图，三十年前制作，对灵脉深层结构了解比任何人深"
+    },
+    {
+      "name": "沈轻舟",
+      "field": "new_detail",
+      "content": "天机阁使者三十岁短发灰色风衣，气质安安静静说话简洁，传递阁主口信从不威胁利诱"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "灵脉暗河二层",
+      "type": "灵脉深层",
+      "description": "灵脉暗河第二层，全是暗河水急温低灵力密度一层三倍，常人待不了三分钟"
+    },
+    {
+      "name": "灵脉暗河三层入口",
+      "type": "灵脉深层",
+      "description": "灵脉暗河第三层入口在二层最深处，有守脉之物灵力密度比筑基期高，形态像一团雾"
+    },
+    {
+      "name": "灵脉深层石门",
+      "type": "未知",
+      "description": "灵脉暗河第三层最深处的石门，门框刻着金色纹路相同花纹门缝透金光，三十年前上界来人也只到入口未到达"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵脉暗河三层灵力密度递增一层十倍二层三十倍三层未知"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST26_03",
+      "action": "advanced",
+      "evidence": "赵铁山确认灵脉第三层尽头有同样石门金色花纹门缝金光",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST23_01",
+      "action": "advanced",
+      "evidence": "三十年前上界来人被守脉之物从三层入口弹回断肋骨裂灵力通道",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "金色纹路与灵脉深层石门花纹一致金色纹路可能是通往石门的钥匙",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST25_01",
+      "action": "advanced",
+      "evidence": "苏晚发现灵脉暗河修炼能延缓封印裂开灵力补充速度超过消耗速度",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST11_01",
+      "action": "advanced",
+      "evidence": "沈轻舟透露灵墟背后还有一层比阁主更不想让陆远活着可能是神秘买家",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST18_02",
+      "action": "advanced",
+      "evidence": "天机阁提供灵脉深层地图作为诚意交换合作",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵脉暗河第三层守脉之物——像一团雾灵力密度比筑基期高，感知进入灵脉深层的东西判断有害则攻击。三十年前上界来人被弹回断两根肋骨裂一条灵力通道",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E27_02"
+    },
+    {
+      "content": "灵墟背后的神秘势力——比灵墟大比灵墟深，灵墟只是白手套，背后的手才是真正要命的，天机阁阁主说这只手比他更不想让陆远活着",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E27_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E26_05",
+      "to": "E27_01",
+      "type": "investigation",
+      "detail": "玉简石门画面驱使陆远找赵铁山确认"
+    },
+    {
+      "from": "E27_01",
+      "to": "E27_02",
+      "type": "revelation",
+      "detail": "赵铁山根据石门描述揭示灵脉三层结构和守脉之物"
+    },
+    {
+      "from": "E27_02",
+      "to": "E27_03",
+      "type": "investigation",
+      "detail": "灵脉暗河信息使苏晚发现修炼延缓封印的方法"
+    },
+    {
+      "from": "E26_04",
+      "to": "E27_04",
+      "type": "consequence",
+      "detail": "灵墟撤走后天机阁主动接触提供情报和地图"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E27_02",
+      "thread_id": "ST26_03",
+      "type": "confirmation",
+      "detail": "赵铁山确认第三层尽头有金色纹路石门与玉简画面一致"
+    },
+    {
+      "event_id": "E27_02",
+      "thread_id": "ST23_01",
+      "type": "clue",
+      "detail": "上界来人被守脉之物弹回暗示石门背后有极高价值的东西"
+    },
+    {
+      "event_id": "E27_04",
+      "thread_id": "ST11_01",
+      "type": "connection",
+      "detail": "灵墟背后的神秘势力可能与悬赏令神秘买家是同一方"
+    },
+    {
+      "event_id": "E27_03",
+      "thread_id": "ST25_01",
+      "type": "clue",
+      "detail": "灵脉暗河修炼给陆远争取了缓冲时间不用急于求成"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "突破灵脉暗河三层守脉之物到达石门",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "帮助陆远延缓封印裂开争取时间",
+      "type": "protect",
+      "status": "advanced"
+    },
+    {
+      "character": "周衡安",
+      "goal": "识破天机阁坐收渔利意图保护陆远不被利用",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "灵脉暗河三层结构确立：一层修炼(10x)→二层暗河(30x)→三层石门(守脉之物封锁)。沈轻舟角色首次有具体描写。赵铁山手绘地图是三十年前的，说明他当年就有探查深层的意图。天机阁给的地图比赵铁山精细说明天机阁对灵脉深层的了解超过地脉堂。周衡安棋局分析能力再次体现"
+}

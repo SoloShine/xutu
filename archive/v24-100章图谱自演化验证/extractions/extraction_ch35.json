@@ -1,0 +1,239 @@
+# Persisted: 2026-05-21 12:46:08
+{
+  "events": [
+    {
+      "id": "E35_01",
+      "chapter": 35,
+      "title": "石门开启——金色纹路能量耗尽",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "金色纹路与石门共振，全部能量涌入石门将其推开，金色纹路完全熄灭，门后涌出金光照亮三层灵力虚空"
+    },
+    {
+      "id": "E35_02",
+      "chapter": 35,
+      "title": "石台密室——发现玉盒",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "门后是三米见方的小空间，灵力密度极高，中央石台上放着淡青色玉盒，表面花纹与陆远手臂金色纹路完全一致，确认为母亲所留"
+    },
+    {
+      "id": "E35_03",
+      "chapter": 35,
+      "title": "触碰玉盒——封印核心剧痛后稳定",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "指尖触碰玉盒瞬间封印核心剧痛如针扎透，两秒后消失，封印核心比之前任何一次都稳定，像弹簧压到底后卡住"
+    },
+    {
+      "id": "E35_04",
+      "chapter": 35,
+      "title": "携带玉盒返回——穿越三层二层",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远凭记忆穿越三层灵力虚空，守脉之物白雾让路，经石壁裂缝回到二层再回到一层，金色纹路已灭无护盾无指路功能"
+    },
+    {
+      "id": "E35_05",
+      "chapter": 35,
+      "title": "苏晚检查——封印核心最稳定状态",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用银针感应确认封印核心比之前任何一次都稳定，但金色纹路灵力消耗殆尽需恢复，她触碰玉盒感受到与金色纹路频率一致的灵力残留"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E35_01",
+      "character": "陆远",
+      "location": "灵脉暗河三层"
+    },
+    {
+      "event_id": "E35_02",
+      "character": "陆远",
+      "location": "灵脉暗河三层"
+    },
+    {
+      "event_id": "E35_03",
+      "character": "陆远",
+      "location": "灵脉暗河三层"
+    },
+    {
+      "event_id": "E35_04",
+      "character": "陆远",
+      "location": "灵脉暗河三层"
+    },
+    {
+      "event_id": "E35_04",
+      "character": "陆远",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "event_id": "E35_04",
+      "character": "陆远",
+      "location": "灵脉暗河一层"
+    },
+    {
+      "event_id": "E35_05",
+      "character": "陆远",
+      "location": "灵脉暗河一层"
+    },
+    {
+      "event_id": "E35_05",
+      "character": "苏晚",
+      "location": "灵脉暗河一层"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色纹路能量完全耗尽，纹路存在但不发光不响应意念；封印核心达到前所未有的稳定状态"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "获得母亲留下的淡青色玉盒，表面花纹与金色纹路完全对应，玉盒温热微微发热，无锁无缝隙无法打开"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "金色纹路",
+      "context": "金色纹路能量全部用于打开石门后熄灭，纹路还在但光完全消失"
+    },
+    {
+      "motif": "玉盒",
+      "context": "母亲留下的淡青色玉盒，表面花纹与金色纹路一一对应，温热无法打开"
+    },
+    {
+      "motif": "封印核心",
+      "context": "触碰玉盒后剧痛两秒然后达到前所未有的稳定状态"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST26_03",
+      "action": "resolved",
+      "evidence": "石门用金色纹路能量打开，门后密室中玉盒与金色纹路完全对应",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "第十道金色纹路能量全部耗尽用于开门，纹路熄灭但还在，需要恢复",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "金色纹路能量耗尽后封印核心反而达到最稳定状态，力量与代价关系出现新转折",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_01",
+      "action": "advanced",
+      "evidence": "守脉之物让路白雾分开像行注目礼，确认认可陆远身份",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST20_02",
+      "action": "advanced",
+      "evidence": "石门→密室→玉盒的路径全部由母亲设计，渐进式解锁路线进一步确认",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "玉盒如何打开——玉简指令'打开它'但玉盒无锁无缝隙无机关，用意念无反应。金色纹路已灭、药水用完、封印核心刚稳定，打开方式未知",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E35_02"
+    },
+    {
+      "content": "封印核心触碰玉盒后剧痛→空前稳定——金色纹路能量耗尽后封印核心反而最稳定，两者之间存在此消彼长的关系，这个平衡机制是什么",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E35_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E35_01",
+      "to": "E35_02",
+      "type": "consequence",
+      "detail": "金色纹路能量耗尽打开石门，门后露出密室和玉盒"
+    },
+    {
+      "from": "E35_02",
+      "to": "E35_03",
+      "type": "investigation",
+      "detail": "陆远伸手触碰玉盒触发封印核心反应"
+    },
+    {
+      "from": "E35_03",
+      "to": "E35_04",
+      "type": "decision",
+      "detail": "无法打开玉盒且金色纹路已灭，决定返回"
+    },
+    {
+      "from": "E35_04",
+      "to": "E35_05",
+      "type": "consequence",
+      "detail": "回到一层后苏晚检查确认状态"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E35_01",
+      "thread_id": "ST26_03",
+      "type": "confirmation",
+      "detail": "石门确实用金色纹路能量打开，确认玉简画面中的石门就是这扇门"
+    },
+    {
+      "event_id": "E35_02",
+      "thread_id": "ST09_02",
+      "type": "connection",
+      "detail": "玉盒与上界至宝可能直接相关，全路径由母亲设计"
+    },
+    {
+      "event_id": "E35_03",
+      "thread_id": "ST14_01",
+      "type": "clue",
+      "detail": "金色纹路能量耗尽后封印核心反而最稳定，力量代价出现反常平衡"
+    },
+    {
+      "event_id": "E35_05",
+      "thread_id": "ST21_01",
+      "type": "confirmation",
+      "detail": "苏晚确认金色纹路灵力消耗殆尽需时间恢复"
+    },
+    {
+      "event_id": "E35_02",
+      "thread_id": "ST20_02",
+      "type": "confirmation",
+      "detail": "玉盒表面花纹与金色纹路一一对应，进一步确认母亲预设渐进式觉醒路线"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "找到打开玉盒的方法",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "在36小时内保持安全不被灵墟定位",
+      "type": "fear",
+      "status": "advanced"
+    }
+  ],
+  "notes": "关键物品：淡青色玉盒（巴掌大小，温热，花纹与金色纹路完全对应，无锁无机关）。关键状态变化：金色纹路能量归零但纹路物理存在不变，封印核心达到历史最稳定。时间线：进入暗河到返回共约12小时，48小时时限还剩36小时。守脉之物态度变化：从犹豫→认可→行注目礼。"
+}

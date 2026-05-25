@@ -1,0 +1,603 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "茶峒渡口环境与老船夫的摆渡规矩",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "茶峒小山城外有一条小溪，溪边有白塔和一户人家。老船夫管理方头渡船，用废缆牵船渡人，不收渡钱，若有人给钱便买茶叶草烟慷慨赠予过渡人。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "老船夫与翠翠的身世往事",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫守渡船五十年，唯一的亲人是孙女翠翠。回忆中翠翠的母亲十五年前与屯戍军士秘密相恋，军士服毒自尽，母亲生下翠翠后吃冷水死去，老船夫对此未加责备。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "翠翠的成长与渡船上的日常",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠在自然中长养，天真活泼如小兽。老船夫疲倦时，翠翠能敏捷地替祖父渡人，黄狗也懂得衔绳拖船拢岸。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "祖孙俩的闲暇时光与看热闹",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "无人过渡时，祖孙俩在门前大石上晒太阳，抛木头逗黄狗，听祖父讲故事或吹笛子唱歌。翠翠看牛羊花轿过渡后，会学动物叫或采野花装扮新娘。"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "翠翠进城买货的见闻",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "逢年过节或买油盐时，翠翠随黄狗进城，在杂货铺看到粉条白糖炮仗等留下深刻印象，也看到河边大船起卸百货的有趣场景。"
+    },
+    {
+      "id": "E2_01",
+      "chapter": 2,
+      "title": "茶峒城依山傍水的建筑格局与水灾景象",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "茶峒近山一面城墙如长蛇，临水一面设码头泊船，河街人家多建有吊脚楼。涨水时人们用梯子进城躲避，水势猛时吊脚楼被冲走，人们呆望损失。"
+    },
+    {
+      "id": "E2_02",
+      "chapter": 2,
+      "title": "白河的清澈风光与茶峒水陆枢纽地位",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "白河上游深潭清澈见底，游鱼如浮空中，两岸高山细竹长年深翠。茶峒是湖南最后一个水码头，川东进出口货物皆在此落水起岸，靠人力搬运。"
+    },
+    {
+      "id": "E2_03",
+      "chapter": 2,
+      "title": "茶峒城内百姓的安静生活",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "城中驻扎少量戍兵，百姓多日寂静，晾晒衣物蔬菜，劈柴喂鸡。安静的生存环境增加了人对人事的思索力与梦，各人怀有对爱憎的期待。"
+    },
+    {
+      "id": "E2_04",
+      "chapter": 2,
+      "title": "河街的商业繁华与水手妓女的淳朴生活",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "河街有各种商铺和介绍水手的人家，也有靠商人水手维持的妓女。边地风俗淳朴，妓女与水手间常有真挚痴情，重义轻利，较城市中人更可信任。"
+    },
+    {
+      "id": "E2_05",
+      "chapter": 2,
+      "title": "掌水码头顺顺的身世发迹与为人",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "顺顺前清时在营伍混过，后买船经商发迹，拥有四只船和铺子。他大方洒脱，慷慨济人，因公正无私被推举为水面上运用习惯规矩排调一切的执事人。"
+    },
+    {
+      "id": "E2_06",
+      "chapter": 2,
+      "title": "顺顺对天保傩送两兄弟的历练与教育",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天保傩送两兄弟结实如小公牛，被父亲轮流派往水路旱路旅行历练，学贸易、应酬及用刀保护名誉。两人皆和气亲人、不骄不浮，父子三人在边境受人尊敬。"
+    },
+    {
+      "id": "E3_01",
+      "chapter": 3,
+      "title": "边城安宁的局势与端午节日传统",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "边城十余年无变故，人民安分乐生。一年中最热闹的日子是端午、中秋和过年，端午节全城人会出门看划船。"
+    },
+    {
+      "id": "E3_02",
+      "chapter": 3,
+      "title": "端午节赛龙舟与军民捉鸭子习俗",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "端午赛船形体狭长绘朱红线，鼓声如雷，两岸呐喊助威，胜利者可领赏。赛后军官放鸭子入河，善泅水者下水追赶，捉到即归自己。"
+    },
+    {
+      "id": "E3_03",
+      "chapter": 3,
+      "title": "顺顺父子在节日中的表现",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "顺顺年轻时是泅水高手，次子傩送十二岁后便能闭气捉鸭，顺顺便不再下水竞争，但仍将下水救人视为不可逃避的责任。"
+    },
+    {
+      "id": "E3_04",
+      "chapter": 3,
+      "title": "端午前夕傩送随船下水练习",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "初一决定龙船下水，天保随陆路商人送货，傩送则带十六个小伙子到上游山洞边烧香放炮，擂鼓划船如箭射向长潭。"
+    },
+    {
+      "id": "E3_05",
+      "chapter": 3,
+      "title": "鼓声传到渡口引起翠翠注意",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "蓬蓬鼓声传到渡船头，黄狗受惊乱跑吠叫，翠翠发现声音后也随狗渡过小溪站在山头听，让鼓声把自己带到过去的节日里。"
+    },
+    {
+      "id": "E4_01",
+      "chapter": 4,
+      "title": "两年前端午老船夫带翠翠看龙船后离开",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "两年前端午，老船夫带翠翠和黄狗进城看划船，因替手愿意代班，老船夫以为时间尚早，便离开翠翠回渡口换替手来看热闹。"
+    },
+    {
+      "id": "E4_02",
+      "chapter": 4,
+      "title": "老船夫回渡口与替手喝酒致其醉倒",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "老船夫回渡口与替手在白塔下喝酒谈旧事，替手很快醉倒在岩石上，老船夫因责任不能离开，导致无法去接翠翠。"
+    },
+    {
+      "id": "E4_03",
+      "chapter": 4,
+      "title": "翠翠独自等候祖父产生恐惧",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天黑后翠翠在石码头等不到祖父，听水手谈论妇人父亲被杀的丑事，心中生出“假若爷爷死了”的怕人想头，但因相信祖父会来而不愿独自回家。"
+    },
+    {
+      "id": "E4_04",
+      "chapter": 4,
+      "title": "翠翠与傩送初遇并发生误会",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傩送从水中捉鸭上岸，误会翠翠身份并好意邀她去楼上等祖父，翠翠联想到水手说的丑事，以为被欺侮，轻轻骂了句“悖时砍脑壳的”。"
+    },
+    {
+      "id": "E4_05",
+      "chapter": 4,
+      "title": "傩送派伙计送翠翠回家",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傩送派伙计打火把找到翠翠并送她回渡口，翠翠途中得知刚才那人就是河街上的傩送二老“岳云”。"
+    },
+    {
+      "id": "E4_06",
+      "chapter": 4,
+      "title": "翠翠得知真相后沉默一晚",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "翠翠回到家中，看到醉倒的替手便不再埋怨祖父，但想到自己骂了傩送，心里又吃惊又害羞，为此沉默了一个夜晚。"
+    },
+    {
+      "id": "E5_01",
+      "chapter": 5,
+      "title": "两年间中秋新年的平淡印象",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "过去两年中秋无月未举行男女唱歌，新年看狮子龙灯和烟火虽热闹，但留给翠翠的印象总不如两年前端午的那件事甜而美。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "老船夫",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "老船夫",
+      "location": "白塔下"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "翠翠"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "翠翠母亲"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "屯戍军士"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "翠翠",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "老船夫",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "黄狗",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "翠翠",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "老船夫",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "黄狗",
+      "location": "茶峒渡口"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "翠翠",
+      "location": "茶峒城"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "黄狗",
+      "location": "茶峒城"
+    },
+    {
+      "event_id": "E2_01",
+      "location": "茶峒城"
+    },
+    {
+      "event_id": "E2_01",
+      "location": "茶峒河街"
+    },
+    {
+      "event_id": "E2_02",
+      "location": "白河"
+    },
+    {
+      "event_id": "E2_03",
+      "location": "茶峒城"
+    },
+    {
+      "event_id": "E2_04",
+      "character": "水手们",
+      "location": "茶峒河街"
+    },
+    {
+      "event_id": "E2_05",
+      "character": "顺顺",
+      "location": "茶峒水码头"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "顺顺",
+      "location": "茶峒水码头"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "天保",
+      "location": "茶峒水码头"
+    },
+    {
+      "event_id": "E2_06",
+      "character": "傩送",
+      "location": "茶峒水码头"
+    },
+    {
+      "event_id": "E3_01",
+      "location": "茶峒"
+    },
+    {
+      "event_id": "E3_02",
+      "location": "茶峒长潭"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "顺顺",
+      "location": "茶峒长潭"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "傩送",
+      "location": "茶峒长潭"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "傩送",
+      "location": "长潭上游山洞"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "翠翠",
+      "location": "渡船头"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "黄狗",
+      "location": "渡船头"
+    },
+    {
+      "event_id": "E4_01",
+      "character": "老船夫",
+      "location": "茶峒大河边"
+    },
+    {
+      "event_id": "E4_01",
+      "character": "翠翠",
+      "location": "茶峒大河边"
+    },
+    {
+      "event_id": "E4_01",
+      "character": "黄狗",
+      "location": "茶峒大河边"
+    },
+    {
+      "event_id": "E4_02",
+      "character": "老船夫",
+      "location": "渡船头白塔下"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "翠翠",
+      "location": "大河边石码头"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "黄狗",
+      "location": "大河边石码头"
+    },
+    {
+      "event_id": "E4_03",
+      "character": "水手们",
+      "location": "大河边石码头"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "翠翠",
+      "location": "大河边石码头"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "黄狗",
+      "location": "大河边石码头"
+    },
+    {
+      "event_id": "E4_04",
+      "character": "傩送",
+      "location": "大河边石码头"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "翠翠",
+      "location": "河边至渡口路上"
+    },
+    {
+      "event_id": "E4_05",
+      "character": "傩送"
+    },
+    {
+      "event_id": "E4_06",
+      "character": "翠翠",
+      "location": "白塔下家中"
+    },
+    {
+      "event_id": "E4_06",
+      "character": "老船夫",
+      "location": "白塔下家中"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "翠翠",
+      "location": "茶峒小教场"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老船夫",
+      "field": "new_detail",
+      "content": "腰带上总挂着一扎一扎的上等草烟，遇到过渡人便慷慨奉赠，绝不收渡船钱。"
+    },
+    {
+      "name": "老船夫",
+      "field": "new_habit",
+      "content": "喜欢喝雄黄酒和烧酒，常与城中老友在岩石上喝酒谈天。"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_detail",
+      "content": "皮肤黑黑的，眸子清明如水晶，为人天真活泼，处处俨然如一只小兽物，从不想到残忍事情。"
+    },
+    {
+      "name": "翠翠",
+      "field": "new_habit",
+      "content": "看牛羊花轿过渡后，会独自低低学小羊母牛叫，或采野花装扮新娘子。"
+    },
+    {
+      "name": "翠翠",
+      "field": "state_change",
+      "content": "初遇傩送并骂了他之后，心里又吃惊又害羞，沉默了一个夜晚，之后觉得端午的事甜而美。"
+    },
+    {
+      "name": "傩送",
+      "field": "new_detail",
+      "content": "美丽得很，诨名“岳云”，气质秀拔出群，聪明富于感情，是泅水划船好手。"
+    },
+    {
+      "name": "顺顺",
+      "field": "new_detail",
+      "content": "大方洒脱，慷慨济人，公正无私，脚有风湿小毛病但为人极受尊敬。"
+    },
+    {
+      "name": "天保",
+      "field": "new_detail",
+      "content": "豪放豁达，不拘小节，结实如小公牛，能驾船泅水走长路。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "茶峒渡口",
+      "type": "水路枢纽",
+      "description": "茶峒城外小溪边的渡船处，有方头渡船和废缆，溪宽约二十丈，河床为大石头。"
+    },
+    {
+      "name": "白塔下",
+      "type": "居住地",
+      "description": "老船夫和翠翠的家，位于溪边白色小塔下，门前有大岩石。"
+    },
+    {
+      "name": "茶峒城",
+      "type": "山城",
+      "description": "凭水依山筑城，近山有城墙，驻扎戍兵，城内安静有生活气息。"
+    },
+    {
+      "name": "茶峒河街",
+      "type": "商业街",
+      "description": "城外河边留出余地设的码头街，房子多一半着陆一半在水，设有吊脚楼，商铺林立。"
+    },
+    {
+      "name": "白河",
+      "type": "河流",
+      "description": "历史上知名的酉水，上游深潭清澈见底，游鱼如浮空中，两岸多高山细竹。"
+    },
+    {
+      "name": "茶峒水码头",
+      "type": "管理区域",
+      "description": "顺顺掌管的水上区域，处理水面事务与习惯规矩。"
+    },
+    {
+      "name": "茶峒长潭",
+      "type": "水域",
+      "description": "端午节赛龙舟和捉鸭子的水域，从上游山洞到税关前。"
+    },
+    {
+      "name": "长潭上游山洞",
+      "type": "自然景观",
+      "description": "平常搁置龙船的河边干燥洞穴。"
+    },
+    {
+      "name": "渡船头",
+      "type": "地点",
+      "description": "渡口边老船夫和翠翠日常活动的区域。"
+    },
+    {
+      "name": "茶峒大河边",
+      "type": "观看区",
+      "description": "端午看龙船的河边，人挤人，靠近吊脚楼和税关。"
+    },
+    {
+      "name": "大河边石码头",
+      "type": "地点",
+      "description": "翠翠独自等候祖父的码头，靠近水面和吊脚楼。"
+    },
+    {
+      "name": "河边至渡口路上",
+      "type": "道路",
+      "description": "从城里大河边沿着城墙走回渡口的夜路。"
+    },
+    {
+      "name": "白塔下家中",
+      "type": "居住地",
+      "description": "老船夫和翠翠居住的具体房屋内部。"
+    },
+    {
+      "name": "茶峒小教场",
+      "type": "集会场所",
+      "description": "新年时军营与各乡来的狮子龙灯在此迎春，放烟火的地方。"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "老船夫",
+      "role": "主角亲属",
+      "personality": "忠厚老实，不思索意义只是忠实活下去，慷慨大方，不收渡钱。"
+    },
+    {
+      "name": "翠翠",
+      "role": "女主角",
+      "personality": "天真活泼，如小兽物般纯真，从不发愁动气，遇到陌生人有机心时会警惕。"
+    },
+    {
+      "name": "翠翠母亲",
+      "role": "回忆人物",
+      "personality": "与军人秘密相恋，怀了羞惭与怜悯，生下孩子后吃冷水殉情。"
+    },
+    {
+      "name": "屯戍军士",
+      "role": "回忆人物",
+      "personality": "因军人责任与名誉顾虑，选择服毒自尽。"
+    },
+    {
+      "name": "黄狗",
+      "role": "宠物",
+      "personality": "尽职懂事，懂得衔绳拖船，对陌生人会吠叫警问。"
+    },
+    {
+      "name": "顺顺",
+      "role": "重要配角",
+      "personality": "大方洒脱，慷慨济人，公正无私，明白出门人甘苦。"
+    },
+    {
+      "name": "天保",
+      "role": "配角",
+      "personality": "豪放豁达，不拘常套小节，结实如小公牛。"
+    },
+    {
+      "name": "傩送",
+      "role": "男主角",
+      "personality": "美丽秀拔，聪明富于感情，泅水本领高强，带有玩笑意味。"
+    },
+    {
+      "name": "水手们",
+      "role": "群像",
+      "personality": "粗鄙但勇敢诚实，爱利也仗义，与妓女有真挚感情。"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "白河上游深潭清澈见底，游鱼来去全如浮在空气里；端午长潭水豆绿，水面浮沉鸭子。"
+    },
+    {
+      "motif": "渡口",
+      "context": "茶峒渡口用方头渡船和废缆过渡，老船夫五十年来不知渡了若干人，过渡人不需出钱。"
+    },
+    {
+      "motif": "手",
+      "context": "老船夫引手攀缘缆索，翠翠两手缘引竹缆，水手用手捉鸭子，妇人用手做鞋子挑绣。"
+    },
+    {
+      "motif": "速度",
+      "context": "龙船如一枝箭似的很迅速的向下游长潭射去，鼓声缓促调理下桨节拍。"
+    }
+  ],
+  "notes": "值得记录的新细节：茶峒渡船不收钱，老船夫用钱买草烟和茶叶送人；吊脚楼涨水时用长梯搭在城墙逃生；边城妓女因民风淳朴而重义轻利，与水手有真挚感情；顺顺因脚疯痛回乡发迹；傩送诨名岳云，美丽得很；翠翠骂人用‘悖时砍脑壳的’。"
+}

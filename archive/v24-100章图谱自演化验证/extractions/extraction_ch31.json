@@ -1,0 +1,222 @@
+# Persisted: 2026-05-21 12:34:12
+{
+  "events": [
+    {
+      "id": "E31_01",
+      "chapter": 31,
+      "title": "陆远和苏晚清晨出发前往灵脉暗河",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天刚亮陆远和苏晚从安全屋出发，苏晚背帆布包装医修工具，穿过清晨灰蒙蒙的江城街道到达灵脉暗河入口"
+    },
+    {
+      "id": "E31_02",
+      "chapter": 31,
+      "title": "苏晚在一层岸边设远程感知观察点",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚在一层岸边用铜丝石片布设远程感知术，铜丝一头插石缝一头缠手腕可实时感知陆远状态，银针插石缝感应金色纹路灵力频率变化"
+    },
+    {
+      "id": "E31_03",
+      "chapter": 31,
+      "title": "陆远首次进入灵脉暗河二层金色纹路自动形成护盾",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远跨过石柱进入二层，灵力密度骤升全身灵力通道胀痛，金色纹路剧烈发光亮度是一层三倍，自动在体表形成灵力护盾弹开高压灵力。发现二层不只是一条河而是网状结构，至少五条分支暗流，其中一条与金色纹路共振指向三层入口"
+    },
+    {
+      "id": "E31_04",
+      "chapter": 31,
+      "title": "陆远在二层主河道修炼灵力吸收速度翻倍",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在二层主河道修炼双层回路全速运转，灵力吸收速度比一层快近两倍，灵力通道被迫扩张，封印核心刺痛在灵力灌注中减轻，玉简温度升高"
+    },
+    {
+      "id": "E31_05",
+      "chapter": 31,
+      "title": "陆远听到守脉之物的共鸣嗡鸣声",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "修炼四十分钟时陆远听到从灵力本身传来的极低频嗡鸣声，频率与金色纹路明暗节律完全一致，方向是三层入口，像心跳一样一下一下"
+    },
+    {
+      "id": "E31_06",
+      "chapter": 31,
+      "title": "苏晚查苏家资料确认嗡鸣是守脉之物感知信号",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远回到一层汇报二层发现，苏晚查父亲的研究资料找到记载：金色纹路持有者接近灵脉核心时会感知守脉之物共鸣波，频率与金色纹路节律一致，是感知信号不是预警。守脉之物在说它感觉到陆远了"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E31_01",
+      "character": "陆远",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E31_01",
+      "character": "苏晚",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E31_02",
+      "character": "苏晚",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E31_03",
+      "character": "陆远",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "event_id": "E31_04",
+      "character": "陆远",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "event_id": "E31_05",
+      "character": "陆远",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "event_id": "E31_06",
+      "character": "陆远",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "event_id": "E31_06",
+      "character": "苏晚",
+      "location": "灵脉暗河一层溶洞"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "金色纹路在二层自动形成灵力护盾抵御高压灵力，亮度是一层三倍，灵力吸收速度翻倍，能感知守脉之物的共鸣嗡鸣声"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "掌握苏家远程感知术，用铜丝石片银针可远程监测金色纹路灵力频率变化"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "灵脉暗河二层",
+      "type": "auto_registered",
+      "description": "灵脉暗河石柱后方区域，灵力密度是一层数倍，穹顶低矮，主河道深蓝色，至少五条分支暗流形成网状结构，发光苔藓覆着河床"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "二层灵力密度骤升如无形墙，高压灵力撞在金色纹路护盾上弹开化成光点"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST21_01",
+      "action": "advanced",
+      "evidence": "金色纹路在二层自动形成灵力护盾，亮度三倍于一层，灵力频率从B调升到C调",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST27_01",
+      "action": "advanced",
+      "evidence": "陆远听到守脉之物共鸣嗡鸣声，频率与金色纹路节律一致，苏家资料确认是感知信号",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST29_01",
+      "action": "advanced",
+      "evidence": "金色纹路在二层表现与一层完全不同（形成护盾+频率升高），可能封印压制导致变异",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "金色纹路在二层灵力真空区——金色纹路发光时陆远周围灵力被推开而非吸引，苏家记录中金色纹路第一阶段是吸引灵力，陆远的表现与记录不一致，可能封印压制二十五年导致金色纹路产生变异",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E31_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E31_01",
+      "to": "E31_02",
+      "type": "consequence",
+      "detail": "到达灵脉暗河后苏晚设观察点"
+    },
+    {
+      "from": "E31_02",
+      "to": "E31_03",
+      "type": "decision",
+      "detail": "苏晚准备好后陆远进入二层"
+    },
+    {
+      "from": "E31_03",
+      "to": "E31_04",
+      "type": "consequence",
+      "detail": "进入二层后发现结构后开始修炼"
+    },
+    {
+      "from": "E31_04",
+      "to": "E31_05",
+      "type": "revelation",
+      "detail": "修炼中感知到守脉之物共鸣"
+    },
+    {
+      "from": "E31_05",
+      "to": "E31_06",
+      "type": "investigation",
+      "detail": "陆远汇报嗡鸣声苏晚查资料确认"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E31_03",
+      "thread_id": "ST31_01",
+      "type": "clue",
+      "detail": "金色纹路在二层自动形成护盾且表现与苏家记录不一致"
+    },
+    {
+      "event_id": "E31_05",
+      "thread_id": "ST27_01",
+      "type": "confirmation",
+      "detail": "陆远感知到守脉之物共鸣嗡鸣声"
+    },
+    {
+      "event_id": "E31_06",
+      "thread_id": "ST27_01",
+      "type": "confirmation",
+      "detail": "苏家资料记载守脉之物共鸣波特征与陆远感知完全吻合"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "进入灵脉暗河二层适应灵力密度为去三层做准备",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "苏晚",
+      "goal": "监测陆远在二层的状态防止意外",
+      "type": "protect",
+      "status": "achieved"
+    }
+  ],
+  "notes": "二层空间结构：网状五条分支暗流，灵力密度数倍，发光苔藓，穹顶低矮。金色纹路新能力：自动形成灵力护盾。苏晚远程感知术细节：铜丝石片+银针频率监测。守脉之物共鸣机制：通过灵力本身传递低频嗡鸣，频率与金色纹路明暗节律一致"
+}

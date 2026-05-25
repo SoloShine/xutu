@@ -1,0 +1,259 @@
+{
+  "events": [
+    {
+      "id": "E6_01",
+      "chapter": 6,
+      "title": "穿过退潮的礁石群",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "从岩洞出来，四人走在退潮后布满藤壶的礁石上。周默步伐精确避开水洼，白羽无声且脊背挺直，苏遥低头刮蹭木板漆皮，林见青感受着口袋里黄铜钥匙的撞击。"
+    },
+    {
+      "id": "E6_02",
+      "chapter": 6,
+      "title": "风暴中的瞭望塔顶层",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "进入瞭望塔顶层，风暴撞击玻璃墙发出震耳欲聋的轰鸣。周默背对众人机械地折叠白大褂衣角，白羽保持标准微笑如面具般僵硬，苏遥抠着墙面水渍，林见青决定独自下楼。"
+    },
+    {
+      "id": "E6_03",
+      "chapter": 6,
+      "title": "地下档案室的隐藏病历",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青下到塔基底层的地下档案室，用黄铜钥匙打开新月形凹槽门锁。在积水的铁皮柜底抽出被黑墨涂抹的病历，用硬橡皮擦出底下的字迹，发现是关于自己05号床的行为观察记录，以及白羽字迹的红笔批注和高浓度丙酮溶解的痕迹。"
+    },
+    {
+      "id": "E6_04",
+      "chapter": 6,
+      "title": "周默坦白虚构的谋杀",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青拿着病历回到顶层，周默平静地揭示真相：手术刀切开的是空气，没有尸体、没有血迹，他们听到看到闻到的都是大脑自动补全的幻觉闭环，05号床和被杀死的躯体都是为了安置溃烂而虚构出来的容器。"
+    },
+    {
+      "id": "E6_05",
+      "chapter": 6,
+      "title": "悬崖边的撕画与合箱",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏遥走到无护栏的悬崖露台边缘，将受潮如死皮般无脸尸体画撕碎撒入大海，纸片被海浪瞬间吞没。白羽走到她身后，在风暴中清脆地合上不锈钢药箱，微笑着看向大海，面部肌肉呈现不可逆的定型。"
+    },
+    {
+      "id": "E6_06",
+      "chapter": 6,
+      "title": "疤痕的真相与无死者之墓",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青独自站在塔顶，抚摸手背的新月形疤痕，回忆起这是某个深夜用锋利铁片自残留下的物理痕迹。他最终领悟到没有死者，只有四个人在创伤中用谎言搭建了一座虚构的坟墓来安置罪恶感。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E6_01",
+      "character": "林见青",
+      "location": "礁石群"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "周默",
+      "location": "礁石群"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "白羽",
+      "location": "礁石群"
+    },
+    {
+      "event_id": "E6_01",
+      "character": "苏遥",
+      "location": "礁石群"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "林见青",
+      "location": "瞭望塔"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "周默",
+      "location": "瞭望塔"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "白羽",
+      "location": "瞭望塔"
+    },
+    {
+      "event_id": "E6_02",
+      "character": "苏遥",
+      "location": "瞭望塔"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "林见青",
+      "location": "地下档案室"
+    },
+    {
+      "event_id": "E6_03",
+      "character": "白羽"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "林见青",
+      "location": "瞭望塔"
+    },
+    {
+      "event_id": "E6_04",
+      "character": "周默",
+      "location": "瞭望塔"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "苏遥",
+      "location": "露台"
+    },
+    {
+      "event_id": "E6_05",
+      "character": "白羽",
+      "location": "露台"
+    },
+    {
+      "event_id": "E6_06",
+      "character": "林见青",
+      "location": "瞭望塔"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "周默",
+      "field": "new_attitude",
+      "content": "病态的亢奋消失，变得像手术结束后的疲惫与空洞，能够极其冷静、客观地剖析集体幻觉的闭环。"
+    },
+    {
+      "name": "周默",
+      "field": "new_detail",
+      "content": "有强迫性的精确行为，如严格避开藤壶丈量步伐，以及用食指和拇指将白大褂衣角对折且不容许半毫米偏差。"
+    },
+    {
+      "name": "白羽",
+      "field": "new_detail",
+      "content": "微笑如同用强力胶固定在面部肌肉上的面具，眼角没有笑纹，形成了不可逆的肌肉定型；风吹起护士帽时露出一缕灰白头发。"
+    },
+    {
+      "name": "苏遥",
+      "field": "new_detail",
+      "content": "右手拇指指甲翻卷，有持续刮蹭破坏物品表面的习惯（如刮木板漆皮、抠墙皮）；将受潮的画纸形容为死去的动物皮肉。"
+    },
+    {
+      "name": "林见青",
+      "field": "new_attitude",
+      "content": "彻底领悟到没有死者，所谓的谋杀是四个人在极端压抑中用默契谎言搭建的虚构容器，完成了认知的重构。"
+    },
+    {
+      "name": "林见青",
+      "field": "new_detail",
+      "content": "手背的新月形疤痕是深夜用锋利铁片自残所致，切断了表皮深入真皮层遇到肌肉筋膜停止，皮下组织已纤维化失去知觉。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "礁石群",
+      "type": "外部地形",
+      "description": "退潮后露出的黑色礁石，表面挂满湿滑的藤壶，有腥气和土腥味"
+    },
+    {
+      "name": "瞭望塔",
+      "type": "建筑内部",
+      "description": "有生锈铁门、布满裂纹和海鸟羽毛的螺旋楼梯，顶层有朝海的整面玻璃墙"
+    },
+    {
+      "name": "地下档案室",
+      "type": "建筑内部",
+      "description": "位于塔基最底层，有生锈铁门和新月形凹槽锁，地面有两厘米积水漂浮灰绿油膜，靠墙有锈蚀的铁皮柜"
+    },
+    {
+      "name": "露台",
+      "type": "建筑外部",
+      "description": "瞭望塔顶层连接悬崖边缘的平台，无护栏，下方几十米是暗流拉扯的礁石海面"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "新月形",
+      "context": "黄铜钥匙缺口、地下档案室门锁凹槽、病历记录的手部创口、手背疤痕，形成完整的物理与记录对应"
+    },
+    {
+      "motif": "风/风暴",
+      "context": "贯穿全章，从玻璃的震颤轰鸣到撕碎画作，最后风暴耗尽力气变为低沉轰鸣"
+    },
+    {
+      "motif": "水/积水",
+      "context": "地下档案室漫过鞋底的积水漂浮油膜和铁离子，与下方大海吞没纸片形成呼应"
+    },
+    {
+      "motif": "面具/机械",
+      "context": "白羽八颗牙齿的固定微笑、周默精确丈量的步伐和毫无偏差的折叠动作"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST04_01",
+      "action": "resolved",
+      "evidence": "林见青用黄铜钥匙的新月形缺口精准对准地下档案室的凹槽门锁并成功打开",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST04",
+      "action": "resolved",
+      "evidence": "林见青抚摸疤痕回忆起这是某个深夜自己用锋利铁片一点点切进皮肤留下的自残痕迹",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "resolved",
+      "evidence": "周默坦白刀刃切开的是空气，没有肌肉纤维阻力和血液喷射，所谓的杀人细节是集体大脑补全的幻觉闭环",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST04_02",
+      "action": "resolved",
+      "evidence": "周默直言05号床从来没有住过别人，那个位置和被杀死的躯体都是虚构出来的容器",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "resolved",
+      "evidence": "苏遥将无脸尸体画在悬崖边撕碎扔进大海，配合周默的坦白，证实画中尸体也是虚构容器的一部分",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST05_01",
+      "action": "advanced",
+      "evidence": "在原始病历上闻到高浓度丙酮气味，且旁边有白羽字迹的批注，证实空白病历是白羽用丙酮销毁的",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST05",
+      "action": "advanced",
+      "evidence": "原始病历显示这是长达三个月的集体心理实验记录，白羽批注'建立外部罪恶载体'，制造空白病历是为了掩盖实验",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST03",
+      "action": "advanced",
+      "evidence": "周默指出他们用默契的谎言和潜意识的自欺在空气中搭建了一座坟墓来安置各自的罪恶感",
+      "new_status": "resolved"
+    }
+  ],
+  "new_threads": [],
+  "notes": "本章是前期大量悬念的集中收束章，解开了钥匙、疤痕、谋杀、病历、床位等核心谜团，揭示一切为创伤后的集体心理暗示与虚构。白羽的灰白头发可能是其真实年龄或某种病理状态的暗示，作为新细节留存。"
+}

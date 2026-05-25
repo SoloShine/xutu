@@ -1,0 +1,203 @@
+{
+  "events": [
+    {
+      "id": "E1_01",
+      "chapter": 1,
+      "title": "风暴中的餐厅",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "风暴中的旧式餐厅弥漫铁锈与海藻腥气。四人在餐桌前各怀心事：苏蔓低头抠漆皮，徐桥机械擦拭水杯，周默脊背挺直。第五个位置的汤还在冒热气，林见青触碰面前的碗却感到刺骨的冷，苏蔓轻声说'汤要凉了'。"
+    },
+    {
+      "id": "E1_02",
+      "chapter": 1,
+      "title": "阴冷的走廊",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人离开餐厅走向房间，走廊温度更低且墙纸剥落。林见青贴着墙壁走，指尖感受到黏腻冰冷。身后三人的脚步声各具特点，苏蔓鞋跟空洞，徐桥脚步极轻，周默步伐刻板匀速。"
+    },
+    {
+      "id": "E1_03",
+      "chapter": 1,
+      "title": "黑暗中的杀人描述",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "走廊灯管熄灭，陷入隔绝雨声的绝对黑暗。周默在距离林见青不到半米处，用极其平淡的语气描述用生锈手术刀切开颈动脉杀人的血腥细节。苏蔓和徐桥呼吸平稳规律，毫无惊恐反应。备用电源亮起后，四人仿佛什么都没发生，继续前行。"
+    },
+    {
+      "id": "E1_04",
+      "chapter": 1,
+      "title": "沉闷的独处",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "林见青独自回到房间，关上门并打开老式台灯。窗外海浪单调重复拍打礁石，灯泡散发的焦糊味与湿冷空气交汇成白雾。他看着桌角未干的水渍，习惯性地拉开右手边的抽屉。"
+    },
+    {
+      "id": "E1_05",
+      "chapter": 1,
+      "title": "抽屉里的认罪书",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "抽屉里平放着一张从笔记本上撕下的白纸，上面用林见青特有的笔迹写着'我杀死了他。'。林见青通过墨水边缘极其轻微的晕染判断，纸张书写时间不超过十分钟，而过去十分钟他一直在餐厅且记忆毫无断层。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E1_01",
+      "character": "林见青",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "苏蔓",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "徐桥",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_01",
+      "character": "周默",
+      "location": "餐厅"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "林见青",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "苏蔓",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "徐桥",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_02",
+      "character": "周默",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "林见青",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "周默",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "苏蔓",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_03",
+      "character": "徐桥",
+      "location": "走廊"
+    },
+    {
+      "event_id": "E1_04",
+      "character": "林见青",
+      "location": "房间"
+    },
+    {
+      "event_id": "E1_05",
+      "character": "林见青",
+      "location": "房间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "苏蔓",
+      "field": "new_detail",
+      "content": "在餐厅低头用指甲刮擦木桌上的老漆皮并碾碎；面对周默的杀人描述呼吸平稳，像听天气预报。"
+    },
+    {
+      "name": "徐桥",
+      "field": "new_detail",
+      "content": "手里捏着干瘪的抹布反复擦拭没有水滴的玻璃水杯，动作机械僵硬；面对周默的杀人描述呼吸平稳，毫无惊恐。"
+    },
+    {
+      "name": "周默",
+      "field": "new_detail",
+      "content": "在走廊保持刻板匀速的步伐；在绝对黑暗中用极其平淡、无情绪波动的语调描述用生锈手术刀切断颈动脉杀人的血腥细节。"
+    },
+    {
+      "name": "林见青",
+      "field": "state_change",
+      "content": "发现抽屉里的认罪书并推断出时间悖论后，脑海中陷入彻底的、纯粹的空白。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "餐厅",
+      "type": "室内",
+      "description": "建在礁石上的旧式建筑，有落地窗、粗橡木餐桌，弥漫铁锈和海藻腥气"
+    },
+    {
+      "name": "走廊",
+      "type": "室内",
+      "description": "连接餐厅与房间的狭长过道，暗绿色受潮剥落墙纸，尽头有安全出口绿光指示灯"
+    },
+    {
+      "name": "房间",
+      "type": "室内",
+      "description": "林见青的独处空间，有老式台灯和木制无轨道抽屉，能听到海浪拍打礁石的声音"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "铁锈",
+      "context": "空气里弥漫的铁锈味与周默描述的生锈手术刀、喷出的血腥气相互呼应，在黑暗中变得愈发具体。"
+    },
+    {
+      "motif": "水",
+      "context": "餐厅桌面上呈椭圆形缓慢渗透的水渍，以及房间桌角未干、边缘缓慢扩张的水渍。"
+    },
+    {
+      "motif": "热气与冷",
+      "context": "第五个位置的汤冒着微弱热气迅速消散，而林见青面前的瓷碗边缘却带着刺骨的冷意。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "餐厅桌上的第五个位置空着，汤碗还在冒微弱的热气，苏蔓轻声说'汤要凉了'，暗示该位置原本有人或即将有人。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "周默在黑暗中详细描述杀人细节时，苏蔓和徐桥的呼吸声轻浅规律，灯亮后维持原姿势继续走，仿佛什么都没发生。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "周默在黑暗中描述生锈手术刀切开颈动脉的阻力、血喷溅的温度、破风箱般的嘶嘶声以及袖口洗不掉的暗褐色血迹。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "林见青在抽屉里发现写有'我杀死了他。'的白纸，笔迹是他的，但墨水晕染表明书写时间不超过十分钟，而此期间他一直在餐厅且记忆无断层。",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [],
+  "notes": "环境感官细节极度放大：铁锈味、海藻腥气、灯泡焦糊味交织；触觉上强调黏腻冰冷与刺骨的冷意。水渍在餐厅和房间两次出现，均呈缓慢渗透扩张状态，可能作为某种时间或心理状态的隐喻。"
+}

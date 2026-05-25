@@ -1,0 +1,248 @@
+# Persisted: 2026-05-21 11:31:52
+{
+  "events": [
+    {
+      "id": "E18_01",
+      "chapter": 18,
+      "title": "陆远进入三号仓库与沈轻舟面对面",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远穿过走廊进入仓库内部临时指挥所。墙上贴满江城灵脉监测图红色标记密集，铁桌上有文件和旧笔记本电脑。沈轻舟坐在铁桌后面，灰色长衫马尾，看陆远的目光像杀鱼前看怎么下刀"
+    },
+    {
+      "id": "E18_02",
+      "chapter": 18,
+      "title": "沈轻舟透露阁主三年前亲见陆远母亲最后一面",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈轻舟透露三年前九月十五号阁主连夜从总部赶到江城，十六号凌晨在城西老居民区三楼出租屋见陆远母亲。母亲灵力已枯竭，上界追杀打散九成修为，最后一成用来给陆远设九层封印保护而非束缚。九层封印完成后母亲灵力耗尽在阁主面前断气。封印的是母亲从上界带出的至宝，如果暴露上界追兵会直接定位到陆远"
+    },
+    {
+      "id": "E18_03",
+      "chapter": 18,
+      "title": "沈轻舟透露阁主要上界至宝但签过不杀密令",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈轻舟说阁主真正要的是封印核心里的上界至宝而非陆远本人，如果至宝落入上界追兵或灵墟手中后果严重——南方灵脉体系崩溃。阁主签过密令禁止天机阁人员对封印血脉持有者造成致命伤害，违者逐出天机阁。天机阁追陆远是因为他不受控制且身边跟着苏晚这个被端过的医修世家幸存者"
+    },
+    {
+      "id": "E18_04",
+      "chapter": 18,
+      "title": "沈轻舟给七天时限和通行令牌",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈轻舟给陆远一块黑色金属令牌刻着'静'字作为临时通行令，天机阁在江城的人七天不动他。母亲临死前对阁主说如果至宝交给天机阁江城还能撑几年，不交则上界追兵找到后江城无活人。阁主不在江城在总部处理上界消息"
+    },
+    {
+      "id": "E18_05",
+      "chapter": 18,
+      "title": "沈轻舟告知灵墟主力向城东移动陆远紧急回援",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远要走时沈轻舟透露灵墟增援主力不在城北而往城东走。天机阁灵脉监测网追踪到陆远早上从城东出发的轨迹，灵墟判断据点在城东。灵墟领队级别接近筑基期（练气后期巅峰），周衡安练气巅峰扛不住。陆远冲出仓库全力跑回城东，灵力感知到城东至少五股灵力在汇聚"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E18_01",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E18_01",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E18_01",
+      "location": "江边旧仓库区"
+    },
+    {
+      "event_id": "E18_02",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E18_02",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E18_02",
+      "location": "江边旧仓库区"
+    },
+    {
+      "event_id": "E18_03",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E18_03",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E18_04",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E18_04",
+      "character": "沈轻舟"
+    },
+    {
+      "event_id": "E18_05",
+      "character": "陆远"
+    },
+    {
+      "event_id": "E18_05",
+      "character": "沈轻舟"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "得知母亲三年前灵力耗尽在阁主面前断气，封印是保护而非束缚，阁主要的是上界至宝而非自己"
+    },
+    {
+      "name": "沈轻舟",
+      "field": "new_detail",
+      "content": "知道陆远母亲的名字（陆晚秋）和三年前事件的细节，对陆远态度冷淡但并未敌对，透露了关键信息"
+    },
+    {
+      "name": "陆远",
+      "field": "new_detail",
+      "content": "母亲叫陆晚秋（晚是傍晚的晚，秋是秋天的秋），三年前九月十六号在城西老居民区三楼出租屋灵力耗尽去世"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城西老居民区",
+      "type": "旧居",
+      "description": "陆远母亲三年前最后的住处，三楼窗户朝南的出租屋，陆晚秋在此灵力耗尽去世"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "墙上灵脉监测图红色标记密集，天机阁通过监测网追踪陆远轨迹"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "令牌'静'字硌掌心冰凉，陆远内心一点都不静"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST08_01",
+      "action": "resolved",
+      "evidence": "沈轻舟明确告知陆远母亲是被上界追杀逃到凡间，用命设九层封印保护儿子，灵力耗尽在阁主面前去世",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST17_02",
+      "action": "resolved",
+      "evidence": "沈轻舟认出玉简灵力结构后态度转变，现在透露了完整原因：天机阁知道陆远母亲和封印的真相",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "确认封印是保护而非束缚，封印核心里是上界至宝，母亲从上界带出",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "天机阁要的是至宝而非陆远本人，阁主签过不杀密令，规矩是先控制后谈判",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_02",
+      "action": "advanced",
+      "evidence": "沈轻舟确认阁主要封印核心里的上界至宝，母亲说交给天机阁江城还能撑几年",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST15_01",
+      "action": "advanced",
+      "evidence": "阁主三年前亲见陆远母亲去世后签封口令，亲眼目睹而非间接参与",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "陆远从仓库冲出全力回援城东，胸口刺痛持续但已顾不上",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵墟主力调虎离山向城东移动——趁陆远单独去天机阁时端掉据点抓捕周衡安苏晚大壮，灵墟领队接近筑基期实力远超练气巅峰",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E18_05"
+    },
+    {
+      "content": "七天时限——阁主给陆远七天决定是否自愿交出上界至宝，天机阁承诺期间不伤害他，但灵墟不在此约束内",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E18_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E18_02",
+      "to": "E18_03",
+      "type": "revelation",
+      "detail": "母亲去世的真相引出阁主真正目的"
+    },
+    {
+      "from": "E18_03",
+      "to": "E18_04",
+      "type": "decision",
+      "detail": "天机阁的立场明确后给出七天时限"
+    },
+    {
+      "from": "E18_04",
+      "to": "E18_05",
+      "type": "escalation",
+      "detail": "灵墟主力向城东移动打破谈判氛围，陆远必须回援"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E18_02",
+      "thread_id": "ST08_01",
+      "type": "confirmation",
+      "detail": "母亲三年前被上界追杀灵力耗尽去世，用命设九层封印保护"
+    },
+    {
+      "event_id": "E18_03",
+      "thread_id": "ST02",
+      "type": "confirmation",
+      "detail": "天机阁不杀封印血脉持有者是阁主密令而非善意"
+    },
+    {
+      "event_id": "E18_02",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "封印核心里是母亲从上界带出的至宝"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "回城东救苏晚大壮周衡安",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "七天之内决定是否交出上界至宝",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "陆远母亲名字确认：陆晚秋（晚是傍晚的晚，秋是秋天的秋）。三年前九月十六号凌晨在城西老居民区三楼出租屋去世，阁主在场。令牌刻'静'字，冰凉金属质感。天机阁灵脉监测网可追踪觉醒者移动轨迹。灵墟领队级别：练气后期巅峰接近筑基期"
+}

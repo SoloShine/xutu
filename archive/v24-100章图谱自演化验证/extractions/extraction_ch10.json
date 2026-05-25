@@ -1,0 +1,313 @@
+# Persisted: 2026-05-21 07:07:09
+{
+  "events": [
+    {
+      "id": "E10_01",
+      "chapter": 10,
+      "title": "灵墟精确定位升级安全屋紧急撤离",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "安全屋天花板灰色石片探测阵从银白色变为暗红色涟漪，频率加快三倍。周衡安判断灵墟正在精确定位，命令拆除屏蔽石片防止灵墟反推苏家阵法结构。苏晚用灵力拆除石片后判断安全时间不足一个半小时，四人从后门紧急撤离往城南方向转移"
+    },
+    {
+      "id": "E10_02",
+      "chapter": 10,
+      "title": "转移途中感知灵墟先遣小队三角形包围",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人穿越废弃工厂区巷道往城南方向移动约十分钟后，陆远胸口跳动点感知到三股练气后期灵力从东北、正南、西南三个方向形成三角形包围。周衡安判断是灵墟先遣小队在试探不急于进攻。陆远决定独自引开敌人，让苏晚带大壮和周衡安往西走"
+    },
+    {
+      "id": "E10_03",
+      "chapter": 10,
+      "title": "陆远迎战灵墟先遣领队寸头男",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远在一条双车道马路边遭遇灵墟先遣领队：三十出头寸头男穿黑色作战服腰挂灵器短刃，练气后期巅峰，左手腕戴刻有三个古篆字的黑色金属牌。物理攻击被护体灵光弹开，陆远灌注灵力到钢管后双方交战，被寸头男短刃划伤左臂"
+    },
+    {
+      "id": "E10_04",
+      "chapter": 10,
+      "title": "封印第五次异变六道纹路爆发碎灵器短刃",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远被逼入下风时胸口跳动点猛跳三下，手背纹路从五道变成六道，蓝色灵力如压缩气体从纹路喷出裹住右臂。陆远本能连出三拳，力量超越觉醒期水平，第一拳碎灵力一层，第二拳碎灵光数层，第三拳直接将寸头男的灵器短刃从中间击断。寸头男震惊后退"
+    },
+    {
+      "id": "E10_05",
+      "chapter": 10,
+      "title": "灵墟先遣小队撤退陆远苏晚会合",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "寸头男通过黑色金属牌下达撤退命令，三股灵力整齐划一后退十秒内全部消失。苏晚大壮周衡安赶到与陆远会合，苏晚检查发现纹路增至六道且蔓延到肘弯以上，警告三到四天到达封印核心届时要么彻底觉醒要么身体崩溃。陆远说争取三天之内解决灵墟问题"
+    },
+    {
+      "id": "E10_06",
+      "chapter": 10,
+      "title": "城南拆迁区休整陆远决定主动约见地脉堂",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "四人退到城南高架桥下拆迁区碎石堆休整。陆远站在碎石堆上看着六道发光纹路的手臂，主动要求周衡安帮他约地脉堂，要见他们老大。从被动挨打转为主动出击"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E10_01",
+      "character": "陆远",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "苏晚",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "周衡安",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E10_01",
+      "character": "大壮",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "陆远",
+      "location": "废弃工厂区巷道"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "苏晚",
+      "location": "废弃工厂区巷道"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "周衡安",
+      "location": "废弃工厂区巷道"
+    },
+    {
+      "event_id": "E10_02",
+      "character": "大壮",
+      "location": "废弃工厂区巷道"
+    },
+    {
+      "event_id": "E10_03",
+      "character": "陆远",
+      "location": "汽修厂马路"
+    },
+    {
+      "event_id": "E10_04",
+      "character": "陆远",
+      "location": "汽修厂马路"
+    },
+    {
+      "event_id": "E10_05",
+      "character": "陆远",
+      "location": "汽修厂马路"
+    },
+    {
+      "event_id": "E10_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E10_05",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E10_05",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E10_06",
+      "character": "陆远",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E10_06",
+      "character": "苏晚",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E10_06",
+      "character": "周衡安",
+      "location": "城南拆迁区"
+    },
+    {
+      "event_id": "E10_06",
+      "character": "大壮",
+      "location": "城南拆迁区"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "封印纹路从五道增至六道蔓延到肘弯以上，战斗中短暂爆发超越觉醒期的力量，苏晚警告三到四天到达封印核心。心态从被动防御转为主动出击，决定找地脉堂谈判"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "手指碰到陆远封印纹路时微微发烫。在晨光中眼睛是浅棕色的，中指侧面有被针扎过的小疤。给陆远缠绷带时手指发抖但很仔细"
+    },
+    {
+      "name": "大壮",
+      "field": "new_detail",
+      "content": "断肋状态下仍拎钢管断后，接住陆远的外卖保温箱背包。拍陆远左肩没说话，用动作代替语言表达支持"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城南拆迁区",
+      "type": "临时避难所",
+      "description": "城南高架桥下的旧城拆迁废墟，成片旧楼被推倒一半，碎砖头和钢筋堆成小山。灵脉混乱各种灵力信号可干扰追踪。远处城市灯光映成橘红色，高架桥上货车经过时地面发颤"
+    },
+    {
+      "name": "汽修厂马路",
+      "type": "战斗地点",
+      "description": "废弃工厂区附近的双车道马路，对面是关了门的汽修厂铁卷门拉着门口堆废旧轮胎"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "灵墟寸头男",
+      "role": "antagonist_5_member",
+      "personality": "灵墟先遣小队领队，三十出头寸头穿黑色作战服，练气后期巅峰。看人眼神像看货物。左手腕戴刻有三个古篆字的黑色金属牌作通讯工具。冷静务实，震惊后迅速判断形势撤退"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "灵墟精确定位用暗红色涟漪扫描，三股练气后期灵力三角形包围，灵墟先遣通过黑色金属牌远程通讯协调撤退"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远把外卖保温箱背包扔给大壮保管，大壮说破箱子比命都重要"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST09_01",
+      "action": "advanced",
+      "evidence": "灵墟先遣小队三人三角形包围，寸头男戴黑色金属牌通讯器，短刃灵器被陆远击断后通过金属牌下令撤退",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST09_03",
+      "action": "advanced",
+      "evidence": "封印纹路从五道增至六道蔓延到肘弯以上，苏晚警告三到四天到达封印核心",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "战斗中纹路再次异变，五道变六道，灵力喷涌如压缩气体，爆发力量超越觉醒期水平击碎灵器短刃",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "胸口跳动点在战斗被逼入下风时猛跳三下触发封印异变，爆发出超越觉醒期的力量",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵墟先遣领队的灵器短刃被击碎——一个刚觉醒几天的修真者击碎了练气后期巅峰的灵器，这个消息通过金属牌传回灵墟总部后会引起什么反应",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E10_04"
+    },
+    {
+      "content": "灵墟金属牌通讯网络——寸头男通过手腕上刻着古篆字的黑色金属牌下达撤退命令，三股灵力同时整齐撤退。灵墟的通讯和协调能力远超预期",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E10_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E10_01",
+      "to": "E10_02",
+      "type": "consequence",
+      "detail": "紧急撤离暴露行踪被灵墟先遣小队拦截"
+    },
+    {
+      "from": "E10_02",
+      "to": "E10_03",
+      "type": "decision",
+      "detail": "陆远决定独自引开灵墟先遣遭遇领队"
+    },
+    {
+      "from": "E10_03",
+      "to": "E10_04",
+      "type": "escalation",
+      "detail": "被逼入下风触发封印异变爆发超越觉醒期力量"
+    },
+    {
+      "from": "E10_04",
+      "to": "E10_05",
+      "type": "consequence",
+      "detail": "灵器被碎寸头男下令撤退"
+    },
+    {
+      "from": "E10_05",
+      "to": "E10_06",
+      "type": "decision",
+      "detail": "苏晚警告封印三到四天倒计时促使陆远决定主动出击找地脉堂谈判"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E10_04",
+      "thread_id": "ST09_03",
+      "type": "confirmation",
+      "detail": "封印纹路五道变六道蔓延到肘弯以上确认加速觉醒趋势"
+    },
+    {
+      "event_id": "E10_04",
+      "thread_id": "ST01_03",
+      "type": "confirmation",
+      "detail": "胸口跳动点猛跳三下触发封印异变确认跳动点与封印核心的直接关联"
+    },
+    {
+      "event_id": "E10_03",
+      "thread_id": "ST09_01",
+      "type": "clue",
+      "detail": "灵墟先遣小队有专业装备和通讯手段，组织化程度高于地脉堂"
+    },
+    {
+      "event_id": "E10_01",
+      "thread_id": "ST09_01",
+      "type": "confirmation",
+      "detail": "灵墟精确定位安全屋确认探测技术能部分穿透苏家屏蔽阵"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "主动联系地脉堂谈判用自己做诱饵换取情报和时间",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "三天之内解决灵墟威胁",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "保护陆远不被灵墟和天机阁抓走",
+      "type": "protect",
+      "status": "advanced"
+    }
+  ],
+  "notes": "陆远第一次主动选择进攻而非逃跑，标志着角色从被动到主动的转变。封印纹路从五道变六道是新的视觉标记。灵墟寸头男是第一个有名字的灵墟成员但只以外貌特征称呼。苏晚给陆远缠绷带的细节暗示两人关系在紧张中升温"
+}

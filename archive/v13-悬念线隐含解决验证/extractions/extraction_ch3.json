@@ -1,0 +1,136 @@
+{
+  "events": [
+    {
+      "id": "E3_01",
+      "chapter": 3,
+      "title": "暴雨中挤进旧照相馆",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "暴雨中携带从402室挖出的生锈胶卷，忍受泥水和铁锈味，将胶卷塞进贴身内衣保护，侧身艰难挤进半截淹没在泥水中的城南旧照相馆卷帘门。"
+    },
+    {
+      "id": "E3_02",
+      "chapter": 3,
+      "title": "暗房内清理放大机",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "在充满霉味和定影液气味的暗房内拉下电闸开启安全灯，用高浓度酒精棉反复擦拭放大机镜头上厚重的灰绿色霉斑，直到露出底层清冷反光。"
+    },
+    {
+      "id": "E3_03",
+      "chapter": 3,
+      "title": "处理生锈胶卷并显影",
+      "type": "daily",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "刮擦清理显影盘边缘的暗黄色药水结晶，将生锈的胶卷强行绕上过片轴，在水槽中清洗掉悬浮的铁锈颗粒后，放入显影液中匀速摇晃。"
+    },
+    {
+      "id": "E3_04",
+      "chapter": 3,
+      "title": "漏水危机与抢救失败",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天花板石膏板裂缝漏水，第一滴水精准落入显影盘破坏药水表面张力，陈若竹踩凳用遮光布堵漏失败，石膏塌陷导致水柱直接冲刷进显影液。"
+    },
+    {
+      "id": "E3_05",
+      "chapter": 3,
+      "title": "底片显现扭曲人形",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "显影超时后取出底片检查，发现中心因雨水和石膏粉被完全破坏，但在未被毁坏的边缘处，显现出一个带有红褐色铁锈斑点的浮肿、扭曲的暗黑色人形轮廓。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E3_01",
+      "character": "陈若竹",
+      "location": "城南旧照相馆门口"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "陈若竹",
+      "location": "城南旧照相馆暗房"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "陈若竹",
+      "location": "城南旧照相馆暗房"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "陈若竹",
+      "location": "城南旧照相馆暗房"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "陈若竹",
+      "location": "城南旧照相馆暗房"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "为了在暴雨中保护胶卷，将其塞进贴身内衣边缘并用胳膊肘死死夹紧"
+    },
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "面对漏水危机时反应迅速但最终无力回天，表现出一种执拗的物理对抗感"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "城南旧照相馆门口",
+      "type": "室内外过渡",
+      "description": "卷帘门半开，下半截卡在暴涨的泥水里，水面上漂浮着油污和碎纸片"
+    },
+    {
+      "name": "城南旧照相馆暗房",
+      "type": "室内",
+      "description": "充满霉味和陈年定影液气味，有暗红色安全灯、长满霉菌的放大机、水槽和显影盘"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "暴雨像粗砂纸砸脸，路面变成灰黑色泥浆，漏水最终毁掉了正在显影的胶卷"
+    },
+    {
+      "motif": "铁锈",
+      "context": "胶卷外圈铁锈结块硌肉，水洗泛起铁锈色，底片人形轮廓上附着红褐色铁锈斑点"
+    },
+    {
+      "motif": "灰尘/霉菌",
+      "context": "操作台铺满灰白色绒毛状霉菌，放大机镜头覆盖灰绿色霉斑"
+    },
+    {
+      "motif": "红",
+      "context": "暗红色的安全灯，镜头上折射的暗红色光斑，像干涸血迹的红褐色锈斑"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "底片中心被毁，但边缘显现出一个带有红褐色铁锈斑点的浮肿、扭曲的暗黑色人形轮廓",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "底片边缘那个浮肿、扭曲的暗黑人形轮廓究竟是谁（或什么物体）？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E3_05"
+    }
+  ],
+  "notes": "胶卷外部带有严重的铁锈结块，且水洗后依然有铁锈斑点附着在显影的人形轮廓肩膀位置，暗示胶卷可能曾被藏在含有铁器的环境中，或与某种金属凶器有关；显影液被雨水、石膏粉污染导致底片中心被毁，是“真相被物理性遮蔽”的具象化。"
+}

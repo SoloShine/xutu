@@ -1,0 +1,304 @@
+# Persisted: 2026-05-21 06:32:22
+{
+  "events": [
+    {
+      "id": "E3_01",
+      "chapter": 3,
+      "title": "进入东湖路18号空院触发灵脉共鸣",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远送酸辣粉到东湖路18号，发现铁皮门虚掩无人应答，推门进入空荡庭院。庭院与废弃工厂共用一面墙，脚下红砖传来异常热感。胸口异跳骤然加速，地砖下蓝光涌出与体内力量共振，灵脉节点灵气从脚底和手掌灌入全身。十指蓝光外放无法控制，隔空震碎两米外的外卖箱盖子，脚下红砖逐块碎裂。陆远强行逃离庭院冲到大街上"
+    },
+    {
+      "id": "E3_02",
+      "chapter": 3,
+      "title": "大壮在东湖路撞见陆远指尖残余蓝光",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远蹲在人行道喘气时被同站点骑手大壮撞见。大壮来东湖路22号送奶茶，看到陆远脸色苍白和右手中指指甲缝残余蓝光。陆远谎称是电焊火星。大壮看他的眼神不像好奇，更像一种莫名的恐惧。大壮欲言又止后离开，临走回头又看了一眼"
+    },
+    {
+      "id": "E3_03",
+      "chapter": 3,
+      "title": "周衡安电话警告灵脉波动被天机阁监测",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远骑车离开途中接到周衡安电话。周衡安精准点出陆远在18号触发了灵脉波动，透露天机阁在江城每条灵脉节点布有传感器，灵力释放会被监控定位。警告陆远灵力外泄太招摇会有人来查，约当晚七点在江边公园传授收敛气息的方法"
+    },
+    {
+      "id": "E3_04",
+      "chapter": 3,
+      "title": "出租屋内感知指骨中潜伏的电流",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "下午陆远不敢继续跑单，回到出租屋盯着自己的手指。外表无异常，但能感知指骨里面有东西在动，像血液下埋了一层薄薄的电流，握拳时电流沿骨头嗡嗡震动"
+    },
+    {
+      "id": "E3_05",
+      "chapter": 3,
+      "title": "江边公园周衡安用封灵符封住灵力外泄",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "傍晚陆远赴约江边公园凉亭。周衡安检查指尖后确认灵力外泄，用一张半透明符纸覆在陆远右手手背上，符纸融入皮肤留下淡青色花形印记（封灵符）。陆远右手短暂麻木后恢复，指尖电流感大幅减弱。周衡安解释修真境界体系，觉醒与练气期差距巨大"
+    },
+    {
+      "id": "E3_06",
+      "chapter": 3,
+      "title": "周衡安揭露天机阁监测网和酸辣粉订单真相",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安用手机信号比喻灵气波动，揭示天机阁在全市灵脉节点部署传感器监控修真者。当陆远追问监控目的时周衡安只说'控制'，拒答是为了保护还是控制自己。周衡安透露酸辣粉订单不是巧合，有人用灵脉残余下诱饵引陆远进入18号，订单手机号为虚拟号注册信息全假。周衡安否认是自己所为但称知道是谁，拒绝透露。警告天机阁三至五天内会到东湖路排查，叮嘱陆远不要在手机通讯中出现灵气相关字眼"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E3_01",
+      "character": "陆远",
+      "location": "东湖路18号"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "陆远",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "大壮",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "陆远",
+      "location": "东湖路"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "周衡安"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "陆远",
+      "location": "城中村出租屋"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "陆远",
+      "location": "江边公园"
+    },
+    {
+      "event_id": "E3_05",
+      "character": "周衡安",
+      "location": "江边公园"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "陆远",
+      "location": "江边公园"
+    },
+    {
+      "event_id": "E3_06",
+      "character": "周衡安",
+      "location": "江边公园"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "灵力外泄被封灵符压制，右手手背留下淡青色花形印记，指尖不再冒蓝光但体内力量仍在"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "对周衡安的信任度仍低，质疑酸辣粉订单是否是他设的局，但被迫接受他的帮助"
+    },
+    {
+      "name": "周衡安",
+      "field": "new_detail",
+      "content": "首次展示修真手段（封灵符），揭示天机阁监测网存在，暗示知道设局者的身份但拒绝透露"
+    },
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "撞见陆远指尖蓝光后反应异常——不是好奇而是恐惧，欲言又止"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "东湖路18号",
+      "type": "灵脉节点",
+      "description": "废弃工厂隔壁的空院，铁皮门虚掩，红砖铺地，与工厂共用一面墙。地下灵脉节点延伸至此，红砖缝可见蓝光"
+    },
+    {
+      "name": "江边公园",
+      "type": "公共场所",
+      "description": "城南江边的公园，一圈跑道绕着草坪，东段凉亭靠近江堤，周衡安选择的安全碰面地点"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "外卖箱",
+      "context": "灵力外泄隔空震碎外卖箱盖子，平凡物件被超凡力量损毁"
+    },
+    {
+      "motif": "灵气波动",
+      "context": "灵脉节点蓝光与体内力量共振，天机阁用传感器监控灵气波动如监控手机信号"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_02",
+      "action": "advanced",
+      "evidence": "陆远亲证灵脉从废弃工厂延伸到18号院子，地砖下蓝光与体内力量同步共振",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_02",
+      "action": "advanced",
+      "evidence": "周衡安确认酸辣粉订单不是巧合，有人用灵脉残余下诱饵引陆远进入18号，手机号为虚拟号",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "天机阁在江城每条灵脉节点部署传感器，灵力释放会被定位监控。周衡安说监控目的是'控制'但拒答更多",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "周衡安精准感知灵脉波动，能远程判断陆远在18号，展示封灵符修真手段，暗示知道设局者身份",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "灵脉共鸣使胸口异跳与地底蓝光同步，灵气从脚底和手掌灌入身体在胸口汇成漩涡",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "天机阁灵脉监测网——江城每个灵脉节点都有传感器，觉醒者释放灵力会被精确定位。三天到五天内天机阁的人会到东湖路排查",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E3_06"
+    },
+    {
+      "content": "大壮对蓝光的异常反应——他看到陆远指尖蓝光后不是好奇而是恐惧，欲言又止。他为什么会在东湖路22号出现？巧合还是另有原因？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E3_02"
+    },
+    {
+      "content": "东湖路18号设局者的身份——有人用虚拟手机号和灵脉残余下诱饵引陆远进入18号院子。周衡安知道是谁但拒绝透露",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E3_06"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E3_01",
+      "to": "E3_02",
+      "type": "consequence",
+      "detail": "灵脉共鸣后蓝光外泄未完全消退，被大壮在街上撞见残余光芒"
+    },
+    {
+      "from": "E3_01",
+      "to": "E3_03",
+      "type": "consequence",
+      "detail": "灵脉波动被天机阁传感器抓取，周衡安立即来电警告"
+    },
+    {
+      "from": "E3_03",
+      "to": "E3_04",
+      "type": "decision",
+      "detail": "周衡安警告灵力外泄危险，陆远不敢继续跑单回出租屋躲避"
+    },
+    {
+      "from": "E3_03",
+      "to": "E3_05",
+      "type": "decision",
+      "detail": "周衡安约江边公园传授收敛方法，陆远傍晚赴约"
+    },
+    {
+      "from": "E3_05",
+      "to": "E3_06",
+      "type": "escalation",
+      "detail": "封灵符解决灵力外泄后，周衡安进一步揭露天机阁监测网和订单真相"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E3_01",
+      "thread_id": "ST01_02",
+      "type": "confirmation",
+      "detail": "陆远亲眼确认灵脉从工厂延伸到18号院子，地砖蓝光与胸口异跳同步"
+    },
+    {
+      "event_id": "E3_01",
+      "thread_id": "ST01_03",
+      "type": "clue",
+      "detail": "灵脉灵气从脚底和手掌灌入身体在胸口汇成漩涡，证实心脏旁异跳与灵脉有关"
+    },
+    {
+      "event_id": "E3_02",
+      "thread_id": "ST02_02",
+      "type": "connection",
+      "detail": "大壮在东湖路22号出现与18号仅隔四个门牌号，时机过于巧合"
+    },
+    {
+      "event_id": "E3_03",
+      "thread_id": "ST02",
+      "type": "confirmation",
+      "detail": "周衡安确认天机阁在灵脉节点布传感器监控灵力释放"
+    },
+    {
+      "event_id": "E3_05",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "周衡安展示封灵符证实修真能力，能精准判断灵力外泄状态"
+    },
+    {
+      "event_id": "E3_06",
+      "thread_id": "ST02_02",
+      "type": "confirmation",
+      "detail": "周衡安确认酸辣粉订单是设局，虚拟手机号+假注册信息+灵脉残余诱饵"
+    },
+    {
+      "event_id": "E3_06",
+      "thread_id": "ST02",
+      "type": "clue",
+      "detail": "天机阁不仅监控灵脉波动还会监控网络和通讯，控制范围远超想象"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "躲避天机阁的排查追踪",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "查清是谁设局引他进入18号",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "弄清大壮异常反应的原因",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "封灵符：融入皮肤后留下淡青色花形印记，可封住灵力外泄至练气期前。修真境界：觉醒→练气→筑基→金丹→元婴。天机阁监测网覆盖江城所有灵脉节点。外卖箱被灵力震碎是'凡与仙'主题的物理呈现。灵脉被比作'龙'——陆远踩到了尾巴"
+}

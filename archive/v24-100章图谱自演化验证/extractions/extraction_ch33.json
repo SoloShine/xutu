@@ -1,0 +1,166 @@
+# Persisted: 2026-05-21 12:39:31
+{
+  "events": [
+    {
+      "chapter": 33,
+      "detail": "天未亮陆远苏晚出发前往灵脉暗河，苏晚送陆远到二层入口石柱旁插银针监测金色纹路频率，叮嘱不认可就退回",
+      "id": "E33_01",
+      "is_gap": false,
+      "gap_level": 0,
+      "title": "陆远清晨独自进入灵脉暗河二层次日挑战守脉之物",
+      "type": "daily"
+    },
+    {
+      "chapter": 33,
+      "detail": "守脉之物从三层入口石壁后涌出白色灵力雾气，灵力密度远超二层。金色纹路与守脉之物共鸣后守脉之物扫描陆远全身纹路和灵力通道。共鸣停止后守脉之物停在面前三米不攻击也不让路，在判断金色纹路的性质",
+      "id": "E33_02",
+      "is_gap": false,
+      "gap_level": 0,
+      "title": "守脉之物涌出白色雾气扫描陆远金色纹路",
+      "type": "turning"
+    },
+    {
+      "chapter": 33,
+      "detail": "守脉之物犹豫不动，陆远意识到金色纹路被封印压制二十五年产生变异与母亲原始纹路有细微差异，守脉之物在判断是否同一凭证。陆远喝下灵力压制药水全力催动金色纹路，金色光海照亮整个溶洞暴露全部纹路细节。被封印压了二十五年纹路变了但底下的骨架没变",
+      "id": "E33_03",
+      "is_gap": false,
+      "gap_level": 0,
+      "title": "守脉之物犹豫陆远喝药水全力催动金色纹路证明身份",
+      "type": "climax"
+    },
+    {
+      "chapter": 33,
+      "detail": "守脉之物看到金色纹路全貌后认可放行，白雾向两侧分开让路，石壁出现与金色纹路一模一样的裂缝，嗡鸣声变成清晰的频率像母亲的声音反复一个字。石壁碎裂三层入口打开",
+      "id": "E33_04",
+      "is_gap": false,
+      "gap_level": 0,
+      "title": "守脉之物认可金色纹路放行三层入口石壁裂开",
+      "type": "climax"
+    }
+  ],
+  "event_relations": [
+    {
+      "character": "陆远",
+      "event_id": "E33_01",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "character": "苏晚",
+      "event_id": "E33_01",
+      "location": "灵脉暗河一层溶洞"
+    },
+    {
+      "character": "陆远",
+      "event_id": "E33_02",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "character": "陆远",
+      "event_id": "E33_03",
+      "location": "灵脉暗河二层"
+    },
+    {
+      "character": "陆远",
+      "event_id": "E33_04",
+      "location": "灵脉暗河二层"
+    }
+  ],
+  "character_updates": [
+    {
+      "content": "金色纹路被封印压二十五年产生变异但底下的骨架不变，守脉之物认可了金色纹路凭证放行。三层入口石壁裂缝形状与金色纹路完美重合",
+      "field": "state_change",
+      "name": "陆远"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "context": "守脉之物白色雾气灵力密度远超二层，金色纹路与之共鸣扫描全身",
+      "motif": "灵气波动"
+    }
+  ],
+  "thread_updates": [
+    {
+      "action": "resolved",
+      "evidence": "守脉之物认可陆远金色纹路放行，金色纹路被封印压二十五年产生变异但骨架不变",
+      "new_status": "resolved",
+      "thread_id": "ST29_01"
+    },
+    {
+      "action": "advanced",
+      "evidence": "守脉之物白色灵力雾灵力密度极高，扫描金色纹路后判断犹豫最终认可放行",
+      "new_status": "planted",
+      "thread_id": "ST27_01"
+    },
+    {
+      "action": "advanced",
+      "evidence": "金色纹路全力催动后全部纹路暴露，底下的骨架与母亲一致但表面有变化",
+      "new_status": "planted",
+      "thread_id": "ST21_01"
+    },
+    {
+      "action": "advanced",
+      "evidence": "全力催动金色纹路喝药水压制封印反噬，药水效果快过封印核心刺痛恢复",
+      "new_status": "planted",
+      "thread_id": "ST14_01"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "三层入口石壁裂开时嗡鸣声变成清晰频率像母亲声音反复一个字，这个字是什么？守脉之物和陆远母亲的关系不只是凭证，还有更深层的联系",
+      "importance": "high",
+      "planted_event_id": "E33_04",
+      "thread_type": "mystery"
+    }
+  ],
+  "causal_links": [
+    {
+      "detail": "陆远进入三层入口前触发守脉之物",
+      "from": "E33_01",
+      "to": "E33_02",
+      "type": "consequence"
+    },
+    {
+      "detail": "守脉之物犹豫后陆远喝药水证明身份",
+      "from": "E33_02",
+      "to": "E33_03",
+      "type": "decision"
+    },
+    {
+      "detail": "全力催动金色纹路后守脉之物认可放行",
+      "from": "E33_03",
+      "to": "E33_04",
+      "type": "revelation"
+    }
+  ],
+  "evidence_links": [
+    {
+      "detail": "守脉之物认可金色纹路确认凭证机制有效",
+      "event_id": "E33_04",
+      "thread_id": "ST29_01",
+      "type": "confirmation"
+    },
+    {
+      "detail": "守脉之物白色雾气形态灵力密度极高扫描纹路",
+      "event_id": "E33_02",
+      "thread_id": "ST27_01",
+      "type": "clue"
+    },
+    {
+      "detail": "药水压制封印反噬全力催动金色纹路有效但有时限",
+      "event_id": "E33_03",
+      "thread_id": "ST14_01",
+      "type": "confirmation"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "通过守脉之物进入灵脉暗河三层",
+      "status": "achieved",
+      "type": "pursue"
+    }
+  ],
+  "notes": "守脉之物形态：白色灵力雾气不像人不像兽灵力密度极高。判断机制：扫描金色纹路后犹豫金色纹路变异但骨架不变最终认可。三层入口石壁裂缝形状与金色纹路完美重合。嗡鸣声变化：吟唱变清晰频率像母亲声音反复一个字。药水效果：凉意覆封印核心压制裁三十秒然后消退"
+}

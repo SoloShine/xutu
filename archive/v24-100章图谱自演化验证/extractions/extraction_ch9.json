@@ -1,0 +1,346 @@
+# Persisted: 2026-05-21 06:59:49
+{
+  "events": [
+    {
+      "id": "E9_01",
+      "chapter": 9,
+      "title": "苏晚带路抵达废弃工厂区安全屋",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚带陆远、周衡安、大壮穿过废弃工厂区背街小巷，步行十五分钟抵达伪装成仓库的安全屋。仓库门口贴着'仓库出租'的纸，苏晚用灵力开锁。仓库内有两百平，天花板上嵌着苏家制作的灰色石片屏蔽阵，隔绝内外灵力波动。陆远踏入后胸口跳动点明显变慢"
+    },
+    {
+      "id": "E9_02",
+      "chapter": 9,
+      "title": "苏晚用医修手段治疗大壮断肋和周衡安经脉",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏晚用苏家接骨散（深绿色药布+褐色药液，樟脑薄荷味）处理大壮右胸两根断肋，七十二小时消肿、两周长好。随后用掌心绿光为周衡安灌注灵力疏通经脉，发现他经脉堵了三分之一是灵力锁链残余，只冲开一部分。苏晚治疗后手指发抖脸色发白"
+    },
+    {
+      "id": "E9_03",
+      "chapter": 9,
+      "title": "周衡安揭示封印内藏上界至宝天机阁真实目的",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安恢复后揭示天机阁阁主不在乎陆远的命，真正要的是陆远母亲藏在封印里的一件上界至宝。封印本身是容器，血脉是锁。周衡安不知道至宝是什么，只知道陆远母亲说如果天机阁拿到那东西江城就完了"
+    },
+    {
+      "id": "E9_04",
+      "chapter": 9,
+      "title": "苏晚诊断封印加速松动纹路三道变五道",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远发现手背纹路从三道变成五道，新增两道细线从手腕内侧向上爬。苏晚检查后说明封印核心在心脏跳动点，手背只是出口，纹路是封印碎裂后灵力找新路径。按当前速度最多一周纹路蔓延到胸口，届时要么彻底觉醒要么封印崩了身体承受不住"
+    },
+    {
+      "id": "E9_05",
+      "chapter": 9,
+      "title": "安全屋探测阵报警灵墟扫描定位",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "仓库天花板灰色石片突然闪烁银白色涟漪，频率不规律，颜色在白和暗红之间交替变化。苏晚判断不是天机阁（频率固定）也不是地脉堂（技术粗糙），是未知势力的探查灵波。涟漪停止后苏晚判断对方找到大致方位正在精确定位，屏蔽阵能否挡住不确定"
+    },
+    {
+      "id": "E9_06",
+      "chapter": 9,
+      "title": "周衡安和苏晚揭示灵墟修真界黑市",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "周衡安说出扫描来自灵墟，不在明面上的修真势力，只做买卖。苏晚补充灵墟是修真界黑市，什么都卖什么都买，消息、灵器、丹药、阵法、人命。周衡安说灵墟比天机阁麻烦十倍，不讲规矩直接拿买抢。陆远意识到必须变强"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E9_01",
+      "character": "陆远",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "苏晚",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "周衡安",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_01",
+      "character": "大壮",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "苏晚",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "大壮",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_02",
+      "character": "周衡安",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_03",
+      "character": "周衡安",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_03",
+      "character": "陆远",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_04",
+      "character": "陆远",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_04",
+      "character": "苏晚",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_05",
+      "character": "苏晚",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_05",
+      "character": "周衡安",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_05",
+      "character": "陆远",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_06",
+      "character": "周衡安",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_06",
+      "character": "苏晚",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_06",
+      "character": "陆远",
+      "location": "苏晚安全屋"
+    },
+    {
+      "event_id": "E9_06",
+      "character": "大壮",
+      "location": "苏晚安全屋"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "大壮",
+      "field": "state_change",
+      "content": "右肋两根断裂已用苏家接骨散处理，缠三层绷带，七十二小时消肿两周长好"
+    },
+    {
+      "name": "周衡安",
+      "field": "state_change",
+      "content": "经脉堵三分之一，苏晚灌注灵力后恢复部分能力，能说话和站立"
+    },
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "手背纹路从三道变五道向手臂蔓延，左臂手肘内侧开始发热，封印加速松动"
+    },
+    {
+      "name": "苏晚",
+      "field": "new_detail",
+      "content": "安全屋设在废弃工厂区仓库，内有苏家屏蔽阵和竹编药箱，存有接骨散等医修药物"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "苏晚安全屋",
+      "type": "safe_house",
+      "description": "废弃工厂区内伪装成仓库的安全屋，门口贴仓库出租纸条，约两百平砖墙结构，天花板嵌苏家灰色石片屏蔽阵隔绝内外灵力，内有铁皮柜存竹编药箱和医疗用品"
+    }
+  ],
+  "new_characters": [
+    {
+      "name": "灵墟",
+      "role": "antagonist_5",
+      "personality": "修真界黑市组织，不在明面上。什么都卖什么都买：消息、灵器、丹药、阵法、人命。不讲规矩，直接拿买抢。探测技术先进频率不规律，连苏家屏蔽阵都无法完全防御"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "灵气波动",
+      "context": "安全屋屏蔽阵隔绝灵力波动，陆远踏入后胸口跳动点变慢。探测阵灵波银白色涟漪在白和暗红之间交替"
+    },
+    {
+      "motif": "外卖箱",
+      "context": "陆远站在窗前听到外面早市电动车按喇叭声，回忆一个月前自己还是送外卖的最大烦恼是超时扣钱"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "advanced",
+      "evidence": "周衡安揭示封印内藏上界至宝，封印是容器血脉是锁",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02",
+      "action": "advanced",
+      "evidence": "天机阁阁主要的是封印内至宝不是陆远的命，如果拿到江城就完了",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_02",
+      "action": "advanced",
+      "evidence": "纹路从三道变五道向手臂蔓延，苏晚诊断封印加速松动最多一周到胸口",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "苏晚解释封印核心在心脏跳动点，手背只是出口，左臂也开始发热",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST06_01",
+      "action": "advanced",
+      "evidence": "苏晚展示苏家屏蔽阵、接骨散、灵力灌注治疗等医修能力",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST08_01",
+      "action": "advanced",
+      "evidence": "周衡安补充陆远母亲将上界至宝藏入封印中，至宝内容未知",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "灵墟——修真界黑市组织，什么都买卖包括人命。探测技术先进能部分穿透苏家屏蔽阵，正在精确定位安全屋。比天机阁麻烦十倍不讲规矩",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E9_05"
+    },
+    {
+      "content": "上界至宝——陆远母亲藏在封印核心的未知物品，天机阁阁主的真正目标。陆远母亲说过如果天机阁拿到江城就完了",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E9_03"
+    },
+    {
+      "content": "封印加速觉醒倒计时——纹路三道变五道向胸口蔓延，最多一周到达封印核心。届时要么彻底觉醒要么身体承受不住两种力量对冲而亡",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E9_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E9_01",
+      "to": "E9_02",
+      "type": "consequence",
+      "detail": "抵达安全屋后苏晚立即治疗伤员"
+    },
+    {
+      "from": "E9_02",
+      "to": "E9_03",
+      "type": "revelation",
+      "detail": "周衡安恢复后揭示封印真相"
+    },
+    {
+      "from": "E9_03",
+      "to": "E9_04",
+      "type": "consequence",
+      "detail": "得知至宝信息后苏晚检查封印状态发现加速松动"
+    },
+    {
+      "from": "E9_04",
+      "to": "E9_05",
+      "type": "escalation",
+      "detail": "讨论封印危机时探测阵突然报警"
+    },
+    {
+      "from": "E9_05",
+      "to": "E9_06",
+      "type": "revelation",
+      "detail": "探测灵波被识别为灵墟，揭示第三股势力"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E9_03",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "确认封印不只是血脉还藏有上界至宝"
+    },
+    {
+      "event_id": "E9_03",
+      "thread_id": "ST02",
+      "type": "confirmation",
+      "detail": "天机阁阁主真正目标是封印内至宝而非陆远本人"
+    },
+    {
+      "event_id": "E9_04",
+      "thread_id": "ST06_02",
+      "type": "confirmation",
+      "detail": "纹路三道变五道确认封印碎片加速重组"
+    },
+    {
+      "event_id": "E9_04",
+      "thread_id": "ST01_03",
+      "type": "clue",
+      "detail": "苏晚说明封印核心在心脏跳动点手背只是出口"
+    },
+    {
+      "event_id": "E9_05",
+      "thread_id": "ST07_01",
+      "type": "connection",
+      "detail": "灵墟与地脉堂是不同势力，灵墟技术远超地脉堂"
+    },
+    {
+      "event_id": "E9_02",
+      "thread_id": "ST06_01",
+      "type": "clue",
+      "detail": "苏晚展示屏蔽阵、接骨散、灵力治疗等苏家医修能力"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "变强应对天机阁和灵墟的双重威胁",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "在天机阁和灵墟找到自己之前提升实力",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "苏晚",
+      "goal": "保护安全屋位置不被精确定位",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "苏晚安全屋设定：废弃工厂区仓库，灰色石片屏蔽阵，竹编药箱存医修药物。苏家接骨散：七十二小时消肿两周长好。灵墟探测灵波特征：频率不规律，白和暗红交替。陆远左臂手肘内侧开始发热暗示封印可能向身体更多部位扩散"
+}

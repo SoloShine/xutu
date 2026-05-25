@@ -1,0 +1,139 @@
+{
+  "events": [
+    {
+      "id": "E5_01",
+      "chapter": 5,
+      "title": "楼道惊魂与死守",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹离开暗房走上楼道，听到与底片中一致的金属拖拽声和规律脚步声，进入402室后迅速用拖把杆抵住门板，随后门外传来老周的砸门声与索要底片的叫喊。"
+    },
+    {
+      "id": "E5_02",
+      "title": "林素云封墙",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "回忆中，林素云在暴雨积水的402室面对门外的刮擦与撞击，将沾有暗红粉末的日记本塞入墙角裂缝，用吸满水的石膏块严丝合缝地封死，并在旁边刻下三道平行划痕以掩盖新鲜断面。"
+    },
+    {
+      "id": "E5_03",
+      "title": "门板背面的记录",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陈若竹在拖把杆即将断裂、老周暴力破门的极端压迫下，保持冷静，用圆珠笔在过塑记录卡上精准记录每一次铁锤撞击的频率，并在老周提到'底片'时画下圆圈标记。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E5_01",
+      "character": "陈若竹",
+      "location": "家属楼楼道"
+    },
+    {
+      "event_id": "E5_01",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E5_02",
+      "character": "林素云"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "陈若竹",
+      "location": "402室"
+    },
+    {
+      "event_id": "E5_03",
+      "character": "老周",
+      "location": "402室"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陈若竹",
+      "field": "new_detail",
+      "content": "口袋里常备圆珠笔和从暗房带出来的过塑记录卡，习惯在极端环境下将声音转化为视觉标记（短横线代表撞击，圆圈代表关键信息停顿）"
+    },
+    {
+      "name": "陈若竹",
+      "field": "state_change",
+      "content": "在面临暴力破门的生命威胁时表现出极度的冷静与抽离感，身体感受（冰凉的水滴、木刺的触感）与理性的记录行为分离"
+    },
+    {
+      "name": "林素云",
+      "field": "new_detail",
+      "content": "工装裤口袋底部沾有沉淀池溅上的废水，干涸后变成暗红色粉末，带有粗粝的沙感"
+    },
+    {
+      "name": "老周",
+      "field": "new_attitude",
+      "content": "作为执行者表现出机械的暴力倾向，受'上面'指派专门来挖这间房的墙和寻找底片"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "家属楼楼道",
+      "type": "通道",
+      "description": "梅雨季极度潮湿，墙皮发胀，三楼转角有黄褐色积水和青苔，弥漫着排污暗管的酸腐气"
+    },
+    {
+      "name": "402室",
+      "type": "室内",
+      "description": "家属楼四楼的房间，单层玻璃漏雨，地面有积水，墙角因常年渗水鼓包露出发黑砖缝，门板单薄且门把手生满暗红铁锈"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "水",
+      "context": "楼道的黄褐色水滩、暴雨灌入402室形成的地面积水、墙角空腔的渗水，水作为承载腐败与溶解秘密的介质"
+    },
+    {
+      "motif": "铁锈",
+      "context": "暗房残留的铁锈腥气、楼道里的铁器拖拽声、门把手上的暗红色铁锈，贯穿嗅觉与听觉的压迫感"
+    },
+    {
+      "motif": "节奏/记录",
+      "context": "如节拍器般一秒一顿的脚步声、铁锤规律的'咚'声、陈若竹在卡片上画出的短横线，将暴力的入侵转化为机械的刻度"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST04_02",
+      "action": "advanced",
+      "evidence": "陈若竹在楼道听到的金属拖拽声和规律脚步声，与底片里沉淀池的脚步声频率完全一致",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST02_02",
+      "action": "resolved",
+      "evidence": "林素云在用石膏块封好藏匿日记本的墙缝后，为了掩盖石膏的新鲜断面，用泥水刻下三道平行划痕",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "老周在门外明确表示'上面要底片'，证实了底片不仅存在，且是被特定势力重点觊觎的目标",
+      "new_status": "advanced"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "揭示日记本被藏入墙内是因为当时门外正有拿着锐器的人试图破门，属于紧急避险下的藏匿",
+      "new_status": "advanced"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "老周口中指名要这间房的墙和底片的'上面'究竟是谁？背后代表了什么势力？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E5_03"
+    }
+  ],
+  "notes": "本章通过感官细节（触觉、听觉）完成了过去与现在的无缝蒙太奇转换：林素云感受到的'木刺触感贴着背脊'直接衔接陈若竹感受到的'木刺触感贴着指腹'。陈若竹在门板背面用短横线和圆圈记录撞击频率的细节，再次强化了她将混乱现实数据化、程序化的心理防御机制。"
+}

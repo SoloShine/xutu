@@ -1,0 +1,199 @@
+# Persisted: 2026-05-22 21:07:52
+{
+  "events": [
+    {
+      "id": "E3_01",
+      "chapter": 3,
+      "title": "沈渡发现三年前新闻",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "沈渡找到三年前一则被遗忘的社会新闻：兴安巷废弃印刷厂发现不明物品。新闻没有后续报道，评论区为零。沈渡以记者经验判断'不明物品'是警方措辞。"
+    },
+    {
+      "id": "E3_02",
+      "chapter": 3,
+      "title": "第二通匿名来电",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "来电者直呼沈渡名字，揭示他知道沈渡的记者经历、报道失误、伤者妻子的跪地、47万赔偿。他还知道沈渡凌晨五点去了兴安巷、拍了三张照片、遇到了陈默。他透露三年前有另一个人写了关于印刷厂地下室的报道，但那篇报道从未发出，那个人'消失了'。"
+    },
+    {
+      "id": "E3_03",
+      "chapter": 3,
+      "title": "来电者揭示深度监控",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "来电者声称从沈渡第一期节目就在听，知道他首次直播说错歌名的细节，知道他讨厌食堂红烧肉，知道办公室荧光灯每四分钟闪一次。他说'林小微也一直在，直到她停下来'。"
+    },
+    {
+      "id": "E3_04",
+      "chapter": 3,
+      "title": "沈渡苏岚对峙",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "苏岚听完录音后提出另一种解读：来电者选择沈渡是因为他容易被控制（有把柄、失眠、独自去危险地点）。沈渡记不起自己报道过的工人名字，意识到自己确实遗忘了。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E3_01",
+      "character": "沈渡"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E3_02",
+      "character": "无名来电者"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E3_03",
+      "character": "无名来电者"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "沈渡",
+      "location": "电台直播间"
+    },
+    {
+      "event_id": "E3_04",
+      "character": "苏岚",
+      "location": "电台直播间"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "沈渡",
+      "field": "state_change",
+      "content": "从主动调查者变为被监视者。发现自己连报道对象的工人的名字都记不起来，被迫面对旁观者的遗忘与罪责。"
+    },
+    {
+      "name": "无名来电者",
+      "field": "new_detail",
+      "content": "从第一期节目就听沈渡的直播。知道沈渡首次直播说错歌名。知道办公室荧光灯每四分钟闪一次。声称三年前有人写过报道但'消失了'。声音中偶尔出现疲倦。"
+    },
+    {
+      "name": "苏岚",
+      "field": "new_attitude",
+      "content": "提出来电者可能利用沈渡而非保护他，展现法律人的审慎和冷静。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "电波杂音",
+      "context": "录音笔的扬声器像从井底传来的声音，带金属质感。来电者的声音在电波里被压缩变形。"
+    },
+    {
+      "motif": "红光",
+      "context": "ON AIR灯映在苏岚瞳孔里，荧光灯每四分钟闪一次。光源从温暖的红变成冰冷的白。"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01_01",
+      "action": "advanced",
+      "evidence": "三年前有人写过关于印刷厂地下室的报道，但报道未发出，作者'消失了'。那个'不明物品'是一个人。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST02_01",
+      "action": "advanced",
+      "evidence": "来电者知道沈渡报道失误的全部细节，包括47万赔偿、伤者妻子跪地。暗示三年前的案件与沈渡的过去有关联。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST03_01",
+      "action": "advanced",
+      "evidence": "来电者知道沈渡凌晨五点去了兴安巷、拍了三张照片、遇到陈默，证明他对沈渡有实时监控能力。",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "advanced",
+      "evidence": "来电者说'我是那个知道你名字的人'，既像威胁又像保护。他说打给沈渡是因为'你是唯一一个还在说话的人'",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "三年前写过报道的那个人'消失了'——他经历了什么？他是死了还是被压制了？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E3_02"
+    },
+    {
+      "content": "来电者说'林小微也一直在，直到她停下来'——林小微是否也是来电者关注的人？",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E3_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E3_01",
+      "to": "E3_02",
+      "type": "escalation",
+      "detail": "三年前新闻的发现为第二通来电提供背景"
+    },
+    {
+      "from": "E3_02",
+      "to": "E3_03",
+      "type": "escalation",
+      "detail": "来电者逐步揭示对沈渡的了解程度"
+    },
+    {
+      "from": "E3_03",
+      "to": "E3_04",
+      "type": "reaction",
+      "detail": "沈渡与苏岚就来电者动机产生分歧"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E3_02",
+      "thread_id": "ST01_01",
+      "type": "confirmation",
+      "detail": "三年前确实有案件发生在印刷厂，有人写过报道但被压制"
+    },
+    {
+      "event_id": "E3_02",
+      "thread_id": "ST02_01",
+      "type": "connection",
+      "detail": "来电者将沈渡的记者失误与三年前案件联系起来"
+    },
+    {
+      "event_id": "E3_03",
+      "thread_id": "ST03_01",
+      "type": "confirmation",
+      "detail": "来电者对沈渡的日常细节了如指掌，证实监控能力"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "沈渡",
+      "goal": "搞清来电者身份和三年前案件真相",
+      "type": "pursue",
+      "status": "advanced"
+    },
+    {
+      "character": "苏岚",
+      "goal": "保护沈渡不被利用",
+      "type": "protect",
+      "status": "new"
+    }
+  ],
+  "notes": "关键细节：沈渡首次直播说错歌名（Tom Waits），荧光灯四分钟间隔。来电者的声音出现疲倦情绪。三年前写报道的人'消失'。47万赔偿金额。沈渡记不起工人名字。"
+}

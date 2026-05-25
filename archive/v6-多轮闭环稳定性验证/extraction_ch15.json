@@ -1,0 +1,225 @@
+{
+  "events": [
+    {
+      "id": "E15_01",
+      "chapter": 15,
+      "title": "亂墳崗擊暈老趙",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "雪地裡，老趙因手上的血跡精神崩潰抽搐，試圖往墳圈子外爬。趙三為防止暴露，用槍托將其砸暈在雪窪裡，王婆和鐵匠沉默旁觀。"
+    },
+    {
+      "id": "E15_02",
+      "chapter": 15,
+      "title": "撤退途中目睹日軍",
+      "type": "background",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "王婆帶領眾人貼著土牆陰影撤退，經過村東頭土道時，看到日本兵帶著狼狗巡邏，皮靴聲規律刺耳，刺刀閃著冷光。"
+    },
+    {
+      "id": "E15_03",
+      "chapter": 15,
+      "title": "李七家院外的慘狀",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "眾人路過李七家，看到院內有拖拽的血跡和燒焦的黑煙。王婆打手勢，眾人像蛆蟲一樣貼地散開尋找掩體躲避。"
+    },
+    {
+      "id": "E15_04",
+      "chapter": 15,
+      "title": "柴垛與豬圈的搜查危機",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "趙三和平兒鑽進破柴垛，鐵匠和老趙掉進豬圈。日軍搜查伴隨皮鞭聲和慘叫，狼狗嗅到豬圈的老趙，口水滴在其後頸，鐵匠摸向剔骨刀準備拚命，狗最終被喚走。"
+    },
+    {
+      "id": "E15_05",
+      "chapter": 15,
+      "title": "牛棚暗火修槍",
+      "type": "character",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "天黑後趙三和平兒轉移到牛棚，用乾牛糞生暗火烤化凍死的槍栓鐵鏽。趙三腳趾凍爛如爛樹根，平兒緊握殺豬刀，雪水滴入炭火發出嘶啦聲。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E15_01",
+      "character": "老趙",
+      "location": "亂墳崗"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "趙三",
+      "location": "亂墳崗"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "王婆",
+      "location": "亂墳崗"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "鐵匠",
+      "location": "亂墳崗"
+    },
+    {
+      "event_id": "E15_01",
+      "character": "李七"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "王婆",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "趙三",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "平兒",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "鐵匠",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E15_02",
+      "character": "老趙",
+      "location": "村東頭土道"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "王婆",
+      "location": "李七家院外"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "趙三",
+      "location": "李七家院外"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "平兒",
+      "location": "李七家院外"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "鐵匠",
+      "location": "李七家院外"
+    },
+    {
+      "event_id": "E15_03",
+      "character": "老趙",
+      "location": "李七家院外"
+    },
+    {
+      "event_id": "E15_04",
+      "character": "趙三",
+      "location": "村西頭破柴垛"
+    },
+    {
+      "event_id": "E15_04",
+      "character": "平兒",
+      "location": "村西頭破柴垛"
+    },
+    {
+      "event_id": "E15_04",
+      "character": "鐵匠",
+      "location": "王婆家隔壁豬圈"
+    },
+    {
+      "event_id": "E15_04",
+      "character": "老趙",
+      "location": "王婆家隔壁豬圈"
+    },
+    {
+      "event_id": "E15_05",
+      "character": "趙三",
+      "location": "牛棚"
+    },
+    {
+      "event_id": "E15_05",
+      "character": "平兒",
+      "location": "牛棚"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "老趙",
+      "field": "state_change",
+      "content": "極度恐懼崩潰，看到血跡後喪失理智，被砸後在豬圈裡嚇得屎尿失禁。"
+    },
+    {
+      "name": "趙三",
+      "field": "new_attitude",
+      "content": "變得冷酷果斷，為了不暴露目標，毫不猶豫地用槍托砸暈崩潰的老趙。"
+    },
+    {
+      "name": "趙三",
+      "field": "new_detail",
+      "content": "腳趾頭凍得潰爛，指甲發黑，死肉和活肉連在一起像爛樹根。"
+    },
+    {
+      "name": "平兒",
+      "field": "new_detail",
+      "content": "褲腿裡藏著一把刀背厚、刃口像細碎鋸齒的殺豬刀。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "亂墳崗",
+      "type": "室外",
+      "description": "村外的墳地，枯草斷折，積雪填平了溝壑"
+    },
+    {
+      "name": "村東頭土道",
+      "type": "室外",
+      "description": "被踩得稀爛的雪地，混雜馬糞和車轍"
+    },
+    {
+      "name": "李七家院外",
+      "type": "室外",
+      "description": "漢奸李七的家門口，有黑煙和被雪半蓋的血跡"
+    },
+    {
+      "name": "村西頭破柴垛",
+      "type": "隱蔽處",
+      "description": "發霉爛木頭味和老鼠尿臊味的乾樹枝堆"
+    },
+    {
+      "name": "王婆家隔壁豬圈",
+      "type": "隱蔽處",
+      "description": "半塌土牆內，積著凍糞雪水和爛稻草"
+    },
+    {
+      "name": "牛棚",
+      "type": "室內",
+      "description": "後院棚頂塌了一半的牛棚，漏雪，只剩乾牛糞和發黴草料"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "手",
+      "context": "五雙沾著血冰碴的手鬆開槍管，老趙看著自己手上的黑紅導致崩潰"
+    },
+    {
+      "motif": "雪",
+      "context": "雪下得像撕碎的破棉絮填平溝壑，雪粒變成細粉往領口灌，最後雪水滴入炭火滅了火星"
+    },
+    {
+      "motif": "冷/鐵",
+      "context": "槍管冰透貼在胸口像生鐵，鐵匠背對風雪像生鏽的鐵疙瘩"
+    }
+  ],
+  "notes": "李七已死亡（被鐵匠裹著棉襖）；村內有其他村民遭受日軍皮鞭抽打和殺害（聽到的慘叫聲）；老趙的崩潰體現了普通農民面對殺戮時的心理防線崩塌；平兒的殺豬刀暗示了後續可能的反抗或殊死搏鬥。"
+}

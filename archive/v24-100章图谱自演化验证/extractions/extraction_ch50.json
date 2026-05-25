@@ -1,0 +1,315 @@
+# Persisted: 2026-05-21 13:39:56
+{
+  "events": [
+    {
+      "id": "E50_01",
+      "chapter": 50,
+      "title": "封印之物金色光雾散开露出面容",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆远要求封印之物出来。金色光雾如幕布般退去，露出一个男性人形。面容与陆远六分相似，金色瞳孔、金色纹路完全一致，封印核心位置相同。苏晚倒吸凉气，大壮铁管掉落。陆远确认血脉连接的感觉"
+    },
+    {
+      "id": "E50_02",
+      "chapter": 50,
+      "title": "陆承自我揭示身份与封印真相",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆承自报姓名，确认是陆远的父亲。揭示三十年前上界追杀因由——血脉浓度远超临界值。母亲设计金色通道将他藏在江城地下，用灵脉循环维持生命。封印不是牢笼是维生系统。陆远出生时封印完成一半，体内纹路是封印的另一半。三十年父子一体只是隔着地面和地下的距离"
+    },
+    {
+      "id": "E50_03",
+      "chapter": 50,
+      "title": "陆承揭示母亲三年前消失原因与觉醒机制",
+      "type": "revelation",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "三年前上界追踪术升级捕捉到封印灵力波动，母亲切断连接被定位。陆承失去外界联系沉睡三年直到陆远觉醒。觉醒不是意外是封印三十年到期后的设计，血脉共鸣是封印完成使命的机制。传承使命：父亲力量通过血脉传给儿子"
+    },
+    {
+      "id": "E50_04",
+      "chapter": 50,
+      "title": "陆远做出选择接受血脉传承",
+      "type": "turning",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "陆承说明传承代价——他本人将消散。接受传承获得筑基巅峰以上力量但父亲消失，拒绝则封印继续但上界一个月内定位江城。陆远提出条件：传承不是消失是换一种方式存在。主动激活十道纹路与陆承面对面血脉共振，金色光柱贯穿地面五十米冲出护城河水面"
+    },
+    {
+      "id": "E50_05",
+      "chapter": 50,
+      "title": "血脉传承完成陆承消散",
+      "type": "climax",
+      "gap_level": 0,
+      "is_gap": false,
+      "detail": "传承进行十秒。陆远获得力量和记忆——第一次见到父亲的画面。陆承逐渐透明，留下最后信息：母亲没有消失还在某处找到她。名字含义：远的反义词是近。陆承消散后封印核心温柔地跳了一下像敲了一下门。陆远金色纹路从十道增至十二道，转身离开"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E50_01",
+      "character": "陆远",
+      "location": "城北地下空间"
+    },
+    {
+      "event_id": "E50_01",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E50_01",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E50_01",
+      "character": "大壮"
+    },
+    {
+      "event_id": "E50_02",
+      "character": "陆远",
+      "location": "城北地下空间"
+    },
+    {
+      "event_id": "E50_02",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E50_03",
+      "character": "陆远",
+      "location": "城北地下空间"
+    },
+    {
+      "event_id": "E50_03",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E50_04",
+      "character": "陆远",
+      "location": "城北地下空间"
+    },
+    {
+      "event_id": "E50_04",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E50_04",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E50_05",
+      "character": "陆远",
+      "location": "城北地下空间"
+    },
+    {
+      "event_id": "E50_05",
+      "character": "陆承"
+    },
+    {
+      "event_id": "E50_05",
+      "character": "苏晚"
+    },
+    {
+      "event_id": "E50_05",
+      "character": "大壮"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆远",
+      "field": "state_change",
+      "content": "接受血脉传承后金色纹路从十道增至十二道，力量至少筑基巅峰以上，获得父亲的碎片记忆"
+    },
+    {
+      "name": "陆远",
+      "field": "new_relationship",
+      "content": "确认与陆承的父子关系，与被封印在城北地下的父亲完成血脉传承"
+    },
+    {
+      "name": "陆远",
+      "field": "new_attitude",
+      "content": "传承后封印核心收到温柔的跳动回应——陆承的意识以某种形式存留在封印核心中"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [
+    {
+      "name": "陆承",
+      "role": "protagonist_family",
+      "personality": "沉稳平和，说话语气像普通中年男人，面对生死淡然处之。在上界活了一百三十年，血脉浓度远超临界值，被追杀三十年后自愿被封印在江城地下保护家人"
+    }
+  ],
+  "motif_mentions": [
+    {
+      "motif": "金色纹路",
+      "context": "陆远与陆承的金色纹路完全一致排列方式相同，传承后从十道增至十二道"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST01",
+      "action": "resolved",
+      "evidence": "陆承自认是陆远父亲，母亲设计封印保护父亲，血脉传承完成",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST23_01",
+      "action": "resolved",
+      "evidence": "三十年前上界来人就是陆承本人，他是陆远父亲，被封印在江城地下",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST47_01",
+      "action": "resolved",
+      "evidence": "城北地下封印之物是陆远父亲陆承，血脉同步因为父子同一套金色纹路",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST46_01",
+      "action": "advanced",
+      "evidence": "传承爆发金色光柱贯穿地面冲出护城河，天机阁灵力警报响了，地脉堂四人站起",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST01_03",
+      "action": "resolved",
+      "evidence": "封印核心第二个跳动点是封印的另一半在地下同步跳动",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST12_02",
+      "action": "resolved",
+      "evidence": "封印是母亲设计的传承系统，金色纹路是封印两半，不是被动崩解而是设计完成的使命",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST21_01",
+      "action": "resolved",
+      "evidence": "第十道纹路是母亲留的后门，按下后打开壁龛获取第三块玉简揭示封印真相",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST09_02",
+      "action": "advanced",
+      "evidence": "陆承提到母亲切断上界连接后没有被抓到，与上界至宝的关联未明",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST14_01",
+      "action": "advanced",
+      "evidence": "传承后封印核心稳定在每秒三次，但陆承消散带来新的力量与代价平衡",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST15_01",
+      "action": "advanced",
+      "evidence": "阁主三年前封口令与母亲消失时间吻合，阁主说让它醒完说明他知道传承设计",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "陆承传承时说母亲没有消失还在某处——陆远母亲到底在哪里？她切断上界连接后去了哪里？找到她成为陆远新的目标",
+      "importance": "high",
+      "thread_type": "character_arc",
+      "planted_event_id": "E50_05"
+    },
+    {
+      "content": "血脉传承的光柱冲出护城河——天机阁灵力警报响了，地脉堂四人同时站起。传承爆发的灵力波动暴露了所有人，上界一个月内定位江城，三方势力将全面反应",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E50_05"
+    },
+    {
+      "content": "封印核心传承后的温柔跳动——陆承的意识是否真的完全消散？他在封印核心里敲了一下门意味着什么？传承是换一种方式存在的承诺能否兑现",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E50_05"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E50_01",
+      "to": "E50_02",
+      "type": "revelation",
+      "detail": "面容相似引发身份追问"
+    },
+    {
+      "from": "E50_02",
+      "to": "E50_03",
+      "type": "revelation",
+      "detail": "封印真相引出母亲消失原因"
+    },
+    {
+      "from": "E50_03",
+      "to": "E50_04",
+      "type": "decision",
+      "detail": "传承代价揭示后陆远做出选择"
+    },
+    {
+      "from": "E50_04",
+      "to": "E50_05",
+      "type": "consequence",
+      "detail": "血脉传承启动导致陆承消散"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E50_01",
+      "thread_id": "ST01",
+      "type": "confirmation",
+      "detail": "面容六分相似金色瞳孔金色纹路完全一致确认血脉关系"
+    },
+    {
+      "event_id": "E50_02",
+      "thread_id": "ST23_01",
+      "type": "confirmation",
+      "detail": "陆承亲口确认三十年前上界来人就是他"
+    },
+    {
+      "event_id": "E50_02",
+      "thread_id": "ST01_03",
+      "type": "confirmation",
+      "detail": "封印核心位置相同跳动频率相同确认血脉连接机制"
+    },
+    {
+      "event_id": "E50_03",
+      "thread_id": "ST12_02",
+      "type": "confirmation",
+      "detail": "封印设计就是传承系统金色纹路是两半封印"
+    },
+    {
+      "event_id": "E50_04",
+      "thread_id": "ST46_01",
+      "type": "clue",
+      "detail": "传承光柱冲出地面暴露位置给三方势力"
+    },
+    {
+      "event_id": "E50_05",
+      "thread_id": "ST09_02",
+      "type": "clue",
+      "detail": "陆承说母亲没有消失还在某处"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陆远",
+      "goal": "找到母亲——陆承遗言说母亲还在某处",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "面对上界一个月内定位江城的威胁",
+      "type": "fear",
+      "status": "new"
+    },
+    {
+      "character": "陆远",
+      "goal": "适应传承后筑基巅峰以上的力量",
+      "type": "pursue",
+      "status": "new"
+    }
+  ],
+  "notes": "第50章是前半程高潮，三大核心悬念线解决（血脉封印/上界来人/封印之物）。新增陆承角色（protagonist_family）。陆远金色纹路从十道增至十二道。封印核心传承后出现温柔跳动暗示陆承意识残存。名字含义揭示：远的反义词是近。传承光柱暴露位置给天机阁和地脉堂。"
+}
