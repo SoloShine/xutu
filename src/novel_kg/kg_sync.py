@@ -155,8 +155,9 @@ def sync_json_to_neo4j(project, json_backend=None, neo4j_backend=None):
 
     try:
         neo4j_backend.close()
-    except Exception:
-        pass
+    except Exception as e:
+        import sys
+        print(f"[kg_sync] Neo4j close 失败: {e}", file=sys.stderr)
 
     return {
         "direction": "json_to_neo4j",
@@ -184,8 +185,9 @@ def sync_neo4j_to_json(project, neo4j_backend=None, json_backend=None):
 
     try:
         neo4j_backend.close()
-    except Exception:
-        pass
+    except Exception as e:
+        import sys
+        print(f"[kg_sync] Neo4j close 失败: {e}", file=sys.stderr)
 
     return {
         "direction": "neo4j_to_json",

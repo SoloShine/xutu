@@ -347,3 +347,13 @@ archive/vN-验证名/
 - `archive/` 目录在 `.gitignore` 中被排除，不会进入git。归档的目的是**持久化保存产出物**，防止项目目录被清理时丢失
 - 如果验证没有独立项目目录（如V12在v11_test上跑单章），则只归档有产出的文件，不强求空目录
 - 报告中的数据必须与实际产出文件一致（字数、文件数、统计数字）
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
