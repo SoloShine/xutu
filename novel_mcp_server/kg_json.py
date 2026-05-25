@@ -60,8 +60,23 @@ class JsonKG:
 
     def _load(self):
         if os.path.exists(self._path):
-            with open(self._path, "r", encoding="utf-8") as f:
-                self._graph = json.load(f)
+            try:
+                with open(self._path, "r", encoding="utf-8") as f:
+                    self._graph = json.load(f)
+            except (json.JSONDecodeError, ValueError) as e:
+                # 文件损坏或为空时回退到空图谱，避免整个 MCP server 崩溃
+                backup_path = self._path + ".corrupted"
+                try:
+                    os.rename(self._path, backup_path)
+                except OSError:
+                    pass
+                self._graph = _empty_graph()
+                self._graph["_corruption_note"] = (
+                    f"graph.json was corrupted ({e}), "
+                    f"backed up to {os.path.basename(backup_path)}"
+                )
+                self._save()
+                return
             # 补齐可能缺失的键（向后兼容）
             empty = _empty_graph()
             for k, v in empty.items():
