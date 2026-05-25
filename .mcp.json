@@ -1,8 +1,9 @@
 {
   "mcpServers": {
     "novel-kg": {
-      "command": "C:\\Python314\\python.exe",
-      "args": ["D:\\novel_test\\novel_mcp_server\\server.py"]
+      "command": "python",
+      "args": ["-m", "novel_kg.server"],
+      "cwd": "${workspaceFolder}/src"
     }
   }
 }

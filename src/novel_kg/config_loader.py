@@ -73,6 +73,8 @@ DEFAULTS = {
 }
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.normpath(os.path.join(_HERE, '..', '..'))
+_PROJECTS_DIR = os.environ.get('KG_PROJECTS_DIR') or os.path.join(_REPO_ROOT, 'projects')
 
 
 def _deep_merge(base: dict, override: dict) -> dict:
@@ -105,7 +107,7 @@ class _ConfigLoader:
 
         # Layer 2: 项目 project.yaml
         if project:
-            project_path = os.path.join(_HERE, "projects", project, "project.yaml")
+            project_path = os.path.join(_PROJECTS_DIR, project, "project.yaml")
             if os.path.exists(project_path):
                 with open(project_path, "r", encoding="utf-8") as f:
                     project_cfg = yaml.safe_load(f) or {}

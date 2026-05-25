@@ -13,23 +13,18 @@ import hashlib
 
 # 定位目录
 _here = os.path.dirname(os.path.abspath(__file__))
-_mvp_dir = os.path.normpath(os.path.join(_here, '..', 'novel_kg_mvp'))
-_projects_dir = os.environ.get('KG_PROJECTS_DIR') or os.path.join(_mvp_dir, 'projects')
+_repo_root = os.path.normpath(os.path.join(_here, '..', '..'))
+_projects_dir = os.environ.get('KG_PROJECTS_DIR') or os.path.join(_repo_root, 'projects')
 
-# novel_kg_mvp 需要 chdir（因为 config.yaml 相对路径）
-os.chdir(_mvp_dir)
-if _mvp_dir not in sys.path:
-    sys.path.insert(0, _mvp_dir)
-
-from config_loader import config_loader
-from mine import (
+from .config_loader import config_loader
+from .mine import (
     build_extraction_prompt, detect_conflicts,
     write_extraction_to_graph,
     clear_chapter_data as _mine_clear_chapter,
 )
-from main import build_writing_prompt
-from prompts import ARC_DERIVATION_PROMPT
-from validators import validate_chapter as _run_validation
+from .main import build_writing_prompt
+from .prompts import ARC_DERIVATION_PROMPT
+from .validators import validate_chapter as _run_validation
 
 
 # ========== 内部 LLM 开关 ==========
@@ -133,13 +128,10 @@ def _create_backend(project: str):
     """根据环境变量创建后端实例"""
     cfg = config_loader.load(project)
     if _BACKEND == "neo4j":
-        from graph import NovelKG
+        from .graph import NovelKG
         return NovelKG(project=project, config=cfg)
     else:
-        # 延迟导入，避免 Neo4j 依赖
-        if _here not in sys.path:
-            sys.path.insert(0, _here)
-        from kg_json import JsonKG
+        from .kg_json import JsonKG
         return JsonKG(project=project, data_dir=_projects_dir, config=cfg)
 
 
@@ -155,7 +147,7 @@ def _kg(project: str):
     if project not in _pool:
         _pool[project] = _create_backend(project)
         # V25: 懒初始化遥测 collector
-        import telemetry as _tel
+        from . import telemetry as _tel
         if _tel._collector is None:
             _tel.init_telemetry(project)
     return _pool[project]
@@ -583,7 +575,7 @@ def check_outline_compliance(project: str, chapter: int) -> dict:
             chapter_arc = a
             break
 
-    from validators import check_outline_compliance as _check_compliance
+    from .validators import check_outline_compliance as _check_compliance
     violations = _check_compliance(outline_entry, events, chapter_arc=chapter_arc)
 
     # 分离程序化结果和需要语义检查的项
@@ -823,7 +815,7 @@ def _batch_purpose_check(project, chapters_info):
 ```"""
 
     try:
-        from llm import call_llm
+        from .llm import call_llm
         result = call_llm(prompt, json_mode=True,
                           stream_label=f"批量目的合规({len(uncached_info)}章)")
         items = result if isinstance(result, list) else [result]
@@ -917,7 +909,7 @@ def _semantic_compliance_check(project, chapter, outline_entry, events,
 按大纲要求的顺序返回，不要遗漏。"""
 
     try:
-        from llm import call_llm
+        from .llm import call_llm
         result = call_llm(prompt, json_mode=True,
                           stream_label=f"语义合规检查Ch{chapter}")
         if isinstance(result, list) and len(result) == len(pending_items):
@@ -982,7 +974,7 @@ def _purpose_compliance_check(project, chapter, purpose, events):
 ```"""
 
     try:
-        from llm import call_llm
+        from .llm import call_llm
         result = call_llm(prompt, json_mode=True,
                           stream_label=f"目的合规Ch{chapter}")
         if isinstance(result, dict):
@@ -1056,7 +1048,7 @@ def revise_outline(project: str, chapter: int, reason: str,
 
 def sync_backends(project: str, direction: str = "json_to_neo4j") -> str:
     """同步 JSON 和 Neo4j 后端数据"""
-    from kg_sync import sync_json_to_neo4j, sync_neo4j_to_json
+    from .kg_sync import sync_json_to_neo4j, sync_neo4j_to_json
     if direction == "json_to_neo4j":
         report = sync_json_to_neo4j(project)
     elif direction == "neo4j_to_json":
@@ -1886,7 +1878,7 @@ def save_telemetry_session_summary(project: str) -> dict:
 
 # V25 遥测自动注入（无条件装饰，运行时通过 _collector 控制）
 # ============================================================
-import telemetry as _telemetry
+from . import telemetry as _telemetry
 
 _PUBLIC_TOOLS = [
     "get_chapter_context", "get_derivation_context", "get_graph_stats",

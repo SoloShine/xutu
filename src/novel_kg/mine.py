@@ -6,9 +6,9 @@ Novel Knowledge Graph MVP
 """
 
 import json
-from graph import NovelKG
-from config_loader import config_loader
-from prompts import EXTRACTION_PROMPT
+from .graph import NovelKG
+from .config_loader import config_loader
+from .prompts import EXTRACTION_PROMPT
 
 
 def _t2s(text):

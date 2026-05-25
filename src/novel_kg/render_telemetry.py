@@ -119,9 +119,10 @@ I18N = {
 def load_telemetry(project: str) -> dict:
     """加载项目的所有遥测 JSON。"""
     here = os.path.dirname(os.path.abspath(__file__))
-    mvp_dir = os.path.normpath(os.path.join(here, '..', 'novel_kg_mvp'))
-    tel_dir = os.path.join(mvp_dir, 'projects', project, 'telemetry')
-    project_dir = os.path.join(mvp_dir, 'projects', project)
+    repo_root = os.path.normpath(os.path.join(here, '..', '..'))
+    projects_dir = os.environ.get('KG_PROJECTS_DIR') or os.path.join(repo_root, 'projects')
+    tel_dir = os.path.join(projects_dir, project, 'telemetry')
+    project_dir = os.path.join(projects_dir, project)
 
     if not os.path.isdir(tel_dir):
         print(f"遥测目录不存在: {tel_dir}")

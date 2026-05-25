@@ -9,10 +9,10 @@ import sys
 import os
 import json
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src'))
 
-from core import _create_backend, _kg, close_all, _BACKEND
-import core
+from novel_kg.core import _create_backend, _kg, close_all, _BACKEND
+from novel_kg import core
 
 PROJECT = f"e2e_test_{_BACKEND}"
 PASS = 0

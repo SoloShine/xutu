@@ -18,10 +18,10 @@ import json
 import time
 import argparse
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src'))
 
-from core import _create_backend, _kg, close_all, _BACKEND
-import core
+from novel_kg.core import _create_backend, _kg, close_all, _BACKEND
+from novel_kg import core
 
 # ========== 命令行参数 ==========
 _parser = argparse.ArgumentParser(description="Novel KG E2E Tests")
@@ -272,7 +272,7 @@ def main():
 
         # ---- 13. 叙事节奏分析 ----
         print("\n[13] 叙事节奏分析")
-        from core import analyze_pacing
+        from novel_kg.core import analyze_pacing
 
         # 先测试不足3章弧线的情况
         pacing = analyze_pacing(PROJECT)
@@ -287,7 +287,7 @@ def main():
                            scenes="A->B->C->D->E->F->G->H", ending="真相大白")
 
         # 直接用 kg 对象读取弧线（避免连接池缓存不一致）
-        from core import _check_purpose_repetition, _check_ending_repetition, _check_scene_density
+        from novel_kg.core import _check_purpose_repetition, _check_ending_repetition, _check_scene_density
         all_arcs = kg.get_all_chapter_arcs()
         arcs_sorted = sorted(all_arcs, key=lambda a: a.get("chapter", 0))
         pacing_issues = []
@@ -326,7 +326,7 @@ def main():
 
         # ---- 14. 大纲合规检查 ----
         print("\n[14] 大纲合规检查")
-        from validators import check_outline_compliance
+        from novel_kg.validators import check_outline_compliance
 
         # 合规场景（bigram匹配）
         kg.clear_project()
@@ -366,10 +366,10 @@ def main():
 
         # ---- 15. check_outline_compliance MCP工具 ----
         print("\n[15] check_outline_compliance MCP工具")
-        from core import check_outline_compliance as _coc
+        from novel_kg.core import check_outline_compliance as _coc
 
         # Clear the connection pool to avoid stale data
-        from core import _pool, close_all
+        from novel_kg.core import _pool, close_all
         close_all()
 
         kg.clear_project()
@@ -407,7 +407,7 @@ def main():
 
         # ---- 16. revise_outline MCP工具 ----
         print("\n[16] revise_outline MCP工具")
-        from core import revise_outline as _ro
+        from novel_kg.core import revise_outline as _ro
 
         close_all()
         kg = _create_backend(PROJECT)
@@ -444,7 +444,7 @@ def main():
 
         # ---- 17. 事后编辑工具 ----
         print("\n[17] 事后编辑工具 (analyze_edit_impact + accept_edit)")
-        from core import analyze_edit_impact as _aei, accept_edit as _ae, close_all
+        from novel_kg.core import analyze_edit_impact as _aei, accept_edit as _ae, close_all
 
         kg.clear_project()
         close_all()  # clear pool
@@ -527,7 +527,7 @@ def main():
 
         # ---- 18. review_chapter MCP工具 ----
         print("\n[18] review_chapter MCP工具")
-        from core import review_chapter as _rc, close_all
+        from novel_kg.core import review_chapter as _rc, close_all
 
         close_all()  # clear pool
         kg.clear_project()
@@ -568,7 +568,7 @@ def main():
 
         # ---- 19. 协作配置 ----
         print("\n[19] 协作配置")
-        from config_loader import config_loader
+        from novel_kg.config_loader import config_loader
         cfg = config_loader.load(PROJECT)
         collab = cfg.get("collaboration", {})
         test("collaboration config exists",
@@ -583,7 +583,7 @@ def main():
         test("semantic_check default True",
              collab.get("semantic_check") == True)
 
-        from config_loader import config_loader as cl2
+        from novel_kg.config_loader import config_loader as cl2
         test("config_loader.get collaboration",
              cl2.get(PROJECT, "collaboration", "review_checkpoint", default=False) == False)
 
@@ -592,13 +592,13 @@ def main():
             print("\n[20] LLM语义合规检查 — SKIPPED (NOVEL_LLM_ENABLED not set)")
         else:
             print("\n[20] LLM语义合规检查")
-            from core import _semantic_compliance_check
+            from novel_kg.core import _semantic_compliance_check
 
             # 测试1: 无事件数据时fallback
             close_all()
             kg.clear_project()
             kg.add_outline_entry(1, purpose="测试", key_events="宋姐出现")
-            from validators import check_outline_compliance as _coc_val
+            from novel_kg.validators import check_outline_compliance as _coc_val
             outline_e = kg.get_outline_entry(1)
             violations_e = _coc_val(outline_e, [])  # 空事件列表
             sem_no_events = _semantic_compliance_check(PROJECT, 1, outline_e, [], violations_e)
@@ -625,7 +625,7 @@ def main():
                  cl2.get(PROJECT, "collaboration", "semantic_check", default=True) == True)
 
             # 测试4: 返回结构完整性
-            from core import check_outline_compliance as _coc_core
+            from novel_kg.core import check_outline_compliance as _coc_core
             close_all()
             result_struct = _coc_core(PROJECT, 1)
             test("semantic result has required fields",
@@ -634,8 +634,8 @@ def main():
 
         # ---- 21. 版本管理 ----
         print("\n[21] 版本管理 (snapshot + list_edits + rollback_edit)")
-        from core import list_edits as _le, rollback_edit as _re
-        from core import accept_edit as _ae
+        from novel_kg.core import list_edits as _le, rollback_edit as _re
+        from novel_kg.core import accept_edit as _ae
 
         close_all()
         kg.clear_project()
@@ -737,7 +737,7 @@ def main():
         extractions_dir = os.path.join(os.path.dirname(kg._path), "extractions")
 
         # get_extraction_prompt 落盘
-        from core import get_extraction_prompt as _gep
+        from novel_kg.core import get_extraction_prompt as _gep
         close_all()
         prompt_e = _gep(PROJECT, 1, "这是章节正文用于测试提取。")
         test("extraction prompt returns string",
@@ -753,7 +753,7 @@ def main():
              "这是章节正文用于测试提取" in content)
 
         # get_writing_prompt 落盘
-        from core import get_writing_prompt as _gwp
+        from novel_kg.core import get_writing_prompt as _gwp
         close_all()
         prompt_w = _gwp(PROJECT, 1)
         test("writing prompt returns string",
@@ -763,7 +763,7 @@ def main():
              os.path.isfile(wpath))
 
         # get_derivation_prompt 落盘
-        from core import get_derivation_prompt as _gdp
+        from novel_kg.core import get_derivation_prompt as _gdp
         close_all()
         prompt_d = _gdp(PROJECT, 2)
         test("derivation prompt returns string",
@@ -773,7 +773,7 @@ def main():
              os.path.isfile(dpath))
 
         # write_extraction 落盘
-        from core import write_extraction as _we
+        from novel_kg.core import write_extraction as _we
         close_all()
         extracted_data = {
             "events": [{"id": "E1_02", "title": "提取事件", "detail": "测试", "chapter": 1, "type": "daily"}],
@@ -804,7 +804,7 @@ def main():
         test("no locations initially",
              "废弃工厂" not in existing_locs)
 
-        from core import write_extraction as _we2
+        from novel_kg.core import write_extraction as _we2
         close_all()
         extracted_auto = {
             "events": [
@@ -890,7 +890,7 @@ def main():
         kg.add_event("E2_01", title="审问嫌疑人", detail="在审讯室问话", chapter=2)
         kg.add_event("E3_01", title="揭露真相", detail="公布调查结果", chapter=3)
 
-        from core import batch_check_outline_compliance as _bcoc
+        from novel_kg.core import batch_check_outline_compliance as _bcoc
         close_all()
         result_batch = _bcoc(PROJECT, chapters=[1, 2, 3])
         test("batch returns results dict",
@@ -980,7 +980,7 @@ def main():
         # Ch1 accept_edit → 快照
         snap_id = kg.snapshot_chapter(1, reason="test_accept")
         # 模拟 accept_edit 的下游标记
-        from core import _mine_clear_chapter
+        from novel_kg.core import _mine_clear_chapter
         _mine_clear_chapter(kg, 1)
         kg.add_event("E1_01", title="新事件1", detail="新详情", chapter=1)
         for ch in range(2, 4):
@@ -1043,7 +1043,7 @@ def main():
 
         # ---- 26. 篇幅校验增强 ----
         print("\n[26] 篇幅校验增强")
-        from validators import validate_length, _count_chinese_chars
+        from novel_kg.validators import validate_length, _count_chinese_chars
 
         # 正常篇幅 → 无违规
         normal_text = "字" * 2800
@@ -1091,7 +1091,7 @@ def main():
         # ---- 27. 目的检查缓存 ----
         print("\n[27] 目的检查缓存")
         import hashlib as _hl
-        from core import (_purpose_cache_path, _purpose_cache_hash,
+        from novel_kg.core import (_purpose_cache_path, _purpose_cache_hash,
                           _read_purpose_cache, _write_purpose_cache,
                           _invalidate_purpose_cache)
 

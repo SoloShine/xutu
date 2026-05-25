@@ -8,12 +8,9 @@ import sys
 import json
 import time
 
-# 确保 import 路径
-_here = os.path.dirname(os.path.abspath(__file__))
-if _here not in sys.path:
-    sys.path.insert(0, _here)
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src'))
 
-from telemetry import (
+from novel_kg.telemetry import (
     TelemetryCollector, ToolCall, ChapterSession,
     wrap, init_telemetry, get_collector,
     _infer_chapter, _infer_project, _extract_decision, _bind_args,
@@ -136,7 +133,7 @@ def dummy_func(project, chapter, text=""):
 # collector 为 None，应直接执行
 prev_collector = get_collector()
 # 确保临时清空
-import telemetry
+from novel_kg import telemetry
 telemetry._collector = None
 
 result = dummy_func("test", chapter=3, text="hello")

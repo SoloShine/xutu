@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "novel-kg"
+version = "1.0.0"
+description = "Novel Knowledge Graph — MCP server for AI-assisted novel writing"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "pyyaml>=6.0",
+    "click>=8.0.0",
+    "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+neo4j = ["neo4j>=5.0.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

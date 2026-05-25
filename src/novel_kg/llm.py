@@ -183,8 +183,8 @@ def generate_chapter(prompt):
 
 def generate_world(direction, project=None):
     """生成世界观设定（返回JSON）"""
-    from prompts import WORLD_BUILD_PROMPT
-    from config_loader import config_loader
+    from .prompts import WORLD_BUILD_PROMPT
+    from .config_loader import config_loader
     cfg = config_loader.load(project)
     wb_cfg = cfg.get("world_building", {})
     prompt = WORLD_BUILD_PROMPT.format(
@@ -200,8 +200,8 @@ def generate_world(direction, project=None):
 
 def generate_outline(world_setup, total_chapters=6, project=None):
     """生成全局大纲（返回JSON）"""
-    from prompts import OUTLINE_GENERATION_PROMPT
-    from config_loader import config_loader
+    from .prompts import OUTLINE_GENERATION_PROMPT
+    from .config_loader import config_loader
     cfg = config_loader.load(project)
     derivation_cfg = cfg.get("derivation", {})
     prompt = OUTLINE_GENERATION_PROMPT.format(

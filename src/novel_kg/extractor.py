@@ -7,7 +7,7 @@ MVP策略：不搞NLP模型微调，直接用结构化模板手工录入。
 真正的价值验证在「图谱查询是否优于全文塞prompt」，不在「提取是否自动化」。
 """
 
-from graph import NovelKG
+from .graph import NovelKG
 
 
 def build_graph(kg: NovelKG):

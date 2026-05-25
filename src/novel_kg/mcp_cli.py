@@ -18,10 +18,7 @@ import os
 import json
 import argparse
 
-# 确保 core.py 可导入（同目录）
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-import core
+from . import core
 
 
 def _out(data):

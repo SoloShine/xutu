@@ -8,7 +8,7 @@ Agent通过这些工具读取图谱上下文、获取生成指导、写回结构
 业务逻辑在 core.py，本文件仅做 MCP 装饰。
 """
 
-import core
+from . import core
 from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP(

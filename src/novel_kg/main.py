@@ -3,8 +3,8 @@ Novel Knowledge Graph MVP
 主流程：构建图谱 → 一致性检查 → 基于图谱的续写演示
 """
 
-from graph import NovelKG
-from extractor import build_graph
+from .graph import NovelKG
+from .extractor import build_graph
 import json
 
 

@@ -13,23 +13,20 @@ neo4j_logs/
 .env
 *.key
 
-# Generated content (小说正文、提取结果、prompt缓存)
-novel_kg_mvp/projects/
+# Generated content (projects + archived verification data)
+projects/
 archive/
 
-# Temp files
-novel_kg_mvp/temp_*
-novel_kg_mvp/=*
-novel_kg_mvp/thread_*
-novel_kg_mvp/resolved_*
-novel_kg_mvp/README.txt
-
-# Test scripts (legacy, not part of pipeline)
-novel_kg_mvp/test_*.py
-novel_kg_mvp/build_derivation_context.py
-
-# Legacy directories
+# Legacy directories (pre-restructure)
+novel_kg_mvp/
+novel_mcp_server/
 sheng_si_chang/
+
+# Temp / scratch files
+merge_chapters.py
+outline_clean.json
+outline_diliuci.json
+temp_ch2_text.txt
 
 # IDE / OS
 .idea/

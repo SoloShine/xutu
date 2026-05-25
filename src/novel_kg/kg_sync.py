@@ -139,15 +139,15 @@ def _write_all(target_kg, data: dict) -> dict:
 def sync_json_to_neo4j(project, json_backend=None, neo4j_backend=None):
     """从 JSON 后端导入到 Neo4j 后端"""
     if json_backend is None:
-        from kg_json import JsonKG
+        from .kg_json import JsonKG
         import os
         _here = os.path.dirname(os.path.abspath(__file__))
-        _projects_dir = os.path.normpath(
-            os.path.join(_here, '..', 'novel_kg_mvp', 'projects'))
+        _repo_root = os.path.normpath(os.path.join(_here, '..', '..'))
+        _projects_dir = os.environ.get('KG_PROJECTS_DIR') or os.path.join(_repo_root, 'projects')
         json_backend = JsonKG(project=project, data_dir=_projects_dir)
 
     if neo4j_backend is None:
-        from graph import NovelKG
+        from .graph import NovelKG
         neo4j_backend = NovelKG(project=project)
 
     data = _read_all(json_backend)
@@ -168,15 +168,15 @@ def sync_json_to_neo4j(project, json_backend=None, neo4j_backend=None):
 def sync_neo4j_to_json(project, neo4j_backend=None, json_backend=None):
     """从 Neo4j 后端导出到 JSON 后端"""
     if neo4j_backend is None:
-        from graph import NovelKG
+        from .graph import NovelKG
         neo4j_backend = NovelKG(project=project)
 
     if json_backend is None:
-        from kg_json import JsonKG
+        from .kg_json import JsonKG
         import os
         _here = os.path.dirname(os.path.abspath(__file__))
-        _projects_dir = os.path.normpath(
-            os.path.join(_here, '..', 'novel_kg_mvp', 'projects'))
+        _repo_root = os.path.normpath(os.path.join(_here, '..', '..'))
+        _projects_dir = os.environ.get('KG_PROJECTS_DIR') or os.path.join(_repo_root, 'projects')
         json_backend = JsonKG(project=project, data_dir=_projects_dir)
 
     data = _read_all(neo4j_backend)
