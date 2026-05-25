@@ -24,21 +24,94 @@ class ValidationResult:
 
 # ========== 人名校验 ==========
 
-# 对话标记提取：从"XX说/道"等模式中提取人名
-# 要求动词后紧跟冒号/引号，排除"第二道划痕"等量词用法
+# Layer 1a: 收紧的对话标签提取 — 仅匹配明确的引出式对话动词
+# 去掉了 笑|低声|沉声|吼|叹|应 —— 这些是修饰/动作，不是纯对话引出词
 _DIALOG_NAME_RE = re.compile(
-    r'([一-鿿]{2,4})'
-    r'(说|道|喊|问|回答|笑|低声|沉声|叫|吼|叹|应)'
-    r'[:：“""]'
+    r'([一-鿿]{2,4}?)'
+    r'(回答|问道|说道|喊道|叫道|答道|说|道|问|喊|叫|答)'
+    r'[:：""]'
 )
+
+# Layer 1b: 非对话上下文提取 —— 从"人名+动作"模式中找高置信度人名
+# 副词/修饰语不会单独作为动作主语出现
+_SUBJECT_ACTION_RE = re.compile(
+    r'(?:^|[。！？；\n])'
+    r'([一-鿿]{2,4})'
+    r'(走|跑|站|坐|拿|放|看|指|转|推|拉|点|按|摸|翻|写|画|蹲|跪|靠|抬|退|进)'
+)
+
+# Layer 2: 误判词硬排除模式（按优先级排列）
+_NON_NAME_PATTERNS = [
+    # X声 —— 副词式对话修饰（低声、轻声、沉声、柔声…）
+    (re.compile(r'^[轻低沉稳高冷淡微柔哑闷细暗尖]声$'), '副词-声'),
+    # X着 —— 持续体修饰（笑着、叹着、看着…）
+    (re.compile(r'^.{1,2}着$'), '动作-着'),
+    # X了X —— 动词重叠（笑了笑、看了看、指了指…）
+    (re.compile(r'^.{1}[了].{1}$'), '动词重叠'),
+    # 方向+身体 —— （抬头、低头、回头、转身…）
+    (re.compile(r'^[抬低回转过侧扭][头身脸眼手腰]?$'), '方向动作'),
+    # 常见副词/连词（直接、对方、回来…）
+    (re.compile(r'^(直接|对方|马上|忽然|突然|终于|已经|还是|本来|原来)$'), '常见副词'),
+    # 场景名词/工作词（物业小哥、前台姑娘、客户稿…）
+    (re.compile(r'^(物业|前台|同事|客户|样张|文件|电话|电梯|楼道)$'), '场景名词'),
+    # 界面/设备词（页脚、滚动条、边距…）
+    (re.compile(r'^(页脚|边距|版权|接头|导出|滚动|闪白|螺丝|白点)$'), '界面词'),
+    # 感官词（白汽、电流声、嗡鸣…）
+    (re.compile(r'^(白汽|灰线|细白|嗡鸣|沙沙|电流)(声|光)?$'), '感官词'),
+]
+
+# 非人名后缀：以这些字结尾的2-4字词大概率不是中文名字
+_NON_NAME_SUFFIXES = set('声着汽光线条点距脚头边面页孔末迹底')
+
+# 高置信度人名后缀：中文名字常用尾字（备用，当前未启用自动判定）
+_NAME_SUFFIXES = set(
+    '明华平芳伟敏静丽强军勇艳娟涛磊峰辉燕玲波刚健红英杰霞斌慧超飞彬林宁欣萍莉鹏鑫')
+
+
+def _is_non_name_token(candidate):
+    """Layer 2: 检查候选词是否命中硬排除模式"""
+    for pattern, _category in _NON_NAME_PATTERNS:
+        if pattern.match(candidate):
+            return True
+    # 以非人名后缀结尾（辅助判断）
+    if len(candidate) >= 2 and candidate[-1] in _NON_NAME_SUFFIXES:
+        return True
+    return False
 
 
 def _extract_names_from_dialogue(text):
-    """从对话标签中提取人名（高精度）"""
+    """从对话标签中提取候选名（Layer 1a：收紧动词组，减少源头误匹配）"""
     candidates = set()
     for m in _DIALOG_NAME_RE.finditer(text):
-        candidates.add(m.group(1))
+        name = m.group(1)
+        if not _is_non_name_token(name):
+            candidates.add(name)
     return candidates
+
+
+def _extract_subject_names(text):
+    """从非对话主语位置提取高置信度人名（Layer 1b）"""
+    candidates = set()
+    for m in _SUBJECT_ACTION_RE.finditer(text):
+        name = m.group(1)
+        if not _is_non_name_token(name):
+            candidates.add(name)
+    return candidates
+
+
+def _has_subject_evidence(name, text):
+    """Layer 3: 检查候选词是否在非对话上下文中作为主语/施动者出现。
+
+    如果候选词只在对话标签中出现（"XX说"），没有在任何地方作为动作主语
+    （"XX走过去"、"XX拿起"），则大概率是副词误判，不是真人名。
+    """
+    # 移除所有对话标签行，在剩余文本中查找
+    cleaned = re.sub(
+        r'[一-鿿]{2,4}?(回答|问道|说道|喊道|叫道|答道|说|道|问|喊|叫|答)[:：""]',
+        '', text
+    )
+    # 检查是否在非对话上下文中出现
+    return name in cleaned
 
 
 def _fuzzy_match(name, known_names):
@@ -56,7 +129,12 @@ def _fuzzy_match(name, known_names):
 
 
 def validate_character_names(text, known_names):
-    """校验文本中的人名是否与图谱一致"""
+    """校验文本中的人名是否与图谱一致（三层过滤）。
+
+    Layer 1: 收紧正则（只匹配纯对话动词）+ 从动作主语位置提取高置信度人名
+    Layer 2: 硬排除模式（X声/X着/X了X/方向动作/常见副词/场景词/感官词）
+    Layer 3: 上下文验证（候选词只在对话标签出现 → 静默跳过）
+    """
     violations = []
     if not known_names:
         return violations
@@ -72,11 +150,16 @@ def validate_character_names(text, known_names):
                 detail=f"已知人物'{kn}'未在本章出现",
             ))
 
-    # 对话标签提取（高精度）
+    # Layer 1a: 对话标签提取（收紧动词组 + Layer 2 硬排除）
     found = _extract_names_from_dialogue(text)
-    for name in found:
+
+    # Layer 1b: 非对话主语提取（高置信度补充）
+    subject_names = _extract_subject_names(text)
+
+    for name in sorted(found | subject_names):
         if name in known_set:
             continue
+
         matched = _fuzzy_match(name, known_set)
         if matched:
             violations.append(Violation(
@@ -85,12 +168,19 @@ def validate_character_names(text, known_names):
                 detail=f"人名'{name}'与图谱不一致",
                 fix=matched,
             ))
-        else:
-            violations.append(Violation(
-                constraint_type="character_name",
-                severity="warning",
-                detail=f"对话中出现未知人名'{name}'（不在图谱人物列表中）",
-            ))
+            continue
+
+        # Layer 3: 上下文验证 —— 只在对话标签出现的词，静默跳过
+        if not _has_subject_evidence(name, text):
+            # 候选词仅在对话标签出现，无主语证据 → 大概率是副词/修饰误判
+            continue
+
+        # 有主语证据 → 可能是真正的未知人名
+        violations.append(Violation(
+            constraint_type="character_name",
+            severity="warning",
+            detail=f"对话中出现未知人名'{name}'（不在图谱人物列表中）",
+        ))
 
     return violations
 
@@ -255,7 +345,7 @@ def validate_forbidden_patterns(text, config):
 def _count_chinese_chars(text):
     """统计中文字符数（去空白标点）"""
     # Remove whitespace, punctuation, and special characters
-    cleaned = re.sub(r'[\s　-〿＀-￯ -⁯-ÿ\n\r\t]', '', text)
+    cleaned = re.sub(r'[\s　-〿＀-￯ -⁯\x00-\xff\n\r\t]', '', text)
     return len(cleaned)
 
 
