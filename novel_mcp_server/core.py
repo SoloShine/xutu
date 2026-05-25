@@ -14,7 +14,7 @@ import hashlib
 # 定位目录
 _here = os.path.dirname(os.path.abspath(__file__))
 _mvp_dir = os.path.normpath(os.path.join(_here, '..', 'novel_kg_mvp'))
-_projects_dir = os.path.join(_mvp_dir, 'projects')
+_projects_dir = os.environ.get('KG_PROJECTS_DIR') or os.path.join(_mvp_dir, 'projects')
 
 # novel_kg_mvp 需要 chdir（因为 config.yaml 相对路径）
 os.chdir(_mvp_dir)
