@@ -305,6 +305,25 @@ def main():
              any(i["type"] == "场景密度异常" for i in pacing_issues),
              f"issues: {[i['type'] for i in pacing_issues]}")
 
+        # ending_type 字段测试
+        kg.add_chapter_arc(7, purpose="测试ending_type", scenes="A->B",
+                           ending="悬念结尾", ending_type="cliffhanger")
+        arc7 = [a for a in kg.get_all_chapter_arcs() if a.get("chapter") == 7][0]
+        test("ending_type stored", arc7.get("ending_type") == "cliffhanger",
+             f"got {arc7.get('ending_type')}")
+
+        # 连续 ending_type 重复检测
+        kg.add_chapter_arc(8, purpose="ch8", scenes="A->B",
+                           ending="又悬念", ending_type="cliffhanger")
+        kg.add_chapter_arc(9, purpose="ch9", scenes="A->B",
+                           ending="还悬念", ending_type="cliffhanger")
+        all_arcs2 = sorted(kg.get_all_chapter_arcs(), key=lambda a: a.get("chapter", 0))
+        pacing2 = []
+        _check_ending_repetition(all_arcs2, pacing2, {})
+        test("ending_type repetition detected",
+             any(i["type"] == "结尾类型重复" for i in pacing2),
+             f"issues: {[i['type'] for i in pacing2]}")
+
         # ---- 14. 大纲合规检查 ----
         print("\n[14] 大纲合规检查")
         from validators import check_outline_compliance

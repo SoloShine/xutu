@@ -152,12 +152,13 @@ def add_chapter_arc(project: str, chapter: int, purpose: str, scenes: str,
                     ending: str, gap_note: str = "",
                     structure_type: str = "linear", time_jumps: str = "",
                     thread_plan: str = "", reasoning: str = "",
-                    rhythm: str = "") -> str:
+                    rhythm: str = "", ending_type: str = "") -> str:
     """添加/更新章节弧线。time_jumps和thread_plan如果是对象请传JSON字符串。
-    rhythm可选: tight(紧凑), ascending(递进加速), descending(递减放慢), mixed(混合)"""
+    rhythm可选: tight(紧凑), ascending(递进加速), descending(递减放慢), mixed(混合)
+    ending_type可选: cliffhanger(悬念), revelation(揭示), quiet(安静), reversal(反转), open(开放式), daily(日常)"""
     return core.add_chapter_arc(project, chapter, purpose, scenes, ending,
                                 gap_note, structure_type, time_jumps,
-                                thread_plan, reasoning, rhythm)
+                                thread_plan, reasoning, rhythm, ending_type)
 
 
 @mcp.tool()

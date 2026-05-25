@@ -284,11 +284,24 @@ def get_derivation_prompt(project: str, chapter: int) -> str:
     ) if ctx.get("suspense_threads") else "无"
 
     cfg = config_loader.load(project)
+    # 构建多样性约束文本
+    recent_arcs_list = ctx.get("recent_arcs", [])
+    if recent_arcs_list:
+        diversity_lines = []
+        for arc in recent_arcs_list:
+            ch = arc.get("chapter", "?")
+            diversity_lines.append(
+                f"第{ch}章 purpose: {arc.get('purpose', '无')} | ending: {arc.get('ending', '无')}"
+            )
+        diversity_text = "\n".join(diversity_lines)
+    else:
+        diversity_text = "（首章，无历史数据）"
+
     prompt = ARC_DERIVATION_PROMPT.format(
         outline_entry=outline_text, suspense_threads=threads_text,
         recent_arcs=arcs_text, recent_events=events_text,
         characters=chars_text, themes=themes_text, motifs=motifs_text,
-        last_event=last_event_text,
+        last_event=last_event_text, recent_diversity=diversity_text,
         scenes_per_arc=cfg.get("derivation", {}).get("scenes_per_arc", "3-5"))
     _persist(project, "prompts", f"derivation_ch{chapter}.txt", prompt)
     return prompt
@@ -358,7 +371,7 @@ def add_chapter_arc(project: str, chapter: int, purpose: str, scenes: str,
                     ending: str, gap_note: str = "",
                     structure_type: str = "linear", time_jumps: str = "",
                     thread_plan: str = "", reasoning: str = "",
-                    rhythm: str = "") -> str:
+                    rhythm: str = "", ending_type: str = "") -> str:
     kg = _kg(project)
     props = {"purpose": purpose, "scenes": scenes, "ending": ending}
     if gap_note:
@@ -377,6 +390,8 @@ def add_chapter_arc(project: str, chapter: int, purpose: str, scenes: str,
         props["reasoning"] = reasoning
     if rhythm:
         props["rhythm"] = rhythm
+    if ending_type:
+        props["ending_type"] = ending_type
     kg.add_chapter_arc(chapter, **props)
     return f"已添加第{chapter}章弧线: {purpose}"
 
@@ -1127,13 +1142,25 @@ def _check_purpose_repetition(arcs, issues, cfg):
 
 
 def _check_ending_repetition(arcs, issues, cfg):
-    """检测连续3+章结尾类型重复"""
+    """检测连续3+章结尾类型重复（优先用ending_type，回退到bigram）"""
     window = 3
     min_shared = cfg.get("pacing", {}).get("min_shared", 2)
+    # 基于 ending_type 的检测
     for i in range(len(arcs) - window + 1):
         window_arcs = arcs[i:i+window]
-        endings = [a.get("ending", "") for a in window_arcs]
         chapters = [a.get("chapter", 0) for a in window_arcs]
+        ending_types = [a.get("ending_type", "") for a in window_arcs]
+        # 如果有 ending_type，用它做精确检测
+        if all(ending_types):
+            if len(set(ending_types)) == 1:
+                issues.append({
+                    "type": "结尾类型重复",
+                    "detail": f"第{chapters[0]}-{chapters[-1]}章连续{window}章结尾类型相同: '{ending_types[0]}'",
+                    "severity": "high"
+                })
+            continue
+        # 回退：用 bigram 检测 ending 文本相似
+        endings = [a.get("ending", "") for a in window_arcs]
         if _shared_keywords(endings, min_shared=min_shared):
             issues.append({
                 "type": "结尾重复",

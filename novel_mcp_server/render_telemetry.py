@@ -24,20 +24,34 @@ I18N = {
         "mcp_avg": "平均每章(MCP)",
         "wall_total": "总墙钟时间",
         "wall_avg": "平均每章(含LLM)",
-        "stacked_title": "每章工具耗时分布",
-        "dist_title": "工具耗时统计（最小/平均/最大）",
-        "trend_title": "每章耗时趋势",
-        "count_title": "工具调用次数",
+        "stacked_title": "章节工具负荷结构",
+        "dist_title": "最慢章节排行",
+        "trend_title": "章节耗时趋势",
+        "count_title": "章节负荷桶",
         "detail_title": "工具调用明细",
+        "chapter_detail_title": "章节明细",
+        "tool_detail_title": "工具调用明细",
         "th_chapter": "章节",
         "th_tool": "工具",
         "th_duration": "耗时",
         "th_tokens": "Token",
         "th_decision": "决策",
         "th_error": "错误",
+        "th_purpose": "目的",
+        "th_key_events": "关键事件",
+        "th_structure": "结构",
+        "th_wall": "墙钟",
+        "th_mcp": "MCP",
+        "th_tools2": "工具数",
+        "th_avg_tool": "均值",
+        "th_slowest": "最慢工具",
+        "th_threads": "线索",
+        "th_source": "来源",
         "badge_slow": "慢",
         "badge_med": "中",
         "badge_fast": "快",
+        "error_chapters": "有错误章节",
+        "error_total": "错误总数",
         "mcp_ms": "MCP工具耗时 (ms)",
         "wall_sec": "墙钟时间（含LLM，秒）",
         "y_mcp": "MCP耗时 (ms)",
@@ -59,20 +73,34 @@ I18N = {
         "mcp_avg": "Avg/Chapter (MCP)",
         "wall_total": "Wall Clock Total",
         "wall_avg": "Avg/Chapter (w/ LLM)",
-        "stacked_title": "Per-Chapter Tool Duration",
-        "dist_title": "Tool Duration (Min/Mean/Max)",
+        "stacked_title": "Chapter Tool Load",
+        "dist_title": "Slowest Chapters",
         "trend_title": "Chapter Duration Trend",
-        "count_title": "Tool Call Count",
+        "count_title": "Chapter Load Buckets",
         "detail_title": "Tool Call Details",
+        "chapter_detail_title": "Chapter Details",
+        "tool_detail_title": "Tool Call Details",
         "th_chapter": "Chapter",
         "th_tool": "Tool",
         "th_duration": "Duration",
         "th_tokens": "Tokens",
         "th_decision": "Decision",
         "th_error": "Error",
+        "th_purpose": "Purpose",
+        "th_key_events": "Key Events",
+        "th_structure": "Structure",
+        "th_wall": "Wall Clock",
+        "th_mcp": "MCP",
+        "th_tools2": "Tools",
+        "th_avg_tool": "Avg",
+        "th_slowest": "Slowest Tool",
+        "th_threads": "Threads",
+        "th_source": "Source",
         "badge_slow": "SLOW",
         "badge_med": "OK",
         "badge_fast": "FAST",
+        "error_chapters": "Chapters with Errors",
+        "error_total": "Total Errors",
         "mcp_ms": "MCP Tool Duration (ms)",
         "wall_sec": "Wall Clock (w/ LLM, seconds)",
         "y_mcp": "MCP Duration (ms)",
@@ -93,12 +121,13 @@ def load_telemetry(project: str) -> dict:
     here = os.path.dirname(os.path.abspath(__file__))
     mvp_dir = os.path.normpath(os.path.join(here, '..', 'novel_kg_mvp'))
     tel_dir = os.path.join(mvp_dir, 'projects', project, 'telemetry')
+    project_dir = os.path.join(mvp_dir, 'projects', project)
 
     if not os.path.isdir(tel_dir):
         print(f"遥测目录不存在: {tel_dir}")
         sys.exit(1)
 
-    data = {"chapters": {}, "summary": None}
+    data = {"chapters": {}, "summary": None, "outline": []}
     for fname in sorted(os.listdir(tel_dir)):
         fpath = os.path.join(tel_dir, fname)
         if fname.startswith("ch") and fname.endswith("_report.json"):
@@ -108,6 +137,10 @@ def load_telemetry(project: str) -> dict:
         elif fname == "session_summary.json":
             with open(fpath, "r", encoding="utf-8") as f:
                 data["summary"] = json.load(f)
+    outline_path = os.path.join(project_dir, "outline.json")
+    if os.path.exists(outline_path):
+        with open(outline_path, "r", encoding="utf-8") as f:
+            data["outline"] = json.load(f)
     return data, tel_dir
 
 
@@ -119,24 +152,66 @@ def render_dashboard(data: dict, output_path: str):
 
     sorted_ch = sorted(chapters.keys())
     ch_labels = [f"Ch{c}" for c in sorted_ch]
+    outline_map = {
+        item.get("chapter"): item
+        for item in data.get("outline", [])
+        if isinstance(item, dict) and item.get("chapter") is not None
+    }
 
     ch_totals = []
     ch_wall_clock = []
+    chapter_rows = []
+    bucket_labels = ["短", "中", "长"]
+    bucket_counts = [0, 0, 0]
+    slow_chapters = []
+    error_chapters = 0
+    total_errors = 0
+    total_wall_clock = 0
     for c in sorted_ch:
         r = chapters[c]
-        ch_totals.append(r.get("totals", {}).get("duration_ms", 0))
-        ch_wall_clock.append(r.get("wall_clock_ms", 0))
+        outline = outline_map.get(c, {})
+        tool_calls = r.get("tool_calls", [])
+        tool_count = len(tool_calls)
+        total_ms = r.get("totals", {}).get("duration_ms", 0)
+        wall_ms = r.get("wall_clock_ms", 0)
+        error_count = sum(1 for tc in tool_calls if tc.get("error"))
+        if error_count:
+            error_chapters += 1
+        total_errors += error_count
+        total_wall_clock += wall_ms
+        ch_totals.append(total_ms)
+        ch_wall_clock.append(wall_ms)
+        slow_chapters.append((c, wall_ms))
 
-    ch_tool_counts = [chapters[c].get("totals", {}).get("tool_count", 0) for c in sorted_ch]
+        if wall_ms < 120000:
+            bucket_counts[0] += 1
+        elif wall_ms < 300000:
+            bucket_counts[1] += 1
+        else:
+            bucket_counts[2] += 1
 
-    tool_names, tool_means, tool_mins, tool_maxs, tool_counts = [], [], [], [], []
-    if summary and "tool_stats" in summary:
-        for name, stats in sorted(summary["tool_stats"].items()):
-            tool_names.append(name)
-            tool_means.append(stats.get("mean_ms", 0))
-            tool_mins.append(stats.get("min_ms", 0))
-            tool_maxs.append(stats.get("max_ms", 0))
-            tool_counts.append(stats.get("count", 0))
+        slowest_tool = "-"
+        slowest_ms = 0
+        if tool_calls:
+            slowest = max(tool_calls, key=lambda tc: tc.get("duration_ms", 0))
+            slowest_tool = slowest.get("tool", "-")
+            slowest_ms = slowest.get("duration_ms", 0)
+
+        chapter_rows.append({
+            "chapter": c,
+            "purpose": outline.get("purpose", ""),
+            "key_events": outline.get("key_events", ""),
+            "structure": outline.get("structure_hint", ""),
+            "wall_clock_ms": wall_ms,
+            "mcp_ms": total_ms,
+            "tool_count": tool_count,
+            "avg_tool_ms": total_ms / max(tool_count, 1),
+            "error_count": error_count,
+            "slowest_tool": slowest_tool,
+            "slowest_ms": slowest_ms,
+            "threads": _compact_threads(outline),
+            "source": (r.get("wall_clock_source") or {}).get("method", "auto"),
+        })
 
     all_tools = sorted(set(
         tc["tool"] for r in chapters.values() for tc in r.get("tool_calls", [])
@@ -154,7 +229,7 @@ def render_dashboard(data: dict, output_path: str):
             vals.append(round(total, 1))
         stacked_datasets.append({"label": t, "data": vals, "backgroundColor": tool_colors[t]})
 
-    table_rows = []
+    tool_rows = []
     for c in sorted_ch:
         r = chapters[c]
         for tc in r.get("tool_calls", []):
@@ -163,22 +238,27 @@ def render_dashboard(data: dict, output_path: str):
             if d:
                 parts = [f"{k}={v}" for k, v in d.items() if v]
                 decision_str = ", ".join(parts[:3])
-            table_rows.append({
+            tool_rows.append({
                 "chapter": c, "tool": tc.get("tool", ""),
                 "duration": tc.get("duration_ms", 0),
                 "tokens": _fmt_tokens(tc.get("llm_tokens")),
                 "decision": decision_str, "error": tc.get("error", ""),
             })
 
-    total_calls = sum(ch_tool_counts) if ch_tool_counts else 0
+    total_calls = sum(r.get("totals", {}).get("tool_count", 0) for r in chapters.values())
     total_duration = sum(ch_totals) if ch_totals else 0
+    avg_wall_clock = total_wall_clock / max(len(sorted_ch), 1)
+    slow_chapters = sorted(slow_chapters, key=lambda item: item[1], reverse=True)[:10]
+    slow_chapter_labels = [f"Ch{c}" for c, _ in slow_chapters]
+    slow_chapter_values = [round(v / 1000, 1) for _, v in slow_chapters]
     session_id = (summary or {}).get("session_id", "N/A")
 
     # 墙钟概览
     wc_html = _wall_clock_metrics(sorted_ch, ch_wall_clock)
 
     # 表格行
-    table_html = _render_table_rows(table_rows)
+    chapter_table_html = _render_chapter_rows(chapter_rows)
+    tool_table_html = _render_tool_rows(tool_rows)
 
     # I18N JSON（供前端JS切换使用）
     i18n_json = json.dumps(I18N, ensure_ascii=False)
@@ -266,6 +346,8 @@ def render_dashboard(data: dict, output_path: str):
   <div class="metric"><span class="val">{total_calls}</span><span class="label" data-i18n="tool_calls">{zh['tool_calls']}</span></div>
   <div class="metric"><span class="val">{total_duration:.0f}ms</span><span class="label" data-i18n="mcp_total">{zh['mcp_total']}</span></div>
   <div class="metric"><span class="val">{total_duration/max(len(sorted_ch),1):.0f}ms</span><span class="label" data-i18n="mcp_avg">{zh['mcp_avg']}</span></div>
+  <div class="metric"><span class="val">{total_errors}</span><span class="label">{zh['error_total']}</span></div>
+  <div class="metric"><span class="val">{error_chapters}</span><span class="label">{zh['error_chapters']}</span></div>
   {wc_html}
 </div>
 
@@ -289,9 +371,35 @@ def render_dashboard(data: dict, output_path: str):
   </div>
 </div>
 
-<!-- 明细表格 -->
+<!-- 章节明细 -->
 <div class="card">
-  <h2 data-i18n="detail_title">{zh['detail_title']}</h2>
+  <h2 data-i18n="chapter_detail_title">{zh['chapter_detail_title']}</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="th_chapter">{zh['th_chapter']}</th>
+          <th data-i18n="th_purpose">{zh['th_purpose']}</th>
+          <th data-i18n="th_key_events">{zh['th_key_events']}</th>
+          <th data-i18n="th_structure">{zh['th_structure']}</th>
+          <th data-i18n="th_wall">{zh['th_wall']}</th>
+          <th data-i18n="th_mcp">{zh['th_mcp']}</th>
+          <th data-i18n="th_tools2">{zh['th_tools2']}</th>
+          <th data-i18n="th_avg_tool">{zh['th_avg_tool']}</th>
+          <th data-i18n="th_slowest">{zh['th_slowest']}</th>
+          <th data-i18n="th_error">{zh['th_error']}</th>
+          <th data-i18n="th_threads">{zh['th_threads']}</th>
+          <th data-i18n="th_source">{zh['th_source']}</th>
+        </tr>
+      </thead>
+      <tbody>{chapter_table_html}</tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 工具明细 -->
+<details class="card" style="margin-top:16px">
+  <summary style="cursor:pointer; color:var(--muted); font-size:0.9rem; font-weight:600; margin-bottom:12px;" data-i18n="tool_detail_title">{zh['tool_detail_title']}</summary>
   <div class="table-wrap">
     <table>
       <thead>
@@ -304,10 +412,10 @@ def render_dashboard(data: dict, output_path: str):
           <th data-i18n="th_error">{zh['th_error']}</th>
         </tr>
       </thead>
-      <tbody>{table_html}</tbody>
+      <tbody>{tool_table_html}</tbody>
     </table>
   </div>
-</div>
+</details>
 
 <script>
 const I18N = {i18n_json};
@@ -320,9 +428,8 @@ const chartI18n = {{
     y_label: {{ zh: '耗时 (ms)', en: 'Duration (ms)' }}
   }},
   dist: {{
-    y_label: {{ zh: '耗时 (ms)', en: 'Duration (ms)' }},
-    labels: {{ zh: ['{zh['dist_min']}', '{zh['dist_mean']}', '{zh['dist_max']}'],
-              en: ['Min', 'Mean', 'Max'] }}
+    y_label: {{ zh: '墙钟时间 (秒)', en: 'Wall Clock (sec)' }},
+    labels: {{ zh: ['最慢章节'], en: ['Slowest Chapters'] }}
   }},
   trend: {{
     y_mcp: {{ zh: 'MCP耗时 (ms)', en: 'MCP Duration (ms)' }},
@@ -330,7 +437,9 @@ const chartI18n = {{
     ds_mcp: {{ zh: 'MCP工具耗时 (ms)', en: 'MCP Tool Duration (ms)' }},
     ds_wall: {{ zh: '墙钟时间（含LLM，秒）', en: 'Wall Clock (w/ LLM, sec)' }},
   }},
-  count: {{}}
+  count: {{
+    labels: {{ zh: ['短篇', '中篇', '长篇'], en: ['Short', 'Medium', 'Long'] }}
+  }}
 }};
 
 function switchLang(lang) {{
@@ -365,9 +474,7 @@ function updateCharts(lang) {{
   // 分布图
   if (charts.dist) {{
     charts.dist.data.datasets[0].label = chartI18n.dist.labels[lang][0];
-    charts.dist.data.datasets[1].label = chartI18n.dist.labels[lang][1];
-    charts.dist.data.datasets[2].label = chartI18n.dist.labels[lang][2];
-    charts.dist.options.scales.y.title.text = chartI18n.dist.y_label[lang];
+    charts.dist.options.scales.x.title.text = chartI18n.dist.y_label[lang];
     charts.dist.update();
   }}
 
@@ -380,6 +487,11 @@ function updateCharts(lang) {{
       charts.trend.options.scales.y1.title.text = chartI18n.trend.y_wall[lang];
     }}
     charts.trend.update();
+  }}
+
+  if (charts.count) {{
+    charts.count.data.labels = chartI18n.count.labels[lang];
+    charts.count.update();
   }}
 
   // 表格徽章
@@ -405,25 +517,24 @@ charts.stacked = new Chart(document.getElementById('stackedChart'), {{
   }}
 }});
 
-// 工具耗时分布
+// 最慢章节排行
 charts.dist = new Chart(document.getElementById('distChart'), {{
   type: 'bar',
   data: {{
-    labels: {_json(tool_names)},
+    labels: {_json(slow_chapter_labels)},
     datasets: [
-      {{ label: '{zh['dist_min']}', data: {_json(tool_mins)}, backgroundColor: '#3fb950' }},
-      {{ label: '{zh['dist_mean']}', data: {_json(tool_means)}, backgroundColor: '#58a6ff' }},
-      {{ label: '{zh['dist_max']}', data: {_json(tool_maxs)}, backgroundColor: '#f85149' }},
+      {{ label: '{zh['wall_sec']}', data: {_json(slow_chapter_values)}, backgroundColor: '#f28e2b' }},
     ]
   }},
   options: {{
+    indexAxis: 'y',
     responsive: true, maintainAspectRatio: false,
     scales: {{
-      x: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e', maxRotation: 45 }} }},
-      y: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e' }},
-           title: {{ display: true, text: '耗时 (ms)', color: '#8b949e' }} }}
+      x: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e' }},
+           title: {{ display: true, text: '墙钟时间 (秒)', color: '#8b949e' }} }},
+      y: {{ grid: {{ color: '#30363d' }}, ticks: {{ color: '#8b949e' }} }}
     }},
-    plugins: {{ legend: {{ labels: {{ color: '#e6edf3' }} }} }}
+    plugins: {{ legend: {{ display: false }} }}
   }}
 }});
 
@@ -467,14 +578,14 @@ charts.trend = new Chart(document.getElementById('trendChart'), {{
   }}
 }});
 
-// 工具调用次数
+// 章节负荷桶
 charts.count = new Chart(document.getElementById('countChart'), {{
   type: 'doughnut',
   data: {{
-    labels: {_json(tool_names)},
+    labels: {_json(bucket_labels)},
     datasets: [{{
-      data: {_json(tool_counts)},
-      backgroundColor: {_json([tool_colors.get(t, '#58a6ff') for t in tool_names])}
+      data: {_json(bucket_counts)},
+      backgroundColor: ['#3fb950', '#58a6ff', '#f28e2b']
     }}]
   }},
   options: {{
@@ -531,7 +642,53 @@ def _fmt_tokens(tokens) -> str:
     return f"{p}+{c}" if (p or c) else "-"
 
 
-def _render_table_rows(rows: list) -> str:
+def _short_html(text: str, limit: int = 48) -> str:
+    raw = text or "-"
+    display = raw if len(raw) <= limit else raw[: max(limit - 1, 1)] + "…"
+    return f'<span title="{_html.escape(raw)}">{_html.escape(display)}</span>'
+
+
+def _compact_threads(outline: dict) -> str:
+    if not outline:
+        return "-"
+    parts = []
+    plant = (outline.get("threads_to_plant") or "").strip()
+    resolve = (outline.get("threads_to_resolve") or "").strip()
+    if plant and plant != "无":
+        parts.append(f"植入:{plant}")
+    if resolve and resolve != "无":
+        parts.append(f"回收:{resolve}")
+    return " / ".join(parts) if parts else "-"
+
+
+def _render_chapter_rows(rows: list) -> str:
+    parts = []
+    for r in rows:
+        wall = _fmt_duration(r["wall_clock_ms"])
+        mcp = f'{r["mcp_ms"]:.1f}ms'
+        avg_tool = f'{r["avg_tool_ms"]:.1f}ms'
+        slowest = f'{_html.escape(r["slowest_tool"])} ({r["slowest_ms"]:.1f}ms)' if r["slowest_tool"] != "-" else "-"
+        err_cls = ' class="error"' if r["error_count"] else ""
+        parts.append(
+            f'<tr>'
+            f'<td>Ch{r["chapter"]}</td>'
+            f'<td>{_short_html(r["purpose"], 40)}</td>'
+            f'<td>{_short_html(r["key_events"], 56)}</td>'
+            f'<td>{_html.escape(r["structure"] or "-")}</td>'
+            f'<td>{wall}</td>'
+            f'<td>{mcp}</td>'
+            f'<td>{r["tool_count"]}</td>'
+            f'<td>{avg_tool}</td>'
+            f'<td>{slowest}</td>'
+            f'<td{err_cls}>{r["error_count"]}</td>'
+            f'<td>{_short_html(r["threads"], 60)}</td>'
+            f'<td>{_html.escape(r["source"] or "-")}</td>'
+            f'</tr>'
+        )
+    return "\n".join(parts)
+
+
+def _render_tool_rows(rows: list) -> str:
     parts = []
     for r in rows:
         dur = r["duration"]

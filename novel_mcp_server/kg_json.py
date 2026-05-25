@@ -40,10 +40,12 @@ class JsonKG:
         self.project = project
         self._config = config or {}
         if data_dir is None:
-            # 默认：novel_kg_mvp/projects/
-            _here = os.path.dirname(os.path.abspath(__file__))
-            data_dir = os.path.normpath(
-                os.path.join(_here, '..', 'novel_kg_mvp', 'projects'))
+            # 环境变量优先，默认：novel_kg_mvp/projects/
+            data_dir = os.environ.get('KG_PROJECTS_DIR')
+            if not data_dir:
+                _here = os.path.dirname(os.path.abspath(__file__))
+                data_dir = os.path.normpath(
+                    os.path.join(_here, '..', 'novel_kg_mvp', 'projects'))
         self.data_dir = data_dir
         self._graph = None
         self._load()
