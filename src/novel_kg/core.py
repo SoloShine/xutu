@@ -146,7 +146,7 @@ from .core_crud import (  # noqa: E402
     get_chapter_context, get_derivation_context, get_graph_stats,
     check_consistency, get_unresolved_threads, get_all_threads,
     get_extraction_prompt, get_writing_prompt, get_derivation_prompt,
-    init_project, add_character, add_location, add_event,
+    get_editing_prompt, init_project, add_character, add_location, add_event,
     add_chapter_arc, add_suspense_thread, add_outline_entry,
     add_style_guide, add_motif, add_theme, add_time_period,
     add_relation, update_suspense_thread, write_extraction,

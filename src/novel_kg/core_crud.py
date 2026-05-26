@@ -142,6 +142,52 @@ def get_derivation_prompt(project: str, chapter: int) -> str:
     return prompt
 
 
+def get_editing_prompt(project: str, chapter: int, draft: str = "",
+                       draft_file: str = "") -> str:
+    """生成编辑审查 prompt。draft 是初稿文本，draft_file 是初稿文件路径（二选一）。"""
+    if not draft and draft_file:
+        with open(draft_file, "r", encoding="utf-8") as f:
+            draft = f.read()
+    if not draft:
+        return "错误：未提供初稿文本。"
+
+    cfg = config_loader.load(project)
+    kg = _kg(project)
+    context = kg.get_context_for_chapter(chapter, prev_text_chars=0)
+
+    # 构建风格清单（与 build_writing_prompt 相同的维度分组逻辑）
+    style_guides = context.get("style_guides", [])
+    checklist_lines = []
+    dim_order = ["叙事声", "对话", "描写", "节奏", "过渡", "情感表达", "通用"]
+    dim_groups = {d: [] for d in dim_order}
+    for sg in style_guides:
+        dim = sg.get("dimension", "通用")
+        if dim not in dim_groups:
+            dim_groups[dim] = []
+        dim_groups[dim].append(sg)
+
+    for dim in dim_order:
+        for sg in dim_groups.get(dim, []):
+            goal = sg.get("goal", sg.get("rule", ""))
+            checklist_lines.append(f"{dim} — {goal}")
+            for ex in sg.get("good_examples", []):
+                checklist_lines.append(f"  ✓ {ex}")
+            for ex in sg.get("bad_examples", []):
+                checklist_lines.append(f"  ✗ {ex}")
+
+    quote_style = cfg.get("style", {}).get("quote_style", "\"\"")
+    style_checklist = "\n".join(checklist_lines) if checklist_lines else "（未配置风格规则）"
+
+    from .prompts import EDITING_PROMPT
+    prompt = EDITING_PROMPT.format(
+        style_checklist=style_checklist,
+        quote_style=quote_style,
+        draft=draft,
+    )
+    _persist(project, "prompts", f"editing_ch{chapter}.txt", prompt)
+    return prompt
+
+
 # ============================================================
 # 3. Write Tools
 # ============================================================

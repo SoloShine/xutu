@@ -89,6 +89,14 @@ def build_parser():
     _proj(sp); _chap(sp)
     sp.set_defaults(func=lambda a: _out(core.get_derivation_prompt(a.project, a.chapter)))
 
+    sp = sub.add_parser('get_editing_prompt')
+    _proj(sp); _chap(sp)
+    sp.add_argument('--draft-file', default='',
+                    help='初稿文件路径（省略时自动使用标准路径）')
+    sp.set_defaults(func=lambda a: _out(core.get_editing_prompt(
+        a.project, a.chapter, draft='',
+        draft_file=a.draft_file or _std_output_path(a.project, a.chapter))))
+
     # --- 校验 ---
     sp = sub.add_parser('validate_chapter')
     _proj(sp); _chap(sp)

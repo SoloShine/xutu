@@ -113,6 +113,18 @@ def get_derivation_prompt(project: str, chapter: int) -> str:
     return core.get_derivation_prompt(project, chapter)
 
 
+@mcp.tool()
+def get_editing_prompt(project: str, chapter: int, draft: str = "",
+                       draft_file: str = "") -> str:
+    """获取填充后的编辑审查prompt。
+
+    返回风格审查指导文本，包含:风格清单（按维度分组）、审查规则。
+    Agent对照清单审查初稿，输出修改后的完整正文（纯文本）。
+    draft 是初稿文本，draft_file 是初稿文件路径（二选一）。
+    """
+    return core.get_editing_prompt(project, chapter, draft, draft_file)
+
+
 # ============================================================
 # 3. 图谱写入工具
 # ============================================================
