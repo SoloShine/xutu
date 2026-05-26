@@ -184,12 +184,30 @@ def build_writing_prompt(context, chapter, language=None, config=None):
                 lines.append(f"    演变: {t['evolution']}")
         lines.append("")
 
-    # 风格指南
+    # 风格示范（按维度分组）
     if context.get("style_guides"):
-        lines.append("【叙事风格】")
+        dim_order = ["叙事声", "对话", "描写", "节奏", "过渡", "情感表达", "通用"]
+        dim_groups = {d: [] for d in dim_order}
         for sg in context["style_guides"]:
-            lines.append(f"  - {sg['rule']}")
+            dim = sg.get("dimension", "通用")
+            if dim not in dim_groups:
+                dim_groups[dim] = []
+            dim_groups[dim].append(sg)
+
+        lines.append("【风格示范】（严格对照以下范例写作）")
         lines.append("")
+        for dim in dim_order:
+            guides = dim_groups.get(dim, [])
+            if not guides:
+                continue
+            for sg in guides:
+                goal = sg.get("goal", sg.get("rule", ""))
+                lines.append(f"{dim} — {goal}")
+                for ex in sg.get("good_examples", []):
+                    lines.append(f"  ✓ {ex}")
+                for ex in sg.get("bad_examples", []):
+                    lines.append(f"  ✗ {ex}")
+            lines.append("")
 
     # 核心意象
     if context.get("motifs"):
@@ -228,12 +246,6 @@ def build_writing_prompt(context, chapter, language=None, config=None):
     lines.append(f"【格式要求】")
     lines.append(f"- 第一行写章节名，格式为：第{chapter}章 章节名（章节名要贴合本章内容，2-6个字，有画面感）")
     lines.append(f"- 章节名后空一行，然后开始正文")
-    lines.append("")
-    lines.append("【绝对禁止】")
-    lines.append('- 禁止使用「不是X，是Y」或「不是X而是Y」句式。这是最严重的文体问题。')
-    lines.append("  错误示例：不是不想睡，是睡不着 / 不是热，是某种灼烧感 / 不是恐惧，而是兴奋")
-    lines.append("  正确做法：直接写正面描述。睡不着就是睡不着，灼烧感就是灼烧感。不需要否定前置。")
-    lines.append("- 如果想强调对比，用冒号、破折号或直接转折，不要用否定前缀。")
     lines.append("")
     lines.append("【场景展开要求】")
     lines.append("- 每个场景至少包含：感官细节（视觉/听觉/触觉/嗅觉）、人物动作、环境变化")
