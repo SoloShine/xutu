@@ -31,15 +31,6 @@ EXTRACTION_PROMPT = """你是一个小说结构化数据提取器。请从以下
 - 象征性细节、伏笔 → motif_mentions 或 notes
 - 不要为了保留细节而拆分场景
 
-## 间隙的精确定义
-
-间隙（gap）= 意识在停顿中滑出身体，从外部看到自己。特征：世界静音、看到自己的身体、感受到密度/重量。
-
-以下**不是**间隙：
-- 活在当下的觉醒（如尝到菜的味道、第一次注意到某个细节）→ 这是character_updates中的state_change
-- 情感波动或内心变化 → 这是turning事件但is_gap=false
-- 普通的走神或回忆 → 归入所在场景的detail
-
 ## 地点规则
 
 - 只使用已有地点或new_locations中声明的新地点
@@ -91,8 +82,6 @@ EXTRACTION_PROMPT = """你是一个小说结构化数据提取器。请从以下
       "chapter": {chapter},
       "title": "场景标题",
       "type": "gap|daily|turning|character|background|climax",
-      "gap_level": 0,
-      "is_gap": false,
       "detail": "一句话描述这个场景发生了什么（可包含该场景内的回忆和思考）"
     }}
   ],
