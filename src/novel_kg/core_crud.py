@@ -260,9 +260,23 @@ def add_outline_entry(project: str, chapter: int, purpose: str,
     return f"已添加第{chapter}章大纲: {purpose}"
 
 
-def add_style_guide(project: str, guide_id: str, rule: str) -> str:
+def add_style_guide(project: str, guide_id: str, rule: str = "",
+                    dimension: str = "", goal: str = "",
+                    good_examples: list = None,
+                    bad_examples: list = None) -> str:
     kg = _kg(project)
-    kg.add_style_guide(guide_id, rule=rule)
+    props = {}
+    if rule:
+        props["rule"] = rule
+    if dimension:
+        props["dimension"] = dimension
+    if goal:
+        props["goal"] = goal
+    if good_examples:
+        props["good_examples"] = good_examples
+    if bad_examples:
+        props["bad_examples"] = bad_examples
+    kg.add_style_guide(guide_id, **props)
     return f"已添加风格规则: {guide_id}"
 
 

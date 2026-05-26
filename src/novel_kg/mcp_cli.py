@@ -29,6 +29,22 @@ def _out(data):
         print(json.dumps(data, ensure_ascii=False, indent=2))
 
 
+def _projects_dir():
+    """返回 projects/ 目录的绝对路径。"""
+    here = os.path.dirname(os.path.abspath(__file__))
+    return os.environ.get('KG_PROJECTS_DIR') or os.path.normpath(os.path.join(here, '..', '..', 'projects'))
+
+
+def _std_extraction_path(project, chapter):
+    """标准提取JSON路径：projects/<project>/extractions/extraction_ch{NN}.json"""
+    return os.path.join(_projects_dir(), project, 'extractions', f'extraction_ch{chapter:02d}.json')
+
+
+def _std_output_path(project, chapter):
+    """标准正文输出路径：projects/<project>/output/ch{NN}_generated.txt"""
+    return os.path.join(_projects_dir(), project, 'output', f'ch{chapter:02d}_generated.txt')
+
+
 # ============================================================
 # CLI 参数注册
 # ============================================================
@@ -62,7 +78,7 @@ def build_parser():
     # --- Prompt ---
     sp = sub.add_parser('get_extraction_prompt')
     _proj(sp); _chap(sp)
-    sp.add_argument('--text-file', '-f', required=True)
+    sp.add_argument('--text-file', '-f', help='省略则默认 projects/<project>/output/ch{NN}_generated.txt')
     sp.set_defaults(func=cmd_get_extraction_prompt)
 
     sp = sub.add_parser('get_writing_prompt')
@@ -76,12 +92,12 @@ def build_parser():
     # --- 校验 ---
     sp = sub.add_parser('validate_chapter')
     _proj(sp); _chap(sp)
-    sp.add_argument('--text-file', '-f', required=True)
+    sp.add_argument('--text-file', '-f', help='省略则默认 projects/<project>/output/ch{NN}_generated.txt')
     sp.set_defaults(func=cmd_validate_chapter)
 
     sp = sub.add_parser('detect_conflicts')
     _proj(sp)
-    sp.add_argument('--json-file', '-f', required=True)
+    sp.add_argument('--json-file', '-f', help='省略则默认 projects/<project>/extractions/extraction_ch{NN}.json')
     sp.set_defaults(func=cmd_detect_conflicts)
 
     # --- 写入 ---
@@ -97,7 +113,7 @@ def build_parser():
 
     sp = sub.add_parser('write_extraction')
     _proj(sp); _chap(sp)
-    sp.add_argument('--json-file', '-f', required=True)
+    sp.add_argument('--json-file', '-f', help='省略则默认 projects/<project>/extractions/extraction_ch{NN}.json')
     sp.set_defaults(func=cmd_write_extraction)
 
     sp = sub.add_parser('sync_backends')
@@ -187,8 +203,16 @@ def build_parser():
     sp = sub.add_parser('add_style_guide')
     _proj(sp)
     sp.add_argument('--guide-id', required=True)
-    sp.add_argument('--rule', required=True)
-    sp.set_defaults(func=lambda a: _out(core.add_style_guide(a.project, a.guide_id, a.rule)))
+    sp.add_argument('--rule', default='')
+    sp.add_argument('--dimension', default='')
+    sp.add_argument('--goal', default='')
+    sp.add_argument('--good-examples', nargs='+', default=[])
+    sp.add_argument('--bad-examples', nargs='+', default=[])
+    sp.set_defaults(func=lambda a: _out(core.add_style_guide(
+        a.project, a.guide_id, a.rule,
+        dimension=a.dimension, goal=a.goal,
+        good_examples=a.good_examples or None,
+        bad_examples=a.bad_examples or None)))
 
     sp = sub.add_parser('add_motif')
     _proj(sp)
@@ -253,22 +277,26 @@ def cmd_check_consistency(args):
     _out(core.check_consistency(args.project))
 
 def cmd_get_extraction_prompt(args):
-    with open(args.text_file, 'r', encoding='utf-8') as f:
+    path = args.text_file or _std_output_path(args.project, args.chapter)
+    with open(path, 'r', encoding='utf-8') as f:
         text = f.read()
     print(core.get_extraction_prompt(args.project, args.chapter, text))
 
 def cmd_validate_chapter(args):
-    with open(args.text_file, 'r', encoding='utf-8') as f:
+    path = args.text_file or _std_output_path(args.project, args.chapter)
+    with open(path, 'r', encoding='utf-8') as f:
         text = f.read()
     _out(core.validate_chapter(args.project, text, args.chapter))
 
 def cmd_detect_conflicts(args):
-    with open(args.json_file, 'r', encoding='utf-8') as f:
+    path = args.json_file or _std_extraction_path(args.project, args.chapter)
+    with open(path, 'r', encoding='utf-8') as f:
         extracted = json.load(f)
     _out(core.detect_extraction_conflicts(args.project, json.dumps(extracted, ensure_ascii=False)))
 
 def cmd_write_extraction(args):
-    with open(args.json_file, 'r', encoding='utf-8') as f:
+    path = args.json_file or _std_extraction_path(args.project, args.chapter)
+    with open(path, 'r', encoding='utf-8') as f:
         extracted = json.load(f)
     _out(core.write_extraction(args.project, args.chapter, json.dumps(extracted, ensure_ascii=False)))
 

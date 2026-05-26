@@ -182,9 +182,14 @@ def add_outline_entry(project: str, chapter: int, purpose: str,
 
 
 @mcp.tool()
-def add_style_guide(project: str, guide_id: str, rule: str) -> str:
-    """添加/更新风格指南规则。"""
-    return core.add_style_guide(project, guide_id, rule)
+def add_style_guide(project: str, guide_id: str, rule: str = "",
+                    dimension: str = "", goal: str = "",
+                    good_examples: list = None,
+                    bad_examples: list = None) -> str:
+    """添加/更新风格指南规则。支持维度、目标、正反例。"""
+    return core.add_style_guide(project, guide_id, rule,
+                                dimension, goal,
+                                good_examples, bad_examples)
 
 
 @mcp.tool()
