@@ -70,6 +70,9 @@ DEFAULTS = {
         "auto_merge": False,
         "prev_text_substitute": "arc_ending",
     },
+    "features": {
+        "editing_pass": True,
+    },
 }
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
