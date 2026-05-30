@@ -407,7 +407,7 @@ class NovelKG:
                 relations.append(rel)
             return relations
 
-    def get_context_for_chapter(self, chapter, prev_text_chars=500):
+    def get_context_for_chapter(self, chapter, prev_text_chars=500, focused=False):
         """获取写第N章时需要的所有图谱上下文"""
         p = self.project
         with self.driver.session() as s:

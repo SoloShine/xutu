@@ -56,6 +56,8 @@ class ChapterSession:
     calls: list = field(default_factory=list)
     wall_clock_ms: Optional[float] = None  # 子代理端到端耗时（含LLM）
     agent_tool_uses: Optional[int] = None  # 子代理MCP调用次数
+    agent_phases: list = field(default_factory=list)  # 子代理阶段记录
+    chapter_metrics: dict = field(default_factory=dict)  # 章节指标
 
     def to_dict(self) -> dict:
         total_ms = sum(c.duration_ms for c in self.calls)
@@ -80,6 +82,10 @@ class ChapterSession:
             result["wall_clock_ms"] = round(self.wall_clock_ms, 1)
         if self.agent_tool_uses is not None:
             result["agent_tool_uses"] = self.agent_tool_uses
+        if self.agent_phases:
+            result["agent_phases"] = self.agent_phases
+        if self.chapter_metrics:
+            result["chapter_metrics"] = self.chapter_metrics
         return result
 
 
@@ -96,9 +102,9 @@ class TelemetryCollector:
         proj = project or self.project
         if proj not in self._telemetry_dirs:
             here = os.path.dirname(os.path.abspath(__file__))
-            mvp_dir = os.path.normpath(os.path.join(here, '..', 'novel_kg_mvp'))
+            repo_root = os.path.normpath(os.path.join(here, '..', '..'))
             self._telemetry_dirs[proj] = os.path.join(
-                mvp_dir, 'projects', proj, 'telemetry'
+                repo_root, 'projects', proj, 'telemetry'
             )
         os.makedirs(self._telemetry_dirs[proj], exist_ok=True)
         return self._telemetry_dirs[proj]
@@ -127,6 +133,25 @@ class TelemetryCollector:
         if agent_tool_uses is not None:
             self.chapters[chapter].agent_tool_uses = agent_tool_uses
 
+    def inject_agent_phase(self, chapter: int, phase: str,
+                           duration_ms: float, tool_uses: int = None):
+        """注入子代理阶段遥测数据（写初稿/编辑/提取等）。"""
+        if chapter not in self.chapters:
+            self.chapters[chapter] = ChapterSession(chapter=chapter)
+        phase_entry = {
+            "phase": phase,
+            "duration_ms": round(duration_ms, 1),
+        }
+        if tool_uses is not None:
+            phase_entry["tool_uses"] = tool_uses
+        self.chapters[chapter].agent_phases.append(phase_entry)
+
+    def inject_chapter_metrics(self, chapter: int, metrics: dict):
+        """注入章节指标（字数、编辑修正、图谱增量等）。"""
+        if chapter not in self.chapters:
+            self.chapters[chapter] = ChapterSession(chapter=chapter)
+        self.chapters[chapter].chapter_metrics.update(metrics)
+
     def get_chapter_report(self, chapter: int) -> Optional[dict]:
         session = self.chapters.get(chapter)
         if session is None:
@@ -143,6 +168,56 @@ class TelemetryCollector:
             return None
         d = self._ensure_dir(project)
         path = os.path.join(d, f"ch{chapter}_report.json")
+
+        # 文件累积：合并已有数据
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    existing = json.load(f)
+                existing_calls = existing.get("tool_calls", [])
+                new_calls = report.get("tool_calls", [])
+                # 去重：同名+同duration视为同一调用
+                seen = {(c["tool"], c["duration_ms"]) for c in existing_calls}
+                for c in new_calls:
+                    if (c["tool"], c["duration_ms"]) not in seen:
+                        existing_calls.append(c)
+                report["tool_calls"] = existing_calls
+                # 重算 totals
+                report["totals"]["tool_count"] = len(existing_calls)
+                report["totals"]["duration_ms"] = round(
+                    sum(c["duration_ms"] for c in existing_calls), 1
+                )
+                # 合并 wall_clock / agent_tool_uses
+                if "wall_clock_ms" in existing and "wall_clock_ms" not in report:
+                    report["wall_clock_ms"] = existing["wall_clock_ms"]
+                if "agent_tool_uses" in existing and "agent_tool_uses" not in report:
+                    report["agent_tool_uses"] = existing["agent_tool_uses"]
+                # 合并 agent_phases
+                existing_phases = existing.get("agent_phases", [])
+                new_phases = report.get("agent_phases", [])
+                if existing_phases or new_phases:
+                    # 去重：phase+duration_ms+tool_uses 视为同一阶段
+                    phase_seen = {
+                        (p["phase"], p["duration_ms"], p.get("tool_uses"))
+                        for p in existing_phases
+                    }
+                    merged = list(existing_phases)
+                    for p in new_phases:
+                        key = (p["phase"], p["duration_ms"], p.get("tool_uses"))
+                        if key not in phase_seen:
+                            merged.append(p)
+                            phase_seen.add(key)
+                    report["agent_phases"] = merged
+                # 合并 chapter_metrics（增量更新）
+                existing_metrics = existing.get("chapter_metrics", {})
+                new_metrics = report.get("chapter_metrics", {})
+                if existing_metrics or new_metrics:
+                    merged_metrics = dict(existing_metrics)
+                    merged_metrics.update(new_metrics)
+                    report["chapter_metrics"] = merged_metrics
+            except (json.JSONDecodeError, KeyError):
+                pass  # 文件损坏则覆盖
+
         with open(path, "w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
         return path
@@ -238,12 +313,25 @@ def _extract_decision(tool_name: str, kwargs: dict, result) -> Optional[dict]:
 
     if tool_name == "write_extraction" and isinstance(result, dict):
         report = result.get("report", result)
+        stats = result.get("stats", {})
         return {
             "events": report.get("events_written", 0),
             "relations": report.get("relations_written", 0),
             "conflicts": len(report.get("conflicts", [])),
             "auto_locations": report.get("auto_registered_locations", []),
             "new_characters": report.get("new_characters", []),
+            # 图谱增量
+            "graph_delta": {
+                "events_added": stats.get("events", 0),
+                "relations_added": stats.get("relations", 0),
+                "locations_added": stats.get("locations", 0),
+                "characters_added": stats.get("characters", 0),
+                "thread_updates": stats.get("thread_updates", 0),
+                "new_threads": stats.get("new_threads", 0),
+                "causal_links": stats.get("causal_links", 0),
+                "evidence_links": stats.get("evidence_links", 0),
+                "character_goals": stats.get("character_goals", 0),
+            },
         }
 
     return None
@@ -336,8 +424,8 @@ def wrap(func):
                     error=error,
                 )
                 _collector.record(call)
-                # V25: write_extraction 完成后自动保存该章遥测报告
-                if func.__name__ == "write_extraction" and chapter is not None:
+                # V26: 有 chapter 的命令都自动保存（文件累积模式）
+                if chapter is not None:
                     try:
                         project = _infer_project(bound)
                         _collector.save_chapter_report(chapter, project=project)

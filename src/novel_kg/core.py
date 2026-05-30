@@ -178,7 +178,8 @@ from .core_edits import (  # noqa: E402
 # -- 遥测保存 --
 from .core_telemetry import (  # noqa: E402
     save_telemetry_chapter_report, set_telemetry_wall_clock,
-    save_telemetry_session_summary,
+    save_telemetry_session_summary, inject_agent_phase,
+    inject_chapter_metrics,
 )
 
 
@@ -203,7 +204,8 @@ _PUBLIC_TOOLS = [
     "prepare_parallel_batch", "get_parallel_writing_prompt",
     "merge_parallel_results",
     "save_telemetry_chapter_report", "save_telemetry_session_summary",
-    "set_telemetry_wall_clock",
+    "set_telemetry_wall_clock", "inject_agent_phase",
+    "inject_chapter_metrics",
 ]
 for _fname in _PUBLIC_TOOLS:
     if _fname in globals():

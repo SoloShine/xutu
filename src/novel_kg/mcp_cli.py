@@ -24,7 +24,11 @@ from . import core
 def _out(data):
     """统一输出"""
     if isinstance(data, str):
-        print(data)
+        try:
+            print(data)
+        except UnicodeEncodeError:
+            sys.stdout.buffer.write(data.encode('utf-8', errors='replace'))
+            sys.stdout.buffer.write(b'\n')
     else:
         print(json.dumps(data, ensure_ascii=False, indent=2))
 
@@ -259,6 +263,31 @@ def build_parser():
         a.project, a.from_label, a.from_key, a.from_val,
         a.rel_type, a.to_label, a.to_key, a.to_val)))
 
+    sp = sub.add_parser('inject_agent_phase')
+    _proj(sp)
+    sp.add_argument('--chapter', type=int, required=True)
+    sp.add_argument('--phase', required=True, help='阶段名: writing/editing/extraction')
+    sp.add_argument('--duration-ms', type=float, required=True)
+    sp.add_argument('--tool-uses', type=int, default=None)
+    sp.set_defaults(func=lambda a: _out(core.inject_agent_phase(
+        a.project, a.chapter, a.phase, a.duration_ms, tool_uses=a.tool_uses)))
+
+    sp = sub.add_parser('inject_chapter_metrics')
+    _proj(sp)
+    sp.add_argument('--chapter', type=int, required=True)
+    sp.add_argument('--word-count', type=int, default=None)
+    sp.add_argument('--editing-corrections', type=int, default=None)
+    sp.add_argument('--editing-types', default=None, help='逗号分隔的修正类型')
+    sp.set_defaults(func=lambda a: _out(core.inject_chapter_metrics(
+        a.project, a.chapter, word_count=a.word_count,
+        editing_corrections=a.editing_corrections,
+        editing_types=a.editing_types)))
+
+    sp = sub.add_parser('count_chapter_words')
+    _proj(sp)
+    sp.add_argument('--chapter', type=int, required=True)
+    sp.set_defaults(func=lambda a: _out(cmd_count_chapter_words(a)))
+
     return p
 
 
@@ -307,6 +336,23 @@ def cmd_write_extraction(args):
     with open(path, 'r', encoding='utf-8') as f:
         extracted = json.load(f)
     _out(core.write_extraction(args.project, args.chapter, json.dumps(extracted, ensure_ascii=False)))
+
+def cmd_count_chapter_words(args):
+    """统计章节汉字数并注入遥测。"""
+    import re
+    path = _std_output_path(args.project, args.chapter)
+    if not os.path.exists(path):
+        _out({"status": "error", "message": f"文件不存在: {path}"})
+        return
+    with open(path, 'r', encoding='utf-8') as f:
+        text = f.read()
+    # 统计汉字数（排除标点、空格、英文）
+    chinese_chars = len(re.findall(r'[一-鿿]', text))
+    # 注入遥测
+    result = core.inject_chapter_metrics(
+        args.project, args.chapter, word_count=chinese_chars)
+    result["word_count"] = chinese_chars
+    _out(result)
 
 
 # ============================================================
