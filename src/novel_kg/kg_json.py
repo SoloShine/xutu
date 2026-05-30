@@ -48,6 +48,7 @@ class JsonKG:
                     os.path.join(_here, '..', 'novel_kg_mvp', 'projects'))
         self.data_dir = data_dir
         self._graph = None
+        self._chapter_idx = {}  # chapter → [event_ids]
         self._load()
 
     # ================================================================
@@ -76,6 +77,7 @@ class JsonKG:
                     f"backed up to {os.path.basename(backup_path)}"
                 )
                 self._save()
+                self._rebuild_index()
                 return
             # 补齐可能缺失的键（向后兼容）
             empty = _empty_graph()
@@ -84,6 +86,20 @@ class JsonKG:
         else:
             self._graph = _empty_graph()
             self._save()
+        self._rebuild_index()
+
+    def _rebuild_index(self):
+        """构建 chapter → event_ids 倒排索引。"""
+        self._chapter_idx = {}
+        for eid, ev in self._graph["events"].items():
+            ch = ev.get("chapter")
+            if ch is not None:
+                self._chapter_idx.setdefault(ch, []).append(eid)
+
+    def _add_to_index(self, event_id, chapter):
+        """写入事件时增量更新索引。"""
+        if chapter is not None:
+            self._chapter_idx.setdefault(chapter, []).append(event_id)
 
     def _save(self):
         os.makedirs(os.path.dirname(self._path), exist_ok=True)
@@ -230,6 +246,7 @@ class JsonKG:
     def add_event(self, event_id, **props):
         props["id"] = event_id
         self._graph["events"][event_id] = props
+        self._add_to_index(event_id, props.get("chapter"))
         self._save()
 
     def add_theme(self, name, **props):
@@ -336,8 +353,9 @@ class JsonKG:
         return [deepcopy(v) for v in self._graph["characters"].values()]
 
     def get_events_by_chapter(self, chapter):
-        return [deepcopy(v) for v in self._graph["events"].values()
-                if v.get("chapter") == chapter]
+        eids = self._chapter_idx.get(chapter, [])
+        return [deepcopy(self._graph["events"][eid]) for eid in eids
+                if eid in self._graph["events"]]
 
     def get_unresolved_threads(self, chapter, focused=False):
         all_unresolved = [
@@ -348,27 +366,33 @@ class JsonKG:
         if not focused:
             return all_unresolved
 
-        # 聚焦模式：保留 escalated + partially_resolved(high) + 近15章种植的
-        # 安全策略：宁可多留不可漏掉
+        # 聚焦模式：分为 focused（完整详情）和 index（摘要行）
         kept = []
+        indexed = []
         for t in all_unresolved:
             status = t.get("status", "")
             importance = t.get("importance", "medium")
             planted = t.get("planted_chapter", 999)
-            # escalated 全保留
-            if status == "escalated":
+            is_focused = (
+                status == "escalated"
+                or (status == "partially_resolved" and importance == "high")
+                or planted >= chapter - 15
+            )
+            if is_focused:
                 kept.append(t)
-            # partially_resolved 的 high 保留（活跃推进中）
-            elif status == "partially_resolved" and importance == "high":
-                kept.append(t)
-            # 近15章种植的全保留
-            elif planted >= chapter - 15:
-                kept.append(t)
+            else:
+                indexed.append({
+                    "id": t.get("id", ""),
+                    "title": (t.get("content", "") or "")[:40],
+                    "status": status,
+                    "importance": importance,
+                    "planted_chapter": planted,
+                })
 
-        # 安全兜底
+        # 安全兜底：聚焦结果太少时退回全量
         if len(kept) < 10:
             return all_unresolved
-        return kept
+        return {"focused": kept, "index": indexed}
 
     def get_all_threads(self):
         return sorted(
@@ -411,6 +435,13 @@ class JsonKG:
     # 查询：复合
     # ================================================================
 
+    def _unwrap_focused_threads(self, chapter, focused):
+        """获取悬念线，focused 时解包为列表（兼容 downstream）。"""
+        threads = self.get_unresolved_threads(chapter, focused=focused)
+        if focused and isinstance(threads, dict):
+            return threads["focused"]
+        return threads
+
     def get_context_for_chapter(self, chapter, prev_text_chars=500, focused=False):
         prev_ch = max(chapter - 1, 1)
 
@@ -418,10 +449,8 @@ class JsonKG:
         prev_events = self.get_events_by_chapter(prev_ch)
 
         # 通过关系找当前章和前一章涉及的人物
-        event_ids = set()
-        for ev in self._graph["events"].values():
-            if ev.get("chapter") in (chapter, prev_ch):
-                event_ids.add(ev["id"])
+        event_ids = set(self._chapter_idx.get(chapter, []))
+        event_ids.update(self._chapter_idx.get(prev_ch, []))
 
         char_names = set()
         loc_names = set()
@@ -430,7 +459,7 @@ class JsonKG:
                     and r["fv"] in event_ids):
                 if r["rt"] == "INVOLVES" and r["tl"] == "Character":
                     char_names.add(r["tv"])
-                if r["rt"] == "OCCURS_AT" and r["tl"] == "Location":
+                if r["rt"] == "OCCURS_AT" and r["tl"] == "Location" and r.get("tv") is not None:
                     loc_names.add(r["tv"])
 
         characters = [deepcopy(self._graph["characters"][n])
@@ -535,7 +564,7 @@ class JsonKG:
             "style_guides": style_guides,
             "motifs": motifs,
             "chapter_arc": chapter_arc,
-            "suspense_threads": self.get_unresolved_threads(chapter, focused=focused),
+            "suspense_threads": self._unwrap_focused_threads(chapter, focused),
             "outline_entry": self.get_outline_entry(chapter),
             "causal_links": causal_links,
             "evidence_links": evidence_links,
@@ -552,10 +581,13 @@ class JsonKG:
             key=lambda a: a.get("chapter", 0)
         )
 
-        # 近N章事件
+        # 近N章事件（用索引收集 event_ids，再按 ID 取）
+        event_ids = set()
+        for ch in range(start_ch, chapter):
+            event_ids.update(self._chapter_idx.get(ch, []))
         events = sorted(
-            [deepcopy(v) for v in self._graph["events"].values()
-             if start_ch <= v.get("chapter", 0) < chapter],
+            [deepcopy(self._graph["events"][eid]) for eid in event_ids
+             if eid in self._graph["events"]],
             key=lambda e: (e.get("chapter", 0), e.get("id", ""))
         )
 
@@ -572,13 +604,20 @@ class JsonKG:
                       for n in sorted(char_names)
                       if n in self._graph["characters"]]
 
-        # 最后一个事件
-        all_prev = sorted(
-            [v for v in self._graph["events"].values()
-             if v.get("chapter", 0) < chapter],
-            key=lambda e: (e.get("chapter", 0), e.get("id", ""))
-        )
-        last_event = deepcopy(all_prev[-1]) if all_prev else None
+        # 最后一个事件（用索引找 chapter-1 的事件，回退向前搜索）
+        last_event = None
+        for look_ch in range(chapter - 1, 0, -1):
+            eids = self._chapter_idx.get(look_ch, [])
+            if eids:
+                # 取该章最后一个事件
+                ch_events = sorted(
+                    [self._graph["events"][eid] for eid in eids
+                     if eid in self._graph["events"]],
+                    key=lambda e: e.get("id", "")
+                )
+                if ch_events:
+                    last_event = deepcopy(ch_events[-1])
+                    break
 
         return {
             "recent_arcs": arcs,
@@ -589,6 +628,128 @@ class JsonKG:
             "last_event": last_event,
             "outline_entry": self.get_outline_entry(chapter),
             "suspense_threads": self.get_unresolved_threads(chapter),
+        }
+
+    # ================================================================
+    # ChapterAgent 支持：boot / digest / recall
+    # ================================================================
+
+    def get_boot_context(self, chapter, digest_dir=None):
+        """生成 ChapterAgent 启动时的最小上下文。"""
+        outline = self.get_outline_entry(chapter)
+
+        # 读取前章 digest
+        prev_ending = ""
+        if chapter > 1:
+            import os
+            if digest_dir is None:
+                here = os.path.dirname(os.path.abspath(__file__))
+                digest_dir = os.path.normpath(os.path.join(here, '..', '..', 'projects', self.project, 'digests'))
+            digest_path = os.path.join(digest_dir, f"digest_ch{chapter - 1:02d}.json")
+            if os.path.exists(digest_path):
+                with open(digest_path, "r", encoding="utf-8") as f:
+                    digest = json.load(f)
+                prev_ending = digest.get("ending_summary", "")
+
+        # 悬念线索引（只包含休眠线，focused 线在写作 prompt 中完整提供）
+        threads = self.get_unresolved_threads(chapter, focused=True)
+        if isinstance(threads, dict):
+            focused_list = threads["focused"]
+            recall_index = threads["index"]
+        else:
+            focused_list = threads
+            recall_index = []
+
+        return {
+            "chapter": chapter,
+            "outline": outline,
+            "prev_ending": prev_ending,
+            "active_thread_count": len(focused_list),
+            "recall_index": recall_index,
+        }
+
+    def recall_thread(self, thread_id):
+        """按需拉取单条悬念线完整内容。"""
+        t = self._graph["suspense_threads"].get(thread_id)
+        if not t:
+            return None
+        result = deepcopy(t)
+        # 关联事件
+        related_events = []
+        for r in self._graph["relations"]:
+            if (r.get("rt") == "EVIDENCES" and r.get("tv") == thread_id):
+                evt = self._graph["events"].get(r.get("fv"))
+                if evt:
+                    related_events.append({"id": evt["id"], "title": evt.get("title", "")})
+        if related_events:
+            result["related_events"] = related_events[:5]
+        return result
+
+    def recall_arc(self, chapter):
+        """按需拉取某章弧线 + 事件 + 人物。"""
+        arc = self._graph["chapter_arcs"].get(str(chapter))
+        eids = self._chapter_idx.get(chapter, [])
+        events = [deepcopy(self._graph["events"][eid]) for eid in eids
+                  if eid in self._graph["events"]]
+        event_ids = {e["id"] for e in events}
+        char_names = set()
+        for r in self._graph["relations"]:
+            if (r["fl"] == "Event" and r["fk"] == "id"
+                    and r["fv"] in event_ids
+                    and r["rt"] == "INVOLVES"
+                    and r["tl"] == "Character"):
+                char_names.add(r["tv"])
+        characters = [deepcopy(self._graph["characters"][n])
+                      for n in sorted(char_names)
+                      if n in self._graph["characters"]]
+        return {
+            "chapter": chapter,
+            "arc": deepcopy(arc) if arc else None,
+            "events": sorted(events, key=lambda e: e.get("id", "")),
+            "characters": characters,
+        }
+
+    def generate_context_digest(self, chapter, extraction_data=None, word_count=0):
+        """生成本章增量摘要，供下一章 boot 使用。"""
+        arc = self._graph["chapter_arcs"].get(str(chapter))
+        ending_summary = ""
+        if arc:
+            ending_summary = f"Ch{chapter}结尾：{arc.get('ending', '')}"
+
+        # 最后一个事件
+        ch_eids = self._chapter_idx.get(chapter, [])
+        all_ch_events = sorted(
+            [self._graph["events"][eid] for eid in ch_eids
+             if eid in self._graph["events"]],
+            key=lambda e: e.get("id", "")
+        )
+        last_event = deepcopy(all_ch_events[-1]) if all_ch_events else None
+
+        # 线索变更
+        thread_changes = []
+        if extraction_data:
+            for tu in extraction_data.get("thread_updates", []):
+                thread_changes.append({
+                    "id": tu.get("thread_id", ""),
+                    "action": tu.get("action", ""),
+                    "new_status": tu.get("new_status", ""),
+                })
+
+        # 新实体
+        new_entities = []
+        if extraction_data:
+            for c in extraction_data.get("new_characters", []):
+                new_entities.append(c.get("name", ""))
+            for l in extraction_data.get("new_locations", []):
+                new_entities.append(l.get("name", ""))
+
+        return {
+            "chapter": chapter,
+            "ending_summary": ending_summary,
+            "last_event": last_event,
+            "thread_changes": thread_changes,
+            "new_entities": new_entities,
+            "word_count": word_count,
         }
 
     # ================================================================

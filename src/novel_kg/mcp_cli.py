@@ -79,15 +79,51 @@ def build_parser():
     sp.add_argument('--lookback', type=int, default=3)
     sp.set_defaults(func=cmd_get_derivation_context)
 
+    # --- ChapterAgent 支持 ---
+    sp = sub.add_parser('get_boot_context')
+    _proj(sp); _chap(sp)
+    sp.set_defaults(func=lambda a: _out(core.get_boot_context(a.project, a.chapter)))
+
+    sp = sub.add_parser('get_framework')
+    _proj(sp); _chap(sp)
+    sp.set_defaults(func=lambda a: _out(core.get_framework(a.project, a.chapter)))
+
+    sp = sub.add_parser('recall_thread')
+    _proj(sp)
+    sp.add_argument('--thread-id', required=True)
+    sp.set_defaults(func=lambda a: _out(core.recall_thread(a.project, a.thread_id)))
+
+    sp = sub.add_parser('recall_arc')
+    _proj(sp); _chap(sp)
+    sp.set_defaults(func=lambda a: _out(core.recall_arc(a.project, a.chapter)))
+
+    sp = sub.add_parser('generate_context_digest')
+    _proj(sp); _chap(sp)
+    sp.add_argument('--word-count', type=int, default=0)
+    sp.set_defaults(func=lambda a: _out(core.generate_context_digest(
+        a.project, a.chapter, word_count=a.word_count)))
+
+    sp = sub.add_parser('verify_pipeline_step')
+    _proj(sp); _chap(sp)
+    sp.add_argument('--step', required=True, choices=['write', 'edit', 'extract', 'graph', 'telemetry'])
+    sp.set_defaults(func=lambda a: _out(core.verify_pipeline_step(a.project, a.chapter, a.step)))
+
+    sp = sub.add_parser('verify_chapter_complete')
+    _proj(sp); _chap(sp)
+    sp.set_defaults(func=lambda a: _out(core.verify_chapter_complete(a.project, a.chapter)))
+
     # --- Prompt ---
     sp = sub.add_parser('get_extraction_prompt')
     _proj(sp); _chap(sp)
     sp.add_argument('--text-file', '-f', help='省略则默认 projects/<project>/output/ch{NN}_generated.txt')
+    sp.add_argument('--compact', action='store_true', help='精简模式：只列实体名，不展开完整上下文')
     sp.set_defaults(func=cmd_get_extraction_prompt)
 
     sp = sub.add_parser('get_writing_prompt')
     _proj(sp); _chap(sp)
-    sp.set_defaults(func=lambda a: _out(core.get_writing_prompt(a.project, a.chapter)))
+    sp.add_argument('--focused', action='store_true',
+                    help='只注入近期活跃悬念线（节省prompt体积）')
+    sp.set_defaults(func=lambda a: _out(core.get_writing_prompt(a.project, a.chapter, focused=a.focused)))
 
     sp = sub.add_parser('get_derivation_prompt')
     _proj(sp); _chap(sp)
@@ -317,7 +353,8 @@ def cmd_get_extraction_prompt(args):
     path = args.text_file or _std_output_path(args.project, args.chapter)
     with open(path, 'r', encoding='utf-8') as f:
         text = f.read()
-    print(core.get_extraction_prompt(args.project, args.chapter, text))
+    print(core.get_extraction_prompt(args.project, args.chapter, text,
+                                     compact=getattr(args, 'compact', False)))
 
 def cmd_validate_chapter(args):
     path = args.text_file or _std_output_path(args.project, args.chapter)

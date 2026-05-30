@@ -151,6 +151,9 @@ from .core_crud import (  # noqa: E402
     add_style_guide, add_motif, add_theme, add_time_period,
     add_relation, update_suspense_thread, write_extraction,
     clear_chapter_data,
+    get_boot_context, recall_thread, recall_arc, generate_context_digest,
+    verify_pipeline_step, verify_chapter_complete,
+    get_framework,
 )
 
 # -- 合规检查 --
@@ -206,6 +209,10 @@ _PUBLIC_TOOLS = [
     "save_telemetry_chapter_report", "save_telemetry_session_summary",
     "set_telemetry_wall_clock", "inject_agent_phase",
     "inject_chapter_metrics",
+    "get_boot_context", "recall_thread", "recall_arc",
+    "generate_context_digest",
+    "verify_pipeline_step", "verify_chapter_complete",
+    "get_framework",
 ]
 for _fname in _PUBLIC_TOOLS:
     if _fname in globals():

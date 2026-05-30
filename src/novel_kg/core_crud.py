@@ -61,13 +61,270 @@ def get_all_threads(project: str) -> list:
 
 
 # ============================================================
+# 1b. ChapterAgent 支持
+# ============================================================
+
+def get_boot_context(project: str, chapter: int) -> dict:
+    kg = _kg(project)
+    return kg.get_boot_context(chapter)
+
+
+def get_framework(project: str, chapter: int) -> str:
+    """按需切片读取 framework.md：核心设定 + 目标卷大纲 + 全局说明。
+
+    不拆分文件，运行时解析 framework.md 结构并切片返回。
+    """
+    import re
+    projects_dir = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), '..', '..', 'projects'))
+    fw_path = os.path.join(projects_dir, project, 'framework.md')
+    if not os.path.exists(fw_path):
+        return f"framework.md 不存在: {fw_path}"
+
+    with open(fw_path, 'r', encoding='utf-8') as f:
+        fw = f.read()
+
+    # 1. 找到大纲 section（第三个 # 标题）
+    headers_l1 = list(re.finditer(r'^# .+', fw, re.MULTILINE))
+    if len(headers_l1) < 3:
+        # 没有大纲 section，返回全文
+        return fw
+
+    core_end = headers_l1[2].start()
+    core = fw[:core_end].rstrip()
+
+    # 2. 在大纲 section 中找卷级 ## 标题（含 chXX-chYY 的）
+    outline_start = headers_l1[2].start()
+    vol_p = re.compile(r'ch(\d+)-ch(\d+)')
+    all_h2 = list(re.finditer(r'^## (.+)', fw, re.MULTILINE))
+    outline_h2 = [m for m in all_h2 if m.start() > outline_start]
+
+    # 分类：卷纲 vs 全局说明
+    vol_sections = []
+    non_vol_start = None
+    non_vol_end = None
+
+    for i, m in enumerate(outline_h2):
+        end = outline_h2[i + 1].start() if i + 1 < len(outline_h2) else len(fw)
+        title = m.group(1).strip()
+        vm = vol_p.search(title)
+        if vm:
+            ch_start = int(vm.group(1))
+            ch_end = int(vm.group(2))
+            vol_sections.append({
+                'start': m.start(), 'end': end,
+                'ch_start': ch_start, 'ch_end': ch_end, 'title': title
+            })
+        else:
+            # 非卷 section（全局说明）—— 全部保留
+            if non_vol_start is None:
+                non_vol_start = m.start()
+            non_vol_end = end
+
+    # 3. 找到包含 chapter 的卷
+    target_vol = None
+    for v in vol_sections:
+        if v['ch_start'] <= chapter <= v['ch_end']:
+            target_vol = v
+            break
+
+    # 4. 找到第四个 # 标题（主题一览等尾部 section）
+    tail = ""
+    if len(headers_l1) > 3:
+        tail = fw[headers_l1[3].start():].rstrip()
+
+    # 5. 组装结果
+    parts = [core]
+
+    # 大纲 section 标题
+    parts.append(fw[outline_start:outline_start + len(headers_l1[2].group())].rstrip())
+
+    # 全局说明
+    if non_vol_start is not None:
+        parts.append(fw[non_vol_start:non_vol_end].rstrip())
+
+    # 目标卷大纲
+    if target_vol:
+        parts.append(fw[target_vol['start']:target_vol['end']].rstrip())
+    else:
+        # 没找到匹配卷，返回所有卷的标题行作为索引
+        vol_index = "\n".join(
+            f"- {v['title']}" for v in vol_sections
+        )
+        parts.append(f"## 卷索引（第{chapter}章未匹配到具体卷，以下为全部卷纲）\n{vol_index}")
+
+    # 尾部 section
+    if tail:
+        parts.append(tail)
+
+    return "\n\n".join(parts)
+
+
+def recall_thread(project: str, thread_id: str) -> dict:
+    kg = _kg(project)
+    result = kg.recall_thread(thread_id)
+    if result is None:
+        return {"error": f"悬念线 {thread_id} 不存在"}
+    return result
+
+
+def recall_arc(project: str, chapter: int) -> dict:
+    kg = _kg(project)
+    return kg.recall_arc(chapter)
+
+
+def generate_context_digest(project: str, chapter: int,
+                            word_count: int = 0) -> dict:
+    """生成本章增量摘要并保存到 digests/ 目录。"""
+    kg = _kg(project)
+    # 尝试读取提取 JSON 以获取线索变更
+    extraction_data = None
+    ex_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..', '..', 'projects', project, 'extractions',
+        f'extraction_ch{chapter:02d}.json'
+    )
+    if os.path.exists(ex_path):
+        try:
+            with open(ex_path, "r", encoding="utf-8") as f:
+                extraction_data = json.load(f)
+        except (json.JSONDecodeError, ValueError):
+            pass
+    digest = kg.generate_context_digest(chapter, extraction_data, word_count)
+    _persist(project, "digests", f"digest_ch{chapter:02d}.json",
+             json.dumps(digest, ensure_ascii=False, indent=2))
+    return digest
+
+
+# ============================================================
+# 1c. 管线门禁（硬约束）
+# ============================================================
+
+def verify_pipeline_step(project: str, chapter: int, step: str) -> dict:
+    """验证某步的前置条件是否满足。step 取值: write/edit/extract/graph/telemetry。
+
+    每步检查前一步的产物文件是否存在且有效：
+    - write: 仅检查大纲存在
+    - edit: 检查 output/ch{NN}_generated.txt 存在且非空
+    - extract: 检查 output/ch{NN}_generated.txt 存在且字数合理
+    - graph: 检查 extractions/extraction_ch{NN}.json 存在且是合法 JSON
+    - telemetry: 检查 chapter_arc 已写入图谱
+    """
+    projects_dir = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), '..', '..', 'projects'))
+    proj_dir = os.path.join(projects_dir, project)
+    errors = []
+
+    if step == "write":
+        kg = _kg(project)
+        outline = kg.get_outline_entry(chapter)
+        if not outline:
+            errors.append(f"第{chapter}章无大纲条目，无法写作")
+
+    elif step == "edit":
+        path = os.path.join(proj_dir, "output", f"ch{chapter:02d}_generated.txt")
+        if not os.path.exists(path):
+            errors.append(f"正文文件不存在: {path}")
+        else:
+            with open(path, "r", encoding="utf-8") as f:
+                text = f.read()
+            if len(text.strip()) < 500:
+                errors.append(f"正文过短（{len(text)} chars），疑似未完成")
+
+    elif step == "extract":
+        path = os.path.join(proj_dir, "output", f"ch{chapter:02d}_generated.txt")
+        if not os.path.exists(path):
+            errors.append(f"正文文件不存在: {path}")
+        else:
+            import re
+            with open(path, "r", encoding="utf-8") as f:
+                text = f.read()
+            cn_chars = len(re.findall(r'[一-鿿]', text))
+            if cn_chars < 1000:
+                errors.append(f"正文字数不足（{cn_chars} 字），无法提取")
+
+    elif step == "graph":
+        path = os.path.join(proj_dir, "extractions", f"extraction_ch{chapter:02d}.json")
+        if not os.path.exists(path):
+            errors.append(f"提取JSON不存在: {path}")
+        else:
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if not data.get("events"):
+                    errors.append("提取JSON中无事件，疑似提取失败")
+            except (json.JSONDecodeError, ValueError) as e:
+                errors.append(f"提取JSON格式错误: {e}")
+
+    elif step == "telemetry":
+        kg = _kg(project)
+        arc = kg._graph["chapter_arcs"].get(str(chapter))
+        if not arc:
+            errors.append(f"第{chapter}章未写入 chapter_arc，无法完成遥测")
+
+    else:
+        errors.append(f"未知步骤: {step}")
+
+    return {"step": step, "chapter": chapter, "ready": len(errors) == 0, "errors": errors}
+
+
+def verify_chapter_complete(project: str, chapter: int) -> dict:
+    """验证某章全部管线是否完成。作为章间门禁使用。"""
+    projects_dir = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), '..', '..', 'projects'))
+    proj_dir = os.path.join(projects_dir, project)
+    checks = []
+
+    # 1. 正文文件存在
+    text_path = os.path.join(proj_dir, "output", f"ch{chapter:02d}_generated.txt")
+    text_ok = os.path.exists(text_path)
+    checks.append({"item": "正文文件", "ok": text_ok})
+
+    # 2. 提取JSON存在且合法
+    ex_path = os.path.join(proj_dir, "extractions", f"extraction_ch{chapter:02d}.json")
+    ex_ok = False
+    if os.path.exists(ex_path):
+        try:
+            with open(ex_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            ex_ok = len(data.get("events", [])) > 0
+            checks.append({"item": "提取JSON", "ok": True, "events": len(data.get("events", []))})
+        except (json.JSONDecodeError, ValueError):
+            checks.append({"item": "提取JSON", "ok": False, "error": "JSON格式错误"})
+    else:
+        checks.append({"item": "提取JSON", "ok": False})
+
+    # 3. chapter_arc 已写入
+    kg = _kg(project)
+    arc = kg._graph["chapter_arcs"].get(str(chapter))
+    arc_ok = arc is not None
+    checks.append({"item": "章节弧线", "ok": arc_ok})
+
+    # 4. 事件已入图
+    events = kg.get_events_by_chapter(chapter)
+    events_ok = len(events) > 0
+    checks.append({"item": "事件入图", "ok": events_ok, "count": len(events)})
+
+    # 5. digest 已生成
+    digest_path = os.path.join(proj_dir, "digests", f"digest_ch{chapter:02d}.json")
+    digest_ok = os.path.exists(digest_path)
+    checks.append({"item": "增量摘要", "ok": digest_ok})
+
+    all_ok = all(c["ok"] for c in checks)
+    return {"chapter": chapter, "complete": all_ok, "checks": checks}
+
+
+# ============================================================
 # 2. Prompt Template Tools
 # ============================================================
 
-def get_extraction_prompt(project: str, chapter: int, chapter_text: str) -> str:
+def get_extraction_prompt(project: str, chapter: int, chapter_text: str,
+                         compact: bool = False) -> str:
     kg = _kg(project)
-    prompt = build_extraction_prompt(kg, chapter, chapter_text, project=project)
-    _persist(project, "prompts", f"extraction_ch{chapter}.txt", prompt)
+    prompt = build_extraction_prompt(kg, chapter, chapter_text,
+                                     project=project, compact=compact)
+    suffix = "_compact" if compact else ""
+    _persist(project, "prompts", f"extraction_ch{chapter}{suffix}.txt", prompt)
     return prompt
 
 

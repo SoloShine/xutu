@@ -108,21 +108,38 @@ def get_existing_characters(kg):
     return "\n".join(f"  - {c['name']}({c.get('role', '')})" for c in chars)
 
 
-def build_extraction_prompt(kg, chapter, chapter_text, project=None):
-    """构建提取prompt"""
+def build_extraction_prompt(kg, chapter, chapter_text, project=None, compact=False):
+    """构建提取prompt。compact=True 时精简上下文（仅实体名列表+线索摘要）。"""
     cfg = config_loader.load(project) if project else None
     extraction_cfg = (cfg or {}).get("extraction", {})
     target_events = extraction_cfg.get("target_events", "5-8")
-    characters = get_existing_characters(kg)
-    # 获取已有悬念线摘要
-    threads = kg.get_unresolved_threads(chapter + 1)  # 默认全量，含本章及之前种植的
-    if threads:
-        threads_str = "\n".join(
-            f"  - {t['id']}: {t.get('content', '')} [{t.get('status', '')}]"
-            for t in threads
-        )
+
+    if compact:
+        # 精简模式：只列名字（去重用），不展开完整上下文
+        char_names = kg.get_all_character_names()
+        characters = "\n".join(f"  {n}" for n in sorted(char_names)) if char_names else "  （无）"
+        # 线索只列 id:content截断（focused 模式）
+        threads = kg.get_unresolved_threads(chapter + 1, focused=True)
+        if isinstance(threads, dict):
+            threads = threads["focused"]
+        if threads:
+            threads_str = "\n".join(
+                f"  - {t['id']}: {(t.get('content','') or '')[:50]} [{t.get('status','')}]"
+                for t in threads
+            )
+        else:
+            threads_str = "  （无）"
     else:
-        threads_str = "  （无）"
+        characters = get_existing_characters(kg)
+        threads = kg.get_unresolved_threads(chapter + 1)
+        if threads:
+            threads_str = "\n".join(
+                f"  - {t['id']}: {t.get('content', '')} [{t.get('status', '')}]"
+                for t in threads
+            )
+        else:
+            threads_str = "  （无）"
+
     return EXTRACTION_PROMPT.format(
         chapter=chapter,
         characters=characters,
