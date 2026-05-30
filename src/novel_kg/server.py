@@ -90,7 +90,7 @@ def get_extraction_prompt(project: str, chapter: int,
 
 @mcp.tool()
 def get_writing_prompt(project: str, chapter: int,
-                       prev_text_chars: int = 500) -> str:
+                       prev_text_chars: int = 500, focused: bool = False) -> str:
     """获取填充后的续写prompt。
 
     返回包含完整图谱上下文的续写指导:章节弧线、时间段、前一章事件、
@@ -98,8 +98,9 @@ def get_writing_prompt(project: str, chapter: int,
     Agent据此生成章节正文。
 
     prev_text_chars: 前一章结尾正文的截取字数（首尾帧衔接），默认500。设为0则不注入。
+    focused: True时只注入近期活跃的悬念线（节省prompt体积），默认False全量注入。
     """
-    return core.get_writing_prompt(project, chapter, prev_text_chars=prev_text_chars)
+    return core.get_writing_prompt(project, chapter, prev_text_chars=prev_text_chars, focused=focused)
 
 
 @mcp.tool()

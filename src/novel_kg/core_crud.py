@@ -72,12 +72,12 @@ def get_extraction_prompt(project: str, chapter: int, chapter_text: str) -> str:
 
 
 def get_writing_prompt(project: str, chapter: int,
-                       prev_text_chars: int = None) -> str:
+                       prev_text_chars: int = None, focused: bool = False) -> str:
     if prev_text_chars is None:
         prev_text_chars = config_loader.get(project, "writing", "prev_text_chars", default=500)
     cfg = config_loader.load(project)
     kg = _kg(project)
-    context = kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars)
+    context = kg.get_context_for_chapter(chapter, prev_text_chars=prev_text_chars, focused=focused)
     prompt = build_writing_prompt(context, chapter, config=cfg)
     _persist(project, "prompts", f"writing_ch{chapter}.txt", prompt)
     return prompt

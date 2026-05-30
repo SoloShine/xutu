@@ -339,12 +339,36 @@ class JsonKG:
         return [deepcopy(v) for v in self._graph["events"].values()
                 if v.get("chapter") == chapter]
 
-    def get_unresolved_threads(self, chapter):
-        return [
+    def get_unresolved_threads(self, chapter, focused=False):
+        all_unresolved = [
             deepcopy(v) for v in self._graph["suspense_threads"].values()
             if v.get("status") not in ("resolved", "abandoned")
             and v.get("planted_chapter", 999) < chapter
         ]
+        if not focused:
+            return all_unresolved
+
+        # 聚焦模式：保留 escalated + partially_resolved(high) + 近15章种植的
+        # 安全策略：宁可多留不可漏掉
+        kept = []
+        for t in all_unresolved:
+            status = t.get("status", "")
+            importance = t.get("importance", "medium")
+            planted = t.get("planted_chapter", 999)
+            # escalated 全保留
+            if status == "escalated":
+                kept.append(t)
+            # partially_resolved 的 high 保留（活跃推进中）
+            elif status == "partially_resolved" and importance == "high":
+                kept.append(t)
+            # 近15章种植的全保留
+            elif planted >= chapter - 15:
+                kept.append(t)
+
+        # 安全兜底
+        if len(kept) < 10:
+            return all_unresolved
+        return kept
 
     def get_all_threads(self):
         return sorted(
@@ -387,7 +411,7 @@ class JsonKG:
     # 查询：复合
     # ================================================================
 
-    def get_context_for_chapter(self, chapter, prev_text_chars=500):
+    def get_context_for_chapter(self, chapter, prev_text_chars=500, focused=False):
         prev_ch = max(chapter - 1, 1)
 
         # 前一章事件
@@ -412,16 +436,55 @@ class JsonKG:
         characters = [deepcopy(self._graph["characters"][n])
                       for n in sorted(char_names)
                       if n in self._graph["characters"]]
-        # 回退：无事件关联时返回全部人物（冷启动/并行首章）
+        # 回退：无事件关联时，回溯搜索更多章节
         if not characters:
-            characters = [deepcopy(v) for v in self._graph["characters"].values()]
+            for i in range(2, 16):
+                look_ch = chapter - i
+                if look_ch < 1:
+                    break
+                look_events = self.get_events_by_chapter(look_ch)
+                if not look_events:
+                    continue
+                look_ids = {e["id"] for e in look_events}
+                found = set()
+                for r in self._graph["relations"]:
+                    if (r["fl"] == "Event" and r["fk"] == "id"
+                            and r["fv"] in look_ids
+                            and r["rt"] == "INVOLVES"):
+                        found.add(r["tv"])
+                if found:
+                    characters = [deepcopy(self._graph["characters"][n])
+                                  for n in sorted(found)
+                                  if n in self._graph["characters"]]
+                    break
+            # 终极回退：不返回无效数据，返回空列表由调用方处理
+            # if not characters:
+            #     characters = [deepcopy(v) for v in self._graph["characters"].values()]
 
         locations = [deepcopy(self._graph["locations"][n])
                      for n in sorted(loc_names)
                      if n in self._graph["locations"]]
-        # 回退：无事件关联时返回全部地点
+        # 回退：无事件关联时，回溯搜索更多章节
         if not locations:
-            locations = [deepcopy(v) for v in self._graph["locations"].values()]
+            for i in range(2, 16):
+                look_ch = chapter - i
+                if look_ch < 1:
+                    break
+                look_events = self.get_events_by_chapter(look_ch)
+                if not look_events:
+                    continue
+                look_ids = {e["id"] for e in look_events}
+                found = set()
+                for r in self._graph["relations"]:
+                    if (r["fl"] == "Event" and r["fk"] == "id"
+                            and r["fv"] in look_ids
+                            and r["rt"] == "OCCURS_AT"):
+                        found.add(r["tv"])
+                if found:
+                    locations = [deepcopy(self._graph["locations"][n])
+                                  for n in sorted(found)
+                                  if n in self._graph["locations"]]
+                    break
 
         # 时间段
         time_periods = [deepcopy(v) for v in self._graph["time_periods"].values()
@@ -472,7 +535,7 @@ class JsonKG:
             "style_guides": style_guides,
             "motifs": motifs,
             "chapter_arc": chapter_arc,
-            "suspense_threads": self.get_unresolved_threads(chapter),
+            "suspense_threads": self.get_unresolved_threads(chapter, focused=focused),
             "outline_entry": self.get_outline_entry(chapter),
             "causal_links": causal_links,
             "evidence_links": evidence_links,

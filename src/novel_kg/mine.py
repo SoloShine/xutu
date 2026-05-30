@@ -115,7 +115,7 @@ def build_extraction_prompt(kg, chapter, chapter_text, project=None):
     target_events = extraction_cfg.get("target_events", "5-8")
     characters = get_existing_characters(kg)
     # 获取已有悬念线摘要
-    threads = kg.get_unresolved_threads(chapter + 1)  # 包含本章及之前种植的
+    threads = kg.get_unresolved_threads(chapter + 1)  # 默认全量，含本章及之前种植的
     if threads:
         threads_str = "\n".join(
             f"  - {t['id']}: {t.get('content', '')} [{t.get('status', '')}]"
