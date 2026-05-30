@@ -35,6 +35,9 @@ src/novel_kg/           # 核心引擎
 ├── server.py           # FastMCP 入口
 ├── mcp_cli.py          # CLI 入口
 └── prompts.py          # Prompt 模板
+.claude/
+├── templates/          # 项目模板（framework.md / handoff.md）
+└── skills/             # Agent 技能
 tests/                  # 283 测试点（E2E + 并行 + 遥测）
 archive/                # V1-V26 全部验证轮次归档
 ```
@@ -95,7 +98,7 @@ python server.py
 
 - **图谱 CRUD**（20）：init_project, add_character/location/event/relation, add_chapter_arc/outline_entry/suspense_thread/style_guide/motif/theme/time_period, update_suspense_thread, write_extraction, clear_chapter_data
 - **查询**（6）：get_chapter_context, get_derivation_context, get_graph_stats, get_all_*, check_consistency
-- **Prompt 生成**（3）：get_extraction_prompt, get_writing_prompt, get_derivation_prompt
+- **Prompt 生成**（4）：get_extraction_prompt, get_writing_prompt (`--focused` 可选，过滤休眠悬念线), get_editing_prompt, get_derivation_prompt
 - **合规检查**（4）：validate_chapter, check_outline_compliance, batch_check_outline_compliance, detect_extraction_conflicts
 - **分析**（4）：analyze_pacing, analyze_edit_impact, revise_outline, sync_backends
 - **编辑管理**（4）：accept_edit, review_chapter, list_edits, rollback_edit
@@ -122,6 +125,7 @@ confirm = "I_UNDERSTAND_THIS_IS_DESTRUCTIVE"
 | 《都市仙尊》 | 100 | 882K | 都市修仙（自演化） |
 | 《水蚀》 | 12 | 101K | 双时间线悬疑 |
 | 《末班电台》 | 6 | 55K | 深夜电台悬疑 |
+| 《绝地天通》 | 92 | 320K+ | 20卷神话科幻（进行中） |
 
 ## License
 

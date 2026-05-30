@@ -121,10 +121,10 @@ mkdir -p "D:/novel_test/projects/<标识符>"/{output,extractions,prompts,teleme
 
 ### 3d. 生成 framework.md
 
-从 `.template.framework.md` 复制并填充内容：
+从 `.claude/templates/framework.md` 复制并填充内容：
 
 ```bash
-cp "D:/novel_test/.template.framework.md" "D:/novel_test/projects/<标识符>/framework.md"
+cp "D:/novel_test/.claude/templates/framework.md" "D:/novel_test/projects/<标识符>/framework.md"
 ```
 
 然后用 Edit 工具将以下内容填入 framework.md 对应位置：
@@ -135,10 +135,10 @@ cp "D:/novel_test/.template.framework.md" "D:/novel_test/projects/<标识符>/fr
 
 ### 3e. 生成 handoff.md
 
-从 `.template.handoff.md` 复制并填充：
+从 `.claude/templates/handoff.md` 复制并填充：
 
 ```bash
-cp "D:/novel_test/.template.handoff.md" "D:/novel_test/projects/<标识符>/handoff.md"
+cp "D:/novel_test/.claude/templates/handoff.md" "D:/novel_test/projects/<标识符>/handoff.md"
 ```
 
 然后用 Edit 工具填入：

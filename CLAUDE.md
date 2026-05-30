@@ -11,8 +11,8 @@
 | 图谱状态 | CLI命令 `get_graph_stats --project <项目名>` | 每次入图后 |
 
 模板文件（新建项目时从根目录复制）：
-- `.template.framework.md` → `projects/<项目名>/framework.md`
-- `.template.handoff.md` → `projects/<项目名>/handoff.md`
+- `.claude/templates/framework.md` → `projects/<项目名>/framework.md`
+- `.claude/templates/handoff.md` → `projects/<项目名>/handoff.md`
 
 写作前必须读取 `framework.md` 的前几节（核心设定）和对应卷的大纲部分。
 
@@ -102,8 +102,11 @@ novel_test/
 ├── src/novel_kg/                   # 代码
 │   ├── server.py / core.py / kg_json.py / mcp_cli.py / telemetry.py
 ├── .mcp.json                       # MCP Server配置
-├── .template.framework.md           # framework.md标准模板
-├── .template.handoff.md             # handoff.md标准模板
+├── .claude/
+│   ├── templates/                # 项目模板
+│   │   ├── framework.md          # framework.md标准模板
+│   │   └── handoff.md            # handoff.md标准模板
+│   └── skills/                   # Agent skills
 └── archive/                        # 历史验证归档（gitignored）
 ```
 
