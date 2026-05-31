@@ -1,0 +1,96 @@
+{
+  "chapter": 90,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 18.6
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 9.4
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 9.2
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 687.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "走廊",
+          "中枢设施投影室"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 4,
+          "relations_added": 19,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 4,
+          "new_threads": 0,
+          "causal_links": 3,
+          "evidence_links": 7,
+          "character_goals": 1
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 23.1,
+      "decision": {
+        "rhythm": "",
+        "purpose": "封锁执行进入倒计时，所有技术环节最终确认，安全阀六个种子全部在线，等待高议会最终指令",
+        "ending": "林深坐在监控站里等待最后一点五个标准周期，所有检查项实心标记无遗漏",
+        "scenes": "陈默报告第三集线器校准完成六个监测区域确认;渊编入传承序列滤除库;投影室最终部署确认六个检查项全部完成;等待不到两个标准周期"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 10.7
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 11.3
+    }
+  ],
+  "totals": {
+    "duration_ms": 772.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 10
+  },
+  "version": "v25",
+  "session_id": "6d1471cc",
+  "timestamp": "2026-05-31T02:24:29.326583",
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1010000.0,
+      "tool_uses": 46
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 3006,
+    "editing_corrections": 6,
+    "editing_types": [
+      "句号密度修复",
+      "对话标签替换"
+    ]
+  }
+}

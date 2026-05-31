@@ -1,0 +1,87 @@
+{
+  "chapter": 66,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 11.1
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 8.9
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 7.0
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 662.5,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "住处",
+          "主通道"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 18,
+          "locations_added": 1,
+          "characters_added": 0,
+          "thread_updates": 8,
+          "new_threads": 3,
+          "causal_links": 5,
+          "evidence_links": 8,
+          "character_goals": 2
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 18.1,
+      "decision": {
+        "rhythm": "",
+        "purpose": "卷终章：林深进入第七区中枢设施看到能量分配网络全貌，发现推进路径与绝地天通记载完全同构，确认自己是参与者而非旁观者",
+        "ending": "他在其中。",
+        "scenes": "携带权限凭证前往第七区通道变窄光流偏紫;中枢设施全息投影展示能量分配网络全貌;三段式推进逻辑与绝地天通记载同构性发现;掌心底层振动异常加速;向银灰制服选择性汇报;回到住处解锁第37条附注发现时间轴路径重叠;记忆宫殿写下'他在其中'"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.6
+    }
+  ],
+  "totals": {
+    "duration_ms": 711.3,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 890000.0,
+      "tool_uses": 73
+    }
+  ],
+  "version": "v25",
+  "session_id": "af7fdf53",
+  "timestamp": "2026-05-30T00:32:55.157096",
+  "chapter_metrics": {
+    "word_count": 3668,
+    "editing_corrections": 3,
+    "editing_types": [
+      "否定转折改写"
+    ]
+  }
+}

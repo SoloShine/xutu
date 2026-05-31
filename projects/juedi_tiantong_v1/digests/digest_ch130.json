@@ -1,0 +1,41 @@
+{
+  "chapter": 130,
+  "ending_summary": "Ch130结尾：这条路不存在了",
+  "last_event": {
+    "chapter": 130,
+    "title": "最后通道节点的关闭确认",
+    "type": "character",
+    "detail": "城市最深层独立通讯阵列中的最后一个节点也关闭了。环形符号结构沉默，掌心频率在冰冷凹槽上运行无任何回应。芬确认：这条路不存在了，频率窗口被封死，双向都无法打开。",
+    "id": "E130_03"
+  },
+  "thread_changes": [
+    {
+      "id": "ST43_01",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST84_02",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST75_02",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST121_02",
+      "action": "confirmed",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST92_02",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_entities": [],
+  "word_count": 3490,
+  "_persisted_at": "2026-05-31 23:03:10"
+}

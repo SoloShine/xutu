@@ -1,0 +1,85 @@
+{
+  "chapter": 61,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 12.0
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 8.5
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 6.5
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1039.4,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 29,
+          "locations_added": 0,
+          "characters_added": 3,
+          "thread_updates": 2,
+          "new_threads": 3,
+          "causal_links": 5,
+          "evidence_links": 7,
+          "character_goals": 2
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 15.6,
+      "decision": {
+        "rhythm": "",
+        "purpose": "三名高阶古神以单向传导公理反驳反馈回路方案，技术辩论升级为控制权之争，要求正式技术评审会",
+        "ending": "林深意识到信息传播已被重新定义，他提出的方案从'跨系统迁移'变成了'改变路径'",
+        "scenes": "林深通道独处反思;三名高阶官员到来以单向传导公理质疑;林深用信息流vs能量流辩护;管理权争论升级触及控制权核心;古神要求正式评审会离场;疤痕未知频率脉冲与通道尾声"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.4
+    }
+  ],
+  "totals": {
+    "duration_ms": 1085.5,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1360000.0,
+      "tool_uses": 48
+    }
+  ],
+  "version": "v25",
+  "session_id": "30fed602",
+  "timestamp": "2026-05-29T23:04:36.896210",
+  "chapter_metrics": {
+    "word_count": 3303,
+    "editing_corrections": 13,
+    "editing_types": [
+      "句号密度修复",
+      "否定转折改写"
+    ]
+  }
+}

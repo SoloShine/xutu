@@ -1,0 +1,331 @@
+{
+  "chapter": 99,
+  "title": "缺口",
+  "events": [
+    {
+      "id": "E99_01",
+      "title": "封锁方案缺口评估启动",
+      "type": "analysis",
+      "chapter": 99,
+      "detail": "陈默将循环闭环逻辑映射到封锁方案上，投影网格显示消耗曲线与循环曲线叠加后产生七个交叉点。六锚方案锚点分布图显示六个锚点状态：锚点一二（陈默许巍）稳定，锚点三（林深）复杂但达标，锚点四（周）下限勉强可用，锚点五（汾）差百分之十五，锚点六（陆）参数体系不匹配，第七人位置未锁定。",
+      "characters": [
+        "林深",
+        "陈默",
+        "许巍"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_02",
+      "title": "操作者缺口确认——六锚实际可用能力不足",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "陈默逐一评估六个锚点状态：周0.7倍频率波形不规则容错极小，汾1.3倍频率长时间底层潜伏导致校准偏差差百分之十五，陆频率不是穿越者标准频率而是维护日志残留的附带效应需重新校准。第七人频率特征与六锚参数不匹配概率大于百分之七十。林深将第一条缺口放入记忆宫殿缺口清单。",
+      "characters": [
+        "林深",
+        "陈默",
+        "周(TR-05)",
+        "汾",
+        "陆"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_03",
+      "title": "核心能量缺口确认——物理屏蔽层关键资源缺失",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "陈默揭示物理屏蔽层需要古神核心派系独占的核心能量而非光流系统的能量。核心能量是聚集型的只在特定位置产生波形不可复制，传输路径只有核心派系掌握。科技派系负责光流系统，核心派系负责边界维持和循环管理，分工自古神文明建立之初确定。深蓝长袍属于科技派系影响力到不了核心派系。",
+      "characters": [
+        "林深",
+        "陈默",
+        "许巍"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_04",
+      "title": "参照数据缺口确认——信息切断层校准基准不完整",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "渊掌握的前次循环记录覆盖百分之六十七，缺失集中在启动前决策过程和重置后善后协议。启动前决策过程决定封锁初始参数（屏蔽层密度、加密层级、衰减速率），重置后善后协议决定信息切断层在封锁期间如何自我维护。善后协议中的未知清除机制可能导致屏障漏洞。",
+      "characters": [
+        "林深",
+        "陈默",
+        "许巍"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_05",
+      "title": "陆揭示第二十三次循环末段日志缺失",
+      "type": "revelation",
+      "chapter": 99,
+      "detail": "陆透露二十三次循环的维护日志只覆盖到第二十二次，第二十三次缺失最后一段。她到达前最后七十二个标准时没有维护日志。到达时维护者已不在，日志中断位置是系统时间戳最后一个有效标记之后是空白。参照数据缺失从百分之三十三可能扩大到更多。",
+      "characters": [
+        "陆",
+        "周(TR-05)",
+        "陈默"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_06",
+      "title": "三缺口互相放大——耦合依赖关系确立",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "林深总结三个缺口互相放大的依赖关系：操作者不足导致精度下降需要更多核心能量补偿，更多核心能量需要更高参照数据精度。许巍指出缺口间有依赖关系可优先解决某一缺口以减轻其他。陈默认为操作者缺口最难解决因为人的频率校准无法通过谈判或搜索解决。",
+      "characters": [
+        "林深",
+        "许巍",
+        "陈默"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_07",
+      "title": "汾提出频率压缩方案——代价百分之三十信息容量",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "汾提出底层潜伏期间学会的频率压缩方法：把波动振幅降到正常范围以下用更低振幅换取更长稳定时间，代价是频率信息容量下降百分之三十。陈默计算后确认补偿后六锚同步精度可接受但容错空间从零变成负数，任何一次意外波动会导致同步链断裂。林深总结操作者缺口从'差百分之十五'变成'零容错'。",
+      "characters": [
+        "汾",
+        "陈默",
+        "许巍",
+        "林深"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_08",
+      "title": "核心派系合作路径浮现——渊作为潜在渠道",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "陆指出渊的符号分析层级可接触跨周期协议（由核心派系维护），渊有渠道。陈默提醒有渠道不等于有权限。许巍提出渠道可转化为谈判筹码。林深标注核心能量缺口可能通过交易解决，渊是潜在渠道。",
+      "characters": [
+        "陆",
+        "陈默",
+        "许巍",
+        "林深"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_09",
+      "title": "深层回溯功能揭示——参照数据缺口的潜在解决方案",
+      "type": "revelation",
+      "chapter": 99,
+      "detail": "陆透露维护日志有一个未使用过的功能：深层回溯，系统允许维护者回溯前次循环最后一段日志，但需要核心层级访问权限。陆的权限只到维护层二级不够。林深标注参照数据缺口可能通过深层回溯补充，权限来源与核心能量缺口同源——核心派系。",
+      "characters": [
+        "陆",
+        "林深",
+        "陈默"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    },
+    {
+      "id": "E99_10",
+      "title": "三缺口归约为两个方向——操作者零容错+核心派系合作",
+      "type": "turning",
+      "chapter": 99,
+      "detail": "林深在记忆宫殿重新排列缺口标注：操作者缺口从能力不足变为零容错但有可执行方案，核心能量缺口和参照数据缺口共同指向核心派系合作。林深总结封锁方案对核心派系有利（减少维护负担），利益一致是谈判基础。许巍提醒利益一致不等于信任，林深回应但等于谈判基础。",
+      "characters": [
+        "林深",
+        "许巍"
+      ],
+      "locations": [
+        "中枢设施"
+      ]
+    }
+  ],
+  "characters": [
+    {
+      "name": "林深",
+      "role": "主角",
+      "chapter": 99,
+      "actions": "主导缺口分析流程，逐一确认三个缺口，在记忆宫殿建立缺口清单，发现缺口间耦合关系，提出核心派系利益一致作为谈判基础",
+      "state_changes": "从分析者变为战略规划者，将三个缺口归约为两个方向"
+    },
+    {
+      "name": "陈默",
+      "role": "supporting",
+      "chapter": 99,
+      "actions": "调整网格分层参数，逐一评估六个锚点状态，分析核心能量特性，计算频率压缩方案后果（零容错），确认三缺口互相放大",
+      "state_changes": null
+    },
+    {
+      "name": "许巍",
+      "role": "supporting",
+      "chapter": 99,
+      "actions": "指出缺口间依赖关系可优先解决某一缺口，提出渠道转化为谈判筹码，提醒利益一致不等于信任",
+      "state_changes": null
+    },
+    {
+      "name": "周(TR-05)",
+      "role": "supporting",
+      "chapter": 99,
+      "actions": "确认自己勉强够用也是够用，询问七十二个标准时发生了什么，追问核心能量和参照数据的解决路径",
+      "state_changes": null
+    },
+    {
+      "name": "汾",
+      "role": "supporting",
+      "chapter": 99,
+      "actions": "提出频率压缩方案（代价百分之三十信息容量换取更长稳定时间），右手食指中指间歇性抽搐与锚点光点闪烁同步",
+      "state_changes": "从被动评估对象变为主动提出解决方案，但身体抽搐暗示频率不稳定的物理表现"
+    },
+    {
+      "name": "陆",
+      "role": "supporting",
+      "chapter": 99,
+      "actions": "揭示第二十三次循环末段日志缺失七十二个标准时，指出渊有渠道接触核心派系，透露维护日志深层回溯功能（需核心层级权限）",
+      "state_changes": "从沉默观察者变为贡献关键信息的参与者"
+    }
+  ],
+  "locations": [
+    {
+      "name": "中枢设施",
+      "type": "设施",
+      "chapter": 99,
+      "detail": "中枢设施内光流投影切换为新配色（消耗曲线与循环曲线叠加产生的浅紫色），六锚分布图和封锁方案三层结构图依次显示"
+    }
+  ],
+  "suspense_threads": [
+    {
+      "thread_id": "ST99_01",
+      "content": "三个关键缺口确认：操作者缺口（零容错）、核心能量缺口（核心派系独占）、参照数据缺口（渊仅67%+23次循环末段72标准时空白）。三个缺口互相放大有耦合依赖关系。",
+      "planted_chapter": 99,
+      "importance": "high",
+      "status": "planted"
+    },
+    {
+      "thread_id": "ST99_02",
+      "content": "汾的频率压缩方案可行但零容错——任何一次意外波动会导致整个同步链断裂，时间窗口不一定够重新同步。汾右手间歇性抽搐与锚点光点闪烁同步暗示频率不稳定的物理表现加剧。",
+      "planted_chapter": 99,
+      "importance": "high",
+      "status": "planted"
+    },
+    {
+      "thread_id": "ST99_03",
+      "content": "核心能量缺口和参照数据缺口共同指向核心派系——渊是潜在渠道（符号分析层级可接触跨周期协议），陆透露深层回溯功能需要核心层级权限。两个缺口的解决路径合并为一条：与核心派系谈判。但利益一致不等于信任。",
+      "planted_chapter": 99,
+      "importance": "high",
+      "status": "planted"
+    },
+    {
+      "thread_id": "ST99_04",
+      "content": "第二十三次循环最后七十二个标准时的空白——陆到达时维护者已不在，日志中断于系统时间戳最后有效标记。这段空白可能是善后协议的一部分也可能是意外，参照数据缺失可能比已知更大。",
+      "planted_chapter": 99,
+      "importance": "high",
+      "status": "planted"
+    },
+    {
+      "thread_id": "ST99_05",
+      "content": "深层回溯功能——维护日志系统允许维护者回溯前次循环最后一段日志，但需要核心层级访问权限（陆仅维护层二级）。如果有人获得核心权限且日志仍在，可补全参照数据缺口。",
+      "planted_chapter": 99,
+      "importance": "medium",
+      "status": "planted"
+    }
+  ],
+  "relations": [
+    {
+      "from_label": "character",
+      "from_key": "name",
+      "from_val": "渊",
+      "rel_type": "has_access_to",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "跨周期协议"
+    },
+    {
+      "from_label": "concept",
+      "from_key": "name",
+      "from_val": "跨周期协议",
+      "rel_type": "maintained_by",
+      "to_label": "faction",
+      "to_key": "name",
+      "to_val": "古神核心派系"
+    },
+    {
+      "from_label": "concept",
+      "from_key": "name",
+      "from_val": "核心能量",
+      "rel_type": "controlled_by",
+      "to_label": "faction",
+      "to_key": "name",
+      "to_val": "古神核心派系"
+    },
+    {
+      "from_label": "concept",
+      "from_key": "name",
+      "from_val": "核心能量",
+      "rel_type": "required_for",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "物理屏蔽层"
+    },
+    {
+      "from_label": "character",
+      "from_key": "name",
+      "from_val": "汾",
+      "rel_type": "proposes",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "频率压缩方案"
+    },
+    {
+      "from_label": "concept",
+      "from_key": "name",
+      "from_val": "深层回溯",
+      "rel_type": "requires",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "核心层级访问权限"
+    },
+    {
+      "from_label": "character",
+      "from_key": "name",
+      "from_val": "陆",
+      "rel_type": "has_knowledge_of",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "深层回溯"
+    },
+    {
+      "from_label": "concept",
+      "from_key": "name",
+      "from_val": "操作者缺口",
+      "rel_type": "amplifies",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "核心能量缺口"
+    },
+    {
+      "from_label": "concept",
+      "from_key": "name",
+      "from_val": "核心能量缺口",
+      "rel_type": "amplifies",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "参照数据缺口"
+    }
+  ]
+}

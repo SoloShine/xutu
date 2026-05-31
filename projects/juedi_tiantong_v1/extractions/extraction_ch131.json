@@ -1,0 +1,284 @@
+{
+  "events": [
+    {
+      "id": "E131_01",
+      "chapter": 131,
+      "title": "渊解释因果闭环机制",
+      "type": "revelation",
+      "detail": "渊向林深解释因果闭环的核心逻辑：先有果再去种因，因果倒置。林深出现在这个时代是果，但导致他出现的真正原因——他在未来要做的事——还没有发生。通道是工具而非原因。"
+    },
+    {
+      "id": "E131_02",
+      "chapter": 131,
+      "title": "芬用蛇咬尾巴比喻解释因果链",
+      "type": "character",
+      "detail": "芬用蛇咬住自己尾巴的比喻解释因果闭环的结构，指出林深在这里做的事和来的原因是同一条链上的两个环节，不是先有鸡还是先有蛋的问题。"
+    },
+    {
+      "id": "E131_03",
+      "chapter": 131,
+      "title": "穿越通道关闭原因的认知",
+      "type": "revelation",
+      "detail": "渊解释通道关闭的原因：通道存在的唯一理由是把穿越者传送到需要的时间点，任务完成后通道关闭，像建桥过河后拆桥。回去需要反向因果链，而那条链上的因还没有被种下。"
+    },
+    {
+      "id": "E131_04",
+      "chapter": 131,
+      "title": "渊解释等待的必要性",
+      "type": "revelation",
+      "detail": "渊解释闭环的最后一环不是林深能主动完成的，需要时间线上其他事件先发生。不是什么都不做，是做好准备，在下一环显现时能接住它。"
+    },
+    {
+      "id": "E131_05",
+      "chapter": 131,
+      "title": "芬揭示穿越者记忆模糊现象",
+      "type": "revelation",
+      "detail": "芬揭示所有穿越者都有穿越前最后一段时间记忆模糊的特征。韩峥约一年，林深几个月，陆也提过同样的事。这不是副作用而是闭环的保护机制。"
+    },
+    {
+      "id": "E131_06",
+      "chapter": 131,
+      "title": "渊解释记忆模糊的保护机制",
+      "type": "revelation",
+      "detail": "渊解释记忆模糊化是闭环自洽性要求：如果穿越者知道太多未来的事，选择就不是真正的选择而是被预知引导的反应。因果闭环需要真实的因而非预谋的因。模糊化不可逆，信息真的被擦除了。"
+    },
+    {
+      "id": "E131_07",
+      "chapter": 131,
+      "title": "林深接受等待",
+      "type": "character",
+      "detail": "林深接受了不是他选择等待而是等待选择了他的认知。他理解了自己不是被选中的也没有被抛弃，只是在因果链上合适的位置做合适的事。剩下的是维持底层频率运行的等待。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E131_01",
+      "character": "渊"
+    },
+    {
+      "event_id": "E131_01",
+      "character": "林深"
+    },
+    {
+      "event_id": "E131_02",
+      "character": "芬"
+    },
+    {
+      "event_id": "E131_02",
+      "character": "林深"
+    },
+    {
+      "event_id": "E131_03",
+      "character": "渊"
+    },
+    {
+      "event_id": "E131_03",
+      "character": "林深"
+    },
+    {
+      "event_id": "E131_04",
+      "character": "渊"
+    },
+    {
+      "event_id": "E131_05",
+      "character": "芬"
+    },
+    {
+      "event_id": "E131_05",
+      "character": "林深"
+    },
+    {
+      "event_id": "E131_06",
+      "character": "渊"
+    },
+    {
+      "event_id": "E131_06",
+      "character": "芬"
+    },
+    {
+      "event_id": "E131_07",
+      "character": "林深"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "林深",
+      "field": "state_change",
+      "content": "理解了因果闭环机制和自己在其中的位置。不是被选中，是变量自然收敛的结果。接受了等待的必然性，不是消极等待，是保持准备状态。穿越前记忆模糊不是缺陷而是保护机制。"
+    },
+    {
+      "name": "渊",
+      "field": "knowledge_revealed",
+      "content": "系统性地解释了因果闭环的完整逻辑：果在因先、因果链方向性、通道关闭原因、闭环自洽性要求、记忆模糊保护机制。"
+    },
+    {
+      "name": "芬",
+      "field": "knowledge_revealed",
+      "content": "首次揭示所有穿越者都有穿越前记忆模糊的特征，这不是副作用而是闭环的保护机制。用蛇咬尾巴比喻帮助林深理解因果结构。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "知识的引力",
+      "context": "渊解释因果闭环时，知识找到人而非人找到知识——林深不是主动寻求因果闭环的理解，是因果链本身让他理解"
+    },
+    {
+      "motif": "频率",
+      "context": "掌心底层频率持续振动，像一根极细的弦，穿越者身份的最后物理证据"
+    },
+    {
+      "motif": "冷",
+      "context": "信息核心区温度比通道高但仍在结霜，背脊接触墙壁的冰冷触感"
+    },
+    {
+      "motif": "路",
+      "context": "从通道关闭的具体路到因果链的抽象路径——没有手只有路径"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST78_01",
+      "action": "advanced",
+      "evidence": "渊解释穿越者的选择不是预设的——因果链需要真实的因而非预谋的因，穿越者不是棋子而是条件匹配者",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST78_02",
+      "action": "advanced",
+      "evidence": "因果闭环的完整逻辑被解释：先有果再种因，封锁是果，但闭环另一端未闭合，不是他选择等待而是等待选择了他",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST80_03",
+      "action": "advanced",
+      "evidence": "穿越者记忆模糊是保护机制而非副作用——模糊化不可逆，信息真的被擦除，为了保护闭环的自洽性",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST94_02",
+      "action": "advanced",
+      "evidence": "穿越者的角色不是天选者，是变量自然收敛的结果，在合适的时间有合适条件的人做了合适的事",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST67_05",
+      "action": "advanced",
+      "evidence": "林深穿越前的目的地现在被理解为因果链的一部分，不是随机事件也不是命运",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "因果闭环的最后一环尚未闭合。封锁已完成（果），但导致林深最初被引导来到这个时代的那个「因」还没有被种下。他需要在未来某个时间点做某件事才能让整条因果链完整，但他不知道是什么事、什么时候。因果链本身不允许他知道。",
+      "importance": "high",
+      "thread_type": "worldbuilding",
+      "planted_event_id": "E131_04"
+    },
+    {
+      "content": "穿越通道关闭的深层原因：通道存在的唯一理由是传送穿越者到需要的时间点，任务完成后通道失去了因果使命。回去需要反向因果链，而那条链上的因还没有被种下。",
+      "importance": "high",
+      "thread_type": "worldbuilding",
+      "planted_event_id": "E131_03"
+    },
+    {
+      "content": "所有穿越者都有穿越前记忆模糊的特征（韩峥约一年，林深几个月，陆也确认），这是闭环的保护机制而非副作用。如果穿越者知道太多未来的事，选择就不是真正的选择而是被预知引导的反应。模糊化不可逆。",
+      "importance": "high",
+      "thread_type": "worldbuilding",
+      "planted_event_id": "E131_05"
+    },
+    {
+      "content": "等待选择了他。林深进入被动等待状态，维持底层频率运行，保持清醒，在变冷的城市里找到方法活下去，等待因果链下一环自行发酵显现。",
+      "importance": "medium",
+      "thread_type": "character_arc",
+      "planted_event_id": "E131_07"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E130_03",
+      "to": "E131_01",
+      "type": "consequence",
+      "detail": "所有通道确认关闭后，林深开始追问为什么，引出因果闭环的系统性解释"
+    },
+    {
+      "from": "E131_01",
+      "to": "E131_03",
+      "type": "logic",
+      "detail": "理解因果闭环机制后，通道关闭的原因自然浮现——通道完成了因果使命"
+    },
+    {
+      "from": "E131_01",
+      "to": "E131_04",
+      "type": "logic",
+      "detail": "理解因果闭环后，等待的必要性被揭示——最后一环不能主动完成"
+    },
+    {
+      "from": "E131_04",
+      "to": "E131_05",
+      "type": "transition",
+      "detail": "等待话题后芬补充记忆模糊的细节，揭示保护机制"
+    },
+    {
+      "from": "E131_05",
+      "to": "E131_06",
+      "type": "logic",
+      "detail": "芬揭示记忆模糊现象后渊补充理论解释——闭环自洽性要求"
+    },
+    {
+      "from": "E131_06",
+      "to": "E131_07",
+      "type": "resolution",
+      "detail": "所有认知拼图到位后，林深接受等待的必然性"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E131_01",
+      "thread_id": "ST78_02",
+      "type": "confirmation",
+      "detail": "渊系统性解释因果闭环——先有果再种因，因果倒置"
+    },
+    {
+      "event_id": "E131_05",
+      "thread_id": "ST80_03",
+      "type": "confirmation",
+      "detail": "芬确认所有穿越者都有穿越前记忆模糊的特征，是保护机制而非副作用"
+    },
+    {
+      "event_id": "E131_04",
+      "thread_id": "ST78_01",
+      "type": "confirmation",
+      "detail": "渊解释穿越者的选择必须是自由的自然的，不是预设的棋子"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "理解因果闭环机制和自己在其中的位置",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "林深",
+      "goal": "接受等待的必然性，保持准备状态",
+      "type": "react",
+      "status": "new"
+    },
+    {
+      "character": "渊",
+      "goal": "向林深解释因果闭环的完整逻辑",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "芬",
+      "goal": "揭示穿越者记忆模糊现象和保护机制",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "认知章，三人对话为主。核心世界观揭示：因果闭环机制（果在因先）、通道关闭原因（因果使命完成）、记忆模糊保护机制（闭环自洽性要求）、穿越者角色定位（变量自然收敛非天选）。关键意象：蛇咬尾巴、桥拆了过河人回不去、掌心频率像呼吸的小动物。章末状态：林深接受等待，维持底层频率运行。",
+  "_persisted_at": "2026-05-31 23:11:14"
+}

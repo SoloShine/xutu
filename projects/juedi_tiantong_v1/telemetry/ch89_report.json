@@ -1,0 +1,86 @@
+{
+  "chapter": 89,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 18.6
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 15.1
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 8.1
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1019.9,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 32,
+          "locations_added": 1,
+          "characters_added": 0,
+          "thread_updates": 5,
+          "new_threads": 2,
+          "causal_links": 5,
+          "evidence_links": 5,
+          "character_goals": 2
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 22.9,
+      "decision": {
+        "rhythm": "",
+        "purpose": "渊的真实身份揭示——记录者体系第九位传承者，穿越者机制与记录者体系同源，符号系统全线串联",
+        "ending": "传承序列没有第十位信息，封锁成功则不需要，失败则需要有人嵌入下一轮系统",
+        "scenes": "陈默监控站基线确认;渊展示信息体系底层发现;传承序列解码九位记录者;穿越者机制与记录者体系同源确认;符号系统全线串联;林深评估第十位责任;传承序列接入被动节点"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    }
+  ],
+  "totals": {
+    "duration_ms": 1087.9,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 2080000.0,
+      "tool_uses": 102
+    }
+  ],
+  "version": "v25",
+  "session_id": "4609ccf7",
+  "timestamp": "2026-05-30T18:57:34.820330",
+  "chapter_metrics": {
+    "word_count": 3257,
+    "editing_corrections": 5,
+    "editing_types": [
+      "段落拆分",
+      "句号调整",
+      "否定转折改写"
+    ]
+  }
+}

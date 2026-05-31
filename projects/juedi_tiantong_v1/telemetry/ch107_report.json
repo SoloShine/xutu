@@ -1,0 +1,128 @@
+{
+  "chapter": 107,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 29.5
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 10.2
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.4
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 12.0
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 16.6
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 416.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 1,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 12,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 1,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 27.0,
+      "decision": {
+        "rhythm": "",
+        "purpose": "第七卷终章：封锁执行日黎明到预校准启动，六锚全部就位，系统切换为就绪状态，林深回应拾的问题，记忆宫殿完成第七卷全部标注",
+        "ending": "林深下令启动预校准，记忆宫殿中第七卷全部标注完成但第七道穿越者信号振幅继续增强，掌心三种频率平稳，韩峥数据层独立，余量百分之一点四，出发",
+        "scenes": "黎明醒来系统切换预备→陈默报告锚点1就位→陆频率波动评估→渊导入修正因子→许巍确认偏差→芬报告底层能量上升→林深巡视锚点3凹室→拾确认信号中继并获林深回答→陆发来校准脉冲→系统切换就绪→启动预校准"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.3
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 10.4
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.0
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 11.0
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 17.5
+    }
+  ],
+  "totals": {
+    "duration_ms": 616.8,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 18
+  },
+  "version": "v25",
+  "session_id": "a04da342",
+  "timestamp": "2026-05-31T16:07:28.187634",
+  "agent_phases": [
+    {
+      "phase": "writing",
+      "duration_ms": 300000.0
+    },
+    {
+      "phase": "extraction",
+      "duration_ms": 120000.0
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 4374,
+    "editing_corrections": 3,
+    "editing_types": [
+      "style_reduction",
+      "paragraph_split"
+    ]
+  }
+}

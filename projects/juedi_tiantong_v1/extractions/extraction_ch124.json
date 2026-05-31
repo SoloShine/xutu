@@ -1,0 +1,223 @@
+{
+  "events": [
+    {
+      "id": "E124_01",
+      "chapter": 124,
+      "title": "古神城市设施全面衰退温度持续下降",
+      "type": "setting",
+      "detail": "封锁完成后的第一个标准周期，古神沉睡导致能量供应中断，城市设施从恒温开始每周期降温半度。光流从管线完全退出，建筑外壳失去活性变成混凝土质感，六边形窗户全部熄灭。依赖古神能量运行的设备全部失效变成废铁。"
+    },
+    {
+      "id": "E124_02",
+      "chapter": 124,
+      "title": "绥和拾组织人族应对混乱收缩生存区域",
+      "type": "turning",
+      "detail": "绥通过开放频道指挥各组转移人员和检查设施，决定收缩集中区域只维护安全屋和周边三栋建筑的基本生存条件。拾确认C区主管道破裂无修复可能，绥宣布外围全部放弃。"
+    },
+    {
+      "id": "E124_03",
+      "chapter": 124,
+      "title": "渊确认封锁数据完整并发现第七人信号泄漏",
+      "type": "character",
+      "detail": "渊在信息核心区确认三层封锁参数、六锚校准记录、安全阀初始状态、监测节点基准频率全部完整。但发现信息切断层对第七人信号的滤波衰减不够，在通带边缘存在泄漏效应，可能成为未来安全隐患。"
+    },
+    {
+      "id": "E124_04",
+      "chapter": 124,
+      "title": "残余能量倒计时：九十个周期后城市变废墟",
+      "type": "climax",
+      "detail": "渊计算残余能量在当前消耗水平下支撑约四十个标准周期，关闭非核心设备可延长至六十个周期。之后数据存储失去维持，安全阀监测节点离线，建筑结构加速退化三十个周期内出现不可逆损伤。总计约九十个周期后城市彻底变废墟。林深下令关闭非核心设备集中能量维持核心功能。"
+    },
+    {
+      "id": "E124_05",
+      "chapter": 124,
+      "title": "建筑光流灼烧痕迹的余温在散去",
+      "type": "background",
+      "detail": "林深两次触碰走廊墙壁上的光流灼烧痕迹，感受余温从二十五度降到二十三度。光流管网的灼烧痕像退潮后的水线，天花板上密密麻麻的痕迹像血管网络X光片。建筑已完全失去传导能量的能力。"
+    },
+    {
+      "id": "E124_06",
+      "chapter": 124,
+      "title": "林深接受完成是新开始承受的现实",
+      "type": "character",
+      "detail": "林深站在冷却的走廊里感受掌心持续的低频共振，韩峥数据层微弱但仍在。他参与建造的封锁把太阳系围起来也切断了古神能量体系。他接受了残酷事实：完成不是结束，是开始承受。掌心贴在正在降温的墙上，余温在散去，新现实在等他们。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E124_01",
+      "character": "林深",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E124_01",
+      "character": "绥"
+    },
+    {
+      "event_id": "E124_01",
+      "character": "拾"
+    },
+    {
+      "event_id": "E124_02",
+      "character": "绥",
+      "location": "安全屋"
+    },
+    {
+      "event_id": "E124_02",
+      "character": "拾"
+    },
+    {
+      "event_id": "E124_02",
+      "character": "林深"
+    },
+    {
+      "event_id": "E124_03",
+      "character": "渊",
+      "location": "信息核心区"
+    },
+    {
+      "event_id": "E124_03",
+      "character": "林深"
+    },
+    {
+      "event_id": "E124_04",
+      "character": "渊"
+    },
+    {
+      "event_id": "E124_04",
+      "character": "林深"
+    },
+    {
+      "event_id": "E124_05",
+      "character": "林深"
+    },
+    {
+      "event_id": "E124_06",
+      "character": "林深"
+    },
+    {
+      "event_id": "E124_06",
+      "character": "拾"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "渊",
+      "field": "state_change",
+      "content": "眼睛从淡蓝色光泽变为暗灰色，失去古神能量后的生理变化，但精神状态好转可以站立工作"
+    },
+    {
+      "name": "绥",
+      "field": "new_attitude",
+      "content": "从安全屋管理者变为灾后总调度者，语速加快三成，眼底有深层疲惫但行动果断坚决"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "知识的引力",
+      "context": "旧世界知识体系（古神能量技术）在失去支撑后失效，人族必须找到新路径"
+    },
+    {
+      "motif": "日常的裂缝",
+      "context": "恒温从三十二度开始下降，光流灼烧痕的温度在散去，旧世界的日常正在消逝"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST123_02",
+      "action": "advanced",
+      "evidence": "城市设施全面衰退、温度下降、管网断裂，绥决定放弃外围集中生存区域",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST121_02",
+      "action": "advanced",
+      "evidence": "信息切断层对第七人信号有边缘泄漏，滤波器衰减不够",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "残余能量只能维持约九十个周期，之后数据丢失安全阀失控，人族在封锁后的世界中拥有的时间是有限的",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E124_04"
+    },
+    {
+      "content": "信息切断层对第七人信号衰减不够存在泄漏效应，可能成为未来安全隐患",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E124_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E124_01",
+      "to": "E124_02",
+      "type": "consequence",
+      "detail": "设施衰退迫使绥组织应对并收缩生存区域"
+    },
+    {
+      "from": "E124_02",
+      "to": "E124_04",
+      "type": "investigation",
+      "detail": "绥询问残余能量余量，林深向渊转达"
+    },
+    {
+      "from": "E124_04",
+      "to": "E124_06",
+      "type": "revelation",
+      "detail": "九十个周期的倒计时让林深接受完成是新开始承受的现实"
+    },
+    {
+      "from": "E124_03",
+      "to": "E124_04",
+      "type": "background",
+      "detail": "渊从数据监测中同时发现了泄漏问题和残余能量数据"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E124_01",
+      "thread_id": "ST123_02",
+      "type": "confirmation",
+      "detail": "城市设施全面衰退确认了古神沉睡后旧世界无法维持的预测"
+    },
+    {
+      "event_id": "E124_03",
+      "thread_id": "ST121_02",
+      "type": "clue",
+      "detail": "信息切断层边缘泄漏为第七人信号未来增强的隐患提供了具体证据"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "在封锁完成后的新世界中确定人族的生存策略",
+      "type": "duty",
+      "status": "new"
+    },
+    {
+      "character": "绥",
+      "goal": "组织人族在失去古神能量后维持基本生存",
+      "type": "duty",
+      "status": "advanced"
+    },
+    {
+      "character": "渊",
+      "goal": "监测信息切断层对第七人信号的泄漏并评估风险",
+      "type": "duty",
+      "status": "new"
+    },
+    {
+      "character": "拾",
+      "goal": "确认城市建筑结构安全性并完成物资清点",
+      "type": "duty",
+      "status": "advanced"
+    }
+  ],
+  "notes": "温度是本章主导感官。余温=旧世界最后的温度。从恒温三十二度到持续降温，光流灼烧痕的温度变化是核心意象。建筑从活的变成死的是告别对象。",
+  "_persisted_at": "2026-05-31 21:09:53"
+}

@@ -1,0 +1,85 @@
+{
+  "chapter": 73,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 16.4
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 15.0
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 7.5
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 513.3,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 5,
+          "relations_added": 18,
+          "locations_added": 2,
+          "characters_added": 0,
+          "thread_updates": 3,
+          "new_threads": 1,
+          "causal_links": 4,
+          "evidence_links": 4,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 17.2,
+      "decision": {
+        "rhythm": "",
+        "purpose": "干扰派许巍破坏能量分配网络集线器节点，林深夹在两派之间，韩峥评估破坏的战略影响",
+        "ending": "林深意识到圆正在被撕裂，裂缝在两半之间，而他站在裂缝正中间",
+        "scenes": "掌心异常信号指引发现受损集线器;分析切痕精确切割;许巍现身承认破坏并解释逻辑;韩峥到来三人路线之争;林深石台独处与裂纹意象"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 0.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    }
+  ],
+  "totals": {
+    "duration_ms": 572.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 690000.0,
+      "tool_uses": 33
+    }
+  ],
+  "version": "v25",
+  "session_id": "49dc7d0d",
+  "timestamp": "2026-05-30T03:41:50.659461",
+  "chapter_metrics": {
+    "word_count": 3706,
+    "editing_corrections": 3,
+    "editing_types": [
+      "禁用词消除",
+      "否定转折改写"
+    ]
+  }
+}

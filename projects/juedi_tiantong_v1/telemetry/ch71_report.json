@@ -1,0 +1,85 @@
+{
+  "chapter": 71,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 16.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 8.3
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 14.8
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 899.1,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 29,
+          "locations_added": 1,
+          "characters_added": 0,
+          "thread_updates": 6,
+          "new_threads": 3,
+          "causal_links": 6,
+          "evidence_links": 10,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 23.0,
+      "decision": {
+        "rhythm": "",
+        "purpose": "穿越者第二次会面，许巍透露荒寂亲身经历（外面什么都没有），陈默提供五文明封锁记录，林深获得定向培养评估结果",
+        "ending": "林深在记忆宫殿中放置一个新的标记——圆上有一个缺口，缺口的方向指向荒寂",
+        "scenes": "评估结果定向培养;四人第二次会面;许巍讲述荒寂亲身经历灰白色裂地无声天空;陈默提供五文明跨三千年封锁记录;四人疤痕共振达1.3倍;韩峥警告第三序列追踪;林深独处分析荒寂数据薄片"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    }
+  ],
+  "totals": {
+    "duration_ms": 965.3,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 840000.0,
+      "tool_uses": 40
+    }
+  ],
+  "version": "v25",
+  "session_id": "b9c9b0cd",
+  "timestamp": "2026-05-30T03:07:30.881633",
+  "chapter_metrics": {
+    "word_count": 4025,
+    "editing_corrections": 2,
+    "editing_types": [
+      "禁用词替换",
+      "对话节奏修复"
+    ]
+  }
+}

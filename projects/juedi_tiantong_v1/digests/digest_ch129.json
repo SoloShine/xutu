@@ -1,0 +1,39 @@
+{
+  "chapter": 129,
+  "ending_summary": "Ch129结尾：林深意识到城市在死，掌心频率是少数还在运行的",
+  "last_event": {
+    "chapter": 129,
+    "title": "拾描述外围虚无",
+    "type": "background",
+    "detail": "拾告诉林深她到过城市外围建筑群但再往外什么都没有，灰叔曾说外面是本来就没有的空，荒寂线索加深",
+    "id": "E129_06"
+  },
+  "thread_changes": [
+    {
+      "id": "ST126_02",
+      "action": "advanced",
+      "new_status": "planted"
+    },
+    {
+      "id": "ST123_02",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST124_01",
+      "action": "advanced",
+      "new_status": "planted"
+    },
+    {
+      "id": "ST124_02",
+      "action": "advanced",
+      "new_status": "planted"
+    }
+  ],
+  "new_entities": [
+    "宁",
+    "城市外围建筑群"
+  ],
+  "word_count": 3951,
+  "_persisted_at": "2026-05-31 22:57:35"
+}

@@ -1,0 +1,153 @@
+{
+  "chapter": 94,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 28.9
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.3,
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.6
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.0
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 8.7
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.4
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 12.2
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 12.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.9
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.2
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 10.1
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1074.4,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 8,
+          "relations_added": 30,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 5,
+          "new_threads": 2,
+          "causal_links": 7,
+          "evidence_links": 4,
+          "character_goals": 4
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 24.7,
+      "decision": {
+        "rhythm": "",
+        "purpose": "第五人周讲述自己来自绝地天通已成史前传说的远未来，穿越动机是验证因果闭环理论而非被组织派遣，引发闭环悖论讨论和全循环穿越者假说",
+        "ending": "林深在记忆宫殿标注封锁循环的持续性——此次封锁不是最后一次，循环还会继续",
+        "scenes": "周在中枢设施恢复进食被观察;周讲述时代背景和穿越动机;因果闭环假设与闭环悖论讨论;周描述穿越技术状态和时间距离;全循环穿越者假说;周与频率面板共振校准;林深推论封锁循环持续性"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.6
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.3
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.0
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.4
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 1295.8,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 23
+  },
+  "version": "v25",
+  "session_id": "47b65e18",
+  "timestamp": "2026-05-31T05:16:46.045393",
+  "agent_phases": [
+    {
+      "phase": "writing",
+      "duration_ms": 180000.0,
+      "tool_uses": 15
+    },
+    {
+      "phase": "extraction",
+      "duration_ms": 60000.0,
+      "tool_uses": 8
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 4968,
+    "editing_corrections": 12,
+    "editing_types": [
+      "period_density_reduction",
+      "negation_pattern_removal",
+      "sentence_merging",
+      "forbidden_word_removal"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "chapter": 123,
+  "ending_summary": "Ch123结尾：古神沉睡，设施变暗，人族独自面对",
+  "last_event": {
+    "chapter": 123,
+    "title": "四人在灰色中庭汇合",
+    "type": "character",
+    "detail": "林深回到中庭与陆、拾、许巍汇合。建筑冷却，光流管线衰减，古神沉睡，城市从活的变成死的。四人确认安全阀进入自主监测模式，向安全屋走去。",
+    "id": "E123_06"
+  },
+  "thread_changes": [
+    {
+      "id": "ST121_01",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST117_02",
+      "action": "advanced",
+      "new_status": "planted"
+    },
+    {
+      "id": "ST117_03",
+      "action": "advanced",
+      "new_status": "planted"
+    }
+  ],
+  "new_entities": [],
+  "word_count": 3924,
+  "_persisted_at": "2026-05-31 20:56:27"
+}

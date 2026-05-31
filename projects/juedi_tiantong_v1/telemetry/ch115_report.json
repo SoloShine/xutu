@@ -1,0 +1,153 @@
+{
+  "chapter": 115,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 29.4
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 12.4
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 12.8
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 15.9
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 20.3
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.3
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 12.8
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 268.9,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 33.1,
+      "decision": {
+        "rhythm": "",
+        "purpose": "疤痕突破临界，韩嶂数据层自主调整，掌心不可逆变化",
+        "ending": "掌心不可逆变化，韩峥数据层仍在工作",
+        "scenes": "两锚叠加负荷,疤痕突破临界,韩峥传递修正信号,锚点稳定但代价显现"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 13.6
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.3
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.6
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 13.5
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 15.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 12.1
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 12.6
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 482.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 21
+  },
+  "chapter_metrics": {
+    "word_count": 4402,
+    "editing_corrections": 15,
+    "editing_types": [
+      "negation_reduction",
+      "period_merge",
+      "dash_removal"
+    ]
+  },
+  "version": "v25",
+  "session_id": "901cfed8",
+  "timestamp": "2026-05-31T21:18:45.618248",
+  "agent_phases": [
+    {
+      "phase": "write",
+      "duration_ms": 120000.0,
+      "tool_uses": 5
+    },
+    {
+      "phase": "edit",
+      "duration_ms": 60000.0,
+      "tool_uses": 3
+    },
+    {
+      "phase": "extract",
+      "duration_ms": 30000.0,
+      "tool_uses": 2
+    },
+    {
+      "phase": "graph",
+      "duration_ms": 15000.0,
+      "tool_uses": 4
+    }
+  ]
+}

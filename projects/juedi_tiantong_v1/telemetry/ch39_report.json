@@ -1,0 +1,76 @@
+{
+  "chapter": 39,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 8.5
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 4.0
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 6.5
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 250.1,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 1,
+          "characters_added": 1,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 10.3,
+      "decision": {
+        "rhythm": "",
+        "purpose": "人族组织通过中间人正式接触林深，揭示笼区只是外围结构，吸收林深进入评估流程",
+        "ending": "林深握着任务石走回笼区，脑子里的图已经完全不同。从明天开始，他不再是旁观者。灰甲将敲六秒保护信号。",
+        "scenes": "清晨搬运队观察灰甲频率恢复正常;中间人到笼区传递四面体符号石并确认信号;瓦尔暴露缓冲层角色，展示非编码手势;林深夜访废料区第三段与老人秘密会面;老人准确复述林深27天全部观察行为;揭示组织核心在笼区之外，搬运队只是外围;老人交出任务石，林深接受——从观察者变为参与者"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.6
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 282.0,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 7
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 475866.0,
+      "tool_uses": 34
+    }
+  ],
+  "version": "v25",
+  "session_id": "0e74d6ff",
+  "timestamp": "2026-05-29T01:54:06.783419",
+  "chapter_metrics": {
+    "word_count": 4346
+  }
+}

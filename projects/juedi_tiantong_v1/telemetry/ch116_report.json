@@ -1,0 +1,163 @@
+{
+  "chapter": 116,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 30.2
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 12.7
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 13.2
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 16.5
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 17.8
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 18.7
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 15.9
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 16.8
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 16.1
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 17.3
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 13.8
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 286.9,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 30.2,
+      "decision": {
+        "rhythm": "",
+        "purpose": "干扰派伏击信号中继站，双线加压开始",
+        "ending": "对峙开始，林深感知异常",
+        "scenes": "干扰派出动,拾发紧急信号,陆脱身支援,信号中继站对峙"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 13.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 2.0
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.8
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 12.5
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    }
+  ],
+  "totals": {
+    "duration_ms": 563.0,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 24
+  },
+  "chapter_metrics": {
+    "word_count": 3329,
+    "editing_corrections": 2,
+    "editing_types": [
+      "negation_pattern_rewrites"
+    ]
+  },
+  "version": "v25",
+  "session_id": "7ddc10a1",
+  "timestamp": "2026-05-31T21:18:45.976538",
+  "agent_phases": [
+    {
+      "phase": "write",
+      "duration_ms": 180000.0,
+      "tool_uses": 4
+    },
+    {
+      "phase": "edit",
+      "duration_ms": 60000.0,
+      "tool_uses": 2
+    },
+    {
+      "phase": "extract",
+      "duration_ms": 45000.0,
+      "tool_uses": 2
+    },
+    {
+      "phase": "graph",
+      "duration_ms": 30000.0,
+      "tool_uses": 3
+    }
+  ]
+}

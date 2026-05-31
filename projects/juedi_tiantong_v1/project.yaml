@@ -56,8 +56,8 @@ volumes:
     number: 9
     chapters: 12
     global_range: "ch126-ch137"
-    status: "writing"
-    word_count: "~3.6万"
+    status: "completed"
+    word_count: "~4.3万"
   - name: "苏醒"
     number: 10
     chapters: 14

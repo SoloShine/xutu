@@ -1,0 +1,161 @@
+{
+  "chapter": 131,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 32.5
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 13.0
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 12.2
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 14.8
+    },
+    {
+      "tool": "get_chapter_context",
+      "duration_ms": 13.5
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 17.0
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 17.2
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 2.0
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 13.9
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1141.3,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 12,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 5,
+          "new_threads": 3,
+          "causal_links": 6,
+          "evidence_links": 3,
+          "character_goals": 4
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 34.8,
+      "decision": {
+        "rhythm": "",
+        "purpose": "因果闭环机制理解，等待选择了他",
+        "ending": "不是他选择等待，是等待选择了他",
+        "scenes": "信息核心区→三人讨论→因果倒置认知→保护机制"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 12.5
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.4
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.3
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.8
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 13.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 11.9
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.6
+    }
+  ],
+  "totals": {
+    "duration_ms": 1371.1,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 22
+  },
+  "chapter_metrics": {
+    "word_count": 3862,
+    "editing_corrections": 8,
+    "editing_types": [
+      "period_density:merge_sentences",
+      "sensory_detail:additions"
+    ]
+  },
+  "version": "v25",
+  "session_id": "f07ab10d",
+  "timestamp": "2026-06-01T00:19:47.796922",
+  "agent_phases": [
+    {
+      "phase": "write",
+      "duration_ms": 120000.0,
+      "tool_uses": 5
+    },
+    {
+      "phase": "edit",
+      "duration_ms": 60000.0,
+      "tool_uses": 8
+    },
+    {
+      "phase": "extract",
+      "duration_ms": 45000.0,
+      "tool_uses": 3
+    },
+    {
+      "phase": "graph",
+      "duration_ms": 30000.0,
+      "tool_uses": 4
+    },
+    {
+      "phase": "telemetry",
+      "duration_ms": 15000.0,
+      "tool_uses": 5
+    }
+  ]
+}

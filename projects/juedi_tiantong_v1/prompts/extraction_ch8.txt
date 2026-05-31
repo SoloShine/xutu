@@ -1,0 +1,123 @@
+你是一个小说结构化数据提取器。请从以下章节文本中提取结构化信息。
+
+## 已有图谱中的人物
+  - 林深(主角)
+  - 陈伟(配角)
+  - 苏然(关键配角)
+  - 方教授(配角)
+  - 林奶奶(配角)
+  - 陌生人(关键配角)
+  - 摊主老太太(配角)
+  - 注记者(关键配角)
+  - 方正则(配角)
+  - 摊主中年女人(路人)
+
+## 已有悬念线
+  - ST01_01: 无名之书的作者是谁？为何以备忘录形式写给一个预设的读者？他预设的读者是否就是林深？ [planted]
+  - ST01_02: 书中'它们知道我在写'——'它们'是什么？存在某种监视或威胁力量？ [planted]
+  - ST01_03: 封底和书脊内侧各有一个压印符号，两个符号像一句话的上半句和下半句，属于未知文字系统。林深尚未发现第二个。 [planted]
+  - ST01_04: 书中称'如果你开始找，不要停。停下来会更危险'——寻找什么？停止会遭遇什么危险？ [planted]
+  - ST01_05: 青铜神树是'路标'——通往哪里的路标？天地相通的物理路径是否真实存在？ [planted]
+  - ST02_01: 注记者是谁？他怎么知道林深会读到这本书？他的信息来源是什么？书被刻意'放'在城南旧书摊等林深来拿，是预先安排还是巧合？ [planted]
+  - ST02_02: 四川盆地西缘的地形落差'不是自然形成的'，是一条向上通道的入口——这个说法是否有物理依据？建木的位置与盆地地形有什么关联？ [planted]
+  - ST02_03: 旧书摊老太太是否受人指使将书'放'在摊位上等林深来拿？她是偶然的摊主还是注记者的安排？ [planted]
+  - ST02_04: 有人在更早的时候就决定让所有人相信'绝地天通只是神话'——这是一个系统性的知识封锁。'缺乏证据'和'证据被人拿走了'的区别是什么？谁在执行这种封锁？ [partially_resolved]
+  - ST04_01: 方正则是否真的偶然出现在图书馆？他主动搭话、精准分享关于文献记录局限性的观察、眼神中的'确认'意味——一个退休教授对毕业四年的学生说'学术上不可能的事不代表没有发生过'是否暗示他知道或怀疑某些被隐藏的真相？ [planted]
+  - ST05_01: 是谁在文献进入主流学术视野之前修改了纪年系统？修改者是什么身份、什么目的？修改方式是微调每个数字使累积偏差不引起怀疑——这种精密操作暗示极高的权力和组织能力 [planted]
+  - ST06_01: 地铁上出现一个无法被记忆长相的陌生人，直视林深后露出无法归类的笑容，随后在车厢中凭空消失。这个陌生人是谁？是人还是某种存在？为何关注林深？ [planted]
+  - ST06_02: 一张16:11进站的天府广场→科学城车票出现在林深外套夹层中，票背面有两道交叉弧线的压痕符号。谁放入的？与陌生人有关吗？弧线符号代表什么？ [planted]
+  - ST07_01: 一个查不到来源的国际快递寄来三块刻符号石片，寄件人信息完全空白，运单号无记录，快递公司电话打不通。寄送者是谁？如何得知林深的地址和电话？石片从哪里来？ [planted]
+
+## 粒度控制（最重要）
+
+事件按"场景"粒度提取，每章目标5-8个事件。
+
+**合并规则：**
+- 同一地点、同一时段 = 1个事件
+- 同一场景内的回忆内容放进detail
+- 心理活动和内心变化：如果发生在同一场景中，合并到该场景事件
+
+**拆分规则：**
+- 不同地点 = 不同事件
+- 同一地点但有明确时间跳跃 = 可拆分
+
+## 地点规则
+
+- 只使用已有地点或new_locations中声明的新地点
+- 新地点必须在new_locations中同时声明
+- 地点名称保持一致
+
+## 悬念线检测
+
+识别本章中悬念线索的变化：
+- planted（埋下）：引入新的未解问题
+- advanced（推进）：已有悬念出现新的线索或转折
+- resolved（解决）：悬念得到明确答案
+
+## 因果链
+
+记录事件之间的因果关系：reaction/investigation/escalation/revelation/decision/consequence
+
+## 证据链
+
+记录本章哪些事件为哪些悬念线提供了证据/线索：clue/connection/misdirection/confirmation
+
+## 角色目标
+
+记录角色新出现的目标或重大变化的目标：pursue/fear/protect/duty
+
+## 返回格式
+
+返回严格合法的JSON：
+{
+  "events": [
+    {
+      "id": "E{chapter}_01",
+      "chapter": 8,
+      "title": "场景标题",
+      "type": "gap|daily|turning|character|background|climax",
+      "detail": "一句话描述"
+    }
+  ],
+  "event_relations": [
+    {"event_id": "E8_01", "character": "人物名", "location": "地点名"}
+  ],
+  "character_updates": [
+    {
+      "name": "人物名",
+      "field": "new_habit|new_attitude|new_detail|new_relationship|state_change",
+      "content": "具体内容"
+    }
+  ],
+  "new_locations": [
+    {"name": "地点名", "type": "类型", "description": "描述"}
+  ],
+  "new_characters": [
+    {"name": "人物名", "role": "角色类型", "personality": "性格描述"}
+  ],
+  "motif_mentions": [
+    {"motif": "符号|弧线|眼熟|痕迹", "context": "场景描述"}
+  ],
+  "thread_updates": [
+    {"thread_id": "ST0X_0X", "action": "advanced|resolved", "evidence": "文本依据", "new_status": "planted|partially_resolved|resolved"}
+  ],
+  "new_threads": [
+    {"content": "悬念内容描述", "importance": "high|medium|low", "thread_type": "foreshadowing|clue|mystery|character_arc", "planted_event_id": "E8_XX"}
+  ],
+  "causal_links": [
+    {"from": "E8_01", "to": "E8_02", "type": "类型", "detail": "简述"}
+  ],
+  "evidence_links": [
+    {"event_id": "E8_01", "thread_id": "ST0X_0X", "type": "clue|connection|confirmation", "detail": "证据描述"}
+  ],
+  "character_goals": [
+    {"character": "人物名", "goal": "目标描述", "type": "pursue|fear|protect|duty", "status": "new|advanced|achieved"}
+  ],
+  "notes": "值得记录的新细节"
+}
+
+## 章节文本
+
+（见 ch08_generated.txt）
+
+请返回纯JSON，不要包含任何其他文字。

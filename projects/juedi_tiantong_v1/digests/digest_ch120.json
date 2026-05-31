@@ -1,0 +1,56 @@
+{
+  "chapter": 120,
+  "ending_summary": "Ch120结尾：修正成功，封锁网络第一次全域同步无偏差，韩嶂数据层信号消失，林深撤离核心",
+  "last_event": {
+    "chapter": 120,
+    "title": "封锁网络全域同步确认",
+    "type": "climax",
+    "detail": "陈默从通讯链路确认全域同步信号偏差为零，反馈回路层消耗曲线下降，物理屏蔽层和回路层共振干扰消除，衔接恢复正常。物理屏蔽层构建进度78%，预计四个标准时完成。",
+    "id": "E120_08"
+  },
+  "thread_changes": [
+    {
+      "id": "ST119_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    },
+    {
+      "id": "ST119_02",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST111_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    },
+    {
+      "id": "ST118_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    },
+    {
+      "id": "ST113_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    },
+    {
+      "id": "ST112_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    },
+    {
+      "id": "ST110_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    },
+    {
+      "id": "ST108_01",
+      "action": "resolved",
+      "new_status": "resolved"
+    }
+  ],
+  "new_entities": [],
+  "word_count": 200,
+  "_persisted_at": "2026-05-31 20:31:19"
+}

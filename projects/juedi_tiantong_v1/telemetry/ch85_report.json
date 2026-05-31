@@ -1,0 +1,86 @@
+{
+  "chapter": 85,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 19.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 9.6
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 8.3
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1162.7,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 1,
+        "auto_locations": [
+          "第七集线器"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 34,
+          "locations_added": 1,
+          "characters_added": 0,
+          "thread_updates": 5,
+          "new_threads": 2,
+          "causal_links": 5,
+          "evidence_links": 6,
+          "character_goals": 2
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 21.5,
+      "decision": {
+        "rhythm": "",
+        "purpose": "干扰派残余破坏校准节点，第八穿越者信号身份揭示——来自连接另一端的未来记录，证实封锁成功",
+        "ending": "第八穿越者从未穿越，穿越者机制在连接两端都有接口，记录的最后一行是注记者的笔迹",
+        "scenes": "中枢设施五层校准观测台第三次校准周期;掌心频率异常偏转发现七号集线器节点干扰;陈默物理断开干扰;第八穿越者信号解密——来自连接另一端的未来第一人称记录;记录末尾笔迹与注记者匹配;林深决定告诉许巍"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.3
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 1225.3,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1510000.0,
+      "tool_uses": 74
+    }
+  ],
+  "version": "v25",
+  "session_id": "34630511",
+  "timestamp": "2026-05-30T17:14:51.916943",
+  "chapter_metrics": {
+    "word_count": 3533,
+    "editing_corrections": 3,
+    "editing_types": [
+      "对话标签优化"
+    ]
+  }
+}

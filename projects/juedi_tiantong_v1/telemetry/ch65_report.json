@@ -1,0 +1,83 @@
+{
+  "chapter": 65,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 11.8
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 13.8
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 6.8
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 744.4,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 1,
+        "auto_locations": [
+          "林深住处"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 4,
+          "relations_added": 28,
+          "locations_added": 1,
+          "characters_added": 1,
+          "thread_updates": 5,
+          "new_threads": 2,
+          "causal_links": 3,
+          "evidence_links": 5,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 16.9,
+      "decision": {
+        "rhythm": "",
+        "purpose": "评审会通过反馈回路方案正式运行，林深被任命为技术顾问获得三层权限（历史数据/参数建议权/中枢准入），从底层提升到技术核心层",
+        "ending": "林深在记忆宫殿中建立三层同心圆权限结构，上升曲线弯折符号从技术分界线升级为身份分界线",
+        "scenes": "评审会银灰制服汇报第四周期完整数据;同心圆古神追问安全记录;林深补充参数论证方案通过;深蓝长袍宣布任命银灰制服为负责人林深为技术顾问;三层权限移交;住处整理权限物品发现历史数据目录第37条异常标记"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 795.7,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 7
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 670000.0,
+      "tool_uses": 34
+    }
+  ],
+  "version": "v25",
+  "session_id": "2a6d89ed",
+  "timestamp": "2026-05-30T00:14:36.278714",
+  "chapter_metrics": {
+    "word_count": 3955,
+    "editing_corrections": 6,
+    "editing_types": [
+      "引号统一",
+      "对话标签优化"
+    ]
+  }
+}

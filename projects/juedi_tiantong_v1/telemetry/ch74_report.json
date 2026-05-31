@@ -1,0 +1,90 @@
+{
+  "chapter": 74,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 15.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 7.8
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 7.4
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 916.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "石台",
+          "下行通道"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 8,
+          "relations_added": 44,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 4,
+          "new_threads": 1,
+          "causal_links": 7,
+          "evidence_links": 5,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 18.4,
+      "decision": {
+        "rhythm": "",
+        "purpose": "韩峥为阻止集线器级联崩溃注入掌心频率，身体60%晶体化与集线器同化牺牲，林深首次直面同伴死亡",
+        "ending": "韩峥的频率留在了集线器的基线里，他的身体六十%与集线器晶体同化，林深的记忆宫殿碎成了七片",
+        "scenes": "掌心第三不稳定频率将林深引回受损集线器;韩峥已监控四小时级联向外扩散;陈默计算18小时到主通道;韩峥决定手动稳定用疤痕作反频率阻尼;林深提出关键洞察频率已被吸收需用原始基线;韩峥注入频率身体晶体化;未完遗言关于边界线;林深记忆宫殿碎成七片"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 968.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1490000.0,
+      "tool_uses": 92
+    }
+  ],
+  "version": "v25",
+  "session_id": "822321d0",
+  "timestamp": "2026-05-30T04:08:54.820292",
+  "chapter_metrics": {
+    "word_count": 3930,
+    "editing_corrections": 15,
+    "editing_types": [
+      "句号密度修复",
+      "否定转折改写",
+      "引号统一",
+      "段落合并"
+    ]
+  }
+}

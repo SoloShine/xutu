@@ -1,0 +1,130 @@
+{
+  "chapter": 114,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 29.3
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 11.3
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 17.0
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 14.7
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 19.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.8
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 11.9
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 235.2,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 42.1,
+      "decision": {
+        "rhythm": "",
+        "purpose": "断裂1——林深主动选择激进方案，双锚覆盖",
+        "ending": "双锚覆盖勉强稳定，代价开始显现",
+        "scenes": "关闭保守方案,双锚覆盖执行,掌心温度升高,陈默反对但配合"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 13.6
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.5
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 12.4
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 11.5
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 12.4
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 11.3
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    }
+  ],
+  "totals": {
+    "duration_ms": 449.8,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 19
+  },
+  "chapter_metrics": {
+    "word_count": 4547,
+    "editing_corrections": 7,
+    "editing_types": [
+      "period_reduction",
+      "negation_pattern",
+      "dash_elimination"
+    ]
+  },
+  "version": "v25",
+  "session_id": "255380a0",
+  "timestamp": "2026-05-31T21:18:45.256386",
+  "agent_phases": [
+    {
+      "phase": "write",
+      "duration_ms": 120000.0,
+      "tool_uses": 5
+    }
+  ]
+}

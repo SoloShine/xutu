@@ -1,0 +1,251 @@
+{
+  "chapter": 128,
+  "title": "秩序",
+  "volume": 9,
+  "events": [
+    {
+      "id": "E128_01",
+      "title": "拾技术组确认光流管线钙化不可逆",
+      "chapter": 128,
+      "event_type": "turning",
+      "detail": "拾的技术组经过七次实验（加热、加压、频率共振、物理冲击、化学溶解）后确认光流管线已完全钙化，残余能量在管线干涸后凝固成乳白色硬壳，不可逆转。核心区外围三条主管线全部钙化，支线管线流动停止。拾将结论交给绥，供暖分配方案需按余热存量调整。"
+    },
+    {
+      "id": "E128_02",
+      "title": "渊发现古神城市纯物理冗余系统",
+      "chapter": 128,
+      "event_type": "discovery",
+      "detail": "渊在城市底层走廊发现了一套完全独立于光流管线的纯机械冗余系统，包含通风、水循环、门控、紧急隔离四个模块，由齿轮组和杠杆系统驱动，手动操作，不依赖任何能量源。这证明古神不只有能量科技，在关键基础设施上做了纯物理备份。"
+    },
+    {
+      "id": "E128_03",
+      "title": "陆伤愈复出申请底层维护工作",
+      "chapter": 128,
+      "event_type": "turning",
+      "detail": "陆在锚点六号突击受伤后复出，频率从0.82降至0.61，穿越者能力严重受损。她主动申请最危险的底层维护工作——离残余能量最近、温度最高、长期暴露后果未知。陆表示频率衰减是单向的不可恢复，但0.61够摇手柄和压泵。"
+    },
+    {
+      "id": "E128_04",
+      "title": "林深与陆在底层通道完成第一处通风节点维护",
+      "chapter": 128,
+      "event_type": "action",
+      "detail": "林深跟随陆到底层通道，两人合作清理了第一个通风节点三个主齿轮的氧化层并涂抹润滑剂。手动转动手柄后齿轮咬合运转，气流从管道涌出。底层共七个通风节点，每天需手动运转两次。陆表示她一人即可覆盖。"
+    },
+    {
+      "id": "E128_05",
+      "title": "陆与林深关于选择的默契确认",
+      "chapter": 128,
+      "event_type": "character_moment",
+      "detail": "陆告诉林深她选择底层是因为齿轮需要有人摇。与23个标准周期的灰蓝人潜伏任务不同——任务是别人安排的有退出方案和替换人选，底层没有人安排她来也没有人能替换。两个在不同时间做过类似选择的人之间建立了不需要解释的默契。"
+    },
+    {
+      "id": "E128_06",
+      "title": "渊报告韩嶂数据层加速衰减",
+      "chapter": 128,
+      "event_type": "planted",
+      "detail": "渊向林深报告韩嶂数据层振动间隔持续拉长且速度在加快。当前间隔约7秒，按加速度推算约30个标准周期后间隔将超过30秒，届时将从持续振动变为间歇性脉冲。韩峥留给林深的最后痕迹正在加速消退。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E128_01",
+      "character": "拾",
+      "relation": "执行"
+    },
+    {
+      "event_id": "E128_01",
+      "character": "林深",
+      "relation": "旁观"
+    },
+    {
+      "event_id": "E128_01",
+      "character": "绥",
+      "relation": "接收结论"
+    },
+    {
+      "event_id": "E128_02",
+      "character": "渊",
+      "relation": "发现"
+    },
+    {
+      "event_id": "E128_02",
+      "character": "林深",
+      "relation": "随行确认"
+    },
+    {
+      "event_id": "E128_03",
+      "character": "陆",
+      "relation": "主动申请"
+    },
+    {
+      "event_id": "E128_03",
+      "character": "渊",
+      "relation": "在场"
+    },
+    {
+      "event_id": "E128_03",
+      "character": "林深",
+      "relation": "询问"
+    },
+    {
+      "event_id": "E128_04",
+      "character": "陆",
+      "relation": "操作"
+    },
+    {
+      "event_id": "E128_04",
+      "character": "林深",
+      "relation": "协助"
+    },
+    {
+      "event_id": "E128_05",
+      "character": "陆",
+      "relation": "主角"
+    },
+    {
+      "event_id": "E128_05",
+      "character": "林深",
+      "relation": "对话"
+    },
+    {
+      "event_id": "E128_06",
+      "character": "渊",
+      "relation": "报告"
+    },
+    {
+      "event_id": "E128_06",
+      "character": "林深",
+      "relation": "接收"
+    }
+  ],
+  "characters_present": [
+    "林深",
+    "拾",
+    "渊",
+    "陆",
+    "绥"
+  ],
+  "locations_mentioned": [
+    "技术组工作区",
+    "底层走廊",
+    "底层通道",
+    "监控站"
+  ],
+  "new_locations": [
+    {
+      "name": "底层走廊",
+      "loc_type": "infrastructure",
+      "description": "城市底层纯机械冗余系统所在的横向走廊，两侧墙壁凹槽嵌有齿轮、连杆、杠杆等纯物理传动装置，不依赖能量源，包含通风、水循环、门控、紧急隔离四个手动模块"
+    },
+    {
+      "name": "底层通道",
+      "loc_type": "passage",
+      "description": "连接上层通道与底层走廊的狭窄通道，温度从入口26度上升到深处30度，有七个手动通风节点"
+    }
+  ],
+  "new_characters": [],
+  "new_events": [
+    {
+      "event_id": "E128_01",
+      "chapter": 128,
+      "title": "拾技术组确认光流管线钙化不可逆",
+      "detail": "七次实验后确认管线钙化不可逆，乳白色硬壳覆盖全部管线",
+      "event_type": "turning"
+    },
+    {
+      "event_id": "E128_02",
+      "chapter": 128,
+      "title": "渊发现古神城市纯物理冗余系统",
+      "detail": "底层走廊发现纯机械冗余系统，包含通风、水循环、门控、紧急隔离四个模块",
+      "event_type": "discovery"
+    },
+    {
+      "event_id": "E128_03",
+      "chapter": 128,
+      "title": "陆伤愈复出申请底层维护",
+      "detail": "频率降至0.61后主动申请最危险的底层维护工作",
+      "event_type": "turning"
+    },
+    {
+      "event_id": "E128_04",
+      "chapter": 128,
+      "title": "林深与陆完成第一处通风节点维护",
+      "detail": "两人合作清理齿轮氧化层并启动通风，气流涌出",
+      "event_type": "action"
+    },
+    {
+      "event_id": "E128_05",
+      "chapter": 128,
+      "title": "陆与林深默契确认",
+      "detail": "两人关于选择留在最需要的地方的对话，建立不需要解释的默契",
+      "event_type": "character_moment"
+    },
+    {
+      "event_id": "E128_06",
+      "chapter": 128,
+      "title": "渊报告韩嶂数据层加速衰减",
+      "detail": "间隔约7秒且速度加快，30周期后将变为间歇性脉冲",
+      "event_type": "planted"
+    }
+  ],
+  "new_suspense_threads": [
+    {
+      "id": "ST128_01",
+      "content": "古神城市的纯物理冗余系统需要持续人工操作才能维持基本生存功能，底层七个通风节点每天需手动运转两次，陆一人只能覆盖三个，剩下四个需要其他人来。谁会来？",
+      "planted_chapter": 128,
+      "importance": "medium",
+      "thread_type": "foreshadowing"
+    },
+    {
+      "id": "ST128_02",
+      "content": "韩嶂数据层振动间隔约7秒且加速度在加快，渊预测约30个标准周期后间隔将超过30秒变成间歇性脉冲。韩峥留下的最后痕迹将何时完全消失？消失后对林深和封锁网络有什么影响？",
+      "planted_chapter": 128,
+      "importance": "high",
+      "thread_type": "foreshadowing"
+    },
+    {
+      "id": "ST128_03",
+      "content": "底层维护工作离残余能量最近，长期暴露后果未知。陆主动选择留在底层，她的频率衰减是否会在底层环境下进一步恶化？",
+      "planted_chapter": 128,
+      "importance": "medium",
+      "thread_type": "foreshadowing"
+    },
+    {
+      "id": "ST128_04",
+      "content": "光流管线钙化是不可逆的，但陆说底层温度最高因为离残余能量最近。残余能量以什么形式存在？是否能被利用？",
+      "planted_chapter": 128,
+      "importance": "medium",
+      "thread_type": "foreshadowing"
+    }
+  ],
+  "new_relations": [
+    {
+      "from_label": "Character",
+      "from_key": "name",
+      "from_val": "陆",
+      "rel_type": "ASSIGNED_TO",
+      "to_label": "Location",
+      "to_key": "name",
+      "to_val": "底层走廊"
+    },
+    {
+      "from_label": "Event",
+      "from_key": "id",
+      "from_val": "E128_02",
+      "rel_type": "LOCATED_AT",
+      "to_label": "Location",
+      "to_key": "name",
+      "to_val": "底层走廊"
+    },
+    {
+      "from_label": "Event",
+      "from_key": "id",
+      "from_val": "E128_04",
+      "rel_type": "LOCATED_AT",
+      "to_label": "Location",
+      "to_key": "name",
+      "to_val": "底层通道"
+    }
+  ],
+  "_persisted_at": "2026-05-31 22:52:04"
+}

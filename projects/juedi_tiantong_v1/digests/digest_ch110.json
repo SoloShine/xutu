@@ -1,0 +1,34 @@
+{
+  "chapter": 110,
+  "ending_summary": "Ch110结尾：全域连通，封锁网络成一体",
+  "last_event": {
+    "chapter": 110,
+    "title": "拾作为系统盲区确认",
+    "type": "character",
+    "detail": "拾的中继位不在任何频率通道上，是一个独立节点，通过拾自身的信号处理能力汇聚转发数据。面板上只能看到中继站输出的信号波形，看不到内部状态。拾的位置在系统频率覆盖之外，系统监控视野在此存在空白区域。",
+    "id": "E110_06"
+  },
+  "thread_changes": [
+    {
+      "id": "ST109_01",
+      "action": "advanced",
+      "new_status": "partially_resolved"
+    },
+    {
+      "id": "ST106_01",
+      "action": "advanced",
+      "new_status": "planted"
+    },
+    {
+      "id": "ST107_01",
+      "action": "advanced",
+      "new_status": "planted"
+    }
+  ],
+  "new_entities": [
+    "古神操作者A-7",
+    "古神操作者B-12"
+  ],
+  "word_count": 4666,
+  "_persisted_at": "2026-05-31 19:04:00"
+}

@@ -1,0 +1,132 @@
+{
+  "chapter": 103,
+  "title": "整合",
+  "events": [
+    {
+      "id": "E103_01",
+      "title": "林深提出三层系统整合方案",
+      "type": "turning",
+      "chapter": 103,
+      "detail": "林深面对三组不同技术路线的数据，在石台表面画出系统框图，提出将底层能量作为载波、掌心频率作为调制信号的载波调制方案，通过翻译接口连接三个独立系统。"
+    },
+    {
+      "id": "E103_02",
+      "title": "陈默完成参数框架重排",
+      "type": "background",
+      "chapter": 103,
+      "detail": "陈默用了一个标准时重新编排反馈回路的参数框架，运行区间从零点八到一点二收窄到零点九五到一点零五，区间内稳定性从零点九七提升到零点九九三，底层能量的功率基底把噪声压制了两个数量级。"
+    },
+    {
+      "id": "E103_03",
+      "title": "模拟测试验证系统整合可行性",
+      "type": "turning",
+      "chapter": 103,
+      "detail": "陈默在辅助面板上运行模拟测试，稳定性参数零点九九三，物理屏蔽层能量密度零点八七标准密度单位，达标但余量仅百分之二点四。"
+    },
+    {
+      "id": "E103_04",
+      "title": "底波派系补充数据到达",
+      "type": "turning",
+      "chapter": 103,
+      "detail": "底波派系在一个标准周期内提前传输了前次循环记录的补充数据，格式为底层能量脉动编码，与渊预判一致。"
+    },
+    {
+      "id": "E103_05",
+      "title": "渊比对三个校准点发现附加符号序列",
+      "type": "revelation",
+      "chapter": 103,
+      "detail": "渊从残片中提取三个校准点与底波派系数据比对，时间戳和频率参数吻合，但事件标记处发现附加符号序列，该序列与原始记录一起编码，是前次循环记录者刻意嵌入的有结构信息，内容使用未知编码层无法解读。"
+    },
+    {
+      "id": "E103_06",
+      "title": "前次循环记录覆盖率提升至94%",
+      "type": "turning",
+      "chapter": 103,
+      "detail": "渊将补充数据与残片合并后覆盖率达到百分之九十四，剩余百分之六的盲区位于时间轴末端，即封锁执行后的状态反馈，由安全阀的监测功能补位。"
+    },
+    {
+      "id": "E103_07",
+      "title": "三个协调节点授权底层能量释放",
+      "type": "decision",
+      "chapter": 103,
+      "detail": "底波派系三个协调节点（东南片区、西北片区、中心片区）的授权确认依次到达，底层能量调制协议获得释放许可。"
+    },
+    {
+      "id": "E103_08",
+      "title": "林深宣布系统整合完成",
+      "type": "climax",
+      "chapter": 103,
+      "detail": "林深宣布三条技术路线全部对接完成，参数验证通过，但余量仅百分之二点四，操作者缺口仍悬而未决，前次循环记录中的附加符号序列含义未知。"
+    }
+  ],
+  "characters": [],
+  "locations": [],
+  "suspense_threads": [
+    {
+      "id": "ST103_01",
+      "content": "前次循环记录中的附加符号序列：有结构的信息，来源不明，使用未知编码层，内容无法解读。该序列与原始记录一起编码，说明它在记录生成的同时就被前次循环的记录者刻意嵌入。",
+      "planted_chapter": 103,
+      "importance": "high",
+      "status": "planted"
+    },
+    {
+      "id": "ST103_02",
+      "content": "系统整合余量仅百分之二点四，物理屏蔽层能量密度刚好达标，没有足够的冗余来应对执行中的意外波动，封锁执行中可能出现参数不足的风险。",
+      "planted_chapter": 103,
+      "importance": "medium",
+      "status": "planted"
+    }
+  ],
+  "thread_updates": [
+    {
+      "id": "ST56_02",
+      "status": "partially_resolved",
+      "update_reason": "前次循环记录覆盖率从67%提升到94%，剩余6%由安全阀补位，但附加符号序列的发现引入新的未知因素"
+    },
+    {
+      "id": "ST66_02",
+      "status": "partially_resolved",
+      "update_reason": "三个缺口中底层能量缺口和参照数据缺口已解决，仅操作者缺口仍悬而未决"
+    },
+    {
+      "id": "ST95_04",
+      "status": "planted",
+      "update_reason": "第六人频率不稳定问题未在本章推进，操作者缺口仍存在"
+    },
+    {
+      "id": "ST102_01",
+      "status": "partially_resolved",
+      "update_reason": "底波派系三个协调节点全部授权底层能量释放，交易实质性完成"
+    }
+  ],
+  "relationships": [
+    {
+      "from_label": "character",
+      "from_key": "name",
+      "from_val": "林深",
+      "rel_type": "PROPOSES",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "三层系统整合方案"
+    },
+    {
+      "from_label": "character",
+      "from_key": "name",
+      "from_val": "陈默",
+      "rel_type": "VERIFIES",
+      "to_label": "concept",
+      "to_key": "name",
+      "to_val": "反馈回路参数框架"
+    },
+    {
+      "from_label": "character",
+      "from_key": "name",
+      "from_val": "渊",
+      "rel_type": "DISCOVERS",
+      "to_label": "event",
+      "to_key": "id",
+      "to_val": "E103_05"
+    }
+  ],
+  "_persisted_at": "2026-05-31 06:49:16"
+}

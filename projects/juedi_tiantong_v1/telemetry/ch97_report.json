@@ -1,0 +1,146 @@
+{
+  "chapter": 97,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 33.6
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 10.3
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.5,
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 17.9
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 0.8
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 12.5
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 12.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 0.9
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 10.5
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 239.3,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 8,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 25.5,
+      "decision": {
+        "rhythm": "",
+        "purpose": "六位穿越者首次正式信息交换，拼出完整图景：文明周期上百次，绝地天通是循环规则",
+        "ending": "拼图第一层完成，图形比预期大，安全阀方案升格为确认荒寂恢复的工具",
+        "scenes": "六人聚集中枢设施->林深提取韩峥数据基线->周讲述九十九层故事->陆提供中间段日志->汾揭示封锁被打破时代记录和第一次残片->数据汇总确认上百次循环->循环逻辑闭环确认->汾暗示荒寂阶段性->林深提出正确封锁概念"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.0
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.5
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.6
+    },
+    {
+      "tool": "get_unresolved_threads",
+      "duration_ms": 10.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 457.5,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 22
+  },
+  "version": "v25",
+  "session_id": "984ec283",
+  "timestamp": "2026-05-31T05:46:08.165250",
+  "agent_phases": [
+    {
+      "phase": "writing",
+      "duration_ms": 300000.0
+    },
+    {
+      "phase": "extraction",
+      "duration_ms": 120000.0
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 4463,
+    "editing_corrections": 6,
+    "editing_types": [
+      "style_merge",
+      "dialogue_fix",
+      "period_reduction"
+    ]
+  }
+}

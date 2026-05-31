@@ -1,0 +1,27 @@
+{
+  "chapter": 5,
+  "tool_calls": [
+    {
+      "tool": "write_extraction",
+      "duration_ms": 105.6,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "图书馆大门外"
+        ],
+        "new_characters": []
+      }
+    }
+  ],
+  "totals": {
+    "duration_ms": 105.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 1
+  },
+  "version": "v25",
+  "session_id": "14e76760",
+  "timestamp": "2026-05-28T13:16:25.766017"
+}

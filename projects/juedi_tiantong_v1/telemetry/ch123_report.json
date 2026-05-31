@@ -1,0 +1,122 @@
+{
+  "chapter": 123,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 29.0
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 10.0
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 14.0
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 14.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 0.9
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 10.8
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 881.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 18,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 3,
+          "new_threads": 2,
+          "causal_links": 3,
+          "evidence_links": 2,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 28.9,
+      "decision": {
+        "rhythm": "",
+        "purpose": "古神大规模沉睡，光渐暗，告别",
+        "ending": "古神沉睡，设施变暗，人族独自面对",
+        "scenes": "古神开始沉睡,银灰制服告别,深蓝长袍握手,光从白金变灰"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 10.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.4
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.5
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.3
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    }
+  ],
+  "totals": {
+    "duration_ms": 1057.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 17
+  },
+  "chapter_metrics": {
+    "word_count": 3924,
+    "editing_corrections": 12,
+    "editing_types": [
+      "negation_removal",
+      "dash_reduction",
+      "period_merge"
+    ]
+  },
+  "version": "v25",
+  "session_id": "2775eb97",
+  "timestamp": "2026-05-31T21:18:48.719718",
+  "agent_phases": [
+    {
+      "phase": "full_pipeline",
+      "duration_ms": 180000.0,
+      "tool_uses": 25
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "chapter": 88,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 18.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 8.9
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 7.7
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 8.4
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 808.5,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "中枢设施二层调度台",
+          "走廊拐角",
+          "深蓝长袍办公区域"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 5,
+          "relations_added": 28,
+          "locations_added": 1,
+          "characters_added": 0,
+          "thread_updates": 3,
+          "new_threads": 1,
+          "causal_links": 3,
+          "evidence_links": 5,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 20.6,
+      "decision": {
+        "rhythm": "",
+        "purpose": "封锁执行资源调配和技术对接全面部署，各团队分工就位，深蓝长袍提出信息层面风险",
+        "ending": "林深发现第五块薄石片上的交叉弧线符号与无名之书封底相似",
+        "scenes": "调度台审查十周期倒计时和依赖树;陈默数据监控体系12子集就位;拾信号频率分配时分复用方案;深蓝长袍批准切换提出信息风险警告;分工部署全景确认"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 876.1,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 9
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1160000.0,
+      "tool_uses": 69
+    }
+  ],
+  "version": "v25",
+  "session_id": "d76f959b",
+  "timestamp": "2026-05-30T18:18:40.761112",
+  "chapter_metrics": {
+    "word_count": 3978,
+    "editing_corrections": 6,
+    "editing_types": [
+      "句号密度修复"
+    ]
+  }
+}

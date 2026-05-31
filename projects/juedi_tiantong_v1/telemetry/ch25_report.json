@@ -1,0 +1,29 @@
+{
+  "chapter": 25,
+  "tool_calls": [
+    {
+      "tool": "write_extraction",
+      "duration_ms": 203.1,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": []
+      }
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 6.8
+    }
+  ],
+  "totals": {
+    "duration_ms": 209.9,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 2
+  },
+  "version": "v25",
+  "session_id": "ce2c01b9",
+  "timestamp": "2026-05-29T11:37:02.054692"
+}

@@ -1,0 +1,84 @@
+{
+  "chapter": 83,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 18.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 15.5
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 14.4
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1312.3,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 2,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 40,
+          "locations_added": 1,
+          "characters_added": 2,
+          "thread_updates": 5,
+          "new_threads": 0,
+          "causal_links": 4,
+          "evidence_links": 6,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 20.6,
+      "decision": {
+        "rhythm": "",
+        "purpose": "银灰制服代表古神科技派系正式承认周期将至，愿意配合封锁但要求双边存活，林深提出隔离而非消灭的核心原则",
+        "ending": "林深离开会议室，隔离而非消灭的原则被记录在案，银灰制服承诺向七人委员会提交技术可行性评估",
+        "scenes": "进入中枢设施三层会议室;银灰制服正式声明周期将至;双向封锁条件提出;女古神投影封锁残留红点;林深提出隔离层可逆方案;银灰制服承诺两个标准周期内提交技术可行性评估"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 0.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 1384.6,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 880000.0,
+      "tool_uses": 39
+    }
+  ],
+  "version": "v25",
+  "session_id": "99a11e3c",
+  "timestamp": "2026-05-30T16:23:37.797695",
+  "chapter_metrics": {
+    "word_count": 4062,
+    "editing_corrections": 0,
+    "editing_types": [
+      "none"
+    ]
+  }
+}

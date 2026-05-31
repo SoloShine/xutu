@@ -1,0 +1,141 @@
+{
+  "chapter": 113,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 29.2
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 15.7
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 12.7
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 15.7
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 17.2
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 13.5
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1060.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 1,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 5,
+          "relations_added": 17,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 3,
+          "new_threads": 2,
+          "causal_links": 4,
+          "evidence_links": 3,
+          "character_goals": 4
+        }
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 11.0
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 31.7,
+      "decision": {
+        "rhythm": "",
+        "purpose": "锚裂危机，保守方案提出，断裂1铺垫",
+        "ending": "林深看着锚点5数据不说话——零点七五，断裂1铺垫完成",
+        "scenes": "锚点5失同步,连锁偏移锚点3和锚点6,陈默提保守方案78%完整度,许巍确认可行,林深沉默不决——断裂1铺垫完成"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 10.8
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.6
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.5
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 12.6
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 11.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 1261.5,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 19
+  },
+  "chapter_metrics": {
+    "word_count": 4408,
+    "editing_corrections": 15,
+    "editing_types": [
+      "破折号减少8处",
+      "不是X是Y减少4处",
+      "句号密度合并约15处",
+      "合并短句约10处"
+    ]
+  },
+  "version": "v25",
+  "session_id": "340f393d",
+  "timestamp": "2026-05-31T21:18:44.874024",
+  "agent_phases": [
+    {
+      "phase": "write",
+      "duration_ms": 180000.0,
+      "tool_uses": 3
+    },
+    {
+      "phase": "edit",
+      "duration_ms": 120000.0,
+      "tool_uses": 15
+    },
+    {
+      "phase": "extract",
+      "duration_ms": 60000.0,
+      "tool_uses": 3
+    }
+  ]
+}

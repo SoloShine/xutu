@@ -1,0 +1,72 @@
+{
+  "chapter": 41,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 9.0
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 4.4
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 256.1,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 6,
+          "relations_added": 0,
+          "locations_added": 1,
+          "characters_added": 1,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 16.5,
+      "decision": {
+        "rhythm": "",
+        "purpose": "完成任务证明能力获得组织信任，被带入更深层网络",
+        "ending": "林深面对蓝白色信息碎片容器，接受新的三天考验，从被保护的参与者升级为被信任的参与者",
+        "scenes": "第二天观察确认守卫轮换巡视模式和跟随对反侦察行为;第三天发现七分钟运输间隔系统;数据综合分析建立建筑四层运作机制模型;向老人汇报四层模型获得认可;灰蓝少年引导进入地下洞穴空间;隐提出三天翻译信息碎片的考验"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 7.1
+    }
+  ],
+  "totals": {
+    "duration_ms": 294.3,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 6
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 861153.0,
+      "tool_uses": 70
+    }
+  ],
+  "version": "v25",
+  "session_id": "821bc1f0",
+  "timestamp": "2026-05-29T02:18:42.397290",
+  "chapter_metrics": {
+    "word_count": 3470
+  }
+}

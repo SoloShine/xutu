@@ -1,0 +1,188 @@
+{
+  "events": [
+    {
+      "id": "E130_01",
+      "chapter": 130,
+      "title": "逐一检查穿越通道节点",
+      "type": "investigation",
+      "detail": "林深带着渊整理的通讯记录逐一检查十七个穿越通道节点，从前十二个开始独自检查，全部无响应。掌心贴近凹槽无共振，符号全部静止。"
+    },
+    {
+      "id": "E130_02",
+      "chapter": 130,
+      "title": "芬以1.3倍深层频率确认通道关闭",
+      "type": "turning",
+      "detail": "芬在城市深层等待，用1.3倍深层频率逐一检测剩余五个通道节点，包括深层备用节点。全部无共振、无信号、无频率窗口。确认信息切断层封死了所有跨时空频率窗口。"
+    },
+    {
+      "id": "E130_03",
+      "chapter": 130,
+      "title": "最后通道节点的关闭确认",
+      "type": "character",
+      "detail": "城市最深层独立通讯阵列中的最后一个节点也关闭了。环形符号结构沉默，掌心频率在冰冷凹槽上运行无任何回应。芬确认：这条路不存在了，频率窗口被封死，双向都无法打开。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E130_01",
+      "character": "林深"
+    },
+    {
+      "event_id": "E130_02",
+      "character": "芬"
+    },
+    {
+      "event_id": "E130_02",
+      "character": "林深"
+    },
+    {
+      "event_id": "E130_03",
+      "character": "林深"
+    },
+    {
+      "event_id": "E130_03",
+      "character": "芬"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "林深",
+      "field": "state_change",
+      "content": "穿越者身份的意义开始消解。没有通道、没有窗口、没有频率连接，穿越者的身份只剩下掌心的底层频率和模糊的穿越前记忆碎片。"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "路",
+      "context": "芬说'这条路不存在了'——通道关闭的最终确认，回不去的路彻底消失"
+    },
+    {
+      "motif": "频率",
+      "context": "掌心底层频率在没有回应的节点上运行，像声音在空旷房间里回荡后消失"
+    },
+    {
+      "motif": "冷",
+      "context": "城市持续降温，通道墙壁结霜，节点凹槽温度异常偏低，连掌心频率都因低温变迟缓"
+    },
+    {
+      "motif": "门",
+      "context": "通道节点像被焊死的门，门本身已经不存在了"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST43_01",
+      "action": "advanced",
+      "evidence": "逐一检查所有十七个通道节点，全部关闭，通讯记录中的进入通道全部失效",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST84_02",
+      "action": "advanced",
+      "evidence": "穿越通道全部关闭，信息切断层封死所有跨时空频率窗口，穿越者回去的路被彻底切断",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST75_02",
+      "action": "advanced",
+      "evidence": "穿越者无法回去，通道关闭是不可逆的，频率窗口被封死而非暂时屏蔽",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST121_02",
+      "action": "confirmed",
+      "evidence": "信息切断层不仅封锁了外界通讯，也封死了穿越者频率窗口——跨时空频率被完全切断",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST92_02",
+      "action": "advanced",
+      "evidence": "芬用1.3倍深层频率检测所有节点，确认没有任何通道在工作，更强的频率也找不到不存在的窗口",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "穿越者身份在所有通道关闭后还剩什么？掌心频率仍在运行但无通道无窗口无回应，穿越者的意义正在消解。底层频率成了对自己说的话，没有听众没有回应只是在。",
+      "importance": "high",
+      "thread_type": "character_arc",
+      "planted_event_id": "E130_03"
+    },
+    {
+      "content": "韩嶂数据层间隔从八秒拉长到九秒——数据层在持续衰减，穿越者相关系统的衰减速度在加快",
+      "importance": "medium",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E130_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E130_01",
+      "to": "E130_02",
+      "type": "investigation",
+      "detail": "林深检查前十二个节点无响应后，与芬汇合继续检查剩余五个深层节点"
+    },
+    {
+      "from": "E130_02",
+      "to": "E130_03",
+      "type": "consequence",
+      "detail": "芬确认深层节点关闭后，最后一个备用通讯阵列节点也确认关闭"
+    },
+    {
+      "from": "E130_03",
+      "to": "E130_01",
+      "type": "revelation",
+      "detail": "十七个节点全部关闭的确认揭示了信息切断层的彻底性——不只是屏蔽信号而是焊死了频率窗口本身"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E130_01",
+      "thread_id": "ST43_01",
+      "type": "confirmation",
+      "detail": "林深掌心贴近凹槽无共振，确认穿越通道节点全部停止工作"
+    },
+    {
+      "event_id": "E130_02",
+      "thread_id": "ST92_02",
+      "type": "confirmation",
+      "detail": "芬1.3倍深层频率覆盖范围更宽仍无感知，确认没有隐藏的活跃通道"
+    },
+    {
+      "event_id": "E130_03",
+      "thread_id": "ST84_02",
+      "type": "confirmation",
+      "detail": "最后一个备用节点也关闭，信息切断层封死所有跨时空频率窗口，双向不可打开"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "逐一检查穿越通道节点确认状态",
+      "type": "pursue",
+      "status": "achieved"
+    },
+    {
+      "character": "林深",
+      "goal": "寻找穿越者身份在通道关闭后的意义",
+      "type": "pursue",
+      "status": "new"
+    },
+    {
+      "character": "芬",
+      "goal": "用1.3倍深层频率确认深层通道节点状态",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "渊",
+      "goal": "整理穿越者通讯记录协助通道检查",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "本章Phase 2开始，转折章。所有穿越通道确认关闭，回不去的彻底确认。芬的1.3倍频率用于最终确认。韩嶂数据层间隔从8秒拉长到9秒。掌心频率仍在运行但无回应，成为穿越者身份消解的核心意象。",
+  "_persisted_at": "2026-05-31 23:02:37"
+}

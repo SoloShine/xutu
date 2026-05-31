@@ -1,0 +1,130 @@
+{
+  "chapter": 96,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 29.4
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.0,
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "tool": "get_chapter_context",
+      "duration_ms": 10.7
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 11.9
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 12.2
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 11.4
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 16.3
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 275.7,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 9,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 25.3,
+      "decision": {
+        "rhythm": "",
+        "purpose": "林深尝试校准汾的紊乱频率时探测到第七道穿越者信号，频率存在但位置无法锁定，六锚操作者缺口性质从数量不足变为质量不确定加未知变量",
+        "ending": "第七道信号振幅与林深呼吸同步共振，林深隐瞒此发现；汾校准进展不足；封锁倒计时持续收缩",
+        "scenes": "汾返回中枢设施首次会面→汾频率基线测试(8呼吸稳定窗口)→正式校准测试→探测第七道信号→陈默确认→讨论第七人含义(冗余/替代/干扰派)→汾第二次校准(15呼吸)→林深发现共振并隐瞒"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.6
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 10.0
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.3
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.9
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.6
+    }
+  ],
+  "totals": {
+    "duration_ms": 474.8,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 18
+  },
+  "version": "v25",
+  "session_id": "871f3d2c",
+  "timestamp": "2026-05-31T05:36:46.462173",
+  "agent_phases": [
+    {
+      "phase": "writing",
+      "duration_ms": 180000.0
+    },
+    {
+      "phase": "extraction",
+      "duration_ms": 60000.0
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 3873,
+    "editing_corrections": 8,
+    "editing_types": [
+      "句号密度优化",
+      "对话段落修复",
+      "句式合并"
+    ]
+  }
+}

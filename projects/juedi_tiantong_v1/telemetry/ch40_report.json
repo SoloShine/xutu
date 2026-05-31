@@ -1,0 +1,96 @@
+{
+  "chapter": 40,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 9.0
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 4.1
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 5.1
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 109.2,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 3,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 10.3,
+      "decision": {
+        "rhythm": "",
+        "purpose": "Lin Shen executes first formal mission using modern observation methods to investigate building entry/exit patterns",
+        "ending": "Day 1 complete: 37 entries/exits, 2 anomalies. Building normalized operations indicate important function.",
+        "scenes": "B-point delivery;Gray Armor protection signal;Old man assigns observation mission;Waer guides route out of cage area;Pulse timing method establishes baseline;Anomaly 1: sentinel at entrance;Anomaly 2: following behavior"
+      }
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 6.2
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 4.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.3
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.3
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 153.4,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 11
+  },
+  "agent_phases": [
+    {
+      "phase": "writing",
+      "duration_ms": 180000.0
+    },
+    {
+      "phase": "combined",
+      "duration_ms": 478270.0,
+      "tool_uses": 42
+    }
+  ],
+  "version": "v25",
+  "session_id": "844bd3d4",
+  "timestamp": "2026-05-29T02:03:01.711244",
+  "chapter_metrics": {
+    "word_count": 3808
+  }
+}

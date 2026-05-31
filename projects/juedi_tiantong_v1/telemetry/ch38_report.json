@@ -1,0 +1,81 @@
+{
+  "chapter": 38,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 11.2
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 4.8
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 180.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 1,
+          "characters_added": 1,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 12.0,
+      "decision": {
+        "rhythm": "",
+        "purpose": "有人话里有话暗示人族有自己的组织，林深从暗号和默契中确认地下网络的存在",
+        "ending": "林深确认人族组织远超四人松散网络而是有中心有分支有外围的多层结构，信号隐藏在可见性之中",
+        "scenes": "清晨复盘灰甲网络并识别信号可见性策略;搬运途中观察灰甲信号频率提高和灰丙独立编码;休息点扫描全队发现八人参与者;老搬运工暗示废料区第三段;综合分析确认多层情报网络结构"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.6
+    }
+  ],
+  "totals": {
+    "duration_ms": 213.3,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 8
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 821463.0,
+      "tool_uses": 47
+    }
+  ],
+  "version": "v25",
+  "session_id": "195ae03f",
+  "timestamp": "2026-05-29T01:45:31.145592",
+  "chapter_metrics": {
+    "word_count": 3662,
+    "editing_corrections": 0
+  }
+}

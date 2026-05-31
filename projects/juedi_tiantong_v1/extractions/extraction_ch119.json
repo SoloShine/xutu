@@ -1,0 +1,262 @@
+{
+  "events": [
+    {
+      "id": "E119_01",
+      "chapter": 119,
+      "title": "林深独自进入封锁核心区域",
+      "type": "climax",
+      "detail": "林深离开监控站，独自走向封锁核心区域。沿途空间逐渐变形，走廊在身后折叠消失，掌心的持续低频共振成为唯一导航"
+    },
+    {
+      "id": "E119_02",
+      "chapter": 119,
+      "title": "穿越能量乱流抵达核心",
+      "type": "turning",
+      "detail": "林深在核心区域外缘遭遇能量乱流，掌心振动帮助他在乱流中找到低密度通道，穿过乱流后到达核心空间"
+    },
+    {
+      "id": "E119_03",
+      "chapter": 119,
+      "title": "发现核心年轮结构",
+      "type": "revelation",
+      "detail": "林深在核心中发现绝地天通的真实面貌：七层同心环状的年轮结构，代表封锁系统循环了多次。内层紧密外层更宽，说明系统在早期变化频繁，后期逐渐稳定"
+    },
+    {
+      "id": "E119_04",
+      "chapter": 119,
+      "title": "韩嶂数据层达到最强共振",
+      "type": "climax",
+      "detail": "韩嶂数据层在核心中从每秒2-3次脉冲跳跃到每秒20次以上，数据层从被动存储转变为主动计算，自主生成修正参数"
+    },
+    {
+      "id": "E119_05",
+      "chapter": 119,
+      "title": "七层年轮全部校准完成",
+      "type": "climax",
+      "detail": "林深在韩嶂数据层引导下完成七层年轮的频率校准，外层不需要修正，中间层微调，第六层修正最大，第七层数据层直接绕过林深意识操作掌心频率"
+    },
+    {
+      "id": "E119_06",
+      "chapter": 119,
+      "title": "韩嶂数据层最后一次全力工作",
+      "type": "character",
+      "detail": "修正完成后韩嶂数据层信号衰减回正常水平，掌心传来三秒的温和热感，像被握住了手。韩峥的数据层完成了在核心中最强的也是最后的一次全力工作"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E119_01",
+      "character": "林深",
+      "location": "封锁核心区域"
+    },
+    {
+      "event_id": "E119_02",
+      "character": "林深",
+      "location": "封锁核心区域"
+    },
+    {
+      "event_id": "E119_03",
+      "character": "林深",
+      "location": "封锁核心区域"
+    },
+    {
+      "event_id": "E119_04",
+      "character": "林深",
+      "location": "封锁核心区域"
+    },
+    {
+      "event_id": "E119_05",
+      "character": "林深",
+      "location": "封锁核心区域"
+    },
+    {
+      "event_id": "E119_06",
+      "character": "林深",
+      "location": "封锁核心区域"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "林深",
+      "field": "state_change",
+      "content": "掌心疤痕颜色从暗红变成近乎黑色，频率窗口永久开启，三个频率持续运行，韩嶂数据层绕过意识直接操作掌心频率的先例已开"
+    },
+    {
+      "name": "韩嶂数据层",
+      "field": "state_change",
+      "content": "在核心环境中从被动存储转变为主动计算，达到最强共振后衰减回正常水平，完成最后全力工作"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "封锁核心区域",
+      "type": "设施核心",
+      "description": "封锁系统的核心空间，空间不以常规几何形态存在。七层同心环年轮结构，代表多次封锁循环的叠加印记。内层偏白色间距紧密，外层琥珀色间距更宽。能量密度极高，进入者会被同化。韩峥就是在此处被同化死亡"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "知识的引力",
+      "context": "核心年轮的频率直接作用于身体，不需要记忆来识别，像某种知识主动找到了承载者"
+    },
+    {
+      "motif": "日常的裂缝",
+      "context": "走廊在身后消失，空间折叠，日常的几何概念在核心中完全不适用"
+    },
+    {
+      "motif": "孤独的专注",
+      "context": "林深独自在核心中完成修正，闭上眼睛只靠触觉导航，韩峥已死但数据层仍在工作"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST118_03",
+      "action": "resolved",
+      "evidence": "林深进入核心完成微调，物理屏蔽层和反馈回路层的衔接偏差将在几个标准时内自动修正",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST118_04",
+      "action": "resolved",
+      "evidence": "韩嶂数据层在核心中达到最强共振，自主生成修正参数，七层年轮全部校准完成",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST118_01",
+      "action": "advanced",
+      "evidence": "掌心疤痕在核心中颜色从暗红变为近乎黑色，韩嶂数据层首次绕过意识直接操作掌心频率",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST118_02",
+      "action": "resolved",
+      "evidence": "韩嶂数据层从被动存储转为主动计算，修正信号与年轮完全吻合",
+      "new_status": "resolved"
+    },
+    {
+      "thread_id": "ST111_01",
+      "action": "advanced",
+      "evidence": "核心年轮校准完成后，物理屏蔽层和反馈回路层衔接偏差将自动修正，全域同步偏差问题即将解决",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST42_01",
+      "action": "advanced",
+      "evidence": "核心中的年轮结构证实封锁循环了多次，石片记录的只是其中一次封锁",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST94_01",
+      "action": "advanced",
+      "evidence": "七层年轮直接证明封锁是循环系统，每次封锁都在核心留下印记",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "韩嶂数据层绕过林深意识直接操作掌心频率——数据层对穿越者身体的控制边界在哪里？这是保护还是同化的前兆？",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E119_05"
+    },
+    {
+      "content": "核心年轮有七层但不确定每层是否只对应一次封锁——到底循环了多少次？循环次数与传承序列第十位有什么关系？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E119_03"
+    },
+    {
+      "content": "林深在穿越前就接触过核心的频率——穿越者的身体为什么对核心频率有记忆？这是穿越者选拔的依据还是穿越本身留下的印记？",
+      "importance": "medium",
+      "thread_type": "mystery",
+      "planted_event_id": "E119_03"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E118_07",
+      "to": "E119_01",
+      "type": "consequence",
+      "detail": "林深将锚点交给陈默后独自前往核心"
+    },
+    {
+      "from": "E119_01",
+      "to": "E119_02",
+      "type": "escalation",
+      "detail": "进入核心区域必须穿越能量乱流"
+    },
+    {
+      "from": "E119_02",
+      "to": "E119_03",
+      "type": "revelation",
+      "detail": "穿越乱流后发现核心的真实面貌"
+    },
+    {
+      "from": "E119_03",
+      "to": "E119_04",
+      "type": "escalation",
+      "detail": "年轮触发韩嶂数据层最强共振"
+    },
+    {
+      "from": "E119_04",
+      "to": "E119_05",
+      "type": "consequence",
+      "detail": "数据层提供修正参数引导校准"
+    },
+    {
+      "from": "E119_05",
+      "to": "E119_06",
+      "type": "consequence",
+      "detail": "校准完成后数据层衰减回正常"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E119_03",
+      "thread_id": "ST94_01",
+      "type": "confirmation",
+      "detail": "七层年轮证实封锁是循环系统"
+    },
+    {
+      "event_id": "E119_03",
+      "thread_id": "ST42_01",
+      "type": "confirmation",
+      "detail": "核心年轮证实封锁循环了多次，石片记录只是其中一次"
+    },
+    {
+      "event_id": "E119_04",
+      "thread_id": "ST118_02",
+      "type": "confirmation",
+      "detail": "韩嶂数据层在核心中自主计算修正参数"
+    },
+    {
+      "event_id": "E119_05",
+      "thread_id": "ST118_03",
+      "type": "confirmation",
+      "detail": "七层年轮全部校准，衔接偏差将自动修正"
+    },
+    {
+      "event_id": "E119_05",
+      "thread_id": "ST118_01",
+      "type": "clue",
+      "detail": "数据层绕过意识操作掌心，疤痕变化不可逆"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "完成核心微调修复封锁网络衔接偏差",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "韩嶂数据层",
+      "goal": "在核心环境中完成最后一次全力修正工作",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "本章以触觉为主感官叙事。核心区域的年轮结构是全书关键揭露之一。韩嶂数据层完成从被动到主动的转变后衰减，暗示告别。掌心被数据层直接操作是新的伏笔。",
+  "_persisted_at": "2026-05-31 20:21:32"
+}

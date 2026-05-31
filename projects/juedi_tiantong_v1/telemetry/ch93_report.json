@@ -1,0 +1,246 @@
+{
+  "chapter": 93,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 32.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 13.0
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 12.2
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 11.0
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1097.5,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 2,
+        "auto_locations": [
+          "城市外围通道"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 5,
+          "relations_added": 22,
+          "locations_added": 1,
+          "characters_added": 1,
+          "thread_updates": 3,
+          "new_threads": 1,
+          "causal_links": 4,
+          "evidence_links": 5,
+          "character_goals": 4
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 28.7,
+      "decision": {
+        "rhythm": "",
+        "purpose": "追踪外围0.7倍信号找到第五位穿越者周(TR-05)，来自数百年后未来，穿越后遗症严重记忆空白极长，对封锁后世界有碎片式预知印象",
+        "ending": "周被带回中枢设施，五个穿越者确认会面，第六人仍潜伏在城市最深处",
+        "scenes": "林深决定追踪外围信号离开监控站;穿越城市边缘光流系统逐渐消失;在城市外围洞穴找到TR-05;掌心频率共振确认身份;第五人周自我介绍记忆碎片;周看到光流说梦里见过更亮的"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.6
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.5
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 10.2,
+      "error": "'<' not supported between instances of 'str' and 'NoneType'"
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 11.3,
+      "error": "'<' not supported between instances of 'str' and 'NoneType'"
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 11.8
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 9.6,
+      "error": "'<' not supported between instances of 'str' and 'NoneType'"
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 9.3,
+      "error": "'<' not supported between instances of 'str' and 'NoneType'"
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 19.7
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 12.3
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 12.1
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 11.5
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 10.2
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 11.5
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 15.4
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 18.0,
+      "error": "'JsonKG' object has no attribute '_project'"
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 12.3,
+      "error": "'JsonKG' object has no attribute '_project'"
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.6
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.3
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 19.1
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 16.4,
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.6,
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 13.6
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 12.7
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 12.5
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 14.7
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 12.6
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 11.2
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.2
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 13.9
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 11.7
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.0
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.8
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.6
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.4
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 8.9
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 8.8
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 9.7
+    }
+  ],
+  "totals": {
+    "duration_ms": 1654.5,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 47
+  },
+  "version": "v25",
+  "session_id": "3aec6e4a",
+  "timestamp": "2026-05-31T04:59:45.309691",
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 180000.0,
+      "tool_uses": 8
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 3872
+  }
+}

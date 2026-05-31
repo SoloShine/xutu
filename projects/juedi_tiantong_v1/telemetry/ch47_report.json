@@ -1,0 +1,76 @@
+{
+  "chapter": 47,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 11.0
+    },
+    {
+      "tool": "get_derivation_context",
+      "duration_ms": 4.2
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 6.4
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 183.8,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 1,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 10.8,
+      "decision": {
+        "rhythm": "",
+        "purpose": "发现自己被人跟踪——频繁活动引起了某方的注意",
+        "ending": "林深决定暂停非常规行动，构思通过笼区石子信号系统向隐的组织传递信息，但执行者的跟踪已将他从调查者变成了被调查者",
+        "scenes": "搬运途中侧道弯角出现可疑人影;封口石板旁近距离遭遇灰色跟踪者并闻到防腐剂气味;笼区内两次目击串联确认被跟踪;复盘行动模式偏差触发监控异常标记;第二天休息区主动诱捕确认跟踪者持续回避暴露;梳理跟踪者特征三方推断身份;调整行动策略构思利用笼区石子信号系统秘密联络隐"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 218.4,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 7
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 368762.0,
+      "tool_uses": 44
+    }
+  ],
+  "version": "v25",
+  "session_id": "20bfd691",
+  "timestamp": "2026-05-29T03:30:14.233970",
+  "chapter_metrics": {
+    "word_count": 3947
+  }
+}

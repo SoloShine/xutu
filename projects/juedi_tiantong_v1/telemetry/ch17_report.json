@@ -1,0 +1,27 @@
+{
+  "chapter": 17,
+  "tool_calls": [
+    {
+      "tool": "write_extraction",
+      "duration_ms": 219.8,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "古神城市建筑互连区"
+        ],
+        "new_characters": []
+      }
+    }
+  ],
+  "totals": {
+    "duration_ms": 219.8,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 1
+  },
+  "version": "v25",
+  "session_id": "f04096e6",
+  "timestamp": "2026-05-28T19:34:01.228252"
+}

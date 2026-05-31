@@ -1,0 +1,203 @@
+{
+  "chapter": 107,
+  "title": "黎明",
+  "volume": 7,
+  "chapter_in_volume": 16,
+  "events": [
+    {
+      "id": "E107_01",
+      "title": "封锁执行日黎明醒来",
+      "detail": "林深在中枢设施石台边缘醒来，系统状态从'待部署'切换为'预备'，六个锚定点进入预备状态，倒计时六小时",
+      "event_type": "milestone",
+      "characters": [
+        "林深"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_02",
+      "title": "陈默报告锚点1就位",
+      "detail": "陈默到达中枢设施报告锚点1偏差降至零点零一四，穿越者中掌心频率最稳定",
+      "event_type": "action",
+      "characters": [
+        "陈默",
+        "林深"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_03",
+      "title": "陆的频率波动评估",
+      "detail": "锚点5频率匹配度在零点七五至零点八五之间振荡，波动下限距反馈回路同步阈值零点零五余量",
+      "event_type": "observation",
+      "characters": [
+        "陆",
+        "陈默",
+        "林深"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_04",
+      "title": "渊导入前次循环修正因子",
+      "detail": "渊完成前次循环修正因子导入信息切断层协议，覆盖率百分之九十四，剩余百分之六为记录空白而非数据丢失",
+      "event_type": "action",
+      "characters": [
+        "渊",
+        "林深"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_05",
+      "title": "古神操作者锚点6就位",
+      "detail": "古神操作者在锚点6就位，偏差零点零八七与校准时相同",
+      "event_type": "action",
+      "characters": [
+        "古神操作者"
+      ],
+      "location": "锚点6"
+    },
+    {
+      "id": "E107_06",
+      "title": "许巍确认锚点3偏差改善",
+      "detail": "许巍到达中枢设施指出林深锚点3偏差从零点零二降至零点零一八，暗示林深昨晚在凹室停留影响了频率校准",
+      "event_type": "observation",
+      "characters": [
+        "许巍",
+        "林深"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_07",
+      "title": "芬报告底层能量密度上升",
+      "detail": "芬从底层到达，报告锚点6附近能量密度上升约百分之三，源于底层黑色空间反向振动的增强，渊确认不影响锚定",
+      "event_type": "observation",
+      "characters": [
+        "芬",
+        "陈默",
+        "渊"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_08",
+      "title": "林深巡视锚点3凹室",
+      "detail": "林深白天走到锚点3凹室，发现空白圆心有半毫米凹陷（校准时未注意），掌心悬空感受预备反应振幅增加百分之十二，确认频率锁定前状态正常",
+      "event_type": "action",
+      "characters": [
+        "林深"
+      ],
+      "location": "锚点3凹室"
+    },
+    {
+      "id": "E107_09",
+      "title": "林深回答拾的问题",
+      "detail": "林深告诉拾关于昨晚的问题'不是不想回答，是不知道答案'，拾回应'不知道也是一种答案'",
+      "event_type": "dialogue",
+      "characters": [
+        "林深",
+        "拾"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_10",
+      "title": "陆发来校准脉冲",
+      "detail": "陆从锚点5发来掌心频率校准脉冲，频率匹配度零点八二，表明状态足够进入锚定",
+      "event_type": "action",
+      "characters": [
+        "陆"
+      ],
+      "location": "锚点5"
+    },
+    {
+      "id": "E107_11",
+      "title": "系统切换为就绪状态",
+      "detail": "陈默确认所有锚定点就位，系统状态从'预备'变为'就绪'，六个锚定点光点从浅青变为白金色，反馈回路亮度增加两倍",
+      "event_type": "milestone",
+      "characters": [
+        "陈默"
+      ],
+      "location": "中枢设施"
+    },
+    {
+      "id": "E107_12",
+      "title": "林深启动预校准",
+      "detail": "林深下令开始预校准，六个锚定点预校准序列同时启动，记忆宫殿中确认第七道穿越者信号振幅继续增强但选择不纳入部署参数",
+      "event_type": "milestone",
+      "characters": [
+        "林深",
+        "陈默"
+      ],
+      "location": "中枢设施"
+    }
+  ],
+  "characters_present": [
+    "林深",
+    "陈默",
+    "许巍",
+    "渊",
+    "芬",
+    "拾",
+    "陆",
+    "古神操作者"
+  ],
+  "suspense_thread_updates": [
+    {
+      "thread_id": "ST105_02",
+      "update_type": "progress",
+      "detail": "系统余量百分之一点四贯穿全章，陆失锁风险仍在但波动可控"
+    },
+    {
+      "thread_id": "ST106_01",
+      "update_type": "resolved",
+      "detail": "林深回应了拾的问题：不是不想回答，是不知道答案。拾接受了这个回答"
+    },
+    {
+      "thread_id": "ST92_02",
+      "update_type": "progress",
+      "detail": "底层黑色空间反向振动增强百分之三，芬在锚点6附近直接感知到"
+    },
+    {
+      "thread_id": "ST95_03",
+      "update_type": "progress",
+      "detail": "底层黑色空间存在从下向上传播的振动在执行日当天增强"
+    },
+    {
+      "thread_id": "ST95_04",
+      "update_type": "progress",
+      "detail": "芬频率零点七八在波动中间值，不稳定但可控，与陆类似"
+    },
+    {
+      "thread_id": "ST105_01",
+      "update_type": "progress",
+      "detail": "前次循环修正因子导入覆盖率达百分之九十四，剩余为记录空白"
+    },
+    {
+      "thread_id": "ST76_01",
+      "update_type": "escalate",
+      "detail": "第七道穿越者信号振幅继续增强但仍无法锁定位置，林深选择暂不纳入部署参数"
+    }
+  ],
+  "new_threads": [
+    {
+      "thread_id": "ST107_01",
+      "content": "锚点3空白圆心有半毫米凹陷在校准时未被发现——白天的光线角度才让它显现，这个凹陷是原有设计还是某种变化",
+      "importance": "low",
+      "planted_chapter": 107
+    }
+  ],
+  "relationships": [],
+  "locations": [
+    {
+      "name": "中枢设施",
+      "detail": "第七卷封锁执行日中枢，六个锚定点在投影上以光点显示，系统从待部署到预备到就绪"
+    },
+    {
+      "name": "锚点3凹室",
+      "detail": "白天光线发现空白圆心有半毫米凹陷，林深感受预备反应振幅增加百分之十二"
+    }
+  ]
+}

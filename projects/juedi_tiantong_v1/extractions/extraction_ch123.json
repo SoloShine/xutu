@@ -1,0 +1,230 @@
+{
+  "events": [
+    {
+      "id": "E123_01",
+      "chapter": 123,
+      "title": "设施光色从白金变为暗蓝再变灰",
+      "type": "setting",
+      "detail": "封锁完成后第一个标准周期，设施光色全面衰减。穹顶从白金变为暗蓝，走廊光流管线只剩余烬，中庭变暗接近靛青。古神沉睡导致皮肤下的光源消失，设施从活的变为死的。"
+    },
+    {
+      "id": "E123_02",
+      "chapter": 123,
+      "title": "古神大规模沉睡从外围向中心蔓延",
+      "type": "turning",
+      "detail": "古神失去与外界的能量交换后进入最低功耗模式。沉睡从外围区域开始，像潮水一波一波向中心蔓延。沉睡的古神遍布走廊和中庭，呼吸极浅极慢，像被按下暂停键。"
+    },
+    {
+      "id": "E123_03",
+      "chapter": 123,
+      "title": "银灰制服最后告别并沉睡",
+      "type": "character",
+      "detail": "银灰制服是最后保持意识的一批古神之一，维持阶段安全阀自主启动完成后进入低功耗。临别前与林深回顾第一句话'你不是被选中的人'，说'我们会在某个时刻醒来，希望那时候你们已经找到答案'。身体白光从脚底向上消退，在胸口停留几秒后熄灭。"
+    },
+    {
+      "id": "E123_04",
+      "chapter": 123,
+      "title": "深蓝长袍握手告别并暗示荒寂",
+      "type": "climax",
+      "detail": "深蓝长袍在分支通道等待林深，最后一次握手。皮肤已变半透明，能看到下面的晶体框架结构。确认封锁数据完整后说'外面什么都没有'，暗示封锁外是虚无。手指最后松开，身体微光从头部向下消退，长袍从深蓝变灰。"
+    },
+    {
+      "id": "E123_05",
+      "chapter": 123,
+      "title": "渊沉睡时手握石片",
+      "type": "background",
+      "detail": "渊坐在信息核心区入口台阶上，已沉睡，手中攥着一块手掌大小的石片，上面刻满密集符号，与封锁核心中年轮结构的纹路相同。"
+    },
+    {
+      "id": "E123_06",
+      "chapter": 123,
+      "title": "四人在灰色中庭汇合",
+      "type": "character",
+      "detail": "林深回到中庭与陆、拾、许巍汇合。建筑冷却，光流管线衰减，古神沉睡，城市从活的变成死的。四人确认安全阀进入自主监测模式，向安全屋走去。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E123_01",
+      "character": "林深",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E123_01",
+      "character": "陆",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E123_02",
+      "character": "古神"
+    },
+    {
+      "event_id": "E123_03",
+      "character": "林深",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E123_03",
+      "character": "银灰制服"
+    },
+    {
+      "event_id": "E123_04",
+      "character": "林深",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E123_04",
+      "character": "深蓝长袍"
+    },
+    {
+      "event_id": "E123_05",
+      "character": "渊",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E123_06",
+      "character": "林深",
+      "location": "古神城市"
+    },
+    {
+      "event_id": "E123_06",
+      "character": "陆"
+    },
+    {
+      "event_id": "E123_06",
+      "character": "拾"
+    },
+    {
+      "event_id": "E123_06",
+      "character": "许巍"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "银灰制服",
+      "field": "state_change",
+      "content": "进入低功耗沉睡模式，身体白光从脚底向胸口消退后完全熄灭，变成灰色轮廓"
+    },
+    {
+      "name": "深蓝长袍",
+      "field": "state_change",
+      "content": "沉睡前与林深握手告别，皮肤半透明化可见晶体框架结构，身体微光从头部向下消退，长袍从深蓝变灰蓝再变灰"
+    },
+    {
+      "name": "渊",
+      "field": "state_change",
+      "content": "沉睡在信息核心区入口，手中握着刻有与核心年轮相同符号的石片"
+    },
+    {
+      "name": "林深",
+      "field": "new_detail",
+      "content": "掌心疤痕在灰色光中发出微弱荧光，是设施中唯一还在变亮的东西"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "光",
+      "context": "光色变化贯穿全章：白金→暗蓝→灰，古神皮肤下光消失，掌心疤痕微弱荧光成为设施中唯一的光"
+    },
+    {
+      "motif": "知识",
+      "context": "深蓝长袍临别说'好好用那些数据'，银灰制服说'希望你们已经找到答案'"
+    },
+    {
+      "motif": "日常的裂缝",
+      "context": "光的变化从日常开始——不是突然消失，是逐渐变暗，像极昼的日落"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST121_01",
+      "action": "advanced",
+      "evidence": "深蓝长袍说'外面什么都没有'，首次直接暗示封锁外的虚无状态",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST117_02",
+      "action": "advanced",
+      "evidence": "林深掌心疤痕在灰色光中仍发出微弱荧光，韩峥数据层振动更弱但仍存在",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST117_03",
+      "action": "advanced",
+      "evidence": "六个安全阀进入自主监测模式，人族四人成为死城中唯一还在动的存在",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "渊手中石片的符号与封锁核心年轮纹路完全相同——渊是否在沉睡前特意将某条信息载体带出核心？石片内容是什么？",
+      "importance": "high",
+      "thread_type": "clue",
+      "planted_event_id": "E123_05"
+    },
+    {
+      "content": "古神大规模沉睡后，依赖古神能量运行的设施全面衰竭——人族如何在无古神能量的环境中生存和维持封锁系统？",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E123_06"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E123_02",
+      "to": "E123_01",
+      "type": "consequence",
+      "detail": "古神沉睡导致皮肤下光源消失，设施光色全面衰减"
+    },
+    {
+      "from": "E123_03",
+      "to": "E123_04",
+      "type": "sequence",
+      "detail": "银灰制服沉睡后，林深继续西行遇到深蓝长袍"
+    },
+    {
+      "from": "E123_04",
+      "to": "E123_06",
+      "type": "consequence",
+      "detail": "深蓝长袍沉睡后，林深返回中庭与众人汇合"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E123_04",
+      "thread_id": "ST121_01",
+      "type": "confirmation",
+      "detail": "深蓝长袍明确说'外面什么都没有'，首次直接确认封锁外状态"
+    },
+    {
+      "event_id": "E123_05",
+      "thread_id": "ST105_01",
+      "type": "clue",
+      "detail": "渊手中石片符号与核心年轮相同，可能是前次循环记录者留下的信息载体"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "确认古神沉睡状态和封锁设施状态",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "深蓝长袍",
+      "goal": "在沉睡前确认封锁数据完整并向林深传递关键信息",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "银灰制服",
+      "goal": "维持安全阀自主启动完成后再进入低功耗",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "本章是古神作为种族的告别章。光色变化（白金→暗蓝→灰）是核心视觉母题。银灰制服和深蓝长袍分别完成告别。渊手中石片是新线索。韩峥数据层振动减弱但仍存在。掌心疤痕荧光成为设施中唯一还在变亮的东西。",
+  "_persisted_at": "2026-05-31 20:55:57"
+}

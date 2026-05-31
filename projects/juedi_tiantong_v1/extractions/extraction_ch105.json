@@ -1,0 +1,301 @@
+{
+  "events": [
+    {
+      "id": "E105_01",
+      "chapter": 105,
+      "title": "锚点操作者分配确定",
+      "type": "turning",
+      "detail": "林深完成六个锚定点的操作者分配：陈默锚点1、许巍锚点2、林深锚点3（浅层和中层）、渊锚点4、陆锚点5（深层和底层）、锚点6由古神临时替代。陆的频率不稳定但锚点5容限较宽，古神替代使用底层能量适配器。"
+    },
+    {
+      "id": "E105_02",
+      "chapter": 105,
+      "title": "锚点2二次调制补偿",
+      "type": "background",
+      "detail": "锚点2位于中层通道汇流处，底层能量脉动有共振放大效应，峰值频率比标准值高12%。林深预设二次调制补偿因子，许巍到位置后激活即可匹配。实际校准偏差0.028，优于模拟预测。"
+    },
+    {
+      "id": "E105_03",
+      "chapter": 105,
+      "title": "浅层和中层校准完成",
+      "type": "background",
+      "detail": "锚点1到3的校准在四十分钟内完成，陈默偏差0.015、许巍偏差0.028、林深偏差0.020，全部在容限以内。校准数据通过石台通讯接口实时回传。"
+    },
+    {
+      "id": "E105_04",
+      "chapter": 105,
+      "title": "陆在锚点5的频率校准危机",
+      "type": "turning",
+      "detail": "陆在汇流节点的七条底层能量脉动干涉叠加中，掌心频率偏移5.3%，超过容限边缘。经两次快速自稳态校正后降至3.1%，勉强维持。但六小时锚定窗口内频率校正会消耗额外能量储备。余量被进一步压缩到1.1%。"
+    },
+    {
+      "id": "E105_05",
+      "chapter": 105,
+      "title": "六个锚定点校准全部完成",
+      "type": "turning",
+      "detail": "六个锚定点校准在三个标准时内完成，偏差依次递增：0.015、0.028、0.020、0.019、0.031、0.087。古神临时替代的锚点6精度最低。系统余量从2.4%一路压缩到1.1%。"
+    },
+    {
+      "id": "E105_06",
+      "chapter": 105,
+      "title": "附加符号序列展开揭示人工修正因子",
+      "type": "revelation",
+      "detail": "渊将完整前次循环记录导入信息切断层协议时，附加符号序列以三维嵌套方式展开。序列包含人工嵌入的修正因子，在余量低于2%时自动优化协议响应效率。修正因子非系统自动生成，是前次循环的记录者刻意留下的。"
+    },
+    {
+      "id": "E105_07",
+      "chapter": 105,
+      "title": "反馈回路最终参数锁定",
+      "type": "background",
+      "detail": "陈默完成反馈回路最终参数设定，三个翻译接口的同步偏差都在运行容限以内。在修正因子作用下，安全阀响应窗口从1个标准时扩展到1.3个，余量从1.1%回弹到1.4%。系统从校准状态切换到待部署状态。"
+    },
+    {
+      "id": "E105_08",
+      "chapter": 105,
+      "title": "第六人执行崩溃风险评估",
+      "type": "turning",
+      "detail": "陈默明确指出问题核心：不是能不能部署，而是第六人（陆）在执行中会不会崩溃。陆冷静评估自己会失锁一次、持续0.3个标准时。安全裕度刚好够用。许巍独立验证后确认。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E105_01",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_01",
+      "character": "陈默"
+    },
+    {
+      "event_id": "E105_01",
+      "character": "许巍"
+    },
+    {
+      "event_id": "E105_01",
+      "character": "陆"
+    },
+    {
+      "event_id": "E105_01",
+      "character": "渊"
+    },
+    {
+      "event_id": "E105_02",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_02",
+      "character": "许巍"
+    },
+    {
+      "event_id": "E105_03",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_03",
+      "character": "陈默",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_03",
+      "character": "许巍",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_04",
+      "character": "陆",
+      "location": "古神城市底层废弃区"
+    },
+    {
+      "event_id": "E105_04",
+      "character": "陈默"
+    },
+    {
+      "event_id": "E105_05",
+      "character": "林深"
+    },
+    {
+      "event_id": "E105_06",
+      "character": "渊",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_06",
+      "character": "林深"
+    },
+    {
+      "event_id": "E105_07",
+      "character": "陈默",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E105_08",
+      "character": "陈默"
+    },
+    {
+      "event_id": "E105_08",
+      "character": "陆"
+    },
+    {
+      "event_id": "E105_08",
+      "character": "许巍"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆",
+      "field": "state_change",
+      "content": "掌心频率校准偏差3.1%，每12-15标准时出现一次7%偏移，自稳态校正需0.3标准时。六小时锚定窗口内最多一次偏移，会失锁一次。冷静接受风险。"
+    },
+    {
+      "name": "渊",
+      "field": "new_detail",
+      "content": "发现前次循环记录中的人工修正因子，符号序列信息密度比预估高20%，嵌套深度超出常规分析范围。"
+    }
+  ],
+  "new_locations": [
+    {
+      "name": "锚点3圆形节点",
+      "type": "facility",
+      "description": "中层通道上的圆形节点，直径四米石质平台，古神文字校准标记磨损严重，平台中心有手掌大小凹槽连接底层能量脉动直接接口。"
+    },
+    {
+      "name": "锚点5汇流石室",
+      "type": "facility",
+      "description": "底层废弃区域的天然石室，直径六米，四面石壁有七条底层能量脉动通道汇聚，形成干涉叠加能量场，环境噪声比其他锚定点高三倍。"
+    }
+  ],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "知识的引力",
+      "context": "前次循环记录者刻意在符号序列中嵌入修正因子，知识跨循环传递"
+    },
+    {
+      "motif": "孤独的专注",
+      "context": "陆在黑暗废弃通道中靠掌心频率微弱共振独自移动，二十三标准周期潜伏的耐性"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST95_04",
+      "action": "advanced",
+      "evidence": "陆在锚点5校准时频率偏移5.3%，自稳态校正后降至3.1%，六小时锚定窗口内最多一次失锁",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST66_02",
+      "action": "advanced",
+      "evidence": "六个锚定点全部校准通过，余量从2.4%压缩到1.4%，第六人频率不稳定是系统最薄弱环节",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST67_01",
+      "action": "advanced",
+      "evidence": "附加符号序列展开揭示人工修正因子，前次循环记录者刻意留下，优化余量低于2%时的协议响应",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "前次循环记录中的人工修正因子——记录者身份未知，修正因子非系统自动生成而是刻意嵌入。谁留下了这些修正因子？目的何在？",
+      "importance": "high",
+      "thread_type": "mystery",
+      "planted_event_id": "E105_06"
+    },
+    {
+      "content": "系统余量仅剩1.4%，陆在部署阶段会失锁一次（0.3标准时），安全裕度刚好够用——如果出现任何额外偏差，系统将无法维持闭环",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E105_08"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E105_01",
+      "to": "E105_03",
+      "type": "decision",
+      "detail": "操作者分配确定后启动浅层校准"
+    },
+    {
+      "from": "E105_01",
+      "to": "E105_04",
+      "type": "consequence",
+      "detail": "将频率不稳定的陆分配到锚点5导致校准危机"
+    },
+    {
+      "from": "E105_04",
+      "to": "E105_05",
+      "type": "consequence",
+      "detail": "陆的频率偏移导致系统余量进一步压缩"
+    },
+    {
+      "from": "E105_05",
+      "to": "E105_06",
+      "type": "sequence",
+      "detail": "校准完成后渊导入前次循环记录"
+    },
+    {
+      "from": "E105_06",
+      "to": "E105_07",
+      "type": "consequence",
+      "detail": "修正因子优化协议参数，余量回弹"
+    },
+    {
+      "from": "E105_07",
+      "to": "E105_08",
+      "type": "escalation",
+      "detail": "系统就绪后聚焦于第六人崩溃风险"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E105_04",
+      "thread_id": "ST95_04",
+      "type": "confirmation",
+      "detail": "陆的频率不稳定在校准实测中得到量化确认：偏移5.3%，校正后3.1%"
+    },
+    {
+      "event_id": "E105_06",
+      "thread_id": "ST67_01",
+      "type": "clue",
+      "detail": "附加符号序列的人工修正因子暗示前次循环记录者有意留下了帮助，记录者身份仍未知"
+    },
+    {
+      "event_id": "E105_05",
+      "thread_id": "ST66_02",
+      "type": "confirmation",
+      "detail": "余量从2.4%压缩到1.1%后回弹到1.4%，操作者缺口量化为具体的余量数字"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "完成六个锚定点校准并进入待部署状态",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "陆",
+      "goal": "维持锚点5的频率校准精度",
+      "type": "duty",
+      "status": "advanced"
+    },
+    {
+      "character": "渊",
+      "goal": "将前次循环记录导入信息切断层协议",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "陈默",
+      "goal": "完成反馈回路最终参数设定",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "余量数字递减路径：2.4%→1.5%（适配器损失）→1.1%（陆的偏移）→1.4%（修正因子回弹）。陆的自我评估精确且冷静：失锁一次，0.3标准时。许巍独立验证确认所有数值。前次循环记录者的人工修正因子是新的悬念种子。第七道穿越者信号在本章未出现，林深只在记忆宫殿中确认其存在。",
+  "_persisted_at": "2026-05-31 07:02:30"
+}

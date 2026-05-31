@@ -1,0 +1,130 @@
+{
+  "chapter": 105,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 27.4
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.9
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.9
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 12.2
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 12.7
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 0.9
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 12.4
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 10.6
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 1090.5,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 8,
+          "relations_added": 27,
+          "locations_added": 2,
+          "characters_added": 0,
+          "thread_updates": 3,
+          "new_threads": 2,
+          "causal_links": 6,
+          "evidence_links": 3,
+          "character_goals": 4
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 27.2,
+      "decision": {
+        "rhythm": "",
+        "purpose": "最终部署前的系统校准——六个锚定点全部通过但余量被压缩到极限，第六人频率不稳定的崩溃风险悬而未决，前次循环记录中发现人工修正因子暗示记录者的刻意帮助",
+        "ending": "系统进入待部署状态，一切就绪但'第六人在执行中会不会崩溃'悬而未决，陆冷静承认会失锁一次，安全裕度刚好够用",
+        "scenes": "操作者分配确定→浅层锚点1-3校准→深层锚点4校准→锚点5陆的频率危机→锚点6古神替代→附加符号序列展开→反馈回路参数锁定→第六人崩溃风险评估"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 10.6
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 10.8
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.1
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 10.0
+    }
+  ],
+  "totals": {
+    "duration_ms": 1259.4,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 18
+  },
+  "version": "v25",
+  "session_id": "065d9057",
+  "timestamp": "2026-05-31T07:04:05.186525",
+  "agent_phases": [
+    {
+      "phase": "writing",
+      "duration_ms": 180000.0
+    },
+    {
+      "phase": "extraction",
+      "duration_ms": 120000.0
+    }
+  ],
+  "chapter_metrics": {
+    "word_count": 5517,
+    "editing_corrections": 4,
+    "editing_types": [
+      "style_cleanup",
+      "dash_reduction",
+      "dialogue_action",
+      "metaphor_trim"
+    ]
+  }
+}

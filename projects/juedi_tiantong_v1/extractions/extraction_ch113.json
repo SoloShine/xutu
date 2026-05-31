@@ -1,0 +1,235 @@
+{
+  "events": [
+    {
+      "id": "E113_01",
+      "chapter": 113,
+      "title": "锚点5频率失同步",
+      "type": "climax",
+      "detail": "锚点5的古神临时替代无法适应加剧的能量波动，频率同步率降至89.7%并持续下降，出现频率分裂。连锁波及锚点3（同步率95.2%）和锚点6（陆，同步率97.1%）。"
+    },
+    {
+      "id": "E113_02",
+      "chapter": 113,
+      "title": "封锁网络时间窗口危机",
+      "type": "turning",
+      "detail": "两个锚点偏移导致物理屏蔽层构建时间从10个标准周期延长至15个，超出时间窗口5个标准周期。六面体可能退化为四面体甚至三面体。"
+    },
+    {
+      "id": "E113_03",
+      "chapter": 113,
+      "title": "陈默提出保守方案",
+      "type": "decision",
+      "detail": "陈默建议将物理屏蔽层完整度目标从95%降至78%，缩短构建时间5个标准周期。许巍从锚点4操作经验确认方案可行。安全阀不受影响。"
+    },
+    {
+      "id": "E113_04",
+      "chapter": 113,
+      "title": "林深沉默不决",
+      "type": "turning",
+      "detail": "陈默和许巍同意保守方案，等待林深最终决定。林深看着锚点5数据联想到陆的频率下限0.75，内心权衡七十八与九十五之间的代价。他不回答——断裂1铺垫完成。"
+    },
+    {
+      "id": "E113_05",
+      "chapter": 113,
+      "title": "陆报告频率窗口受影响",
+      "type": "background",
+      "detail": "陆从锚点6报告频率窗口出现微弱偏移，同步率97.1%，承认锚点5跌破临界线后负荷加倍结果不确定。这是陆首次说不确定。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E113_01",
+      "character": "陈默",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_01",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_01",
+      "character": "古神临时替代(锚点5)"
+    },
+    {
+      "event_id": "E113_02",
+      "character": "陈默",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_02",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_03",
+      "character": "陈默",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_03",
+      "character": "许巍"
+    },
+    {
+      "event_id": "E113_04",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_04",
+      "character": "陈默",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E113_05",
+      "character": "陆"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "陆",
+      "field": "state_change",
+      "content": "首次公开表示不确定——频率窗口受锚点5偏移影响，负荷加倍后能否维持不确定"
+    },
+    {
+      "name": "林深",
+      "field": "state_change",
+      "content": "掌心温度升高，疤痕区域紧绷感加剧。面对陈默保守方案选择沉默，内心在陆的安全(0.75下限)与封锁完整度(95vs78)之间权衡"
+    },
+    {
+      "name": "陈默",
+      "field": "new_detail",
+      "content": "高压下肾上腺素控制表现为下颌肌肉颤动，计算精度不留余量(完整度78刚好压缩到窗口极限)"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "知识的引力",
+      "context": "零点七五这个数字如同引力般吸引林深的注意力，他无法回避它代表的意义"
+    },
+    {
+      "motif": "日常的裂缝",
+      "context": "锚点5的白点从正圆变椭圆——微小的视觉变化揭示封锁网络的系统性危机"
+    },
+    {
+      "motif": "孤独的专注",
+      "context": "林深独自面对0.75这个数字的重量，其他人都等待他的决定但他无法与任何人分享内心的权衡"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST111_03",
+      "action": "advanced",
+      "evidence": "锚点5稳定临界状态恶化：同步率从89.7%持续降至85.9%，出现频率分裂",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST112_01",
+      "action": "advanced",
+      "evidence": "偏差加剧导致锚点5频率失同步，恐慌后果从信息层面蔓延到物理操作层面",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST112_03",
+      "action": "advanced",
+      "evidence": "系统需要功能不需要人的主题在陈默和林深的功能匹配中得到体现——林深拒绝回答就是人的部分介入",
+      "new_status": "partially_resolved"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "物理屏蔽层完整度从95%降至78%的代价——边界薄弱点可能在后续被外部探测识别或导致封锁不永久",
+      "importance": "high",
+      "thread_type": "foreshadowing",
+      "planted_event_id": "E113_03"
+    },
+    {
+      "content": "林深对陆的0.75频率下限的执念——他的沉默背后是在权衡封锁完整度与陆的安全，断裂1的直接导火索",
+      "importance": "high",
+      "thread_type": "character_arc",
+      "planted_event_id": "E113_04"
+    },
+    {
+      "content": "锚点5频率分裂——锁定力一分为二，每个子频率都不足以维持位置，是质的崩溃而非量的退化",
+      "importance": "medium",
+      "thread_type": "clue",
+      "planted_event_id": "E113_01"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E112_01",
+      "to": "E113_01",
+      "type": "consequence",
+      "detail": "偏差加剧和恐慌导致能量波动加大，直接触发锚点5古神临时替代失同步"
+    },
+    {
+      "from": "E113_01",
+      "to": "E113_02",
+      "type": "escalation",
+      "detail": "锚点失同步导致构建时间延长超出窗口"
+    },
+    {
+      "from": "E113_02",
+      "to": "E113_03",
+      "type": "reaction",
+      "detail": "时间窗口危机迫使陈默提出降低完整度的保守方案"
+    },
+    {
+      "from": "E113_03",
+      "to": "E113_04",
+      "type": "decision",
+      "detail": "方案需要林深最终决定，但林深因0.75的权衡选择沉默"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E113_01",
+      "thread_id": "ST111_03",
+      "type": "confirmation",
+      "detail": "锚点5频率分裂确认了之前预警的稳定性临界状态"
+    },
+    {
+      "event_id": "E113_03",
+      "thread_id": "ST112_03",
+      "type": "connection",
+      "detail": "陈默的功能性方案(78%够用)vs林深的人味犹豫(0.75)体现了系统需要功能vs需要人的张力"
+    },
+    {
+      "event_id": "E113_05",
+      "thread_id": "ST109_01",
+      "type": "confirmation",
+      "detail": "陆的频率受影响确认了之前对陆频率稳定性的担忧"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "陈默",
+      "goal": "在时间窗口内找到可行的封锁完成方案",
+      "type": "duty",
+      "status": "advanced"
+    },
+    {
+      "character": "林深",
+      "goal": "在封锁成功和陆的安全之间做出选择",
+      "type": "protect",
+      "status": "new"
+    },
+    {
+      "character": "许巍",
+      "goal": "确认保守方案的操作可行性",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "陆",
+      "goal": "在频率偏移中维持锚点6稳定",
+      "type": "duty",
+      "status": "advanced"
+    }
+  ],
+  "notes": "本章核心张力：78%vs95%的功能选择背后是林深对陆的个人牵挂。林深的沉默是断裂1的直接铺垫——他不回答因为答案与陆有关。掌心温度持续升高，为后续掌心频率突破临界做铺垫。陆首次说'不确定'，暗示她的承受极限比数据更接近边界。",
+  "_persisted_at": "2026-05-31 19:27:42"
+}

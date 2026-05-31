@@ -1,0 +1,212 @@
+{
+  "events": [
+    {
+      "id": "E106_01",
+      "chapter": 106,
+      "title": "最后一次巡视锚点",
+      "type": "daily",
+      "detail": "部署前夜，林深从中枢设施出发，沿第七区支线通道走向锚点3，途中观察低功率模式下通道环境变化——光流从浅青变深蓝，流速降低三分之一，回声传播速度因空气密度变化而加快。"
+    },
+    {
+      "id": "E106_02",
+      "chapter": 106,
+      "title": "锚点3凹室确认",
+      "type": "daily",
+      "detail": "林深到达锚点3所在的凹室，确认三层同心圆标记和空白圆心，回顾部署流程：六小时锚定窗口，偏差0.020，如果锚点5不失锁则全程闭环运行，余量1.4%刚好够用。"
+    },
+    {
+      "id": "E106_03",
+      "chapter": 106,
+      "title": "拾在锚点3的信号中继确认",
+      "type": "daily",
+      "detail": "拾携带通讯装置到达锚点3，确认低功率模式下信号中继稳定，延迟增加4%但在容限内。拾确认明天部署只需校准数据回传不需要实时通讯。"
+    },
+    {
+      "id": "E106_04",
+      "chapter": 106,
+      "title": "拾问林深是否回去",
+      "type": "character",
+      "detail": "拾在凹室中问林深：封锁成功之后你会回去吗？林深看着地面上的三层同心圆，没有回答。拾没有追问，完成确认操作后离开。"
+    },
+    {
+      "id": "E106_05",
+      "chapter": 106,
+      "title": "远端锚点巡视觉察",
+      "type": "daily",
+      "detail": "林深站在过渡段入口用记忆宫殿标注确认远端锚点状态：锚点4渊的领域深紫色光流弧线后方，锚点2许巍的位置有二次调制补偿，锚点1陈默偏差最小，锚点5陆偏差最大不稳定，锚点6古神操作者精度最低但容限最宽。"
+    },
+    {
+      "id": "E106_06",
+      "chapter": 106,
+      "title": "记忆宫殿最终标记",
+      "type": "character",
+      "detail": "林深回到中枢设施，背靠石台闭眼进入记忆宫殿，确认所有标注已更新，为第七道穿越者信号区域添加部署前最后一次确认标注，经过三个主题房间，确认韩峥三十一个月数据层独立维持。"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E106_01",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_02",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_03",
+      "character": "拾",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_03",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_04",
+      "character": "拾",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_04",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_05",
+      "character": "林深",
+      "location": "中枢设施"
+    },
+    {
+      "event_id": "E106_06",
+      "character": "林深",
+      "location": "中枢设施"
+    }
+  ],
+  "character_updates": [
+    {
+      "name": "拾",
+      "field": "new_detail",
+      "content": "拾走路左脚着地后右脚有约0.0几秒延迟，像是右膝关节活动范围比左膝略小，站姿重心偏左，这是长时间潜伏养成的随时改变方向的身体记忆"
+    },
+    {
+      "name": "林深",
+      "field": "state_change",
+      "content": "部署前夜情绪状态：对拾的问题选择沉默，在凹室多站了十二个心跳，记忆宫殿最终确认时为第七道穿越者信号添加了部署前最后一次确认标注后关闭该区域"
+    }
+  ],
+  "new_locations": [],
+  "new_characters": [],
+  "motif_mentions": [
+    {
+      "motif": "画圆与缺口",
+      "context": "锚点3地面三层同心圆标记，最内层空白圆心等待明天林深的掌心"
+    },
+    {
+      "motif": "知识的引力",
+      "context": "林深在通道中用记忆宫殿标注低功率模式下回声速度变化的差异，不加标注不加分类的角落记录"
+    },
+    {
+      "motif": "孤独的专注",
+      "context": "部署前夜独自巡视，在凹室里多站十二个心跳，回中枢设施后独自完成记忆宫殿最终确认"
+    }
+  ],
+  "thread_updates": [
+    {
+      "thread_id": "ST105_01",
+      "action": "advanced",
+      "evidence": "记忆宫殿中确认前次循环记录者留下的人工修正因子已在系统中生效",
+      "new_status": "partially_resolved"
+    },
+    {
+      "thread_id": "ST105_02",
+      "action": "advanced",
+      "evidence": "林深在记忆宫殿中确认系统余量1.4%，陆在锚点5偏差0.031是系统最不稳定节点，明天执行时陆预计失锁一次0.3标准时",
+      "new_status": "planted"
+    },
+    {
+      "thread_id": "ST92_02",
+      "action": "advanced",
+      "evidence": "第七道穿越者信号的独立区域振幅标注比上一次确认时又增强了，信号源在靠近的结论没有改变",
+      "new_status": "planted"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "拾问林深封锁成功后是否会回去，林深没有回答——这个未回答的问题是否会成为封锁执行后林深选择的关键因素",
+      "importance": "medium",
+      "thread_type": "character_arc",
+      "planted_event_id": "E106_04"
+    }
+  ],
+  "causal_links": [
+    {
+      "from": "E106_01",
+      "to": "E106_02",
+      "type": "consequence",
+      "detail": "巡视路线从通道到锚点3凹室"
+    },
+    {
+      "from": "E106_02",
+      "to": "E106_03",
+      "type": "reaction",
+      "detail": "林深在锚点3凹室确认标记后拾到达"
+    },
+    {
+      "from": "E106_03",
+      "to": "E106_04",
+      "type": "escalation",
+      "detail": "信号中继确认完成后拾问出封锁后是否回去的问题"
+    },
+    {
+      "from": "E106_04",
+      "to": "E106_05",
+      "type": "consequence",
+      "detail": "拾离开后林深继续远端锚点巡视觉察"
+    },
+    {
+      "from": "E106_05",
+      "to": "E106_06",
+      "type": "consequence",
+      "detail": "远端锚点确认后返回中枢设施完成记忆宫殿标记"
+    }
+  ],
+  "evidence_links": [
+    {
+      "event_id": "E106_02",
+      "thread_id": "ST105_02",
+      "type": "confirmation",
+      "detail": "确认锚点3偏差0.020在容限内，锚点5偏差0.031是最大风险点"
+    },
+    {
+      "event_id": "E106_06",
+      "thread_id": "ST92_02",
+      "type": "clue",
+      "detail": "第七道穿越者信号振幅再次增强，林深添加部署前最后一次确认标注"
+    }
+  ],
+  "character_goals": [
+    {
+      "character": "林深",
+      "goal": "完成部署前最后一次锚定点巡视确认",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "林深",
+      "goal": "完成记忆宫殿最终标记",
+      "type": "duty",
+      "status": "achieved"
+    },
+    {
+      "character": "拾",
+      "goal": "确认锚点3区域信号中继低功率模式稳定",
+      "type": "duty",
+      "status": "achieved"
+    }
+  ],
+  "notes": "本章为部署前夜的情感收束章节，节奏放缓，以感官描写和环境细节为主。拾的问题（封锁成功之后你会回去吗）为后续角色选择埋下伏笔。第七道穿越者信号振幅持续增强构成暗线推进。记忆宫殿完成最终确认标注，韩峥三十一个月数据层保持独立状态。",
+  "_persisted_at": "2026-05-31 07:13:57"
+}

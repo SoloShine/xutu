@@ -1,0 +1,85 @@
+{
+  "chapter": 56,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 12.0
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 6.4
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 6.3
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 595.1,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [
+          "三区到四区通道"
+        ],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 5,
+          "relations_added": 19,
+          "locations_added": 1,
+          "characters_added": 1,
+          "thread_updates": 3,
+          "new_threads": 4,
+          "causal_links": 5,
+          "evidence_links": 8,
+          "character_goals": 3
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 13.8,
+      "decision": {
+        "rhythm": "",
+        "purpose": "第二轮补充评估揭示掌心疤痕被动识别机制与跨周期存档67%匹配度，渊暗示自己也经历过类似评估",
+        "ending": "林深在记忆宫殿中被动识别条目旁画了一个有缺口的圆，评估结果两个标准周期后通知，而渊的那个'没有'在他耳边回响",
+        "scenes": "渊被第三序列召见后汇报问话内容;管线维护中第二次被召见;高级评估室六根金属柱的第二轮评估揭示被动识别和跨周期存档;渊关于类似情况的补充与林深沉默;记忆宫殿中建立第二轮评估分类画有缺口圆环"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    }
+  ],
+  "totals": {
+    "duration_ms": 635.9,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 7
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1440000.0,
+      "tool_uses": 76
+    }
+  ],
+  "version": "v25",
+  "session_id": "ed18581a",
+  "timestamp": "2026-05-29T21:31:54.551671",
+  "chapter_metrics": {
+    "word_count": 3940,
+    "editing_corrections": 8,
+    "editing_types": [
+      "句号密度修复",
+      "引号统一",
+      "对话标签优化",
+      "措辞修正"
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "chapter": 118,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 30.9
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.9
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.4
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 12.4
+    },
+    {
+      "tool": "get_boot_context",
+      "duration_ms": 10.7
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 13.2
+    },
+    {
+      "tool": "validate_chapter",
+      "duration_ms": 15.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.7
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 10.9
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 250.0,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 7,
+          "relations_added": 0,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 0,
+          "new_threads": 0,
+          "causal_links": 0,
+          "evidence_links": 0,
+          "character_goals": 0
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 29.6,
+      "decision": {
+        "rhythm": "",
+        "purpose": "三锚共振突破阈值，林深决定进入核心——断裂2",
+        "ending": "林深向核心走去，锚点交给陈默",
+        "scenes": "三锚共振,掌心突破阈值,韩嶂数据层引导,决定进入核心"
+      }
+    },
+    {
+      "tool": "verify_pipeline_step",
+      "duration_ms": 9.8
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.2
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "generate_context_digest",
+      "duration_ms": 11.4
+    },
+    {
+      "tool": "verify_chapter_complete",
+      "duration_ms": 9.7
+    },
+    {
+      "tool": "recall_arc",
+      "duration_ms": 9.8
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.4
+    }
+  ],
+  "totals": {
+    "duration_ms": 453.1,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 23
+  },
+  "chapter_metrics": {
+    "word_count": 4538,
+    "editing_corrections": 8,
+    "editing_types": [
+      "style:negation_pattern",
+      "duplicate_phrase_removal"
+    ]
+  },
+  "version": "v25",
+  "session_id": "6ae80b9c",
+  "timestamp": "2026-05-31T21:18:46.822601",
+  "agent_phases": [
+    {
+      "phase": "write",
+      "duration_ms": 180000.0,
+      "tool_uses": 12
+    },
+    {
+      "phase": "edit",
+      "duration_ms": 60000.0,
+      "tool_uses": 6
+    },
+    {
+      "phase": "extract",
+      "duration_ms": 45000.0,
+      "tool_uses": 4
+    },
+    {
+      "phase": "graph",
+      "duration_ms": 30000.0,
+      "tool_uses": 8
+    }
+  ]
+}

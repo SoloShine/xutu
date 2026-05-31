@@ -1,0 +1,25 @@
+{
+  "chapter": 29,
+  "tool_calls": [
+    {
+      "tool": "write_extraction",
+      "duration_ms": 246.9,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 1,
+        "auto_locations": [],
+        "new_characters": []
+      }
+    }
+  ],
+  "totals": {
+    "duration_ms": 246.9,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 1
+  },
+  "version": "v25",
+  "session_id": "3720c45d",
+  "timestamp": "2026-05-28T22:10:43.989980"
+}

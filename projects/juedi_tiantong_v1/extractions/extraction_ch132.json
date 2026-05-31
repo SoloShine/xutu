@@ -1,0 +1,115 @@
+{
+  "chapter": 132,
+  "title": "窗口",
+  "volume": 9,
+  "events": [
+    {
+      "id": "E132_01",
+      "title": "林深独自探索设施深层",
+      "chapter": 132,
+      "detail": "林深在信息核心区醒来后独自向下探索，底层频率引导他到达设施最深层，发现十二个古神冬眠仓排列在圆形腔室中",
+      "event_type": "discovery",
+      "location": "古神设施最深层冬眠仓区"
+    },
+    {
+      "id": "E132_02",
+      "title": "发现冬眠仓参数不匹配",
+      "chapter": 132,
+      "detail": "渊解释冬眠仓为古神设计，体型、代谢率、核心体温、脑电波频率等参数与人类完全不匹配，无法直接使用",
+      "event_type": "information",
+      "location": "古神设施最深层冬眠仓区"
+    },
+    {
+      "id": "E132_03",
+      "title": "韩嶂数据层频率翻译方案",
+      "chapter": 132,
+      "detail": "渊揭示韩嶂数据层的谐波范围（0.3-1.4倍基准）可覆盖人类脑电波主频段，可作为频率翻译让冬眠仓适配人类生理特征",
+      "event_type": "discovery",
+      "location": "古神设施最深层冬眠仓区"
+    },
+    {
+      "id": "E132_04",
+      "title": "窗口存在但不会永远开着",
+      "chapter": 132,
+      "detail": "韩嶂数据层频率覆盖范围在缩小，上界从1.6降到1.4，约十几个标准周期后将低于人类脑电波频段下限，窗口即将关闭",
+      "event_type": "information",
+      "location": "古神设施最深层冬眠仓区"
+    },
+    {
+      "id": "E132_05",
+      "title": "林深未做决定",
+      "chapter": 132,
+      "detail": "林深知道了冬眠可能性存在但没有做决定，渊也确认他不需要现在做决定，只需要知道窗口存在",
+      "event_type": "character_development",
+      "location": "古神设施最深层冬眠仓区"
+    }
+  ],
+  "new_characters": [],
+  "new_locations": [
+    {
+      "name": "古神设施最深层冬眠仓区",
+      "loc_type": "facility",
+      "description": "古神设施最深层圆形腔室，天花板高四层楼，中央排列十二个半球形冬眠仓凹槽，温度被动控制最稳定区域，不依赖外部能量供给"
+    }
+  ],
+  "new_threads": [
+    {
+      "content": "冬眠窗口存在但韩嶂数据层在衰减，频率覆盖上界从1.6降到1.4，约十几个标准周期后窗口将关闭，林深是否会在窗口关闭前做出选择",
+      "importance": "high"
+    },
+    {
+      "content": "韩嶂数据层最后的用途可能是帮助林深进入冬眠——频率翻译是数据层衰减过程中唯一剩余的功能性价值",
+      "importance": "high"
+    }
+  ],
+  "event_relations": [
+    {
+      "event_id": "E132_01",
+      "character": "林深",
+      "relation": "explores"
+    },
+    {
+      "event_id": "E132_01",
+      "character": "渊",
+      "relation": "follows"
+    },
+    {
+      "event_id": "E132_02",
+      "character": "渊",
+      "relation": "explains"
+    },
+    {
+      "event_id": "E132_03",
+      "character": "渊",
+      "relation": "reveals"
+    },
+    {
+      "event_id": "E132_03",
+      "character": "韩峥",
+      "relation": "data_layer_source"
+    },
+    {
+      "event_id": "E132_04",
+      "character": "渊",
+      "relation": "warns"
+    },
+    {
+      "event_id": "E132_05",
+      "character": "林深",
+      "relation": "defers_decision"
+    }
+  ],
+  "character_states": [
+    {
+      "character": "林深",
+      "state": "知道冬眠可能性但未做决定，底层频率与冬眠仓产生微弱共鸣，掌心频率持续运行",
+      "chapter": 132
+    },
+    {
+      "character": "渊",
+      "state": "揭示了韩嶂数据层频率翻译方案和窗口衰减信息，保持平静客观态度",
+      "chapter": 132
+    }
+  ],
+  "_persisted_at": "2026-05-31 23:18:37"
+}

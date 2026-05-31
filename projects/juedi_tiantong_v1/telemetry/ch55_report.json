@@ -1,0 +1,80 @@
+{
+  "chapter": 55,
+  "tool_calls": [
+    {
+      "tool": "add_outline_entry",
+      "duration_ms": 11.2
+    },
+    {
+      "tool": "get_writing_prompt",
+      "duration_ms": 7.3
+    },
+    {
+      "tool": "get_extraction_prompt",
+      "duration_ms": 5.4
+    },
+    {
+      "tool": "write_extraction",
+      "duration_ms": 267.4,
+      "decision": {
+        "events": 0,
+        "relations": 0,
+        "conflicts": 0,
+        "auto_locations": [],
+        "new_characters": [],
+        "graph_delta": {
+          "events_added": 4,
+          "relations_added": 15,
+          "locations_added": 0,
+          "characters_added": 0,
+          "thread_updates": 3,
+          "new_threads": 1,
+          "causal_links": 2,
+          "evidence_links": 5,
+          "character_goals": 2
+        }
+      }
+    },
+    {
+      "tool": "add_chapter_arc",
+      "duration_ms": 12.6,
+      "decision": {
+        "rhythm": "",
+        "purpose": "林深在第三序列评估设施接受质询和测试，核心张力是不暴露穿越者身份，最终通过但留下两个标准周期的审查窗口",
+        "ending": "林深回到四区，记忆宫殿新增两个关键问题和评估设施的完整路径，评估结果两个标准周期后通知，掌心疤痕的高频段已被记录在案",
+        "scenes": "穿过色差分界线进入无窗评估室;代表A质询知识背景追问频率捕获窗口理论;六块图形薄片测试与能量特征扫描暴露疤痕;十二问标准化评估筛查思维方式;返回四区渊等候拾不传信号"
+      }
+    },
+    {
+      "tool": "inject_chapter_metrics",
+      "duration_ms": 1.0
+    },
+    {
+      "tool": "inject_agent_phase",
+      "duration_ms": 1.1
+    }
+  ],
+  "totals": {
+    "duration_ms": 306.0,
+    "llm_prompt_tokens": 0,
+    "llm_completion_tokens": 0,
+    "tool_count": 7
+  },
+  "agent_phases": [
+    {
+      "phase": "combined",
+      "duration_ms": 1430000.0,
+      "tool_uses": 102
+    }
+  ],
+  "version": "v25",
+  "session_id": "20a78ce4",
+  "timestamp": "2026-05-29T21:06:35.285108",
+  "chapter_metrics": {
+    "word_count": 3987,
+    "editing_corrections": 0,
+    "editing_types": [
+      "none"
+    ]
+  }
+}
