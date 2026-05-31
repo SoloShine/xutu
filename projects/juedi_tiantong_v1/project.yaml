@@ -1,0 +1,111 @@
+name: "绝地天通"
+identifier: "juedi_tiantong_v1"
+chapters: 137
+language: "简体中文"
+description: "一个业余神话研究者，在日常生活中逐步触碰到一个比神话更真实的东西——而他发现的方式，是证据本身选择了他"
+volumes:
+  - name: "萌动"
+    number: 1
+    chapters: 12
+    global_range: "ch01-ch12"
+    status: "completed"
+    word_count: "~4.5万"
+  - name: "降临"
+    number: 2
+    chapters: 20
+    global_range: "ch13-ch32"
+    status: "completed"
+    word_count: "~7.9万"
+  - name: "暗流"
+    number: 3
+    chapters: 20
+    global_range: "ch33-ch52"
+    status: "completed"
+    word_count: "~7.8万"
+  - name: "较量"
+    number: 4
+    chapters: 14
+    global_range: "ch53-ch66"
+    status: "completed"
+    word_count: "~4.2万"
+  - name: "闭环"
+    number: 5
+    chapters: 13
+    global_range: "ch67-ch79"
+    status: "completed"
+    word_count: "~4.2万"
+  - name: "前夜"
+    number: 6
+    chapters: 12
+    global_range: "ch80-ch91"
+    status: "completed"
+    word_count: "~3.6万"
+  - name: "集结"
+    number: 7
+    chapters: 16
+    global_range: "ch92-ch107"
+    status: "completed"
+    word_count: "~6.5万"
+  - name: "封锁"
+    number: 8
+    chapters: 18
+    global_range: "ch108-ch125"
+    status: "completed"
+    word_count: "~7.5万"
+  - name: "余烬"
+    number: 9
+    chapters: 12
+    global_range: "ch126-ch137"
+    status: "writing"
+    word_count: "~3.6万"
+  - name: "苏醒"
+    number: 10
+    chapters: 14
+    global_range: "ch138-ch151"
+    status: "planned"
+    word_count: "~4.2万"
+  - name: "探索"
+    number: 11
+    chapters: 12
+    global_range: "ch152-ch163"
+    status: "planned"
+    word_count: "~3.6万"
+  - name: "复苏"
+    number: 12
+    chapters: 14
+    global_range: "ch164-ch177"
+    status: "planned"
+    word_count: "~4.2万"
+  - name: "边界"
+    number: 13
+    chapters: 12
+    global_range: "ch178-ch189"
+    status: "planned"
+    word_count: "~3.6万"
+  - name: "静默"
+    number: 14
+    chapters: 18
+    global_range: "ch190-ch207"
+    status: "planned"
+    word_count: "~5.4万"
+  - name: "破壁"
+    number: 15
+    chapters: 20
+    global_range: "ch208-ch227"
+    status: "planned"
+    word_count: "~6万"
+  - name: "荒寂"
+    number: 16
+    chapters: 18
+    global_range: "ch228-ch245"
+    status: "planned"
+    word_count: "~5.4万"
+  - name: "闭环"
+    number: 17
+    chapters: 12
+    global_range: "ch246-ch257"
+    status: "planned"
+    word_count: "~3.6万"
+total_planned_chapters: 257
+total_word_count: "~46万（已完成）/ ~80万+（计划）"
+last_updated: "2026-05-31"
