@@ -660,13 +660,94 @@ class JsonKG:
             focused_list = threads
             recall_index = []
 
+        # 悬链成熟度分组
+        maturity = self._score_suspense_maturity(chapter, all_unresolved if isinstance(threads, list) else (focused_list + [self._graph["suspense_threads"].get(i["id"], {}) for i in recall_index if i.get("id") in self._graph["suspense_threads"]]))
+        # Filter out None entries from index lookups
+        maturity["mature"] = [t for t in maturity.get("mature", []) if t and t.get("id")]
+        maturity["developing"] = [t for t in maturity.get("developing", []) if t and t.get("id")]
+        maturity["recent"] = [t for t in maturity.get("recent", []) if t and t.get("id")]
+
         return {
             "chapter": chapter,
             "outline": outline,
             "prev_ending": prev_ending,
             "active_thread_count": len(focused_list),
             "recall_index": recall_index,
+            "suspense_maturity": maturity,
         }
+
+    def _score_suspense_maturity(self, chapter, threads):
+        """按种植年龄将悬链分组，用于驱动章节叙事。"""
+        mature = []      # ≥10章前种植 → 建议回收
+        developing = []  # 5-9章前 → 建议推进
+        recent = []      # <5章前 → 追踪
+
+        importance_order = {"high": 0, "medium": 1, "low": 2, "unknown": 3}
+
+        for t in threads:
+            planted = t.get("planted_chapter", 999)
+            age = chapter - planted
+            imp = t.get("importance", "medium")
+            entry = {
+                "id": t.get("id", ""),
+                "content": (t.get("content", "") or "")[:120],
+                "status": t.get("status", ""),
+                "importance": imp,
+                "planted_chapter": planted,
+                "age_chapters": age,
+            }
+            if age >= 10:
+                mature.append(entry)
+            elif age >= 5:
+                developing.append(entry)
+            else:
+                recent.append(entry)
+
+        # 每组内按重要性排序
+        for group in [mature, developing, recent]:
+            group.sort(key=lambda x: (importance_order.get(x["importance"], 3), -x["age_chapters"]))
+
+        # 修剪候选：种植 ≥50 章前、状态仍是 planted（从未推进过）、故事已超越
+        pruning = []
+        for t in threads:
+            planted = t.get("planted_chapter", 999)
+            age = chapter - planted
+            status = t.get("status", "")
+            if age >= 50 and status == "planted":
+                pruning.append({
+                    "id": t.get("id", ""),
+                    "content": (t.get("content", "") or "")[:120],
+                    "importance": t.get("importance", "medium"),
+                    "planted_chapter": planted,
+                    "age_chapters": age,
+                })
+        pruning.sort(key=lambda x: (importance_order.get(x["importance"], 3), -x["age_chapters"]))
+
+        # 配额计算
+        mature_count = len(mature)
+        new_quota = max(2, 4 - mature_count // 50)
+
+        return {
+            "mature": mature[:8],
+            "developing": developing[:5],
+            "recent": recent[:3],
+            "pruning_candidates": pruning[:10],
+            "mature_total": mature_count,
+            "pruning_candidates_total": len(pruning),
+            "abandoned_total": sum(1 for v in self._graph["suspense_threads"].values() if v.get("status") == "abandoned"),
+            "new_thread_quota": new_quota,
+            "consumption_rule": "章级软指导: 允许净播种 -1 到 +3。卷级硬约束: mature 条数必须下降 ≥ floor(卷章数/3)，全卷播种 ≤ 回收+推进。",
+            "pruning_rule": "每卷修剪 ≥10 条 pruning_candidates (标记 abandoned)。修剪 ≠ 回收——修剪是对已超越旧线的诚实放弃。规则: 种植 ≥50 章前、从未推进过、故事已不需要回答的线可标记 abandoned。",
+        }
+
+    def get_suspense_maturity(self, chapter):
+        """公开接口：获取悬链成熟度分组（供 CLI 独立调用）。"""
+        all_unresolved = [
+            deepcopy(v) for v in self._graph["suspense_threads"].values()
+            if v.get("status") not in ("resolved", "abandoned")
+            and v.get("planted_chapter", 999) < chapter
+        ]
+        return self._score_suspense_maturity(chapter, all_unresolved)
 
     def recall_thread(self, thread_id):
         """按需拉取单条悬念线完整内容。"""

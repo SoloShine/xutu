@@ -3,7 +3,8 @@
     "novel-kg": {
       "command": "python",
       "args": ["-m", "novel_kg.server"],
-      "cwd": "${workspaceFolder}/src"
+      "cwd": "${workspaceFolder}/src",
+      "disabled": true
     }
   }
 }

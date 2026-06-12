@@ -230,7 +230,18 @@ def detect_conflicts(kg, extracted, project=None):
             "resolution": "检查是否遗漏了关键场景"
         })
 
-    # 5. 检查间隙标记合理性
+    # 5. 检查事件缺失 chapter 字段（入图必需）
+    for ev in extracted.get("events", []):
+        if ev.get("chapter") is None or ev.get("chapter") == "":
+            conflicts.append({
+                "type": "事件缺chapter字段",
+                "detail": f"{ev.get('id', '?')} '{ev.get('title', '')}' 缺少 chapter 字段，入图后无法索引",
+                "severity": "high",
+                "resolution": "为所有事件添加 \"chapter\": {chapter} 字段"
+            })
+            break  # 一条错误即全部，不重复报
+
+    # 6. 检查间隙标记合理性
     gap_events = [e for e in extracted.get("events", []) if e.get("is_gap")]
     for ge in gap_events:
         detail = ge.get("detail", "")
@@ -268,15 +279,24 @@ def write_extraction_to_graph(kg, chapter, extracted, skip_conflicts=True, proje
 
     time_period = get_chapter_time_period(kg, chapter)
 
-    # 1. 写入事件（跳过冲突的）
+    # 1. 写入事件（跳过冲突的 + 拒绝缺 chapter 字段的）
+    skipped_no_chapter = 0
     for ev in extracted.get("events", []):
         if ev["id"] in conflict_event_ids:
+            continue
+        if ev.get("chapter") is None or ev.get("chapter") == "":
+            skipped_no_chapter += 1
             continue
         kg.add_event(ev["id"], **{k: v for k, v in ev.items() if k != "id"})
         stats["events"] += 1
         if time_period:
             kg.add_relation("Event", "id", ev["id"], "HAPPENS_IN",
                            "TimePeriod", "label", time_period)
+    if skipped_no_chapter:
+        stats["skipped_no_chapter"] = skipped_no_chapter
+        if "notes" not in stats:
+            stats["notes"] = ""
+        stats["notes"] += f" 警告: {skipped_no_chapter}个事件因缺少chapter字段被拒绝，请补充后重新入图"
 
     # 2. 写入事件关系
     for rel in extracted.get("event_relations", []):

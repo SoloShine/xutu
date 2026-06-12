@@ -25,13 +25,30 @@
 每章由独立子代理（ChapterAgent）完成全部步骤，主编排只做章节调度。主编排上下文每章仅增加 ~1K chars（状态摘要），不再累积 prompt/正文/JSON。
 
 ```
-主编排: dispatch(chN) → ChapterAgent(chN) → summary → dispatch(chN+1) → ...
+主编排: dispatch(chN) → ChapterAgent(chN) → summary → ... → dispatch(chLast) → VolumeReviewAgent → 更新handoff
 ```
 
 **ChapterAgent 内部流程（严格串行）：**
 ```
 Boot → Step 1: 写初稿 → Step 2: 编辑审查 → Step 3: 提取JSON → Step 4: 入图+弧线 → Step 5: 遥测 → 返回摘要
 ```
+
+**VolumeReviewAgent（整卷回读校验，全部 ChapterAgent 完成后由主编排派生）：**
+```
+Phase 1: 逐章通读 → Phase 2: 输出问题清单 → Phase 3: 逐章修复 → Phase 4: 写入报告
+```
+- 使用 Agent 工具派生，prompt 来自 `.claude/templates/volume_review.md`
+- 报告写入 `projects/<项目名>/review_report_vol{N}.md`
+- 主编排收到报告后更新 `handoff.md` 会话交接块
+
+**ChapterAgent 内部流程（严格串行）：**
+```
+Boot → Step 1: 写初稿 → Step 2: 编辑审查 → Step 3: 提取JSON → Step 4: 入图+弧线 → Step 5: 遥测 → 返回摘要
+```
+
+---
+
+## ⚠️ v2 管线（实验性）
 
 **Boot（子代理启动时）：**
 - `get_boot_context --project <项目> --chapter N` — 最小启动上下文（大纲 + 前章结尾 + 线索召回索引）
@@ -40,6 +57,10 @@ Boot → Step 1: 写初稿 → Step 2: 编辑审查 → Step 3: 提取JSON → S
 **主编排 Step 0（每卷/新会话必做，仅主编排执行）：**
 - 读 `projects/<项目名>/handoff.md` — 会话交接块
 - `get_graph_stats --project <项目名>` — 图谱总览
+- **新卷开始前（追加）：**
+  - 用 `add_outline_entry` 将该卷全部章节大纲写入图谱（`--project --chapter N --purpose --key-events --structure-hint`）
+  - 更新 `projects/<项目名>/world_setup.json`：total_chapters、volumes 数组（含新增卷的状态）、新增角色/地点/时间段
+  - 验证：`verify_pipeline_step --project <项目> --chapter <首章> --step write` 返回 `ready: true`
 
 **子代理调度规则：**
 - 使用 Agent 工具派生 ChapterAgent，prompt 来自 `.claude/templates/chapter_agent.md`
@@ -59,6 +80,42 @@ Boot → Step 1: 写初稿 → Step 2: 编辑审查 → Step 3: 提取JSON → S
   - `projects/<项目>/project.yaml` — 更新 chapters 总数、新增 volume 条目及状态
   - `projects/<项目>/world_setup.json` — 更新 total_chapters、volumes 数组、新增角色/地点/时间段
 - **每卷结束校验：** 校验实写章数 = 大纲计划章数（如不等，更新framework并记录差异原因）
+- **整卷回读校验（Step 6）：** 全部章节的 ChapterAgent 完成且 verify_chapter_complete 通过后，主编排派生 VolumeReviewAgent 执行整卷回读校验。prompt 来自 `.claude/templates/volume_review.md`。VolumeReviewAgent 返回后，主编排读取报告并更新 handoff.md 会话交接块。
+
+---
+
+## v2 管线（悬链驱动，实验性）
+
+**核心改进（vs v1）：**
+
+| 维度 | v1 | v2 |
+|------|----|----|
+| 代理/章 | 3（Write/Edit/Process） | 1（ChapterAgent v2） |
+| 风格约束 | 负约束（禁止句式≤N） | 正约束（≥3种多样性结构） |
+| grep 角色 | 门禁（不过不让过） | 信号灯（过是绿灯/黄灯/红灯） |
+| 悬链 | 播种无配额 | 每章配额+消费平衡 |
+| 回读 | 风格指标为主 | 悬链收支表为主 |
+
+**v2 文件：**
+- `.claude/templates/chapter_agent_v2.md` — 单体代理模板（Boot→Write→自编辑→提取→入图）
+- `.claude/templates/volume_review_v2.md` — 悬链平衡校验+整卷回读
+- `.claude/workflows/volume-pipeline-v2.js` — v2 编排（1 agent/ch + VolumeReview v2）
+
+**v2 启动方式：**
+```
+Workflow({ scriptPath: ".claude/workflows/volume-pipeline-v2.js",
+  args: { project: "juedi_tiantong_v1", volume: 13, startChapter: 178, endChapter: 189, volumeName: "边界" } })
+```
+
+**v2 新增 CLI：**
+- `get_suspense_maturity --project <项目> --chapter N` — 悬链成熟度分组（mature/developing/recent + 配额）
+- boot context 输出中新增 `suspense_maturity` 字段
+
+**悬链配额规则：** 每章可种新线 ≤ `new_thread_quota`，consumption_balance ≥ 0（种1条必须回收或推进≥1条旧线）。卷级看净收支。
+
+**v1 保留：** v1 模板和工作流不受影响，可继续使用。
+
+---
 
 ### Prompt 体积控制
 
@@ -123,7 +180,8 @@ novel_test/
 │   ├── templates/                # 项目模板
 │   │   ├── framework.md          # framework.md标准模板
 │   │   ├── handoff.md            # handoff.md标准模板
-│   │   └── chapter_agent.md      # ChapterAgent调度prompt
+│   │   ├── chapter_agent.md      # ChapterAgent调度prompt
+│   │   └── volume_review.md      # VolumeReviewAgent整卷回读prompt
 │   └── skills/                   # Agent skills
 └── archive/                        # 历史验证归档（gitignored）
 ```
@@ -218,6 +276,12 @@ ChapterAgent 支持：
 | `inject_chapter_metrics` | `--project --chapter N [--word-count N] [--editing-corrections N] [--editing-types STR]` | 注入章节指标 |
 | `inject_agent_phase` | `--project --chapter N --phase NAME --duration-ms N [--tool-uses N]` | 注入子代理阶段耗时 |
 | `save_telemetry_session_summary` | `--project` | 保存会话遥测摘要 |
+
+角色访谈命令：
+
+| 命令 | 参数 | 用途 |
+|------|------|------|
+| `interview_character` | `--project --character NAME [--chapter N] [--validate] [--dry-run]` | 角色访谈（交互/验证/干跑） |
 
 **后端：** 默认JSON文件后端（零依赖）。Neo4j可选（`KG_BACKEND=neo4j`）。
 

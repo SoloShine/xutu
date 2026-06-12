@@ -69,6 +69,12 @@ def get_boot_context(project: str, chapter: int) -> dict:
     return kg.get_boot_context(chapter)
 
 
+def get_suspense_maturity(project: str, chapter: int) -> dict:
+    """悬链成熟度分组：按种植年龄将未回收悬链分为 mature/developing/recent."""
+    kg = _kg(project)
+    return kg.get_suspense_maturity(chapter)
+
+
 def get_framework(project: str, chapter: int) -> str:
     """按需切片读取 framework.md：核心设定 + 目标卷大纲 + 全局说明。
 
@@ -286,7 +292,17 @@ def verify_chapter_complete(project: str, chapter: int) -> dict:
     if os.path.exists(ex_path):
         try:
             with open(ex_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
+                raw = f.read()
+            # Skip comment lines at the top
+            lines = raw.split("\n")
+            json_start = 0
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+                if stripped and not stripped.startswith("#"):
+                    json_start = i
+                    break
+            json_text = "\n".join(lines[json_start:])
+            data = json.loads(json_text)
             ex_ok = len(data.get("events", [])) > 0
             checks.append({"item": "提取JSON", "ok": True, "events": len(data.get("events", []))})
         except (json.JSONDecodeError, ValueError):

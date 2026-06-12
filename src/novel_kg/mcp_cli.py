@@ -84,6 +84,10 @@ def build_parser():
     _proj(sp); _chap(sp)
     sp.set_defaults(func=lambda a: _out(core.get_boot_context(a.project, a.chapter)))
 
+    sp = sub.add_parser('get_suspense_maturity')
+    _proj(sp); _chap(sp)
+    sp.set_defaults(func=lambda a: _out(core.get_suspense_maturity(a.project, a.chapter)))
+
     sp = sub.add_parser('get_framework')
     _proj(sp); _chap(sp)
     sp.set_defaults(func=lambda a: _out(core.get_framework(a.project, a.chapter)))
@@ -137,6 +141,15 @@ def build_parser():
         a.project, a.chapter, draft='',
         draft_file=a.draft_file or _std_output_path(a.project, a.chapter))))
 
+    # --- 角色访谈 ---
+    sp = sub.add_parser('interview_character')
+    _proj(sp)
+    sp.add_argument('--character', '-c', required=True, help='角色名')
+    sp.add_argument('--chapter', '-ch', type=int, default=0, help='时间点（默认最新章）')
+    sp.add_argument('--validate', action='store_true', help='自动验证模式')
+    sp.add_argument('--dry-run', action='store_true', help='只输出画像和测试题，不调API')
+    sp.set_defaults(func=cmd_interview_character)
+
     # --- 校验 ---
     sp = sub.add_parser('validate_chapter')
     _proj(sp); _chap(sp)
@@ -145,6 +158,7 @@ def build_parser():
 
     sp = sub.add_parser('detect_conflicts')
     _proj(sp)
+    sp.add_argument('--chapter', type=int, help='章节编号')
     sp.add_argument('--json-file', '-f', help='省略则默认 projects/<project>/extractions/extraction_ch{NN}.json')
     sp.set_defaults(func=cmd_detect_conflicts)
 
@@ -390,6 +404,68 @@ def cmd_count_chapter_words(args):
         args.project, args.chapter, word_count=chinese_chars)
     result["word_count"] = chinese_chars
     _out(result)
+
+
+def cmd_interview_character(args):
+    from .character_interview import (
+        build_character_profile, generate_test_questions, run_interview,
+    )
+    kg = core._kg(args.project)
+
+    # 确定章节
+    chapter = args.chapter
+    if chapter <= 0:
+        # 默认取最新章（有 chapter_arc 的最大章节）
+        arcs = kg._graph.get("chapter_arcs", {})
+        if arcs:
+            chapter = max(int(k) for k in arcs.keys())
+        else:
+            chapter = 1
+
+    profile, meta = build_character_profile(kg, args.character, chapter)
+    if profile is None:
+        _out(meta)
+        return
+
+    # dry-run: 只输出画像和测试题
+    if getattr(args, 'dry_run', False):
+        print(f"角色画像: {len(profile)} chars (~{len(profile)//4} tokens)")
+        print(f"时间点: 第{chapter}章结尾")
+        print(f"近期事件: {len(meta['recent_events'])}")
+        print(f"活跃目标: {len(meta['latest_goals'])}")
+        print(f"死亡角色: {meta['dead_chars']}")
+        print()
+        print("=" * 50)
+        print("角色画像")
+        print("=" * 50)
+        print(profile)
+        print()
+        tests = generate_test_questions(meta)
+        if tests:
+            print("=" * 50)
+            print(f"自动验证题 ({len(tests)}题)")
+            print("=" * 50)
+            cat_labels = {"fact": "事实", "temporal": "时间", "voice": "声线", "relationship": "关系"}
+            for i, t in enumerate(tests, 1):
+                cat = cat_labels.get(t["category"], t["category"])
+                print(f"\nQ{i} [{cat}]: {t['question']}")
+                if t.get("must_contain"):
+                    print(f"  必须包含: {t['must_contain']}")
+                if t.get("must_not_contain"):
+                    print(f"  不得包含: {t['must_not_contain']}")
+        return
+
+    if args.validate:
+        tests = generate_test_questions(meta)
+        if not tests:
+            print("未能自动生成验证题，角色数据可能不足。")
+            return
+        run_interview(profile, mode="validate", test_questions=tests,
+                      char_name=args.character, chapter=chapter, meta=meta)
+    else:
+        run_interview(profile, mode="interactive",
+                      char_name=args.character, chapter=chapter, meta=meta,
+                      kg_ref=kg)
 
 
 # ============================================================

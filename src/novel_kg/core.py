@@ -49,9 +49,17 @@ def _persist(project: str, subdir: str, filename: str, content: str):
     dir_path = os.path.join(_projects_dir, project, subdir)
     os.makedirs(dir_path, exist_ok=True)
     path = os.path.join(dir_path, filename)
-    header = f"# Persisted: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(header + content)
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    if filename.endswith('.json'):
+        import json
+        data = json.loads(content)
+        data['_persisted_at'] = timestamp
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    else:
+        header = f"# Persisted: {timestamp}\n"
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(header + content)
 
 
 # ========== Bigram 工具 ==========
@@ -153,7 +161,7 @@ from .core_crud import (  # noqa: E402
     clear_chapter_data,
     get_boot_context, recall_thread, recall_arc, generate_context_digest,
     verify_pipeline_step, verify_chapter_complete,
-    get_framework,
+    get_framework, get_suspense_maturity,
 )
 
 # -- 合规检查 --
