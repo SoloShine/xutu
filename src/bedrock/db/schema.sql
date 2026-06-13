@@ -285,3 +285,34 @@ CREATE TABLE IF NOT EXISTS export_manifest (
     exported_at TEXT NOT NULL DEFAULT (datetime('now')),
     source_snapshot TEXT NOT NULL DEFAULT '{}'
 );
+
+
+-- ===== Outline (Volume/Master) + Inspiration pool (Task 10) =====
+
+CREATE TABLE IF NOT EXISTS volume_outline (
+    volume_id INTEGER PRIMARY KEY REFERENCES volume(id),
+    status TEXT NOT NULL DEFAULT 'drafted' CHECK (status IN ('drafted','locked','writing','completed')),
+    locked_at TEXT,
+    beat_contracts TEXT NOT NULL DEFAULT '[]'
+);
+
+CREATE TABLE IF NOT EXISTS master_outline (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    volumes TEXT NOT NULL DEFAULT '[]',
+    theme_evolution TEXT NOT NULL DEFAULT '',
+    key_arcs TEXT NOT NULL DEFAULT '[]',
+    key_milestones TEXT NOT NULL DEFAULT '[]',
+    rhythm_curve TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS inspiration (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content TEXT NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('premise','scene','character','theme','mechanic','setting','twist')),
+    status TEXT NOT NULL DEFAULT 'raw' CHECK (status IN ('raw','refined','consumed','partial','discarded')),
+    source TEXT NOT NULL DEFAULT '',
+    consumed_into TEXT NOT NULL DEFAULT '[]',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    refined_at TEXT,
+    promoted_at TEXT
+);
