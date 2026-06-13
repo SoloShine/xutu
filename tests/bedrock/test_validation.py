@@ -3,6 +3,7 @@ import pytest
 from src.bedrock.db.connection import get_connection
 from src.bedrock.validation import (
     validate_pronoun_gender_consistency, ValidationError, detect_cycle,
+    validate_all,
 )
 from src.bedrock.repositories.character import create_character
 from src.bedrock.repositories.worldbook import add_faction
@@ -26,4 +27,14 @@ def test_faction_cycle_detected(tmp_project):
     conn.commit()
     with pytest.raises(ValidationError):
         detect_cycle(conn, "faction")
+    conn.close()
+
+
+def test_validate_all_aggregates_issues(tmp_project):
+    conn = get_connection(tmp_project)
+    # 注入一个 pronoun-gender 不一致
+    conn.execute("INSERT INTO character(name,pronoun,gender,role,state) "
+                 "VALUES('X','她','男','minor','active')")
+    issues = validate_all(conn)
+    assert any("pronoun" in i for i in issues)
     conn.close()

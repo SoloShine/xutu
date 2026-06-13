@@ -79,3 +79,18 @@ def effective_pronoun(conn, character_id, chapter):
         return row["pronoun"]
     base = get_character(conn, character_id)
     return base["pronoun"] if base else None
+
+
+def add_knowledge(conn, character_id, fact_id, learned_at_beat=None, confidence=1.0, decay=0.0):
+    cur = conn.execute(
+        "INSERT OR REPLACE INTO character_knowledge(character_id,fact_id,learned_at_beat,"
+        "confidence,decay) VALUES(?,?,?,?,?)",
+        (character_id, fact_id, learned_at_beat, confidence, decay))
+    conn.commit()
+    return cur.lastrowid
+
+
+def knowledge_of(conn, character_id):
+    return conn.execute(
+        "SELECT * FROM character_knowledge WHERE character_id=? ORDER BY fact_id",
+        (character_id,)).fetchall()

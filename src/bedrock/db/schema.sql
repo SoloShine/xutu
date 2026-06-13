@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS beat (
     chapter_id INTEGER NOT NULL REFERENCES chapter(id),
     sequence INTEGER NOT NULL,
     purpose TEXT NOT NULL CHECK (length(purpose) >= 10),
-    pov_character_id INTEGER,
+    pov_character_id INTEGER REFERENCES character(id),
     scene_setting TEXT NOT NULL DEFAULT '{}',
     story_time TEXT,
     timeline_id TEXT,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS character (
     pronoun TEXT NOT NULL CHECK (pronoun IN ('他','她','它','祂','TA')),
     gender TEXT CHECK (gender IS NULL OR gender IN ('男','女','无','未知','其他')),
     role TEXT NOT NULL CHECK (role IN ('protagonist','supporting','antagonist','minor')),
-    faction_id INTEGER,
+    faction_id INTEGER REFERENCES faction(id),
     state TEXT NOT NULL DEFAULT 'active' CHECK (state IN ('active','dormant','deceased','ascended','merged')),
     personality TEXT NOT NULL DEFAULT '',
     goals TEXT NOT NULL DEFAULT '',
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS constants (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL,
     scope TEXT NOT NULL DEFAULT 'global' CHECK (scope IN ('global','volume-specific')),
-    volume_id INTEGER,
+    volume_id INTEGER REFERENCES volume(id),
     source_note TEXT NOT NULL DEFAULT ''
 );
 

@@ -46,6 +46,12 @@ def record_consumption(conn, thread_id, beat_id, new_status, chapter):
     target = ThreadStatus(new_status)
     if target not in LEGAL_THREAD_TRANSITIONS.get(prev, set()):
         raise IllegalTransition(f"{prev.value}→{target.value} 非法迁移 (thread {thread_id})")
+    if prev == ThreadStatus.PLANTED and target == ThreadStatus.RESOLVED:
+        # spec §3.3: planted→resolved 禁跳，除非 importance=high
+        if prev_row["importance"] != "high":
+            raise IllegalTransition(
+                f"planted→resolved 需 importance=high (thread {thread_id}, "
+                f"实际 {prev_row['importance']})")
 
     resolved_beat = beat_id if target == ThreadStatus.RESOLVED else None
     conn.execute(

@@ -3,6 +3,7 @@ from src.bedrock.db.connection import get_connection
 from src.bedrock.repositories.character import (
     create_character, get_character, add_secret,
     visible_secrets_for_context, set_pronoun_override,
+    add_knowledge, knowledge_of,
 )
 
 
@@ -36,4 +37,15 @@ def test_visible_secrets_filters_by_chapter_and_pov(tmp_project):
     keys_rd = {s["key"] for s in rd_seen}
     assert "真实性别" in keys_rd
     assert "公开过往" in keys_rd
+    conn.close()
+
+
+def test_character_knowledge_roundtrip(tmp_project):
+    conn = get_connection(tmp_project)
+    cid = create_character(conn, name="林深", pronoun="他", role="protagonist", gender="男")
+    add_knowledge(conn, cid, fact_id="代谢系统真相", learned_at_beat=5, confidence=0.8)
+    ks = knowledge_of(conn, cid)
+    assert len(ks) == 1
+    assert ks[0]["fact_id"] == "代谢系统真相"
+    assert ks[0]["confidence"] == 0.8
     conn.close()

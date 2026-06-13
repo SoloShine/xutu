@@ -1,14 +1,8 @@
 # src/bedrock/db/migrate.py
-import sqlite3
 from pathlib import Path
 from src.bedrock.db.connection import get_connection
 
 _SCHEMA_FILE = Path(__file__).parent / "schema.sql"
-
-
-def _current_version(conn):
-    row = conn.execute("SELECT MAX(version) FROM schema_version").fetchone()
-    return row[0] or 0
 
 
 def apply_migrations(project_dir: Path) -> int:

@@ -49,3 +49,20 @@ def test_resolved_implies_resolved_at_beat(tmp_project):
     assert t["status"] == "resolved"
     assert t["resolved_at_beat"] == b1
     conn.close()
+
+
+def test_planted_to_resolved_requires_high_importance(tmp_project):
+    """spec §3.3: planted→resolved 禁跳除非 high importance。"""
+    conn = get_connection(tmp_project)
+    b1 = _seed_beat(conn)
+    # medium importance 不能 planted→resolved
+    tid = plant_thread(conn, content="x", thread_type="mystery", importance="medium",
+                       planted_at_beat=b1, origin="emergent")
+    with pytest.raises(IllegalTransition):
+        record_consumption(conn, thread_id=tid, beat_id=b1, new_status="resolved", chapter=1)
+    # high importance 可以
+    tid2 = plant_thread(conn, content="y", thread_type="mystery", importance="high",
+                        planted_at_beat=b1, origin="emergent")
+    record_consumption(conn, thread_id=tid2, beat_id=b1, new_status="resolved", chapter=1)
+    assert get_thread(conn, tid2)["status"] == "resolved"
+    conn.close()
