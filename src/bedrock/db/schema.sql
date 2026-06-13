@@ -316,3 +316,67 @@ CREATE TABLE IF NOT EXISTS inspiration (
     refined_at TEXT,
     promoted_at TEXT
 );
+
+CREATE TABLE IF NOT EXISTS chapter_metrics (
+    chapter_id INTEGER PRIMARY KEY REFERENCES chapter(id),
+    computed_at TEXT NOT NULL DEFAULT (datetime('now')),
+    word_count INTEGER,
+    sentence_length_stats TEXT NOT NULL DEFAULT '{}',
+    grep_metrics TEXT NOT NULL DEFAULT '{}',
+    sensory_density REAL,
+    dialogue_ratio REAL,
+    threads_consumed REAL,
+    consumption_balance REAL,
+    beat_yield_rate REAL,
+    declared_json TEXT NOT NULL DEFAULT '{}',
+    source TEXT NOT NULL DEFAULT 'system_recomputed' CHECK (source='system_recomputed')
+);
+
+CREATE TABLE IF NOT EXISTS chapter_runtime (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chapter_id INTEGER NOT NULL REFERENCES chapter(id),
+    session_id TEXT,
+    timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+    version TEXT,
+    total_black_wall_ms INTEGER NOT NULL DEFAULT 0,
+    tool_count INTEGER NOT NULL DEFAULT 0,
+    llm_tokens INTEGER NOT NULL DEFAULT 0,
+    llm_call_count INTEGER NOT NULL DEFAULT 0,
+    editing_rounds INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS agent_invocation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    runtime_id INTEGER NOT NULL REFERENCES chapter_runtime(id),
+    agent_type TEXT NOT NULL,
+    start_ts TEXT,
+    end_ts TEXT,
+    black_wall_ms INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS llm_call (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    runtime_id INTEGER NOT NULL REFERENCES chapter_runtime(id),
+    phase TEXT NOT NULL,
+    model TEXT NOT NULL,
+    prompt_tokens INTEGER NOT NULL DEFAULT 0,
+    completion_tokens INTEGER NOT NULL DEFAULT 0,
+    duration_ms INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tool_call (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    runtime_id INTEGER NOT NULL REFERENCES chapter_runtime(id),
+    tool TEXT NOT NULL,
+    duration_ms REAL,
+    error TEXT,
+    decision TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE TABLE IF NOT EXISTS style_template (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_works TEXT NOT NULL DEFAULT '[]',
+    sample_chapters TEXT NOT NULL DEFAULT '[]',
+    extracted_at TEXT NOT NULL DEFAULT (datetime('now')),
+    fingerprint TEXT NOT NULL DEFAULT '{}'
+);
