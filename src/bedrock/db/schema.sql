@@ -52,3 +52,54 @@ CREATE TABLE IF NOT EXISTS paragraph (
     UNIQUE(chapter_id, seq),
     CHECK (beat_id IS NOT NULL OR role IN ('transition','ambient','narration'))
 );
+
+CREATE TABLE IF NOT EXISTS character (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    aliases TEXT NOT NULL DEFAULT '[]',
+    pronoun TEXT NOT NULL CHECK (pronoun IN ('他','她','它','祂','TA')),
+    gender TEXT CHECK (gender IS NULL OR gender IN ('男','女','无','未知','其他')),
+    role TEXT NOT NULL CHECK (role IN ('protagonist','supporting','antagonist','minor')),
+    faction_id INTEGER,
+    state TEXT NOT NULL DEFAULT 'active' CHECK (state IN ('active','dormant','deceased','ascended','merged')),
+    personality TEXT NOT NULL DEFAULT '',
+    goals TEXT NOT NULL DEFAULT '',
+    abilities TEXT NOT NULL DEFAULT '[]'
+);
+
+CREATE TABLE IF NOT EXISTS character_secret (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character_id INTEGER NOT NULL REFERENCES character(id),
+    key TEXT NOT NULL,
+    value TEXT NOT NULL,
+    vis_mode TEXT NOT NULL CHECK (vis_mode IN ('public','secret_until','faction','characters')),
+    vis_ref TEXT NOT NULL DEFAULT '{}',
+    vis_axis TEXT NOT NULL CHECK (vis_axis IN ('character_epistemic','reader_disclosure')),
+    UNIQUE(character_id, key, vis_axis)
+);
+
+CREATE TABLE IF NOT EXISTS character_knowledge (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character_id INTEGER NOT NULL REFERENCES character(id),
+    fact_id TEXT NOT NULL,
+    learned_at_beat INTEGER,
+    confidence REAL NOT NULL DEFAULT 1.0,
+    decay REAL NOT NULL DEFAULT 0.0,
+    UNIQUE(character_id, fact_id)
+);
+
+CREATE TABLE IF NOT EXISTS pronoun_override (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character_id INTEGER NOT NULL REFERENCES character(id),
+    from_chapter INTEGER NOT NULL,
+    pronoun TEXT NOT NULL CHECK (pronoun IN ('他','她','它','祂','TA')),
+    reason TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS character_faction (
+    character_id INTEGER NOT NULL REFERENCES character(id),
+    faction_id INTEGER NOT NULL,
+    period_start INTEGER,
+    period_end INTEGER,
+    PRIMARY KEY(character_id, faction_id, period_start)
+);
