@@ -86,3 +86,33 @@ def test_multiple_keys_independent():
     assert s1.seal_state == "broken"
     assert s1.han_zheng_status == "decided"
     assert len(resolutions) == 1  # 只有 seal_state 冲突
+
+
+def test_three_candidates_mixed_priority():
+    # 3+ effect 同 key，混合优先级，最高胜
+    s0 = Snapshot()
+    eff_a = Effect(set={"seal_state": "broken"}, priority=4)
+    eff_b = Effect(set={"seal_state": "intact"}, priority=1)
+    eff_c = Effect(set={"seal_state": "weakening"}, priority=1)
+    s1, resolutions = reducer([eff_a, eff_b, eff_c], s0)
+    assert s1.seal_state == "broken"
+    assert len(resolutions) == 1
+    assert resolutions[0].unresolved is False
+
+
+def test_unset_predefined_is_noop():
+    # unset 预定义字段不改变它（unset 只作用于 dynamic）
+    s0 = Snapshot()
+    s0.seal_state = "weakening"
+    eff = Effect(set={}, unset=["seal_state"])
+    s1, _ = reducer([eff], s0)
+    assert s1.seal_state == "weakening"  # 预定义字段 unset 无效
+
+
+def test_unset_only_effect_works():
+    # 纯 unset effect（set 默认 {}）能删 dynamic
+    s0 = Snapshot()
+    s0.dynamic["temp"] = "x"
+    eff = Effect(unset=["temp"])  # 不传 set
+    s1, _ = reducer([eff], s0)
+    assert "temp" not in s1.dynamic

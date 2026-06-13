@@ -13,7 +13,11 @@ def apply_key(snap: Snapshot, key: str, value):
 def reducer(effects: list[Effect], S_t: Snapshot) -> tuple[Snapshot, list]:
     """纯函数 fold：effects + S_t → (S_{t+1}, conflict_resolutions)。
 
-    本 task 是基础版（单 effect 无冲突）。冲突裁决在 Task 4/5 实现。
+    - 按 key 分组 effect
+    - 单 effect 直接 apply
+    - 多 effect 冲突：按 priority 裁决（world_will=4 > law_enforcer=3 > collective=2 > character=1）
+    - 同优先级冲突：未裁决，记入 snapshot.unresolved_conflicts（Wolf：矛盾即燃料）
+    - deepcopy 不改原 S_t，tick 自增 1
     """
     new_state = deepcopy(S_t)
     resolutions = []

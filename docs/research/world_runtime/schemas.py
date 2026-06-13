@@ -5,7 +5,7 @@ from typing import Literal, Any
 @dataclass(frozen=True)
 class Effect:
     """结构化状态增量（delta 风格，Fowler 教训）。"""
-    set: dict[str, Any]
+    set: dict[str, Any] = field(default_factory=dict)
     unset: list[str] = field(default_factory=list)
     intent: str = ""
     priority: int = 1  # world_will=4 > law_enforcer=3 > collective=2 > character=1

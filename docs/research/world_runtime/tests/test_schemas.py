@@ -49,6 +49,14 @@ def test_conflict_resolution_unresolved():
     assert c.winner is None
 
 
+def test_effect_unset_only_constructs():
+    # set 有默认值，可只传 unset
+    e = Effect(unset=["temp"])
+    assert e.set == {}
+    assert e.unset == ["temp"]
+    assert e.priority == 1
+
+
 def test_effect_is_frozen():
     e = Effect(set={"x": 1})
     with pytest.raises(dataclasses.FrozenInstanceError):
