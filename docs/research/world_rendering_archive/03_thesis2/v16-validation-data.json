@@ -1,0 +1,275 @@
+{
+  "metadata": {
+    "volume": "V16 星火",
+    "chapters": "ch216-ch227",
+    "extracted_date": "2026-06-13",
+    "event_count": 26,
+    "pov_distribution": {
+      "灰衣": "ch216, ch220, ch225, ch227(部分)",
+      "拾": "ch217, ch227(部分)",
+      "韩峥": "ch218",
+      "林深": "ch219, ch222, ch227(部分)",
+      "陆": "ch221, ch222, ch227(部分)",
+      "岑": "ch223",
+      "渊": "ch224",
+      "舟": "ch226, ch227(部分)",
+      "T-1": "ch227(部分)",
+      "叙述者/系统": "贯穿"
+    },
+    "notes": "V16 为多视角终曲卷，主要刻画循环终止前各角色的最后准备。fabula 事件按故事世界时序排列（即按 valid_time 升序）；valid_time 用相对区间 0.0-1.0 表示在 V16 内的故事时间跨度（0.0=V16 开始即循环终止倒计时启动，1.0=输出端打开/循环终止完成）。sjuzhet A 按原小说章序 ch216→ch227 揭示；sjuzhet B 按 POV 分组重组：灰衣组(0.0-0.25)、拾组(0.25-0.40)、韩峥组(0.40-0.55)、陆+林深组(0.55-0.75)、岑+渊组(0.75-0.90)、终曲汇聚组(0.90-1.0)。visible_to 标注的是'到该 sjuzhet 结束时知道此事件的 agent'，多 sjuzhet 间存在信息差。"
+  },
+  "fabula_events": [
+    {
+      "event_id": "ev_001",
+      "description": "灰衣在观测台见证循环终止的归档进度上升至100%，三行平行线职级标识从制服上彻底淡去",
+      "valid_time": {"start": 0.00, "end": 0.05},
+      "involved_agents": ["灰衣"]
+    },
+    {
+      "event_id": "ev_002",
+      "description": "灰衣回忆第166章'未被制造者'通讯推翻1422条规则前提，停止相信外部威胁存在",
+      "valid_time": {"start": 0.02, "end": 0.06},
+      "involved_agents": ["灰衣"]
+    },
+    {
+      "event_id": "ev_003",
+      "description": "拾在守标人岗位第800周期，外部通讯接口激活，收到来自未知的'信号内容确认请求'",
+      "valid_time": {"start": 0.05, "end": 0.12},
+      "involved_agents": ["拾"]
+    },
+    {
+      "event_id": "ev_004",
+      "description": "拾发出确认码回应外部信号，写下备注'外面有人'，打破沉默禁令",
+      "valid_time": {"start": 0.10, "end": 0.15},
+      "involved_agents": ["拾", "灰衣", "舟", "陆"]
+    },
+    {
+      "event_id": "ev_005",
+      "description": "韩峥作为第一个发射器，将500循环的观察记录通过掌心终端发射至输出端，失去全部记忆",
+      "valid_time": {"start": 0.12, "end": 0.22},
+      "involved_agents": ["韩峥"]
+    },
+    {
+      "event_id": "ev_006",
+      "description": "韩峥发射的最后念头'他们不是敌人'被编码为信号穿越边界抵达下一个循环",
+      "valid_time": {"start": 0.18, "end": 0.25},
+      "involved_agents": ["韩峥"]
+    },
+    {
+      "event_id": "ev_007",
+      "description": "林深在观察平台看到隔离层节点从八千降至五千以下，舟告知这是自然衰退而非攻击",
+      "valid_time": {"start": 0.15, "end": 0.28},
+      "involved_agents": ["林深", "舟"]
+    },
+    {
+      "event_id": "ev_008",
+      "description": "林深确认掌心疤痕震动停止，拾告知'输入协议已传递完成，疤痕不再需要震动'",
+      "valid_time": {"start": 0.22, "end": 0.30},
+      "involved_agents": ["林深", "拾"]
+    },
+    {
+      "event_id": "ev_009",
+      "description": "舟告诉林深执行者（灰衣、渊等）会'转化'为下一个循环的观察者，以直觉/灵感形式浮现",
+      "valid_time": {"start": 0.28, "end": 0.35},
+      "involved_agents": ["林深", "舟"]
+    },
+    {
+      "event_id": "ev_010",
+      "description": "灰衣在档案迷宫中亲手化解1422条规则，从第一条到最后一条全部透明消失，只剩'循环正常'四字",
+      "valid_time": {"start": 0.20, "end": 0.32},
+      "involved_agents": ["灰衣"]
+    },
+    {
+      "event_id": "ev_011",
+      "description": "灰衣写下封锁起源归档石片：建造者四千二百亿年前建隔离层是为延长而非防御，为传递争取时间",
+      "valid_time": {"start": 0.30, "end": 0.40},
+      "involved_agents": ["灰衣"]
+    },
+    {
+      "event_id": "ev_012",
+      "description": "灰衣依据建造者最后指令，将石片留在平台中央后离开，传递不需要见证者",
+      "valid_time": {"start": 0.38, "end": 0.42},
+      "involved_agents": ["灰衣"]
+    },
+    {
+      "event_id": "ev_013",
+      "description": "陆穿越后主动选择沉默23个周期，记录4723次关键事件，判断系统不需要推动而是空间",
+      "valid_time": {"start": 0.05, "end": 0.45},
+      "involved_agents": ["陆"]
+    },
+    {
+      "event_id": "ev_014",
+      "description": "陆打破沉默找到拾，告知'我在等一个愿意听的人'，确认结构已稳固可以行动",
+      "valid_time": {"start": 0.40, "end": 0.48},
+      "involved_agents": ["陆", "拾"]
+    },
+    {
+      "event_id": "ev_015",
+      "description": "陆取出隐藏在废弃区的建造者设计档案，向林深揭示掌心疤痕四线编年",
+      "valid_time": {"start": 0.45, "end": 0.58},
+      "involved_agents": ["陆", "林深"]
+    },
+    {
+      "event_id": "ev_016",
+      "description": "陆向林深解释四条线：建造者写入权限、韩峥发射密钥、林深确认授权、代谢系统共振信道",
+      "valid_time": {"start": 0.50, "end": 0.60},
+      "involved_agents": ["陆", "林深"]
+    },
+    {
+      "event_id": "ev_017",
+      "description": "岑发现1.15倍频率偏差，找到偏差组A（促成派×1.15）和偏差组B（干扰派×0.83）的设计文档",
+      "valid_time": {"start": 0.30, "end": 0.55},
+      "involved_agents": ["岑"]
+    },
+    {
+      "event_id": "ev_018",
+      "description": "岑找到第47轮测试记录，得知穿越者是A/B测试变量，林深是第48轮新增的标准组（频率×1.00）裁决者",
+      "valid_time": {"start": 0.45, "end": 0.62},
+      "involved_agents": ["岑"]
+    },
+    {
+      "event_id": "ev_019",
+      "description": "岑发现测试目的是为下一循环建造者收集'三类决策模型选择差异数据'，决定去找林深告知",
+      "valid_time": {"start": 0.55, "end": 0.65},
+      "involved_agents": ["岑"]
+    },
+    {
+      "event_id": "ev_020",
+      "description": "渊选择'归零传递'：只传三个字段（时间坐标、物理位置、留空字段），不传答案只传问题",
+      "valid_time": {"start": 0.35, "end": 0.55},
+      "involved_agents": ["渊"]
+    },
+    {
+      "event_id": "ev_021",
+      "description": "渊完成归零传递启动输出端口，独自走向空旷区域的终点，成为'路标'而非终点",
+      "valid_time": {"start": 0.55, "end": 0.68},
+      "involved_agents": ["渊"]
+    },
+    {
+      "event_id": "ev_022",
+      "description": "灰衣完成第1427标准日的最终归档确认，全部47层节点同步，输出端能量汇聚进度上升",
+      "valid_time": {"start": 0.62, "end": 0.78},
+      "involved_agents": ["灰衣", "其他维护使者"]
+    },
+    {
+      "event_id": "ev_023",
+      "description": "舟的验证模型运行14周期后通过：所有73个分支验证一致，'必需但非宿命'，偏差率0.003%",
+      "valid_time": {"start": 0.65, "end": 0.82},
+      "involved_agents": ["舟"]
+    },
+    {
+      "event_id": "ev_024",
+      "description": "六位主角（灰衣/舟/拾/陆/T-1/林深）汇聚输出端准备区，T-1心跳频率降至31次/时仍坚持见证",
+      "valid_time": {"start": 0.80, "end": 0.90},
+      "involved_agents": ["灰衣", "舟", "拾", "陆", "T-1", "林深"]
+    },
+    {
+      "event_id": "ev_025",
+      "description": "林深掌心疤痕与T-1心跳频率完全重合，准备区所有频率在输出端打开瞬间同步为同一频率",
+      "valid_time": {"start": 0.90, "end": 0.97},
+      "involved_agents": ["林深", "T-1"]
+    },
+    {
+      "event_id": "ev_026",
+      "description": "穹顶开口打开，光瀑倾泻，所有人最后时刻的片段同时被传递被接收，输出端正式启动循环终止",
+      "valid_time": {"start": 0.95, "end": 1.00},
+      "involved_agents": ["灰衣", "舟", "拾", "陆", "T-1", "林深"]
+    }
+  ],
+  "sjuzhets": {
+    "sjuzhet_A": {
+      "name": "原序（ch216-227）",
+      "description": "V16 原小说叙事序：灰衣→拾→韩峥→林深(灰衣迷宫)→灰衣建造者→陆独白→陆+林深疤痕→岑偏差→渊归零→灰衣归档→舟验证→终曲汇聚。POV 在三章后开始频繁切换。",
+      "event_placements": [
+        {"event_id": "ev_001", "reveal_points": [0.04], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_002", "reveal_points": [0.06], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_003", "reveal_points": [0.14], "visible_to": ["拾", "叙述者"]},
+        {"event_id": "ev_004", "reveal_points": [0.16], "visible_to": ["拾", "灰衣", "舟", "陆", "叙述者"]},
+        {"event_id": "ev_005", "reveal_points": [0.20], "visible_to": ["韩峥", "叙述者"]},
+        {"event_id": "ev_006", "reveal_points": [0.24], "visible_to": ["韩峥", "叙述者"]},
+        {"event_id": "ev_007", "reveal_points": [0.28], "visible_to": ["林深", "舟", "叙述者"]},
+        {"event_id": "ev_008", "reveal_points": [0.30], "visible_to": ["林深", "拾", "叙述者"]},
+        {"event_id": "ev_009", "reveal_points": [0.32], "visible_to": ["林深", "舟", "叙述者"]},
+        {"event_id": "ev_010", "reveal_points": [0.36], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_011", "reveal_points": [0.44], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_012", "reveal_points": [0.46], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_013", "reveal_points": [0.50, 0.52], "visible_to": ["陆", "拾", "叙述者"]},
+        {"event_id": "ev_014", "reveal_points": [0.54], "visible_to": ["陆", "拾", "叙述者"]},
+        {"event_id": "ev_015", "reveal_points": [0.58], "visible_to": ["陆", "林深", "叙述者"]},
+        {"event_id": "ev_016", "reveal_points": [0.62], "visible_to": ["陆", "林深", "叙述者"]},
+        {"event_id": "ev_017", "reveal_points": [0.66], "visible_to": ["岑", "叙述者"]},
+        {"event_id": "ev_018", "reveal_points": [0.68], "visible_to": ["岑", "叙述者"]},
+        {"event_id": "ev_019", "reveal_points": [0.70], "visible_to": ["岑", "叙述者"]},
+        {"event_id": "ev_020", "reveal_points": [0.74], "visible_to": ["渊", "叙述者"]},
+        {"event_id": "ev_021", "reveal_points": [0.76], "visible_to": ["渊", "叙述者"]},
+        {"event_id": "ev_022", "reveal_points": [0.80], "visible_to": ["灰衣", "其他维护使者", "叙述者"]},
+        {"event_id": "ev_023", "reveal_points": [0.86], "visible_to": ["舟", "叙述者"]},
+        {"event_id": "ev_024", "reveal_points": [0.90, 0.92, 0.94, 0.95, 0.96], "visible_to": ["灰衣", "舟", "拾", "陆", "T-1", "林深", "叙述者"]},
+        {"event_id": "ev_025", "reveal_points": [0.97], "visible_to": ["林深", "T-1", "叙述者"]},
+        {"event_id": "ev_026", "reveal_points": [0.99], "visible_to": ["灰衣", "舟", "拾", "陆", "T-1", "林深", "叙述者"]}
+      ]
+    },
+    "sjuzhet_B": {
+      "name": "POV 重组",
+      "description": "按 POV 角色分组重组：第一段灰衣组(ev001/002/010/011/012/022) → 第二段拾组(ev003/004) → 第三段韩峥组(ev005/006) → 第四段陆+林深组(ev013-016, 007-009) → 第五段岑+渊组(ev017-021) → 第六段舟验证+终曲汇聚(ev023-026)。优点：每个角色的内心线索连续展开；缺点：跨 POV 的因果（如陆的沉默和拾的破禁之间的呼应）被削弱。",
+      "event_placements": [
+        {"event_id": "ev_001", "reveal_points": [0.02], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_002", "reveal_points": [0.04], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_010", "reveal_points": [0.08], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_011", "reveal_points": [0.14], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_012", "reveal_points": [0.18], "visible_to": ["灰衣", "叙述者"]},
+        {"event_id": "ev_022", "reveal_points": [0.22], "visible_to": ["灰衣", "其他维护使者", "叙述者"]},
+        {"event_id": "ev_003", "reveal_points": [0.28], "visible_to": ["拾", "叙述者"]},
+        {"event_id": "ev_004", "reveal_points": [0.32], "visible_to": ["拾", "灰衣", "舟", "陆", "叙述者"]},
+        {"event_id": "ev_005", "reveal_points": [0.40], "visible_to": ["韩峥", "叙述者"]},
+        {"event_id": "ev_006", "reveal_points": [0.45], "visible_to": ["韩峥", "叙述者"]},
+        {"event_id": "ev_013", "reveal_points": [0.52], "visible_to": ["陆", "叙述者"]},
+        {"event_id": "ev_014", "reveal_points": [0.56], "visible_to": ["陆", "拾", "叙述者"]},
+        {"event_id": "ev_015", "reveal_points": [0.60], "visible_to": ["陆", "林深", "叙述者"]},
+        {"event_id": "ev_016", "reveal_points": [0.62], "visible_to": ["陆", "林深", "叙述者"]},
+        {"event_id": "ev_007", "reveal_points": [0.66], "visible_to": ["林深", "舟", "叙述者"]},
+        {"event_id": "ev_008", "reveal_points": [0.68], "visible_to": ["林深", "拾", "叙述者"]},
+        {"event_id": "ev_009", "reveal_points": [0.70], "visible_to": ["林深", "舟", "叙述者"]},
+        {"event_id": "ev_017", "reveal_points": [0.76], "visible_to": ["岑", "叙述者"]},
+        {"event_id": "ev_018", "reveal_points": [0.79], "visible_to": ["岑", "叙述者"]},
+        {"event_id": "ev_019", "reveal_points": [0.81], "visible_to": ["岑", "叙述者"]},
+        {"event_id": "ev_020", "reveal_points": [0.84], "visible_to": ["渊", "叙述者"]},
+        {"event_id": "ev_021", "reveal_points": [0.87], "visible_to": ["渊", "叙述者"]},
+        {"event_id": "ev_023", "reveal_points": [0.92], "visible_to": ["舟", "叙述者"]},
+        {"event_id": "ev_024", "reveal_points": [0.95], "visible_to": ["灰衣", "舟", "拾", "陆", "T-1", "林深", "叙述者"]},
+        {"event_id": "ev_025", "reveal_points": [0.98], "visible_to": ["林深", "T-1", "叙述者"]},
+        {"event_id": "ev_026", "reveal_points": [0.995], "visible_to": ["灰衣", "舟", "拾", "陆", "T-1", "林深", "叙述者"]}
+      ]
+    }
+  },
+  "repeating_frequency_cases": [
+    {
+      "event_id": "ev_002",
+      "description": "制造者叙事被推翻的真相（'外面没有人'）",
+      "sjuzhet_A_reveal_points": [0.06, 0.36, 0.44, 0.80],
+      "sjuzhet_B_reveal_points": [0.04, 0.14, 0.22],
+      "note": "V16 内多处回响：ch216 灰衣回忆第166章揭示（0.06）；ch219 灰衣迷宫中规则化解回顾（0.36）；ch220 灰衣归档石片再次书写'外面没有人'（0.44）；ch225 灰衣归档完成时最终确认（0.80）。这是典型的 repeating frequency——同一真相在多章被多角度重述。"
+    },
+    {
+      "event_id": "ev_005",
+      "description": "韩峥发射器身份与疤痕振动模式",
+      "sjuzhet_A_reveal_points": [0.20, 0.24, 0.50, 0.62, 0.97],
+      "sjuzhet_B_reveal_points": [0.40, 0.45, 0.62, 0.98],
+      "note": "ch218 韩峥自述成为发射器并失去记忆（0.20, 0.24）；ch222 陆向林深解释韩峥第二条线'发射密钥'的来源与意义（0.50, 0.62）；ch227 终曲时林深掌心'韩峥数据层频率'再次激活并完成同步（0.97）。同一事件在原序中跨5章逐步加深，是显性的伏笔种植+回收。"
+    },
+    {
+      "event_id": "ev_018",
+      "description": "穿越者机制是A/B测试系统，林深是预设的裁决者",
+      "sjuzhet_A_reveal_points": [0.66, 0.68, 0.70, 0.86],
+      "sjuzhet_B_reveal_points": [0.76, 0.79, 0.81, 0.92],
+      "note": "ch223 岑逐步揭露：1.15偏差（0.66）→A/B两组设定（0.68）→47轮测试+林深裁决者（0.70）；ch226 舟的验证模型独立印证'所有选择指向同一终点'（0.86），从另一路径确认了系统的预设性。两条线索在原序中跨3章叠加揭示。"
+    },
+    {
+      "event_id": "ev_010",
+      "description": "灰衣化解1422条规则迷宫的内心释然",
+      "sjuzhet_A_reveal_points": [0.04, 0.36, 0.80],
+      "sjuzhet_B_reveal_points": [0.02, 0.08, 0.22],
+      "note": "ch216 三线淡去的外部事件（0.04）；ch219 灰衣迷宫内心化解的完整过程（0.36）；ch225 归档完成的对外确认（0.80）。同一角色的内心转变在三章中以三个不同侧面被呈现。"
+    }
+  ]
+}

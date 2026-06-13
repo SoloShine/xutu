@@ -3,9 +3,9 @@
 **归档日期**: 2026-06-14
 **研究周期**: 2026-06-13 ~ 2026-06-14
 **状态**: 暂停归档。后续有精力再专门研究。
-**归档原因**: 研究走完一轮（thesis 验证 → 渲染 POC → runtime MVP1/2），部分路线证伪，需退一步重新审视方向。所有资料是重要资产，完整保留。
+**归档原因**: 研究走完一轮（thesis 验证 → 渲染 POC → runtime MVP1/2），部分路线证伪，需退一步重新审视方向。所有资料是重要资产，完整保留并集中归档。
 
-**本文件是归档入口**。后续研究从本文件开始，按 §5 恢复指南进入。
+**本文件是归档入口**（`docs/research/world_rendering_archive/INDEX.md`）。后续研究从本文件开始，按 §5 恢复指南进入。所有路径相对本归档根目录。
 
 ---
 
@@ -46,87 +46,79 @@
 
 ---
 
-## §3. 资产清单（完整）
+## §3. 资产清单（完整，路径相对归档根）
 
-### 3.1 锚点 / 定位文档
+### 01_positioning/ — 锚点 / 定位
 | 文件 | 说明 |
 |------|------|
-| `docs/research/2026-06-13-world-rendering-research-positioning.md` | 研究方向锚点（§0-§10 + 决策记录）|
-| `docs/research/2026-06-13-session-handoff.md` | 会话交接 / 恢复入口（最新状态）|
-| `docs/superpowers/specs/2026-06-13-declarative-novel-workbench-design.md` | 前身（声明式工作台，现降级为工程基础）|
+| `01_positioning/2026-06-13-world-rendering-research-positioning.md` | 研究方向锚点（§0-§10 + 决策记录）|
+| `01_positioning/2026-06-13-session-handoff.md` | 会话交接 / 恢复入口 |
+| `01_positioning/2026-06-13-declarative-novel-workbench-design.md` | 前身（声明式工作台，现降级为工程基础）|
 
-### 3.2 论文精读
+### 02_papers/ — 论文精读
 | 文件 | 说明 |
 |------|------|
-| `docs/research/2026-06-13-paper-synthesis.md` | 5 篇精读汇总（Park/Riedl/Fowler/Wolf/Mateas）+ 设计输入对照表 + trace schema 统一草案 |
+| `02_papers/2026-06-13-paper-synthesis.md` | 5 篇精读汇总（Park/Riedl/Fowler/Wolf/Mateas）+ 设计输入对照表 + trace schema 统一草案 |
 
-### 3.3 thesis 2（bitemporal，已证伪）
+### 03_thesis2/ — bitemporal（已证伪）
 | 文件 | 说明 |
 |------|------|
-| `docs/research/2026-06-13-transaction-time-verification.md` | transaction_time 查证（双 agent + CEUR 核验）|
-| `docs/research/2026-06-13-thesis2-minimal-validation.md` | 验证蓝图（证伪设计）|
-| `docs/research/2026-06-13-thesis2-validation-report.md` | 验证报告（123 测试点，被证伪）|
-| `docs/research/thesis2_validation.py` | 验证脚本（可重跑）|
-| `docs/research/v16-validation-data.json` | V16 提取的 26 事件数据 |
+| `03_thesis2/2026-06-13-transaction-time-verification.md` | transaction_time 查证 |
+| `03_thesis2/2026-06-13-thesis2-minimal-validation.md` | 验证蓝图（证伪设计）|
+| `03_thesis2/2026-06-13-thesis2-validation-report.md` | 验证报告（123 测试点，被证伪）|
+| `03_thesis2/thesis2_validation.py` | 验证脚本（可重跑）|
+| `03_thesis2/v16-validation-data.json` | V16 提取的 26 事件数据 |
 
-### 3.4 thesis 1（异质 agent 架构）
+### 04_thesis1/ — 异质 agent 架构
 | 文件 | 说明 |
 |------|------|
-| `docs/research/2026-06-13-thesis1-architecture.md` | 架构草案（L3/L2/L1 + 横切 + 三种影响机制 + trace schema）|
-| `docs/research/2026-06-13-collective-agent-verification.md` | 集体 agent 文献查证（结构性空白）|
-| `docs/research/2026-06-13-h1-collective-agent-validation.md` | H1 验证（⚠️ 已废除，还原论错误）|
-| `docs/research/2026-06-13-h4-systemic-validation-design.md` | H4 系统性验证设计 |
+| `04_thesis1/2026-06-13-thesis1-architecture.md` | 架构草案（L3/L2/L1 + 横切 + 三种影响机制 + trace schema）|
+| `04_thesis1/2026-06-13-collective-agent-verification.md` | 集体 agent 文献查证（结构性空白）|
+| `04_thesis1/2026-06-13-h1-collective-agent-validation.md` | H1 验证（⚠️ 已废除，还原论错误）|
+| `04_thesis1/2026-06-13-h4-systemic-validation-design.md` | H4 系统性验证设计 |
 
-### 3.5 H4 pilot（脚本 + 报告 + 原始数据）
+### 05_h4_pilots/ — pilot 脚本 + 报告 + 原始数据
 | 文件 | 说明 |
 |------|------|
-| `docs/research/h4_generation_pilot.js` | 小场景 pilot 脚本（5 agent × 4 ticks）|
-| `docs/research/h4_reinforcement_pilot.js` | 补强脚本（prompt 审计 + 反例场景）|
-| `docs/research/h4_medium_scene_pilot.js` | 中场景脚本（13 agent × 10 ticks，3 层集体嵌套）|
-| `docs/research/2026-06-13-h4-generation-pilot-report.md` | 小场景报告（异质明显优）|
-| `docs/research/2026-06-13-h4-reinforcement-report.md` | 补强报告（prompt 双向偏差，thesis 1 仍站住）|
-| `docs/research/2026-06-13-h4-medium-scene-design.md` | 中场景设计 |
-| `docs/research/2026-06-13-h4-medium-scene-report.md` | 中场景报告（scale_signal=放大 ⭐）|
-| `world_rendering_archive/raw_outputs/01_medium_scene_output.json` | **中场景原始 trace（655KB，130×2 effect，最重要数据）**|
-| `world_rendering_archive/raw_outputs/02-06_*.output` | 其他 pilot run 原始输出（小场景/补强等）|
+| `05_h4_pilots/h4_generation_pilot.js` | 小场景 pilot 脚本（5 agent × 4 ticks）|
+| `05_h4_pilots/h4_reinforcement_pilot.js` | 补强脚本（prompt 审计 + 反例场景）|
+| `05_h4_pilots/h4_medium_scene_pilot.js` | 中场景脚本（13×10，3 层集体嵌套）|
+| `05_h4_pilots/2026-06-13-h4-generation-pilot-report.md` | 小场景报告（异质明显优）|
+| `05_h4_pilots/2026-06-13-h4-reinforcement-report.md` | 补强报告（prompt 双向偏差，thesis 1 仍站住）|
+| `05_h4_pilots/2026-06-13-h4-medium-scene-design.md` | 中场景设计 |
+| `05_h4_pilots/2026-06-13-h4-medium-scene-report.md` | 中场景报告（scale_signal=放大 ⭐）|
+| `05_h4_pilots/raw_outputs/01_medium_scene_output.json` | **中场景原始 trace（655KB，130×2 effect，最重要数据）**|
+| `05_h4_pilots/raw_outputs/02-06_*.output` | 其他 pilot run 原始输出 |
 
-### 3.6 渲染 POC（isActive=false 投影）
+### 06_render_poc/ — 渲染投影（isActive=false）
 | 文件 | 说明 |
 |------|------|
-| `docs/research/render_poc/render_poc.py` | 投影器（trace → HTML 视觉小说 + Ren'Py）|
-| `docs/research/render_poc/seal_crisis_visual_novel.html` | HTML 视觉小说（207KB，零依赖）|
-| `docs/research/render_poc/seal_crisis_hetero.rpy` / `_homo.rpy` | Ren'Py 脚本 |
-| `docs/research/render_poc/event_log.json` | 结构化中间产物 |
-| `docs/research/render_poc/REPORT.md` | 渲染 POC 报告 |
+| `06_render_poc/render_poc/render_poc.py` | 投影器（trace → HTML 视觉小说 + Ren'Py）|
+| `06_render_poc/render_poc/seal_crisis_visual_novel.html` | HTML 视觉小说（207KB，零依赖）|
+| `06_render_poc/render_poc/seal_crisis_hetero.rpy` / `_homo.rpy` | Ren'Py 脚本 |
+| `06_render_poc/render_poc/event_log.json` | 结构化中间产物 |
+| `06_render_poc/render_poc/REPORT.md` | 渲染 POC 报告 |
 
-### 3.7 runtime MVP1（reducer 范式，成立）
+### 07_runtime/ — runtime MVP1（成立）+ MVP2（证伪）
 | 文件 | 说明 |
 |------|------|
-| `docs/superpowers/specs/2026-06-13-world-rendering-runtime-design.md` | runtime 设计 spec（6 层架构）|
-| `docs/superpowers/plans/2026-06-13-world-runtime-mvp1.md` | MVP1 实现计划（9 task TDD）|
-| `docs/research/world_runtime/MVP1_REPORT.md` | MVP1 报告（reducer 范式成立，Q1/Q2 PASS，Q3 鸿沟量化）|
-| `docs/research/world_runtime/schemas.py` | Event/Effect/Snapshot/ConflictResolution |
-| `docs/research/world_runtime/event_store.py` | append-only JSONL |
-| `docs/research/world_runtime/reducer.py` | 纯函数 fold + priority 裁决 |
-| `docs/research/world_runtime/llm.py` | call_llm wrapper（claude.cmd subprocess + telemetry）|
-| `docs/research/world_runtime/extractor.py` | NL action → effect |
-| `docs/research/world_runtime/run_mvp1.py` | 端到端（extract .output → reduce → 10 snapshot）|
-| `docs/research/world_runtime/tests/` | 33 单测 |
-| `docs/research/world_runtime/snapshots/snap_t0..t9.json` | 10 个世界状态 |
-| `docs/research/world_runtime/events.jsonl` | effect event log |
+| `07_runtime/specs/2026-06-13-world-rendering-runtime-design.md` | runtime 设计 spec（6 层架构）|
+| `07_runtime/specs/2026-06-13-world-runtime-mvp2-design.md` | MVP2 设计（稳定性 + 意图/事件分层）|
+| `07_runtime/plans/2026-06-13-world-runtime-mvp1.md` | MVP1 实现计划（9 task TDD）|
+| `07_runtime/plans/2026-06-13-world-runtime-mvp2.md` | MVP2 实现计划（6 task）|
+| `07_runtime/world_runtime/MVP1_REPORT.md` | MVP1 报告（reducer 范式成立）|
+| `07_runtime/world_runtime/schemas.py` | Event/Effect/Snapshot/ConflictResolution |
+| `07_runtime/world_runtime/event_store.py` | append-only JSONL |
+| `07_runtime/world_runtime/reducer.py` | 纯函数 fold + priority 裁决 |
+| `07_runtime/world_runtime/llm.py` | call_llm wrapper（claude.cmd subprocess + telemetry）|
+| `07_runtime/world_runtime/extractor.py` | NL action → effect |
+| `07_runtime/world_runtime/run_mvp1.py` | 端到端（extract .output → reduce → snapshot）|
+| `07_runtime/world_runtime/tests/` | 33 单测 |
+| `07_runtime/world_runtime/snapshots/snap_t0..t9.json` | 10 个世界状态 |
+| `07_runtime/world_runtime/events.jsonl` / `run1_events.jsonl` / `run1_stdout.txt` / `run2_stdout.txt` | effect log + 稳定性验证 run |
 
-### 3.8 runtime MVP2（schema 路线，证伪）
-| 文件 | 说明 |
-|------|------|
-| `docs/superpowers/specs/2026-06-13-world-runtime-mvp2-design.md` | MVP2 设计（稳定性 + 意图/事件分层）|
-| `docs/superpowers/plans/2026-06-13-world-runtime-mvp2.md` | MVP2 实现计划（6 task）|
-| `docs/research/world_runtime/run1_events.jsonl` / `run1_stdout.txt` | 稳定性验证 run1（sonnet+schema，73 分钟）|
-| `docs/research/world_runtime/run2_stdout.txt` | 稳定性验证 run2 |
-| `docs/research/world_runtime/_q2_run1.txt` | Q2 分析 |
-
-### 3.9 外部 memory
-- `C:\Users\Administrator\.claude\projects\D--novel-test\memory\research-direction-pivot.md` — 研究方向 pivot 记录（含全部阶段更新）
-- `C:\Users\Administrator\.claude\projects\D--novel-test\memory\MEMORY.md` — memory 索引
+### 外部 memory（不在本 repo）
+- `C:\Users\Administrator\.claude\projects\D--novel-test\memory\research-direction-pivot.md` — 研究方向 pivot 记录（含全部阶段更新 + 归档指针）
 
 ---
 
@@ -152,19 +144,19 @@ H4 pilot 的场景（封印危机 + 多层集体）天然利于异质系统。**
 假设 constrained decoding 能消除 extractor 波动。**走偏点**：没区分"格式稳定"和"语义稳定"。schema 解决前者不解决后者，且付 7-10x 性能代价（单次 7.4 分钟）。**两头空**：慢 + 仍波动（25.6% 一致）。教训：动手前想清楚"这个约束约束的是什么层"。
 
 ### 4.5 subagent-driven 方法对机械任务过重（方法走偏）
-MVP1/2 用 superpowers subagent-driven（每 task implementer + 2 reviewer subagent）。**走偏点**：plan 里代码已完整给定，implementer 基本是"复制+TDD"，这种机械任务套完整 review 流程过重——4 小时大量耗在 subagent 协调。对比 Workflow 跑 261 agent 17 分钟。**教训**：机械实现直接做，subagent-driven 只用于需独立判断的复杂 task。
+MVP1/2 用 superpowers subagent-driven（每 task implementer + 2 reviewer subagent）。**走偏点**：plan 里代码已完整给定，implementer 基本是"复制+TDD"，这种机械任务套完整 review 流程过重——大量耗在 subagent 协调。对比 Workflow 跑 261 agent 17 分钟。**教训**：机械实现直接做，subagent-driven 只用于需独立判断的复杂 task。
 
 ### 4.6 claude.cmd subprocess 性能认知偏差
-早期假设 claude.cmd subprocess 单次几秒（MVP1 haiku 验证）。但 sonnet + --json-schema 单次 7.4 分钟。**走偏点**：没尽早做 sonnet+schema 的性能基准测试，等到 MVP2 Task 6 跑 2 小时才发现。教训：涉及 LLM 的方案，先做单次性能基准再 scale。
+早期假设 claude.cmd subprocess 单次几秒（MVP1 haiku 验证）。但 sonnet + --json-schema 单次 7.4 分钟。**走偏点**：没尽早做 sonnet+schema 的性能基准测试，等到 MVP2 Task 6 跑很久才发现。教训：涉及 LLM 的方案，先做单次性能基准再 scale。
 
 ---
 
 ## §5. 恢复指南（后续研究从这开始）
 
 1. **先读本文件 §2-§4**（10 分钟）——了解什么成立、什么证伪、哪里走偏
-2. **读 positioning doc**（`2026-06-13-world-rendering-research-positioning.md`）——研究方向全貌
-3. **读 handoff**（`2026-06-13-session-handoff.md`）——最新会话状态
-4. **重点读 §4.3**（extractor 翻译层走偏）——这是当前卡点，决定后续方向
+2. **读 `01_positioning/` 的 positioning doc + handoff**——研究方向全貌 + 最新会话状态
+3. **重点读 §4.3**（extractor 翻译层走偏）——这是当前卡点，决定后续方向
+4. 若要看 reducer/runtime 实现：`07_runtime/`；要看 pilot 原始数据：`05_h4_pilots/raw_outputs/`
 
 **重新出发的候选方向**（未验证）：
 - **A. agent 直接产 effect**：去掉 extractor 翻译层，agent prompt 直接产"决策+结构化状态变化"一体输出。避免翻译层波动。但要重设 agent prompt（回到"落地鸿沟"最初讨论）
@@ -184,14 +176,18 @@ MVP1/2 用 superpowers subagent-driven（每 task implementer + 2 reviewer subag
 
 ---
 
-## §7. 归档文件说明
+## §7. 归档结构
 
-本归档目录 `docs/research/world_rendering_archive/`：
-- `INDEX.md`（本文件）——归档入口
-- `raw_outputs/`——易失验证文件副本（从 temp 复制，原 temp 文件可能已清理）
-  - `01_medium_scene_output.json`（655KB，中场景 trace，最重要）
-  - `02-06_*.output`（其他 pilot run 原始输出）
+```
+docs/research/world_rendering_archive/
+├── INDEX.md                    # 本文件（归档入口）
+├── 01_positioning/             # 锚点 / 定位 / handoff
+├── 02_papers/                  # 论文精读
+├── 03_thesis2/                 # bitemporal（证伪）
+├── 04_thesis1/                 # 异质 agent 架构
+├── 05_h4_pilots/               # pilot 脚本 + 报告 + raw_outputs/（原始 trace）
+├── 06_render_poc/              # 渲染投影 POC
+└── 07_runtime/                 # runtime MVP1/MVP2（spec/plan/code/report）
+```
 
-其余资产（研究文档 / pilot 脚本 / runtime 代码 / specs / plans）在 `docs/research/` 和 `docs/superpowers/` 原位（未移动，路径稳定）。
-
-**外部 memory** 在 `C:\Users\Administrator\.claude\projects\D--novel-test\memory\`（不在本 repo，但记录了全部阶段更新）。
+所有世界渲染相关文件已集中到此。docs/research/ 下不再散落（仅保留本归档目录）。外部 memory 在 `C:\Users\Administrator\.claude\projects\D--novel-test\memory\`（不在 repo，记录全部阶段更新）。
