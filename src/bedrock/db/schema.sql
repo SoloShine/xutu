@@ -159,3 +159,47 @@ CREATE TABLE IF NOT EXISTS motif (
     meaning TEXT NOT NULL DEFAULT '',
     evolution TEXT NOT NULL DEFAULT ''
 );
+
+
+-- ===== Suspense threads (Task 7) =====
+
+CREATE TABLE IF NOT EXISTS suspense_thread (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content TEXT NOT NULL,
+    thread_type TEXT NOT NULL CHECK (thread_type IN ('mystery','foreshadowing','character_arc','theme_arc','plot_arc')),
+    importance TEXT NOT NULL CHECK (importance IN ('high','medium','low')),
+    origin TEXT NOT NULL CHECK (origin IN ('scheduled','emergent')),
+    status TEXT NOT NULL DEFAULT 'planted' CHECK (status IN ('scheduled','planted','developing','mature','partially_resolved','resolved','abandoned')),
+    planted_at_beat INTEGER REFERENCES beat(id),
+    resolved_at_beat INTEGER REFERENCES beat(id),
+    planned_plant_volume INTEGER,
+    planned_resolve_volume INTEGER
+);
+
+CREATE TRIGGER IF NOT EXISTS trg_thread_resolved_beat
+AFTER INSERT ON suspense_thread
+WHEN NEW.status='resolved' AND NEW.resolved_at_beat IS NULL
+BEGIN
+    SELECT RAISE(ABORT, 'resolved status requires resolved_at_beat');
+END;
+CREATE TRIGGER IF NOT EXISTS trg_thread_resolved_beat_upd
+AFTER UPDATE OF status ON suspense_thread
+WHEN NEW.status='resolved' AND NEW.resolved_at_beat IS NULL
+BEGIN
+    SELECT RAISE(ABORT, 'resolved status requires resolved_at_beat');
+END;
+
+CREATE TABLE IF NOT EXISTS thread_consumption (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    thread_id INTEGER NOT NULL REFERENCES suspense_thread(id),
+    beat_id INTEGER NOT NULL REFERENCES beat(id),
+    new_status TEXT NOT NULL CHECK (new_status IN ('scheduled','planted','developing','mature','partially_resolved','resolved','abandoned')),
+    chapter INTEGER NOT NULL,
+    UNIQUE(thread_id, beat_id, new_status)
+);
+
+CREATE TABLE IF NOT EXISTS thread_planting (
+    beat_id INTEGER NOT NULL REFERENCES beat(id),
+    thread_id INTEGER NOT NULL REFERENCES suspense_thread(id),
+    PRIMARY KEY(beat_id, thread_id)
+);
