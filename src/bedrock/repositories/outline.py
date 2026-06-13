@@ -59,3 +59,71 @@ def consume_inspiration(conn, inspiration_id, target_type, target_id):
         "UPDATE inspiration SET status='consumed', consumed_into=? WHERE id=?",
         (json.dumps(into, ensure_ascii=False), inspiration_id))
     conn.commit()
+
+
+class OutlineLockedError(Exception):
+    pass
+
+
+def unlock_volume_outline(conn, volume_id, reason, author="human"):
+    """locked → drafted。强制记 amendment。"""
+    from src.bedrock.repositories.governance import add_amendment
+    row = conn.execute("SELECT status FROM volume_outline WHERE volume_id=?", (volume_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"volume_outline for volume {volume_id} not found")
+    if row["status"] != "locked":
+        raise ValueError(f"volume_outline status={row['status']}, expected 'locked'")
+    add_amendment(conn, entity_type="volume_outline", entity_id=volume_id,
+                  field="status", old="locked", new="drafted", reason=reason, author=author)
+    conn.execute("UPDATE volume_outline SET status='drafted', locked_at=NULL WHERE volume_id=?",
+                 (volume_id,))
+    conn.commit()
+
+
+def relock_volume_outline(conn, volume_id):
+    """drafted → locked。"""
+    conn.execute("UPDATE volume_outline SET status='locked', locked_at=datetime('now') WHERE volume_id=?",
+                 (volume_id,))
+    conn.commit()
+
+
+def _read_beat_contracts(conn, volume_id):
+    row = conn.execute("SELECT beat_contracts FROM volume_outline WHERE volume_id=?",
+                       (volume_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"volume_outline for volume {volume_id} not found")
+    return json.loads(row["beat_contracts"])
+
+
+def _write_beat_contracts(conn, volume_id, contracts):
+    conn.execute("UPDATE volume_outline SET beat_contracts=? WHERE volume_id=?",
+                 (json.dumps(contracts, ensure_ascii=False), volume_id))
+    conn.commit()
+
+
+def update_beat_contract(conn, volume_id, beat_id, new_contract):
+    """修改 beat_contracts JSON 里 beat_id 对应的契约项。locked 下 raise OutlineLockedError。"""
+    row = conn.execute("SELECT status FROM volume_outline WHERE volume_id=?", (volume_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"volume_outline for volume {volume_id} not found")
+    if row["status"] == "locked":
+        raise OutlineLockedError(f"volume_outline {volume_id} locked；必须先 unlock")
+    contracts = _read_beat_contracts(conn, volume_id)
+    found = False
+    for i, c in enumerate(contracts):
+        if c.get("beat_id") == beat_id:
+            contracts[i] = {"beat_id": beat_id, **new_contract}
+            found = True
+            break
+    if not found:
+        contracts.append({"beat_id": beat_id, **new_contract})
+    _write_beat_contracts(conn, volume_id, contracts)
+
+
+def get_beat_contract(conn, volume_id, beat_id):
+    """读 beat_contracts 里 beat_id 的契约项。不存在返回 None。"""
+    contracts = _read_beat_contracts(conn, volume_id)
+    for c in contracts:
+        if c.get("beat_id") == beat_id:
+            return c
+    return None
