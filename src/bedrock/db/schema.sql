@@ -236,3 +236,52 @@ CREATE TABLE IF NOT EXISTS event_cause (
     causing_event INTEGER NOT NULL REFERENCES event(id),
     PRIMARY KEY(caused_event, causing_event)
 );
+
+
+-- ===== Relation + Entity_State_Log + Governance (Task 9) =====
+
+CREATE TABLE IF NOT EXISTS relation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    from_id INTEGER NOT NULL REFERENCES character(id),
+    to_id INTEGER NOT NULL REFERENCES character(id),
+    rel_type TEXT NOT NULL,
+    valid_from_chapter INTEGER,
+    valid_to_chapter INTEGER,
+    current_state TEXT NOT NULL DEFAULT '',
+    CHECK (from_id <> to_id)
+);
+
+CREATE TABLE IF NOT EXISTS entity_state_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    entity_type TEXT NOT NULL CHECK (entity_type IN ('location','faction','character','relation')),
+    entity_id INTEGER NOT NULL,
+    chapter INTEGER NOT NULL,
+    field TEXT NOT NULL,
+    old TEXT,
+    new TEXT,
+    reason TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS amendment (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    entity_type TEXT NOT NULL,
+    entity_id INTEGER NOT NULL,
+    chapter INTEGER,
+    field TEXT NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    reason TEXT NOT NULL DEFAULT '',
+    author TEXT NOT NULL CHECK (author IN ('agent','human','system')),
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS export_manifest (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    scope TEXT NOT NULL CHECK (scope IN ('chapter','volume','book')),
+    target_id INTEGER,
+    format TEXT NOT NULL,
+    content_hash TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','final','published')),
+    exported_at TEXT NOT NULL DEFAULT (datetime('now')),
+    source_snapshot TEXT NOT NULL DEFAULT '{}'
+);
