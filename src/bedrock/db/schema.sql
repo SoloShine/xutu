@@ -203,3 +203,36 @@ CREATE TABLE IF NOT EXISTS thread_planting (
     thread_id INTEGER NOT NULL REFERENCES suspense_thread(id),
     PRIMARY KEY(beat_id, thread_id)
 );
+
+
+-- ===== Event (Task 8) =====
+
+CREATE TABLE IF NOT EXISTS event (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    detail TEXT NOT NULL DEFAULT '',
+    chapter INTEGER NOT NULL,
+    volume INTEGER NOT NULL,
+    event_type TEXT NOT NULL CHECK (event_type IN ('plot','turning','revelation','climax','gap','denouement')),
+    is_gap INTEGER NOT NULL DEFAULT 0,
+    gap_level INTEGER NOT NULL DEFAULT 0 CHECK (gap_level BETWEEN 0 AND 3),
+    timeline_id TEXT
+);
+
+CREATE TABLE IF NOT EXISTS event_reveal (
+    event_id INTEGER NOT NULL REFERENCES event(id),
+    beat_id INTEGER NOT NULL REFERENCES beat(id),
+    PRIMARY KEY(event_id, beat_id)
+);
+
+CREATE TABLE IF NOT EXISTS event_character (
+    event_id INTEGER NOT NULL REFERENCES event(id),
+    character_id INTEGER NOT NULL REFERENCES character(id),
+    PRIMARY KEY(event_id, character_id)
+);
+
+CREATE TABLE IF NOT EXISTS event_cause (
+    caused_event INTEGER NOT NULL REFERENCES event(id),
+    causing_event INTEGER NOT NULL REFERENCES event(id),
+    PRIMARY KEY(caused_event, causing_event)
+);
