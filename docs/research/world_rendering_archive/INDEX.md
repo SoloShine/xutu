@@ -59,6 +59,7 @@
 | 文件 | 说明 |
 |------|------|
 | `02_papers/2026-06-13-paper-synthesis.md` | 5 篇精读汇总（Park/Riedl/Fowler/Wolf/Mateas）+ 设计输入对照表 + trace schema 统一草案 |
+| `02_papers/raw/` | 论文原文（Riedl JAIR 2010 / Konle plot temporal graphs，精读素材）|
 
 ### 03_thesis2/ — bitemporal（已证伪）
 | 文件 | 说明 |
