@@ -53,7 +53,7 @@
 |------|------|
 | `01_positioning/2026-06-13-world-rendering-research-positioning.md` | 研究方向锚点（§0-§10 + 决策记录）|
 | `01_positioning/2026-06-13-session-handoff.md` | 会话交接 / 恢复入口 |
-| `01_positioning/2026-06-13-declarative-novel-workbench-design.md` | 前身（声明式工作台，现降级为工程基础）|
+| `2026-06-13-declarative-novel-workbench-design.md` | 声明式工作台 spec → **已移回 `docs/superpowers/specs/`**（2026-06-14 用户重启声明式工作台研究，解决管线现实需求；不再属世界渲染归档）|
 
 ### 02_papers/ — 论文精读
 | 文件 | 说明 |
