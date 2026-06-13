@@ -37,7 +37,13 @@ def reducer(effects: list[Effect], S_t: Snapshot) -> tuple[Snapshot, list]:
                     key=key, conflicting=candidates,
                     winner=ranked[0], reason="priority", unresolved=False))
             else:
-                # 同优先级：未裁决（Task 5 处理，暂记 unresolved）
+                # 同优先级：未裁决，记入 snapshot.unresolved_conflicts（Wolf：矛盾即燃料）
+                conflict_record = {
+                    "key": key,
+                    "candidates": [{"value": c[1], "priority": c[0].priority,
+                                    "intent": c[0].intent} for c in candidates],
+                }
+                new_state.unresolved_conflicts.append(conflict_record)
                 resolutions.append(ConflictResolution(
                     key=key, conflicting=candidates,
                     winner=None, reason="same_priority_unresolved",

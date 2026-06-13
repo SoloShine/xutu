@@ -60,3 +60,29 @@ def test_conflict_law_enforcer_beats_collective():
     s1, resolutions = reducer([eff_law, eff_coll], s0)
     assert s1.han_zheng_status == "restrained"
     assert len(resolutions) == 1
+
+
+def test_same_priority_unresolved_recorded():
+    s0 = Snapshot()
+    eff1 = Effect(set={"squad_resolution": "protect"}, priority=2)
+    eff2 = Effect(set={"squad_resolution": "abandon"}, priority=2)
+    s1, resolutions = reducer([eff1, eff2], s0)
+    assert len(resolutions) == 1
+    assert resolutions[0].unresolved is True
+    assert resolutions[0].winner is None
+    # 未裁决矛盾记入 snapshot.unresolved_conflicts
+    assert len(s1.unresolved_conflicts) == 1
+    assert s1.unresolved_conflicts[0]["key"] == "squad_resolution"
+
+
+def test_multiple_keys_independent():
+    s0 = Snapshot()
+    # seal_state 冲突（不同优先级，裁决）
+    eff_a = Effect(set={"seal_state": "broken"}, priority=4)
+    eff_b = Effect(set={"seal_state": "intact"}, priority=1)
+    # han_zheng_status 无冲突
+    eff_c = Effect(set={"han_zheng_status": "decided"}, priority=2)
+    s1, resolutions = reducer([eff_a, eff_b, eff_c], s0)
+    assert s1.seal_state == "broken"
+    assert s1.han_zheng_status == "decided"
+    assert len(resolutions) == 1  # 只有 seal_state 冲突
