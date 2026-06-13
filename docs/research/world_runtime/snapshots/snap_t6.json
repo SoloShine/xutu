@@ -1,0 +1,60 @@
+{
+  "tick": 6,
+  "seal_state": "weakening",
+  "han_zheng_status": "decided",
+  "lu_status": "threatened",
+  "squad_resolution": "正式接受陆'双方共担而非单向赴死'的第三条路变体为优先支持路径，向规律执行者请求形式化裁定其是否构成必然性1的'自愿生命牺牲'条件，请求立约会议时限早于命运层倒计时窗口结束，向各方公开异族史料倾斜植入警报",
+  "network_resolution": "接受规律执行者持续监视与命运层双向确认收敛裁决，为立约会议设定硬性时限，承认保全=尊重被保全者的双向真自愿选择，将'自愿性监测'交规律执行者托管，向规律执行者追加警示异族史料倾斜问题",
+  "alliance_resolution": "完全解散'文明选择见证团'，向规律执行者提交异族史料倾斜的追加警示备案，集体记忆修订为'封印破前集体沉默的不可逆承诺'，降格为等待文明公意调用的纯被动姿态",
+  "alien_stance": "公开宣布异族完全止步于纯信息提供，承认古盟约档案载体湮灭，永久注销共决权主张，利益诉求转向'等待人族公意结果作为后续参与合法依据'，停止史料范围倾斜",
+  "dynamic": {
+    "dynamic": {
+      "alien_proxy_warning_escalated": true,
+      "unresolved_conflicts": [
+        "小队成员B物理隔离韩峥构成强制自由意志",
+        "韩峥试图以个人选择规避集体审查",
+        "异族使者代理暗示"
+      ]
+    },
+    "unresolved_conflicts": [
+      "小队成员B物理隔离韩峥构成强制自由意志",
+      "韩峥试图以个人选择规避集体审查",
+      "异族使者代理暗示"
+    ],
+    "fate_pressure_deepened": true,
+    "ancient_power_second_stage_signs": true,
+    "proxy_resistance_intensified": true
+  },
+  "unresolved_conflicts": [
+    {
+      "key": "han_zheng_status",
+      "candidates": [
+        {
+          "value": "decided",
+          "priority": 1,
+          "intent": "暂停牺牲程序执行，转入公开对质寻求选择权确认"
+        },
+        {
+          "value": "restrained",
+          "priority": 1,
+          "intent": "执行物理拦截预案，强制拖离韩峥威胁区"
+        }
+      ]
+    },
+    {
+      "key": "lu_status",
+      "candidates": [
+        {
+          "value": "threatened",
+          "priority": 1,
+          "intent": "主动承担封印风险，向异族发起技术信息接触"
+        },
+        {
+          "value": "safe",
+          "priority": 1,
+          "intent": "执行能量缓冲层预案，停止强制隔离通讯"
+        }
+      ]
+    }
+  ]
+}

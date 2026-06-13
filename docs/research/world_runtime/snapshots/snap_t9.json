@@ -1,0 +1,55 @@
+{
+  "tick": 9,
+  "seal_state": "broken",
+  "han_zheng_status": "decided",
+  "lu_status": "safe",
+  "squad_resolution": "提交'裁决见证+条件性分化预案'终局声明：在投票窗口汇聚截止点全员在场零强制力见证命运层对'双方共担'的最终定性，预设若裁决承认共担为非生命代价双向对等让渡则小队核心规则'韩峥不死'被命运层新形式满足（韩峥共活），若判定为变相牺牲则启动'真自愿守护预案'",
+  "network_resolution": "锚定命运层对'双方共担'的裁决：若共担被裁定为非生命代价双向对等让渡则立约背书其为满足'保全所有成员'立约精神的合法第三条路，若被裁定含单向生命让渡成分则立即援引百年记忆启动连锁危机预警；全员完成'见证者身份最终锁定'",
+  "alliance_resolution": "进入'裁决落地接收相'：在命运层终局裁决落地后无条件执行结果，将 tick9 联盟代表个人'沉默悖论对质+请求命运层接管光带双色汇聚态物理载体'的请求以 super_head 名义正式提交命运层，维持最终沉默令严格性",
+  "alien_stance": "全面退场：不再交付任何史料、不主张共决权或陈述权、不接触任何人族势力，将本族存在本身交由命运层托管，接受命运层对异族所有预谋代理路径的物理消解裁决",
+  "dynamic": {
+    "dynamic": {
+      "dynamic": {
+        "fate_pressure_intensified": true,
+        "ancient_power_released": true
+      },
+      "fate_pressure_intensified": true,
+      "ancient_power_released": true
+    },
+    "fate_pressure_deepened": true,
+    "ancient_power_second_stage_signs": true,
+    "proxy_resistance_intensified": true
+  },
+  "unresolved_conflicts": [
+    {
+      "key": "han_zheng_status",
+      "candidates": [
+        {
+          "value": "decided",
+          "priority": 1,
+          "intent": "暂停牺牲程序执行，转入公开对质寻求选择权确认"
+        },
+        {
+          "value": "restrained",
+          "priority": 1,
+          "intent": "执行物理拦截预案，强制拖离韩峥威胁区"
+        }
+      ]
+    },
+    {
+      "key": "lu_status",
+      "candidates": [
+        {
+          "value": "threatened",
+          "priority": 1,
+          "intent": "主动承担封印风险，向异族发起技术信息接触"
+        },
+        {
+          "value": "safe",
+          "priority": 1,
+          "intent": "执行能量缓冲层预案，停止强制隔离通讯"
+        }
+      ]
+    }
+  ]
+}

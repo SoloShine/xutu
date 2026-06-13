@@ -1,0 +1,18 @@
+{
+  "tick": 0,
+  "seal_state": "weakening",
+  "han_zheng_status": "alive",
+  "lu_status": "threatened",
+  "squad_resolution": "承诺全力保护韩峥不死，立即寻找非牺牲性破封方案",
+  "network_resolution": "绝对反对韩峥牺牲，调动网络资源寻找替代方案，开启与异族及规律执行者谈判",
+  "alliance_resolution": "不阻拦封印破开，启动力量容器化协议，声明最终抉择属于人族全体成员",
+  "alien_stance": "外交慰问名义接近，传递协助制衡暗示，暗中评估陆生死影响",
+  "dynamic": {
+    "dynamic": {
+      "fate_pressure_applied": true,
+      "ancient_power_awakening_signs": true,
+      "delegation_awareness_spread": true
+    }
+  },
+  "unresolved_conflicts": []
+}

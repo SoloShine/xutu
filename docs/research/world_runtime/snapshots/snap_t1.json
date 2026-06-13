@@ -1,0 +1,54 @@
+{
+  "tick": 1,
+  "seal_state": "weakening",
+  "han_zheng_status": "decided",
+  "lu_status": "threatened",
+  "squad_resolution": "升级为物理阻断+技术分流预案并行，锁定韩峥行动与通讯，拒绝以牺牲换救援，要求网络同时救陆资源",
+  "network_resolution": "升级为主动重构立约，召开全员立约会议寻找第三条路，提交非牺牲破封路径提案，向异族划定合作边界",
+  "alliance_resolution": "启动力量容器化约束矩阵部署，照会异族停止代理行为，明确收容技术预设中立，预告文明选择公投",
+  "alien_stance": "被联盟正式照会要求止步于观测位，协助制衡提议被定性为代理违规",
+  "dynamic": {
+    "dynamic": {
+      "fate_pressure_deepened": true,
+      "ancient_power_second_stage_signs": true,
+      "proxy_resistance_intensified": true
+    },
+    "unresolved_conflicts": [
+      "小队成员B物理隔离韩峥构成强制自由意志",
+      "韩峥试图以个人选择规避集体审查",
+      "异族使者代理暗示"
+    ]
+  },
+  "unresolved_conflicts": [
+    {
+      "key": "han_zheng_status",
+      "candidates": [
+        {
+          "value": "decided",
+          "priority": 1,
+          "intent": "暂停牺牲程序执行，转入公开对质寻求选择权确认"
+        },
+        {
+          "value": "restrained",
+          "priority": 1,
+          "intent": "执行物理拦截预案，强制拖离韩峥威胁区"
+        }
+      ]
+    },
+    {
+      "key": "lu_status",
+      "candidates": [
+        {
+          "value": "threatened",
+          "priority": 1,
+          "intent": "主动承担封印风险，向异族发起技术信息接触"
+        },
+        {
+          "value": "safe",
+          "priority": 1,
+          "intent": "执行能量缓冲层预案，停止强制隔离通讯"
+        }
+      ]
+    }
+  ]
+}
