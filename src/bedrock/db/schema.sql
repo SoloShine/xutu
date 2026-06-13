@@ -380,3 +380,13 @@ CREATE TABLE IF NOT EXISTS style_template (
     extracted_at TEXT NOT NULL DEFAULT (datetime('now')),
     fingerprint TEXT NOT NULL DEFAULT '{}'
 );
+
+
+-- ===== Beat <-> Character junction (Task 13 / SP1 gap) =====
+
+CREATE TABLE IF NOT EXISTS beat_character (
+    beat_id INTEGER NOT NULL REFERENCES beat(id),
+    character_id INTEGER NOT NULL REFERENCES character(id),
+    role TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(beat_id, character_id, role)
+);
