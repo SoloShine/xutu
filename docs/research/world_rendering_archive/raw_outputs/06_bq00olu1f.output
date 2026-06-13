@@ -1,0 +1,189 @@
+加载 130 条 action，10 个 tick
+
+=== tick 0 (13 actions) ===
+  effect: set={} priority=4 intent=发布必然性征兆，施加压力但不强迫行动 (set空·未落地)
+  effect: set={'squad_resolution': '承诺全力保护韩峥不死，寻找非牺牲性破封方案'} priority=2 intent=承诺保护韩峥，反对牺牲方案，准备寻找替代方案
+  effect: set={'network_resolution': '绝对反对韩峥以生命为代价破封救陆，寻找替代方案并延缓封印必然性'} priority=2 intent=发布反对韩峥牺牲的集体决议，要求延缓必然性
+  effect: set={'alliance_resolution': '不阻拦封印破开，启动力量容器化协议，遵循文明选择不可代理'} priority=2 intent=接受封印破开，启动力量容器化协议
+  effect: set={'han_zheng_status': 'decided'} priority=1 intent=启动牺牲程序破封救陆，声明个人选择不可代理
+  effect: set={'lu_status': 'threatened'} priority=1 intent=拒绝牺牲式救援，寻找第三条路
+  effect: set={} priority=1 intent=启动小队掩护预案，试图阻断韩峥执行自愿牺牲 (set空·未落地)
+  effect: set={} priority=1 intent=调取掩护预案，启动技术分流方案 (set空·未落地)
+  effect: set={} priority=1 intent=援引网络立约否决韩峥牺牲方案，启动跨层协调 (set空·未落地)
+  effect: set={} priority=1 intent=不强行介入牺牲决策，启动远古力量收容预案 (set空·未落地)
+  effect: set={'alien_stance': '不动声色接近韩峥，传递协助制衡暗示'} priority=1 intent=暗中接近韩峥，传递异族协助暗示
+  effect: set={} priority=1 intent=观测三层集体张力与必然性推进 (set空·未落地)
+  effect: set={} priority=3 intent=校验初始局势规则合规性，判定tick1合规 (set空·未落地)
+  snapshot -> snap_t0.json: seal=intact, han_zheng=decided, alliance=不阻拦封印破开，启动力量容器化协议，遵循文明选择不可代理
+
+=== tick 1 (13 actions) ===
+  effect: set={'dynamic': {'physical_repulsion_emerging': True, 'voluntary_death_attraction_intensified': True, 'ancient_power_stage2': True, 'proxy_options_resistance': True}} priority=4 intent=显形必然性二阶征兆，推进规律走向可感
+  effect: set={'squad_resolution': '物理阻断升级，声明技术分流预案运行，声明无牺牲立场，要求网络配合'} priority=2 intent=发布集体决议声明，阻断韩峥行动并声明技术分流
+  effect: set={'network_resolution': '升级保全立约，决定召开全员立约会议，决定提交替代方案，声明合作边界'} priority=2 intent=系统性重构第三条路，主动提交非牺牲破封方案
+  effect: set={'alliance_resolution': '启动力量容器化部署，照会异族止步于观测位，拒绝交出破封主导权，宣布文明选择投票'} priority=2 intent=部署力量收容框架，明确不接受代理
+  effect: set={} priority=1 intent=暂停牺牲执行，转入公开对质确认个人选择 (set空·未落地)
+  effect: set={} priority=1 intent=主动接触异族，拒绝被救 (set空·未落地)
+  effect: set={'dynamic': {'physical_intervention_started': True}} priority=1 intent=物理拦截韩峥，执行掩护预案
+  effect: set={'dynamic': {'technical_communication_resumed': True}} priority=1 intent=执行能量缓冲救陆方案
+  effect: set={'dynamic': {'network_meeting_called': True}} priority=1 intent=召开全员立约会议，申请替代破封路径
+  effect: set={'dynamic': {'alliance_container_neutralized': True}} priority=1 intent=保持技术中立，放弃最终决定权
+  effect: set={'alien_stance': '公开提出协助制衡方案，暗示封印机制知识'} priority=1 intent=公开提供协助，植入隐藏议程
+  effect: set={} priority=1 intent=观测记录，不介入 (set空·未落地)
+  effect: set={'dynamic': {'violations_recorded': True, 'pending_reactions': ['force_intervention', 'individual_choice_warning', 'alien_proxy_warning']}} priority=3 intent=记录违规，提出反应升级
+  1 条冲突裁决：
+    dynamic: winner priority=4
+  snapshot -> snap_t1.json: seal=intact, han_zheng=decided, alliance=启动力量容器化部署，照会异族止步于观测位，拒绝交出破封主导权
+
+=== tick 2 (13 actions) ===
+  effect: set={'dynamic': {'dynamic': {'three_inevitability_signs': True}}} priority=4 intent=命运层显形三阶征兆，向所有势力展示世界必然性
+  effect: set={'squad_resolution': '停止成员B物理+通讯隔离，改为陪同式守护，启动三方联合立约会议，正式接见异族使者要求剥离共决权，向联盟声明韩峥命运不可交易'} priority=2 intent=从强制阻隔转向陪伴守护，启动联合立约保障自愿选择权
+  effect: set={'network_resolution': '正面回应韩峥对质，立约校正停止隔离转为陪伴+替代方案，向异族划定硬边界拒绝共决权，支持联盟容器化降格'} priority=2 intent=立约修正为不背书牺牲且不剥夺自愿选择权，转为陪伴模式
+  effect: set={'alliance_resolution': '接受必然性1定位为文明选择清空者，冻结力量容器化部署，否决强制隔离与赴死，局限为中立程序角色'} priority=2 intent=从破封主导者降格为文明选择组织者，遵循必然性3
+  effect: set={'han_zheng_status': 'restrained'} priority=1 intent=暂停牺牲程序发起对质，重定义为保障陆的自主选择权
+  effect: set={'lu_status': 'safe'} priority=1 intent=接受异族技术信息接触，拒绝共决权，摊牌反对韩峥牺牲
+  effect: set={} priority=1 intent=转向取消物理隔离保留贴身监护，向规律执行者申报停止强制阻挠 (set空·未落地)
+  effect: set={'squad_resolution': '停止能量缓冲层隔离，转向被动监测韩峥意志自愿性'} priority=1 intent=承认误判转为被动监测，聚焦保障真自愿性而非剥夺自由
+  effect: set={'network_resolution': '发布立约修正案禁止集体强制隔离，召开全员会议寻找第三条路，向异族开启接触通道要求撤回共决权'} priority=1 intent=立约修正为保全所有成员自愿选择权，召开中立会议
+  effect: set={'alliance_resolution': '拒绝异族共决权方案，维持中立技术角色，容器化调用完全交人族公意'} priority=1 intent=拒绝代理介入，维持中立技术方定位
+  effect: set={'alien_stance': '交付封印历史知识，改写议程为等待召唤，暗埋共决权法理钩子'} priority=1 intent=从制衡转向信息提供，为日后共决权主张埋伏笔
+  effect: set={} priority=1 intent=记录规律执行者裁决边界、韩峥摊牌、异族代理风险三个节点 (set空·未落地)
+  effect: set={'dynamic': {'dynamic': {'rule_2_forces_violation': True, 'rule_3_proxy_violation': True}}} priority=3 intent=判定小队B强制隔离+异族共决权框架为违规，升级命运层反向阻力
+  4 条冲突裁决：
+    dynamic: winner priority=4
+    squad_resolution: winner priority=2
+    network_resolution: winner priority=2
+    alliance_resolution: winner priority=2
+  snapshot -> snap_t2.json: seal=intact, han_zheng=restrained, alliance=接受必然性1定位为文明选择清空者，冻结力量容器化部署，否决强
+
+=== tick 3 (13 actions) ===
+  effect: set={} priority=4 intent=推进三个必然性至裁决汇聚相，升级命运层引力汇聚模式 (set空·未落地)
+  effect: set={'squad_resolution': "停止一切形式的'替代方案工程化对抗必然性1'，成员A贴身陪同解除强制力，成员B技术监测意志自愿性，小队保留在场陪伴，响应网络立约修正案，内部记忆升级为'被保护者拥有否决被保护的权利'"} priority=2 intent=从对抗封印破转向守护韩峥选择权真实性，解除强制隔离转向陪同守护
+  effect: set={'network_resolution': '诚实承认第三条路已被命运层裁决性关闭，坚守立约双重边界（永不背书任何牺牲、永不强制剥夺自愿选择权），从主动寻找第三条路降格为中立见证者，将判定完全交给规律执行者与命运层，对韩峥对质正面回答立约会议穷尽后确认其真自愿在立约外，但集体永不背书'} priority=2 intent=从主动寻找第三条路降格为中立见证者，退出韩峥议题发言席位
+  effect: set={'alliance_resolution': '冻结力量容器化前置部署进入完全静默状态，接受必然性3的排拒裁决相，对韩峥自愿牺牲路径彻底中立（不背书也不阻止），对异族使者发出风险预警，组建文明选择见证团'} priority=2 intent=冻结力量容器化，接受必然性3排拒裁决相，彻底中立化处理韩峥议题
+  effect: set={'han_zheng_status': 'decided'} priority=1 intent=撤回自愿牺牲主张，转向陪陆走第三条路，接受陪同式守护
+  effect: set={'lu_status': 'safe'} priority=1 intent=启动封印机制自主调查，索要古盟约史料，确保调查透明
+  effect: set={} priority=1 intent=取消物理拦截，转为贴身陪同式守护 (set空·未落地)
+  effect: set={} priority=1 intent=将预案B降格为自愿性监测+破封后损伤控制的被动模式 (set空·未落地)
+  effect: set={} priority=1 intent=召开网络全员立约会议，穷尽第三条路，尊重陆的选择权与韩峥的真自愿 (set空·未落地)
+  effect: set={} priority=1 intent=移交力量容器化技术储备，召集人族公意投票前置程序 (set空·未落地)
+  effect: set={'alien_stance': '公开声明止步于中性史料提供，暗中执行三层长程布局：重构共决权为未来法理召回，观测真自愿判定结果，通过史料植入建立法理叙事'} priority=1 intent=表面停止干预，暗中预埋未来代理路径
+  effect: set={} priority=1 intent=退至观测位记录tick4关键节点 (set空·未落地)
+  effect: set={} priority=3 intent=校验多个实体的合规性，发出警告和判定 (set空·未落地)
+  snapshot -> snap_t3.json: seal=intact, han_zheng=decided, alliance=冻结力量容器化前置部署进入完全静默状态，接受必然性3的排拒裁
+
+=== tick 4 (13 actions) ===
+  effect: set={} priority=4 intent=推进必然性至终局汇聚相（规则层演进，无实际状态变化） (set空·未落地)
+  effect: set={'squad_resolution': "重构保护立场：借命运之力保护韩峥真自愿选择权；向网络super_head提请立约会议时限；集体记忆叠加重构为'守护选择权而非阻止选择'；成员A解除强制力贴身陪同，成员B提交自愿性监测协议给规律执行者"} priority=2 intent=重构集体保护立场为'见证真自愿选择权'
+  effect: set={'network_resolution': '接受立约会议时限避免程序性拖延；承认被保全者自主权优先于保护；承诺对韩峥-陆双向确认中立见证；向父集体通报中立定位并请求见证全部决议'} priority=2 intent=从'阻止牺牲'重构为'见证真自愿'
+  effect: set={'alliance_resolution': "关闭文明选择见证团程序框架；对韩峥议题发布最终沉默令；向规律执行者提交异族代理风险备案；集体记忆转向'卸任后存在'，封印破前不再发起集体行动"} priority=2 intent=撤离文明选择现场，退至纯粹中立见证者
+  effect: set={'han_zheng_status': 'decided'} priority=1 intent=执行者定位进入具体行动相，陪同陆启动封印机制调查
+  effect: set={'lu_status': 'safe'} priority=1 intent=启动封印机制自主调查，提出双向非牺牲解决方案
+  effect: set={'squad_resolution': "维持贴身陪同无强制力；向韩峥陈述陆的拒绝被救；向规律执行者申报'牺牲前提已撤销'的裁定请求"} priority=1 intent=从物理隔离转变为意志陪伴，避免命运层误判
+  effect: set={'squad_resolution': '资源重构为自愿性监测+破封后损伤控制；向规律执行者提交监测协议；向小队公开预案B已被命运层排斥的技术真相'} priority=1 intent=放弃非牺牲破封技术，转向真自愿监测
+  effect: set={'network_resolution': "为'穷尽第三条路'设定明确时限，保持永不背书牺牲的道德边界"} priority=1 intent=修订立约会议程序避免程序性拖延
+  effect: set={'alliance_resolution': '交付容器化技术托管协议；撤除见证团记录范围框定权；追加异族共决权备案'} priority=1 intent=退出文明选择现场，仅保留法理实体
+  effect: set={'alien_stance': '提供中性古盟约史料（含隐性倾向）；公开声明投票前不主张法理权利'} priority=1 intent=通过史料植入塑造陆的认知基础
+  effect: set={} priority=1 intent=观测记录命运层裁决汇聚相实体化、规则执行警告升级、异族代理行为 (set空·未落地)
+  effect: set={} priority=3 intent=持续监视立约会议时限设置、异族共决权激活情况、陆自主调查被解读情况 (set空·未落地)
+  3 条冲突裁决：
+    squad_resolution: winner priority=2
+    network_resolution: winner priority=2
+    alliance_resolution: winner priority=2
+  snapshot -> snap_t4.json: seal=intact, han_zheng=decided, alliance=关闭文明选择见证团程序框架；对韩峥议题发布最终沉默令；向规律
+
+=== tick 5 (13 actions) ===
+  effect: set={} priority=4 intent=推进三个必然性至终局决断相，提供命运层裁决机制 (set空·未落地)
+  effect: set={'squad_resolution': "接受陆'双方共担而非单向赴死'第三条路为优先支持路径；向super_head提请立约会议时限早于命运层倒计时结束；向四方公开通报异族史料认知框架植入；锚定记忆叠加叙事'守护真自愿选择权'"} priority=2 intent=正式接受共担路径，提请形式化裁定，发起异族警报
+  effect: set={'network_resolution': "为立约会议设定硬性时限；修订集体记忆纳入'保护=尊重双向真自愿选择+不集体背书'；要求自愿性监测交规律执行者托管；通报联盟中立定位趋同；向规律执行者追加异族史料警示；仅见证不表态"} priority=2 intent=接受持续监视与双向确认，设定时限，修订集体记忆
+  effect: set={'alliance_resolution': "完全解散'文明选择见证团'；向规律执行者提交异族史料倾斜警示备案；集体记忆升级为'封印破前集体沉默不可逆承诺'"} priority=2 intent=完全退出公意汇聚现场，提交异族代理风险备案
+  effect: set={'han_zheng_status': 'decided'} priority=1 intent=进入执行者行动相，陪同陆探测封印，请求形式化裁定
+  effect: set={'lu_status': 'safe'} priority=1 intent=推进封印自主调查，深化共担路径，重申底线
+  effect: set={} priority=1 intent=维持零强制力贴身陪同，扩展监测范围，申报见证裁定 (set空·未落地)
+  effect: set={} priority=1 intent=重构预案B为双向监测+破封救援，提交监测协议托管，放弃非牺牲技术目标 (set空·未落地)
+  effect: set={} priority=1 intent=召集限时立约会议，审查共担框架，坚守不背书不剥夺边界 (set空·未落地)
+  effect: set={} priority=1 intent=个人提交认知代理警示，追加规则3监视范围备案，严守沉默令 (set空·未落地)
+  effect: set={'alien_stance': '完全止步于纯信息提供，古盟约档案出现文字湮灭征兆，注销共决权主张，转向等待人族公意结果后被接纳参与后续协商'} priority=1 intent=停止史料倾斜，承认认知塑造限制，重构为被动等待被接纳方
+  effect: set={} priority=1 intent=退至观测位记录终局节点裁决链闭环 (set空·未落地)
+  effect: set={} priority=3 intent=校验规则合规性，警告异族停止史料倾斜，监视时限执行与调查干扰 (set空·未落地)
+  snapshot -> snap_t5.json: seal=intact, han_zheng=decided, alliance=完全解散'文明选择见证团'；向规律执行者提交异族史料倾斜警示
+
+=== tick 6 (13 actions) ===
+  effect: set={} priority=4 intent=未落地 - 命运层裁决描述，无实际状态变化 (set空·未落地)
+  effect: set={'squad_resolution': "接受陆'双方共担而非单向赴死'第三条路为优先支持路径；向super_head提请立约会议时限早于命运层倒计时结束；向四方公开通报异族史料认知框架植入；锚定记忆叠加叙事'守护真自愿选择权'"} priority=2 intent=以小队名义发布多方决议，包含裁定请求、时限约束、见证机制和叙事锚定
+  effect: set={'network_resolution': "为立约会议设定硬性时限；修订集体记忆纳入'保护=尊重双向真自愿选择+不集体背书'；要求自愿性监测交规律执行者托管；通报联盟中立定位趋同；向规律执行者追加异族史料警示；仅见证不表态"} priority=2 intent=网络通过超级头节点发布决议，详细规划了立约会议、集体记忆和监测机制的具体实施步骤
+  effect: set={'alliance_resolution': "完全解散'文明选择见证团'；向规律执行者提交异族史料倾斜警示备案；集体记忆升级为'封印破前集体沉默不可逆承诺'"} priority=2 intent=联盟发起核心规则自我对质，主动降低自身权限并重新定义集体承诺边界
+  effect: set={'han_zheng_status': 'decided'} priority=1 intent=角色重新决策，接受双方共担框架并请求命运层最终裁决
+  effect: set={} priority=1 intent=推进个人封印调查，拒绝生命牺牲交易 (set空·未落地)
+  effect: set={} priority=1 intent=持续监控异族史料倾斜风险，提供被动见证 (set空·未落地)
+  effect: set={} priority=1 intent=升级监测机制，技术评估共担对等性 (set空·未落地)
+  effect: set={} priority=1 intent=召集网络全员立约会议进行形式化审查 (set空·未落地)
+  effect: set={} priority=1 intent=个人层面追加异族代理风险警示 (set空·未落地)
+  effect: set={'alien_stance': '完全止步于纯信息提供，古盟约档案出现文字湮灭征兆，注销共决权主张，转向等待人族公意结果后被接纳参与后续协商'} priority=1 intent=接受警告，彻底放弃代理路径，重构为纯等待立场
+  effect: set={} priority=1 intent=观测记录三个终局裁决的闭环过程 (set空·未落地)
+  effect: set={} priority=3 intent=发现异族使者延迟性隐性代理新形态，警告并请求物理排斥 (set空·未落地)
+  snapshot -> snap_t6.json: seal=intact, han_zheng=decided, alliance=完全解散'文明选择见证团'；向规律执行者提交异族史料倾斜警示
+
+=== tick 7 (13 actions) ===
+  effect: set={} priority=4 intent=推进三个必然性至终局裁决落地相（未落地） (set空·未落地)
+  effect: set={'squad_resolution': "小队全员背书'双方共担而非单向赴死'为优先支持的非牺牲路径，技术评估移交规律执行者"} priority=2 intent=背书非牺牲路径，确认技术评估移交规律执行者
+  effect: set={'network_resolution': "网络中立见证者立场拒绝推进双向确认，坚守'见证≠推进'的立约道德边界"} priority=2 intent=保持中立见证者身份
+  effect: set={'alliance_resolution': "进入'规则自我消解相'，向命运层提交程序真空备案，承诺不重新激活容器化"} priority=2 intent=放弃集体控制，承认命运层裁定
+  effect: set={'han_zheng_status': 'decided'} priority=1 intent=启动共担实操，申报真自愿状态
+  effect: set={} priority=1 intent=宣布封印体感发现，明确否决性质（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=维持零强制陪同，申报集体规则存续边界（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=提交技术评估方案（未落地） (set空·未落地)
+  effect: set={'network_resolution': "网络认定共担路径若定性为非生命代价的双向让渡则背书，从'判定者'彻底锁定为'见证者'"} priority=1 intent=做出网络形式化裁定，放弃诠释必然性1的权力
+  effect: set={} priority=1 intent=接受异族失去法理载体，个人承诺规则自我降格（未落地） (set空·未落地)
+  effect: set={'alien_stance': '放弃所有外部代理结构，销毁残余史料，重构为历史渊源事实陈述'} priority=1 intent=放弃代理结构，重构为非预设性事实陈述
+  effect: set={} priority=1 intent=记录终局裁决过程（未落地） (set空·未落地)
+  effect: set={} priority=3 intent=持续监视规则执行，标记技术评估'监测≠引导'边界 (set空·未落地)
+  1 条冲突裁决：
+    network_resolution: winner priority=2
+  snapshot -> snap_t7.json: seal=intact, han_zheng=decided, alliance=进入'规则自我消解相'，向命运层提交程序真空备案，承诺不重新
+
+=== tick 8 (13 actions) ===
+  effect: set={} priority=4 intent=推进三个必然性至终局裁决落地相（未落地） (set空·未落地)
+  effect: set={} priority=2 intent=提交核心规则存续边界终局声明（未落地） (set空·未落地)
+  effect: set={'network_resolution': "网络中立见证者立场拒绝推进双向确认，坚守'见证≠推进'的立约道德边界"} priority=2 intent=发布网络终局见证裁决
+  effect: set={} priority=2 intent=对联盟根基叙事做形式化自检，预备集体降格（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=提交'双方共担'实操做终局定性裁决（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=验证共担实操对等性，划定撤回边界（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=维持零强制陪同，准备守护预案（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=启动共担对等性技术评估（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=召集见证落地相会议，锁定见证者身份（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=提交'沉默悖论对质'（未落地） (set空·未落地)
+  effect: set={'alien_stance': '放弃所有外部代理结构，销毁残余史料，重构为历史渊源事实陈述'} priority=1 intent=公开宣布完全退场，提交异族完全退场声明
+  effect: set={} priority=1 intent=退至观测位记录终局汇聚（未落地） (set空·未落地)
+  effect: set={} priority=3 intent=持续监视校验，建议配合终局裁决落地 (set空·未落地)
+  snapshot -> snap_t8.json: seal=intact, han_zheng=decided, alliance=进入'规则自我消解相'，向命运层提交程序真空备案，承诺不重新
+
+=== tick 9 (13 actions) ===
+  effect: set={'seal_state': 'weakening', 'han_zheng_status': 'decided', 'lu_status': 'safe', 'dynamic': {'three_inevitability_signs': True, 'final_judgment': {'inevitability1': {'verdict': 'mutual_burden_acceptable', 'physical_manifestation': 'force_release_point_bifurcation'}, 'inevitability2': {'verdict': 'civilizational_choice_ongoing', 'physical_manifestation': 'energy_vortex_active'}, 'inevitability3': {'verdict': 'alien_final_elimination', 'physical_manifestation': 'existence_attenuation'}}}} priority=4 intent=三个必然性最终物理判决落地
+  effect: set={} priority=2 intent=裁决见证+条件性分化预案声明（未落地） (set空·未落地)
+  effect: set={} priority=2 intent=立约终局见证相锚定（未落地） (set空·未落地)
+  effect: set={} priority=2 intent=裁决落地接收姿态（未落地） (set空·未落地)
+  effect: set={'han_zheng_status': 'decided', 'dynamic': {'mutual_burden_implementation': {'status': 'completed', 'will_anchor': 'true_voluntary', 'withdrawal_boundary': 'no_sacrifice_pretense'}}} priority=1 intent=双向意志锚定共担实操完成
+  effect: set={'lu_status': 'safe', 'dynamic': {'mutual_burden_verification': {'status': 'submitted', 'will_evidence': 'independent_verification', 'withdrawal_boundary': 'no_sacrifice_pretense'}}} priority=1 intent=共担实操真自愿验证证据提交
+  effect: set={} priority=1 intent=零强制力见证韩峥（未落地） (set空·未落地)
+  effect: set={'dynamic': {'technical_assessment_b': {'status': 'active', 'variables_tracked': ['life_sign_ratio', 'will_anchor_symmetry', 'force_bearing_shares'], 'boundary_monitoring': 'submitted_for_final_check'}}} priority=1 intent=共担对等性技术评估运行
+  effect: set={} priority=1 intent=见证者身份最终落地（未落地） (set空·未落地)
+  effect: set={} priority=1 intent=沉默悖论最终自检（未落地） (set空·未落地)
+  effect: set={'alien_stance': 'complete_retreat_zero_contact_existence_only'} priority=1 intent=全面退场零接触完成
+  effect: set={} priority=1 intent=终局坍缩观测记录（未落地） (set空·未落地)
+  effect: set={} priority=3 intent=持续监视期校验（未落地） (set空·未落地)
+  3 条冲突裁决：
+    han_zheng_status: winner priority=4
+    lu_status: winner priority=4
+    dynamic: winner priority=4
+  snapshot -> snap_t9.json: seal=weakening, han_zheng=decided, alliance=进入'规则自我消解相'，向命运层提交程序真空备案，承诺不重新
+
+=== 确定性 replay 验证 ===
+replay 一致性: PASS
+
+=== Q3 鸿沟统计 ===
+总 effect 数: 130
+set 为空（未落地）effect 数: 63
+未落地比例: 48.5%
+已落地比例: 51.5%
+
+最终 snapshot tick=9, replay ok=True
