@@ -38,3 +38,25 @@ def test_no_effects_returns_copy():
     s1, _ = reducer([], s0)
     assert s1.seal_state == "weakening"
     assert s0.seal_state == "weakening"  # 原 snapshot 不被修改（deepcopy）
+
+
+def test_conflict_higher_priority_wins():
+    s0 = Snapshot()
+    eff_will = Effect(set={"seal_state": "broken"}, priority=4)       # world_will
+    eff_char = Effect(set={"seal_state": "protected"}, priority=1)    # character
+    s1, resolutions = reducer([eff_will, eff_char], s0)
+    assert s1.seal_state == "broken"  # 高 priority 胜
+    assert len(resolutions) == 1
+    assert resolutions[0].key == "seal_state"
+    assert resolutions[0].unresolved is False
+    assert resolutions[0].winner[0] is eff_will
+    assert resolutions[0].reason == "priority"
+
+
+def test_conflict_law_enforcer_beats_collective():
+    s0 = Snapshot()
+    eff_law = Effect(set={"han_zheng_status": "restrained"}, priority=3)
+    eff_coll = Effect(set={"han_zheng_status": "free"}, priority=2)
+    s1, resolutions = reducer([eff_law, eff_coll], s0)
+    assert s1.han_zheng_status == "restrained"
+    assert len(resolutions) == 1

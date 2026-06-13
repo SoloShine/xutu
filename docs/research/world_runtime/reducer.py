@@ -28,9 +28,21 @@ def reducer(effects: list[Effect], S_t: Snapshot) -> tuple[Snapshot, list]:
         if len(candidates) == 1:
             apply_key(new_state, key, candidates[0][1])
         else:
-            # 冲突：Task 4/5 实现裁决，这里先占位用最高 priority
+            # 冲突：按 priority 降序
             ranked = sorted(candidates, key=lambda c: -c[0].priority)
-            apply_key(new_state, key, ranked[0][1])
+            if ranked[0][0].priority > ranked[1][0].priority:
+                # 优先级不同：高者胜
+                apply_key(new_state, key, ranked[0][1])
+                resolutions.append(ConflictResolution(
+                    key=key, conflicting=candidates,
+                    winner=ranked[0], reason="priority", unresolved=False))
+            else:
+                # 同优先级：未裁决（Task 5 处理，暂记 unresolved）
+                resolutions.append(ConflictResolution(
+                    key=key, conflicting=candidates,
+                    winner=None, reason="same_priority_unresolved",
+                    unresolved=True))
+                apply_key(new_state, key, ranked[0][1])  # 暂用第一条
 
     # 应用 unset（仅 dynamic）
     for eff in effects:
