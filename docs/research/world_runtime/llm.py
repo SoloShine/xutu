@@ -1,5 +1,6 @@
 import subprocess
 import json
+import shutil
 import time
 import sys
 
@@ -20,12 +21,9 @@ def call_llm(prompt: str, model: str = "sonnet",
     """
     t0 = time.time()
     try:
-        # Use full path to claude command on Windows
-        import platform
-        if platform.system() == "Windows":
-            claude_cmd = "claude.cmd"
-        else:
-            claude_cmd = "/c/Users/Administrator/AppData/Roaming/npm/claude"
+        # PATH 解析（无硬编码平台路径）。subprocess 在 Windows 上不会自动
+        # 搜索 PATHEXT（claude.CMD），故用 shutil.which 显式解析。
+        claude_cmd = shutil.which("claude") or "claude"
 
         r = subprocess.run(
             [claude_cmd, "-p", "--bare", "--output-format", "json", "--model", model],

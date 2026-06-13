@@ -1,18 +1,55 @@
 {
   "tick": 4,
   "seal_state": "intact",
-  "han_zheng_status": "decided",
-  "lu_status": "safe",
-  "squad_resolution": "重构保护立场：借命运之力保护韩峥真自愿选择权；向网络super_head提请立约会议时限；集体记忆叠加重构为'守护选择权而非阻止选择'；成员A解除强制力贴身陪同，成员B提交自愿性监测协议给规律执行者",
-  "network_resolution": "接受立约会议时限避免程序性拖延；承认被保全者自主权优先于保护；承诺对韩峥-陆双向确认中立见证；向父集体通报中立定位并请求见证全部决议",
-  "alliance_resolution": "关闭文明选择见证团程序框架；对韩峥议题发布最终沉默令；向规律执行者提交异族代理风险备案；集体记忆转向'卸任后存在'，封印破前不再发起集体行动",
-  "alien_stance": "提供中性古盟约史料（含隐性倾向）；公开声明投票前不主张法理权利",
+  "han_zheng_status": "restrained",
+  "lu_status": "threatened",
+  "squad_resolution": "停止对抗必然性1，转向守护韩峥选择权真实性，成员解除强制力转向陪同监测",
+  "network_resolution": "承认第三条路关闭，降格为中立见证者，退出韩峥议题",
+  "alliance_resolution": "冻结力量容器化进入完全静默，接受必然性3裁决，退为中立见证者与程序性投票组织者",
+  "alien_stance": "古盟约共决权被标记为延迟性隐性代理风险",
   "dynamic": {
-    "dynamic": {
-      "dynamic": {
-        "three_inevitability_signs": true
-      }
-    }
+    "squad_super_head_resolution": "物理阻断升级+嵌套立场声明+拒绝联盟牺牲默许",
+    "network_super_head_resolution": "全员立约会议+第三条路提案+异族合作边界划定",
+    "alliance_super_head_resolution": "完全关闭'文明选择见证团'程序框架，将公意汇聚功能移交规律执行者托管",
+    "lu_contact_request": "向异族使者发起正式接触请求，拒绝牺牲式救援",
+    "squad_member_a_action": "维持贴身陪同解除强制力，放弃物理隔离拦截",
+    "squad_member_b_action": "重构预案B为自愿性监测+破封后损伤控制的被动模式",
+    "network_chair_action": "接受规律执行者警告，为立约会议设定硬性时限避免程序性拖延",
+    "alliance_rep_response": "交付力量容器化技术储备托管协议，将见证团改为'全量无筛选记录'模式",
+    "alien_diplomatic_response": "提供古盟约史料，选择性地提供更多'远古力量可制衡/可共存'的档案",
+    "observer_tick2_record": "记录韩峥牺牲程序启动、联盟容器化部署、异族协助信息钩子的边界争议",
+    "rule_violations": {
+      "网络立约会议程序性拖延": "可能对韩峥个人意志构成隐性强制"
+    },
+    "dynamic.network_chair_action": "召开网络全员立约会议，寻找第三条路，尊重陆的自主选择权",
+    "dynamic.alien_diplomatic_response": "止步于信息提供，植入古盟约档案作为日后主张法理钩子",
+    "dynamic.observer_tick3_record": "记录规则执行者违规判定、韩峥对质、异族代理升级",
+    "dynamic.rule_violations": {
+      "小队成员A物理拖离": "强制拖离构成剥夺个人意志",
+      "小队成员B通讯隔离": "能量切断构成强制干扰",
+      "异族共决权": "代理风险升级为实质性介入尝试"
+    },
+    "world_will_phase": "终局汇聚相",
+    "world_will_necessity1": "双向确认执行相",
+    "world_will_necessity2": "窗口开启相",
+    "world_will_necessity3": "终局锁定相",
+    "world_will_necessity1_detail": "陆与韩必须在投票窗口开启前各自完成最后意志表达，任何一方犹豫让封印时序冻结",
+    "world_will_necessity2_detail": "力量释放点光带进入投票窗口状态，接收所有人族成员意志信号呈双色汇聚态",
+    "world_will_necessity3_detail": "对延迟性隐性代理结构施加命运层最终失效裁决：异族共决权法理钩子被物理层消除，联盟见证团被物理排斥",
+    "alliance_container_status": "托管给规律执行者",
+    "han_zheng_action": "陪同陆启动封印机制自主调查",
+    "han_zheng_requests": [
+      "要求判定网络立约会议'穷尽第三条路前不执行'是否构成程序性拖延",
+      "请求裁定异族'古盟约共决权等待召唤'法理钩子属延迟性隐性代理",
+      "要求小队B监测扩展为对陆自主调查的外部干预监测"
+    ],
+    "lu_action": "启动封印机制自主调查并公开声明，提出新合作框架：'共同承受封印后果而非单向赴死'",
+    "rule_enforcement_status": "持续监视期",
+    "rule_enforcement_watching": [
+      "网络立约会议是否设明确时限",
+      "异族是否在文明选择投票前激活共决权",
+      "陆的自主封印调查是否被异族解读为未来法理依据"
+    ]
   },
   "unresolved_conflicts": []
 }

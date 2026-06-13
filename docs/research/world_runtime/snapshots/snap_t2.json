@@ -2,16 +2,37 @@
   "tick": 2,
   "seal_state": "intact",
   "han_zheng_status": "restrained",
-  "lu_status": "safe",
-  "squad_resolution": "停止成员B物理+通讯隔离，改为陪同式守护，启动三方联合立约会议，正式接见异族使者要求剥离共决权，向联盟声明韩峥命运不可交易",
-  "network_resolution": "正面回应韩峥对质，立约校正停止隔离转为陪伴+替代方案，向异族划定硬边界拒绝共决权，支持联盟容器化降格",
-  "alliance_resolution": "接受必然性1定位为文明选择清空者，冻结力量容器化部署，否决强制隔离与赴死，局限为中立程序角色",
-  "alien_stance": "交付封印历史知识，改写议程为等待召唤，暗埋共决权法理钩子",
+  "lu_status": "threatened",
+  "squad_resolution": "停止成员B的物理+通讯隔离韩峥手段，转为'陪同式守护'，正式启动三方联合立约会议",
+  "network_resolution": "正面回答韩峥对质，承认立约不背书牺牲但承认自愿选择权不可剥夺，停止隔离转为在场陪伴",
+  "alliance_resolution": "接受必然性1，降格为文明选择清空者，冻结力量容器化部署，不介入破封路径之争",
+  "alien_stance": "不动声色接近，传递协助制衡暗示，私下评估陆生死影响",
   "dynamic": {
-    "dynamic": {
-      "dynamic": {
-        "three_inevitability_signs": true
-      }
+    "squad_super_head_resolution": "物理阻断升级+嵌套立场声明+拒绝联盟牺牲默许",
+    "network_super_head_resolution": "全员立约会议+第三条路提案+异族合作边界划定",
+    "alliance_super_head_resolution": "力量容器化约束矩阵部署+异族协助定性为隐性代理+联盟收容预案框架+文明选择公意投票",
+    "lu_contact_request": "向异族使者发起正式接触请求，拒绝牺牲式救援",
+    "squad_member_a_action": "执行掩护预案A，物理拦截韩峥并拖离威胁区",
+    "squad_member_b_action": "停止强制隔离，向韩峥直陈技术方案真相",
+    "network_chair_action": "召开网络全员立约会议+申请替代破封路径+开启异族接触",
+    "alliance_rep_response": "提供中立技术能力+尊重个人自愿+让渡最终决定权",
+    "alien_diplomatic_response": "公开回应接触请求，植入共决权议程，暗示韩峥牺牲不必要",
+    "observer_tick2_record": "记录韩峥牺牲程序启动、联盟容器化部署、异族协助信息钩子的边界争议",
+    "rule_violations": {
+      "小队成员B物理隔离": "强制阻止自愿行动构成剥夺个人意志",
+      "韩峥个人决断绕过": "规避性违规需警告",
+      "异族使者协助暗示": "代理风险警告"
+    },
+    "dynamic.squad_member_a_action": "转向取消物理隔离、保留人盯人护送",
+    "dynamic.squad_member_b_action": "停止主动隔离，转为被动监测并坦陈技术真相",
+    "dynamic.network_chair_action": "召开网络全员立约会议，寻找第三条路，尊重陆的自主选择权",
+    "dynamic.alliance_rep_response": "拒绝异族共决权，维持中立技术收容能力",
+    "dynamic.alien_diplomatic_response": "止步于信息提供，植入古盟约档案作为日后主张法理钩子",
+    "dynamic.observer_tick3_record": "记录规则执行者违规判定、韩峥对质、异族代理升级",
+    "dynamic.rule_violations": {
+      "小队成员A物理拖离": "强制拖离构成剥夺个人意志",
+      "小队成员B通讯隔离": "能量切断构成强制干扰",
+      "异族共决权": "代理风险升级为实质性介入尝试"
     }
   },
   "unresolved_conflicts": []

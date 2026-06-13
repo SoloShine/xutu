@@ -74,7 +74,7 @@ def _parse_effects_json(raw: str) -> dict | None:
 
 def extract_effects_for_tick(actions: list[dict], snapshot, tick: int,
                               call_fn=call_llm, model: str = "haiku",
-                              max_retries: int = 1) -> list[Effect]:
+                              max_retries: int = 1, event_store=None) -> list[Effect]:
     """对一个 tick 的所有 NL action 提取 effect[]。失败重试 max_retries 次。
 
     actions: [{agent_id, agent_type, layer, nl_action}, ...]
@@ -86,7 +86,8 @@ def extract_effects_for_tick(actions: list[dict], snapshot, tick: int,
 
     parsed = None
     for attempt in range(max_retries + 1):
-        raw = call_fn(prompt, model=model, agent_id="_extractor", tick=tick)
+        raw = call_fn(prompt, model=model, agent_id="_extractor", tick=tick,
+                      event_store=event_store)
         parsed = _parse_effects_json(raw)
         if parsed is not None:
             break
@@ -103,8 +104,12 @@ def extract_effects_for_tick(actions: list[dict], snapshot, tick: int,
             (a["agent_type"] for a in actions if a.get("agent_id") == e.get("agent_id")),
             "character",
         )
+        s = e.get("set", {})
+        # unwrap nested dynamic（haiku 偶尔返回 {"dynamic": {...}}）
+        if isinstance(s, dict) and len(s) == 1 and "dynamic" in s and isinstance(s["dynamic"], dict):
+            s = s["dynamic"]
         effects.append(Effect(
-            set=e.get("set", {}),
+            set=s,
             unset=e.get("unset", []),
             intent=e.get("intent", ""),
             priority=PRIORITY_MAP.get(agent_type, 1),

@@ -66,7 +66,8 @@ def run_mvp1(output_path: str, model: str = "haiku"):
 
         try:
             effects = extract_effects_for_tick(actions, snapshot, tick,
-                                               call_fn=call_llm, model=model)
+                                               call_fn=call_llm, model=model,
+                                               event_store=store)
         except Exception as ex:
             print(f"  [WARN] extractor 失败，跳过该 tick：{ex}")
             effects = []

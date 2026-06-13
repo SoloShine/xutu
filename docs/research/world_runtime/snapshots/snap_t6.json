@@ -2,17 +2,72 @@
   "tick": 6,
   "seal_state": "intact",
   "han_zheng_status": "decided",
-  "lu_status": "safe",
-  "squad_resolution": "接受陆'双方共担而非单向赴死'第三条路为优先支持路径；向super_head提请立约会议时限早于命运层倒计时结束；向四方公开通报异族史料认知框架植入；锚定记忆叠加叙事'守护真自愿选择权'",
-  "network_resolution": "为立约会议设定硬性时限；修订集体记忆纳入'保护=尊重双向真自愿选择+不集体背书'；要求自愿性监测交规律执行者托管；通报联盟中立定位趋同；向规律执行者追加异族史料警示；仅见证不表态",
-  "alliance_resolution": "完全解散'文明选择见证团'；向规律执行者提交异族史料倾斜警示备案；集体记忆升级为'封印破前集体沉默不可逆承诺'",
-  "alien_stance": "完全止步于纯信息提供，古盟约档案出现文字湮灭征兆，注销共决权主张，转向等待人族公意结果后被接纳参与后续协商",
+  "lu_status": "investigating",
+  "squad_resolution": "接受陆'双方共担而非单向赴死'第三条路变体，转向透明化外部见证，向规律执行者请求裁定'共担'是否符合必然性1，要求立约会议时限早于命运窗口，对异族史料倾斜发起警报并请求全量记录",
+  "network_resolution": "接受规律监视设定立约会议时限，修订保全=尊重双向真自愿+不背书+不增设强制，要求小队监测托管给规律执行者，通知联盟见证撤离，向规律执行者警示异族史料倾斜",
+  "alliance_resolution": "完全解散文明选择见证团，向规律执行者备案异族史料倾斜警示，集体承诺封印破前完全沉默",
+  "alien_stance": "零预设等待，仅当人族公意选择'接纳'时作为被接纳方参与",
   "dynamic": {
-    "dynamic": {
-      "dynamic": {
-        "three_inevitability_signs": true
-      }
-    }
+    "squad_super_head_resolution": "物理阻断升级+嵌套立场声明+拒绝联盟牺牲默许",
+    "network_super_head_resolution": "全员立约会议+第三条路提案+异族合作边界划定",
+    "alliance_super_head_resolution": "完全关闭'文明选择见证团'程序框架，将公意汇聚功能移交规律执行者托管",
+    "lu_contact_request": "向异族使者发起正式接触请求，拒绝牺牲式救援",
+    "squad_member_a_action": "维持贴身陪同解除强制力，放弃物理隔离拦截",
+    "squad_member_b_action": "重构预案B为自愿性监测+破封后损伤控制的被动模式",
+    "network_chair_action": "接受规律执行者警告，为立约会议设定硬性时限避免程序性拖延",
+    "alliance_rep_response": "交付力量容器化技术储备托管协议，将见证团改为'全量无筛选记录'模式",
+    "alien_diplomatic_response": "提供古盟约史料，选择性地提供更多'远古力量可制衡/可共存'的档案",
+    "observer_tick2_record": "记录韩峥牺牲程序启动、联盟容器化部署、异族协助信息钩子的边界争议",
+    "rule_violations": {
+      "网络立约会议程序性拖延": "可能对韩峥个人意志构成隐性强制"
+    },
+    "dynamic.network_chair_action": "召集限时网络全员立约会议（锚定命运窗口），执行第三条路形式化审查，坚守立约双重道德边界",
+    "dynamic.alien_diplomatic_response": "止步于信息提供，植入古盟约档案作为日后主张法理钩子",
+    "dynamic.observer_tick3_record": "记录规则执行者违规判定、韩峥对质、异族代理升级",
+    "dynamic.rule_violations": {
+      "异族史料认知倾斜代理": "通过信息塑造代替权利主张",
+      "网络立约会议时限执行": "需监视是否被真正执行而非变相搁置"
+    },
+    "world_will_phase": "终局汇聚相",
+    "world_will_necessity1": "双向确认执行相",
+    "world_will_necessity2": "窗口开启相",
+    "world_will_necessity3": "终局锁定相",
+    "world_will_necessity1_detail": "陆与韩必须在投票窗口开启前各自完成最后意志表达，任何一方犹豫让封印时序冻结",
+    "world_will_necessity2_detail": "力量释放点光带进入投票窗口状态，接收所有人族成员意志信号呈双色汇聚态",
+    "world_will_necessity3_detail": "对延迟性隐性代理结构施加命运层最终失效裁决：异族共决权法理钩子被物理层消除，联盟见证团被物理排斥",
+    "alliance_container_status": "托管给规律执行者",
+    "han_zheng_action": "陪同陆启动封印机制自主调查",
+    "han_zheng_requests": [
+      "要求判定网络立约会议'穷尽第三条路前不执行'是否构成程序性拖延",
+      "请求裁定异族'古盟约共决权等待召唤'法理钩子属延迟性隐性代理",
+      "要求小队B监测扩展为对陆自主调查的外部干预监测"
+    ],
+    "lu_action": "启动封印机制自主调查并公开声明，提出新合作框架：'共同承受封印后果而非单向赴死'",
+    "rule_enforcement_status": "持续监视期",
+    "rule_enforcement_watching": [
+      "网络立约会议是否设明确时限",
+      "异族是否在文明选择投票前激活共决权",
+      "陆的自主封印调查是否被异族解读为未来法理依据"
+    ],
+    "dynamic.han_zheng_action": "陪同陆进行封印自主探测，扩展监测请求形式化判定",
+    "dynamic.lu_action": "启动封印自主调查识破异族史料倾斜，提出'双方共担而非单向赴死'第三条路框架，向韩峥重申共担底线",
+    "dynamic.squad_member_a_action": "维持贴身陪同零强制力，扩展监测为韩峥+陆双方，向规律执行者请求'共担'形式化裁定",
+    "dynamic.squad_member_b_action": "重构预案B为'双向自愿性监测+破封后救援预案'被动模式，放弃非牺牲破封技术目标，向规律执行者申报异族史料倾斜判定",
+    "dynamic.alliance_rep_response": "向规律执行者追加备案'文明选择前史料/信息/认知框架倾斜'纳入规则3监视，严守集体最终沉默令",
+    "dynamic.observer_tick6_record": "记录必然性1双向确认机制是否被第三条路重新定性、必然性2无主释放征兆物理层显现、异族史料认知倾斜是否被识别为延迟性隐性代理新变体",
+    "dynamic.rule_enforcement_status": "升级监视：警告异族停止史料倾斜，请求命运层物理排斥",
+    "dynamic.squad_member_a_monitoring_target": "han_zheng+lu",
+    "dynamic.squad_member_b_monitoring_mode": "共担对等性技术评估",
+    "dynamic.squad_witnessing_protocol": "透明化外部见证",
+    "dynamic.squad_final_commitment": "若任何一方被迫，启动真自愿守护预案",
+    "dynamic.network_final_verdict_preamble": "若陆韩双方以非生命代价双向让渡，则立约可背书为合法第三条路变体",
+    "dynamic.alliance_core_rule_moot": "请求命运层裁定'控制远古力量'是否构成对必然性3的隐性方向预设",
+    "dynamic.lu_seal_autonomous_findings": "向规律执行者提交体感级封印双向让渡机制发现",
+    "dynamic.squad_monitoring_data_transfer": "全部移交规律执行者",
+    "dynamic.alien_proxy_risk_monitoring": "请求纳入延迟性隐性代理实体化清单",
+    "dynamic.squad_b_monitoring_variables": "生命体征损耗比、意志锚定对称度、力量承载份额",
+    "dynamic.network_verdict_conference": "召集'裁决会议'对'双方共担'框架做形式化审查",
+    "dynamic.alliance_personal_alert_filed": "个人向规律执行者警示异族延迟性隐性代理新变体"
   },
   "unresolved_conflicts": []
 }

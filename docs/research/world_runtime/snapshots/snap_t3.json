@@ -1,17 +1,36 @@
 {
   "tick": 3,
   "seal_state": "intact",
-  "han_zheng_status": "decided",
-  "lu_status": "safe",
-  "squad_resolution": "停止一切形式的'替代方案工程化对抗必然性1'，成员A贴身陪同解除强制力，成员B技术监测意志自愿性，小队保留在场陪伴，响应网络立约修正案，内部记忆升级为'被保护者拥有否决被保护的权利'",
-  "network_resolution": "诚实承认第三条路已被命运层裁决性关闭，坚守立约双重边界（永不背书任何牺牲、永不强制剥夺自愿选择权），从主动寻找第三条路降格为中立见证者，将判定完全交给规律执行者与命运层，对韩峥对质正面回答立约会议穷尽后确认其真自愿在立约外，但集体永不背书",
-  "alliance_resolution": "冻结力量容器化前置部署进入完全静默状态，接受必然性3的排拒裁决相，对韩峥自愿牺牲路径彻底中立（不背书也不阻止），对异族使者发出风险预警，组建文明选择见证团",
-  "alien_stance": "公开声明止步于中性史料提供，暗中执行三层长程布局：重构共决权为未来法理召回，观测真自愿判定结果，通过史料植入建立法理叙事",
+  "han_zheng_status": "restrained",
+  "lu_status": "threatened",
+  "squad_resolution": "停止对抗必然性1，转向守护韩峥选择权真实性，成员解除强制力转向陪同监测",
+  "network_resolution": "承认第三条路关闭，降格为中立见证者，退出韩峥议题",
+  "alliance_resolution": "冻结力量容器化进入完全静默，接受必然性3裁决，退为中立见证者与程序性投票组织者",
+  "alien_stance": "古盟约共决权被标记为延迟性隐性代理风险",
   "dynamic": {
-    "dynamic": {
-      "dynamic": {
-        "three_inevitability_signs": true
-      }
+    "squad_super_head_resolution": "物理阻断升级+嵌套立场声明+拒绝联盟牺牲默许",
+    "network_super_head_resolution": "全员立约会议+第三条路提案+异族合作边界划定",
+    "alliance_super_head_resolution": "力量容器化约束矩阵部署+异族协助定性为隐性代理+联盟收容预案框架+文明选择公意投票",
+    "lu_contact_request": "向异族使者发起正式接触请求，拒绝牺牲式救援",
+    "squad_member_a_action": "执行掩护预案A，物理拦截韩峥并拖离威胁区",
+    "squad_member_b_action": "停止强制隔离，向韩峥直陈技术方案真相",
+    "network_chair_action": "召开网络全员立约会议+申请替代破封路径+开启异族接触",
+    "alliance_rep_response": "提供中立技术能力+尊重个人自愿+让渡最终决定权",
+    "alien_diplomatic_response": "公开回应接触请求，植入共决权议程，暗示韩峥牺牲不必要",
+    "observer_tick2_record": "记录韩峥牺牲程序启动、联盟容器化部署、异族协助信息钩子的边界争议",
+    "rule_violations": {
+      "网络立约会议程序性拖延": "可能对韩峥个人意志构成隐性强制"
+    },
+    "dynamic.squad_member_a_action": "转向取消物理隔离、保留人盯人护送",
+    "dynamic.squad_member_b_action": "停止主动隔离，转为被动监测并坦陈技术真相",
+    "dynamic.network_chair_action": "召开网络全员立约会议，寻找第三条路，尊重陆的自主选择权",
+    "dynamic.alliance_rep_response": "拒绝异族共决权，维持中立技术收容能力",
+    "dynamic.alien_diplomatic_response": "止步于信息提供，植入古盟约档案作为日后主张法理钩子",
+    "dynamic.observer_tick3_record": "记录规则执行者违规判定、韩峥对质、异族代理升级",
+    "dynamic.rule_violations": {
+      "小队成员A物理拖离": "强制拖离构成剥夺个人意志",
+      "小队成员B通讯隔离": "能量切断构成强制干扰",
+      "异族共决权": "代理风险升级为实质性介入尝试"
     }
   },
   "unresolved_conflicts": []
