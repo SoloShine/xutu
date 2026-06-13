@@ -67,3 +67,16 @@ def test_event_is_frozen():
     ev = Event(event_id="e1", tick=0, event_type="action")
     with pytest.raises(dataclasses.FrozenInstanceError):
         ev.tick = 1
+
+
+def test_effect_grounded_default():
+    e = Effect(set={"x": 1})
+    assert e.grounded is True
+    assert e.agent_id == ""
+    assert e.agent_type == "character"
+
+
+def test_effect_grounded_false():
+    e = Effect(set={}, intent="观望", grounded=False, agent_id="旁观者")
+    assert e.grounded is False
+    assert e.agent_id == "旁观者"
