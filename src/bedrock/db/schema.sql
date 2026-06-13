@@ -103,3 +103,59 @@ CREATE TABLE IF NOT EXISTS character_faction (
     period_end INTEGER,
     PRIMARY KEY(character_id, faction_id, period_start)
 );
+
+
+-- ===== Worldbook (Task 6) =====
+
+CREATE TABLE IF NOT EXISTS constants (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    scope TEXT NOT NULL DEFAULT 'global' CHECK (scope IN ('global','volume-specific')),
+    volume_id INTEGER,
+    source_note TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS location (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    loc_type TEXT NOT NULL DEFAULT '',
+    description TEXT NOT NULL DEFAULT '',
+    state TEXT NOT NULL DEFAULT '',
+    parent_location_id INTEGER REFERENCES location(id)
+);
+
+CREATE TABLE IF NOT EXISTS location_neighbor (
+    from_id INTEGER NOT NULL REFERENCES location(id),
+    to_id INTEGER NOT NULL REFERENCES location(id),
+    travel_days INTEGER,
+    PRIMARY KEY(from_id, to_id)
+);
+
+CREATE TABLE IF NOT EXISTS time_period (
+    label TEXT PRIMARY KEY,
+    chapter_start INTEGER NOT NULL,
+    chapter_end INTEGER NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    CHECK (chapter_start <= chapter_end)
+);
+
+CREATE TABLE IF NOT EXISTS faction (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    ftype TEXT NOT NULL DEFAULT '',
+    stance TEXT NOT NULL DEFAULT '',
+    state TEXT NOT NULL DEFAULT '',
+    parent_faction_id INTEGER REFERENCES faction(id)
+);
+
+CREATE TABLE IF NOT EXISTS theme (
+    name TEXT PRIMARY KEY,
+    description TEXT NOT NULL DEFAULT '',
+    evolution TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS motif (
+    name TEXT PRIMARY KEY,
+    meaning TEXT NOT NULL DEFAULT '',
+    evolution TEXT NOT NULL DEFAULT ''
+);
