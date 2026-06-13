@@ -116,3 +116,21 @@ def test_unset_only_effect_works():
     eff = Effect(unset=["temp"])  # 不传 set
     s1, _ = reducer([eff], s0)
     assert "temp" not in s1.dynamic
+
+
+def test_ungrounded_effect_not_folded():
+    s0 = Snapshot()
+    eff = Effect(agent_id="旁观者", set={"seal_state": "broken"},
+                 intent="观察", grounded=False, priority=1)
+    s1, _ = reducer([eff], s0)
+    assert s1.seal_state == "intact"  # grounded=false 不 fold
+
+
+def test_grounded_and_ungrounded_mixed():
+    s0 = Snapshot()
+    eff_g = Effect(agent_id="world_will", set={"seal_state": "weakening"},
+                   intent="征兆", grounded=True, priority=4)
+    eff_u = Effect(agent_id="旁观者", set={"seal_state": "broken"},
+                   intent="观察", grounded=False, priority=1)
+    s1, _ = reducer([eff_g, eff_u], s0)
+    assert s1.seal_state == "weakening"  # 只 fold grounded，无冲突

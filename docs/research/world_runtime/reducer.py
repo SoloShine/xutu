@@ -22,9 +22,12 @@ def reducer(effects: list[Effect], S_t: Snapshot) -> tuple[Snapshot, list]:
     new_state = deepcopy(S_t)
     resolutions = []
 
+    # 只 fold grounded=true（grounded=false 是意图层，保留 event 不 fold）
+    grounded_effects = [e for e in effects if getattr(e, "grounded", True)]
+
     # group effects by affected key（只看 set）
     by_key = {}
-    for eff in effects:
+    for eff in grounded_effects:
         for k, v in eff.set.items():
             by_key.setdefault(k, []).append((eff, v))
 
@@ -55,7 +58,7 @@ def reducer(effects: list[Effect], S_t: Snapshot) -> tuple[Snapshot, list]:
                 apply_key(new_state, key, ranked[0][1])  # 暂用第一条
 
     # 应用 unset（仅 dynamic）
-    for eff in effects:
+    for eff in grounded_effects:
         for k in eff.unset:
             if k in new_state.dynamic:
                 del new_state.dynamic[k]
