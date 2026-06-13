@@ -82,6 +82,11 @@ def unlock_volume_outline(conn, volume_id, reason, author="human"):
 
 def relock_volume_outline(conn, volume_id):
     """drafted → locked。"""
+    row = conn.execute("SELECT status FROM volume_outline WHERE volume_id=?", (volume_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"volume_outline for volume {volume_id} not found")
+    if row["status"] != "drafted":
+        raise ValueError(f"volume_outline status={row['status']}, expected 'drafted' to relock")
     conn.execute("UPDATE volume_outline SET status='locked', locked_at=datetime('now') WHERE volume_id=?",
                  (volume_id,))
     conn.commit()

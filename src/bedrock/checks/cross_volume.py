@@ -62,12 +62,15 @@ def check_cross_volume_anchors(conn, volume_id):
                 f"SELECT id, importance, status FROM suspense_thread WHERE id IN ({placeholders})",
                 resolves).fetchall()
             unmet = [t for t in threads if t["status"] != "resolved"]
+            # 无效 thread id（声明了但表里没有）也算未兑现
+            if len(threads) < len(resolves):
+                unmet.append({"id": None, "importance": "high", "status": "missing"})
             if unmet:
                 max_imp = _max_importance([t["importance"] for t in unmet])
                 _classify(Anchor(
                     kind="milestone_unmet", ref_id=ms.get("name", "?"),
                     importance=max_imp,
-                    detail=f"里程碑 {ms.get('name')} 的 resolves_threads 有 {len(unmet)} 条未 resolved"),
+                    detail=f"里程碑 {ms.get('name')} 的 resolves_threads 有 {len(unmet)} 条未 resolved/无效"),
                     report)
 
     return report

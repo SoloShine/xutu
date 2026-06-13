@@ -103,7 +103,7 @@ def check_cross_volume_anchors(conn, volume_id) -> CrossVolumeDebtReport
 
 **校验规则**（L2 纯 Python）：
 1. **悬链 planned_resolve_volume 兑现**：查所有 `planned_resolve_volume IS NOT NULL AND planned_resolve_volume <= volume_id AND status NOT IN ('resolved','abandoned')` 的悬链 = 应回收未回收（thread_overdue）。**planned_resolve_volume IS NULL 的悬链视为无跨卷承诺，不判逾期**（放行）。
-2. **里程碑兑现**：master_outline.key_milestones 里 `expected_volume = volume_id` 的里程碑，其 `resolves_threads[]` 必须**全部 status='resolved'**（严格相等，abandoned/partially_resolved 不算兑现）。任一未 resolved → milestone_unmet。里程碑未兑现时，blocking/advisory 分类看其 resolves_threads 里悬链的**最高 importance**（含 high → blocking，否则 advisory）。
+2. **里程碑兑现**：master_outline.key_milestones 里 `expected_volume = volume_id` 的里程碑，其 `resolves_threads[]` 必须**全部 status='resolved'**（严格相等，abandoned/partially_resolved 不算兑现）。任一未 resolved → milestone_unmet。里程碑未兑现时，blocking/advisory 分类看其 resolves_threads 里**未兑现悬链**的最高 importance（含 high → blocking，否则 advisory）。
 
 **输出**：
 ```python
@@ -154,9 +154,9 @@ def get_matrix(volume_type) -> dict: ...
 **配置文件机制** `config/config.py`（可变配置，项目级覆盖）：
 ```python
 def load_config(project_dir) -> Config:
-    """读 projects/<P>/bedrock_config.yaml（若存在）覆盖默认常量。"""
+    """读 projects/<P>/bedrock_config.json（若存在）覆盖默认常量。用 json 避免 yaml 依赖。"""
 def init_default_config(project_dir):
-    """创建默认 bedrock_config.yaml（首次初始化）。"""
+    """创建默认 bedrock_config.json（首次初始化）。用 json 避免 yaml 依赖。"""
 ```
 
 > **标记 SP5**：卷类型矩阵的配额查询（may_plant/mature_decline/pruning 检查）不在 SP2。SP2 只建矩阵常量 + config 机制（基础设施先行），查询逻辑后置 SP5。

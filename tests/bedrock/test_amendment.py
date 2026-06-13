@@ -56,3 +56,17 @@ def test_update_beat_contract_after_unlock(tmp_project):
     assert c["purpose"] == "林深发现注记"
     assert "林深" in c["participating_characters"]
     conn.close()
+
+
+def test_relock_rejects_non_drafted(tmp_project):
+    """relock 仅 drafted→locked；writing/completed 状态 relock 应 raise（防 SP4 误调回退）。"""
+    conn = get_connection(tmp_project)
+    vid = _seed_volume(conn)
+    save_volume_outline(conn, vid, beat_contracts=[])
+    lock_volume_outline(conn, vid)
+    # 直接把 status 改成 writing（模拟 SP4 开写后），relock 应拒绝
+    conn.execute("UPDATE volume_outline SET status='writing' WHERE volume_id=?", (vid,))
+    conn.commit()
+    with pytest.raises(ValueError):
+        relock_volume_outline(conn, vid)
+    conn.close()

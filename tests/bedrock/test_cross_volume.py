@@ -60,3 +60,14 @@ def test_milestone_unmet_blocks_when_high(tmp_project):
     report = check_cross_volume_anchors(conn, 1)
     assert any(a.kind == "milestone_unmet" for a in report.blocking)
     conn.close()
+
+
+def test_milestone_invalid_thread_ref_flagged(tmp_project):
+    """里程碑 resolves_threads 含无效 id（表里没有）→ 报 milestone_unmet。"""
+    conn = get_connection(tmp_project)
+    vid = create_volume(conn, 1, "v1", 1, 3, "opening")
+    save_master_outline(conn, key_milestones=[
+        {"name": "觉醒", "expected_volume": 1, "resolves_threads": [99999]}])  # 无效 id
+    report = check_cross_volume_anchors(conn, 1)
+    assert any(a.kind == "milestone_unmet" for a in report.blocking)
+    conn.close()
