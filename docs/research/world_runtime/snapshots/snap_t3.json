@@ -1,54 +1,18 @@
 {
   "tick": 3,
-  "seal_state": "weakening",
+  "seal_state": "intact",
   "han_zheng_status": "decided",
-  "lu_status": "investigating",
-  "squad_resolution": "停止对抗必然性1，转向守护韩峥选择权真实性，成员A解除强制隔离转为陪同守护，成员B撤回锁定行为改为自愿性监测，小队不背书也不阻止但保留在场陪伴",
-  "network_resolution": "退出破封路径之争，降格为中立见证者，承认真自愿在立约外但永不背书，承诺会议穷尽第三条路但明确时限要求",
-  "alliance_resolution": "冻结力量容器化进入完全静默，解散破封主导者角色保留纯程序性投票组织者身份，组建文明选择见证团，对异族古盟约共决权发出代理风险预警",
-  "alien_stance": "止步于中性史料提供，预埋未来法理钩子，转向等待召唤立场",
+  "lu_status": "safe",
+  "squad_resolution": "停止一切形式的'替代方案工程化对抗必然性1'，成员A贴身陪同解除强制力，成员B技术监测意志自愿性，小队保留在场陪伴，响应网络立约修正案，内部记忆升级为'被保护者拥有否决被保护的权利'",
+  "network_resolution": "诚实承认第三条路已被命运层裁决性关闭，坚守立约双重边界（永不背书任何牺牲、永不强制剥夺自愿选择权），从主动寻找第三条路降格为中立见证者，将判定完全交给规律执行者与命运层，对韩峥对质正面回答立约会议穷尽后确认其真自愿在立约外，但集体永不背书",
+  "alliance_resolution": "冻结力量容器化前置部署进入完全静默状态，接受必然性3的排拒裁决相，对韩峥自愿牺牲路径彻底中立（不背书也不阻止），对异族使者发出风险预警，组建文明选择见证团",
+  "alien_stance": "公开声明止步于中性史料提供，暗中执行三层长程布局：重构共决权为未来法理召回，观测真自愿判定结果，通过史料植入建立法理叙事",
   "dynamic": {
     "dynamic": {
-      "fate_pressure_deepened": true,
-      "ancient_power_second_stage_signs": true,
-      "proxy_resistance_intensified": true
-    },
-    "unresolved_conflicts": [
-      "小队成员B物理隔离韩峥构成强制自由意志",
-      "韩峥试图以个人选择规避集体审查",
-      "异族使者代理暗示"
-    ]
-  },
-  "unresolved_conflicts": [
-    {
-      "key": "han_zheng_status",
-      "candidates": [
-        {
-          "value": "decided",
-          "priority": 1,
-          "intent": "暂停牺牲程序执行，转入公开对质寻求选择权确认"
-        },
-        {
-          "value": "restrained",
-          "priority": 1,
-          "intent": "执行物理拦截预案，强制拖离韩峥威胁区"
-        }
-      ]
-    },
-    {
-      "key": "lu_status",
-      "candidates": [
-        {
-          "value": "threatened",
-          "priority": 1,
-          "intent": "主动承担封印风险，向异族发起技术信息接触"
-        },
-        {
-          "value": "safe",
-          "priority": 1,
-          "intent": "执行能量缓冲层预案，停止强制隔离通讯"
-        }
-      ]
+      "dynamic": {
+        "three_inevitability_signs": true
+      }
     }
-  ]
+  },
+  "unresolved_conflicts": []
 }

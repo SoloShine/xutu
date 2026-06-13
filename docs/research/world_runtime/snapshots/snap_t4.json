@@ -1,57 +1,18 @@
 {
   "tick": 4,
-  "seal_state": "weakening",
-  "han_zheng_status": "executor_active",
-  "lu_status": "threatened",
-  "squad_resolution": "援引命运层'真自愿需陆韩双向确认'，重构集体保护立场：保护韩峥选择权真自愿性而非阻止选择，向网络super_head提请立约会议时限，解除成员A强制隔离转为贴身陪同，成员B提交自愿性监测协议托管给规律执行者",
-  "network_resolution": "接受规律执行者警告为立约会议设定硬性时限，承认被保全者自主选择权优先于立约保护，承诺见证双向确认真自愿性，向联盟通报中立见证者定位并请求见证团记录全部决议",
-  "alliance_resolution": "进入'封印-选择枢纽'最终中立状态：关闭文明选择见证团程序框架，对韩峥议题发布最终沉默令，向规律执行者提交异族共决权风险警示，修订集体记忆为卸任后存在",
-  "alien_stance": "通过选择性史料植入塑造陆认知基础，间接影响双向自愿达成可能",
+  "seal_state": "intact",
+  "han_zheng_status": "decided",
+  "lu_status": "safe",
+  "squad_resolution": "重构保护立场：借命运之力保护韩峥真自愿选择权；向网络super_head提请立约会议时限；集体记忆叠加重构为'守护选择权而非阻止选择'；成员A解除强制力贴身陪同，成员B提交自愿性监测协议给规律执行者",
+  "network_resolution": "接受立约会议时限避免程序性拖延；承认被保全者自主权优先于保护；承诺对韩峥-陆双向确认中立见证；向父集体通报中立定位并请求见证全部决议",
+  "alliance_resolution": "关闭文明选择见证团程序框架；对韩峥议题发布最终沉默令；向规律执行者提交异族代理风险备案；集体记忆转向'卸任后存在'，封印破前不再发起集体行动",
+  "alien_stance": "提供中性古盟约史料（含隐性倾向）；公开声明投票前不主张法理权利",
   "dynamic": {
     "dynamic": {
-      "fate_pressure_deepened": true,
-      "ancient_power_second_stage_signs": true,
-      "proxy_resistance_intensified": true
-    },
-    "unresolved_conflicts": [
-      "小队成员B物理隔离韩峥构成强制自由意志",
-      "韩峥试图以个人选择规避集体审查",
-      "异族使者代理暗示"
-    ],
-    "fate_pressure_deepened": true,
-    "ancient_power_second_stage_signs": true,
-    "proxy_resistance_intensified": true
-  },
-  "unresolved_conflicts": [
-    {
-      "key": "han_zheng_status",
-      "candidates": [
-        {
-          "value": "decided",
-          "priority": 1,
-          "intent": "暂停牺牲程序执行，转入公开对质寻求选择权确认"
-        },
-        {
-          "value": "restrained",
-          "priority": 1,
-          "intent": "执行物理拦截预案，强制拖离韩峥威胁区"
-        }
-      ]
-    },
-    {
-      "key": "lu_status",
-      "candidates": [
-        {
-          "value": "threatened",
-          "priority": 1,
-          "intent": "主动承担封印风险，向异族发起技术信息接触"
-        },
-        {
-          "value": "safe",
-          "priority": 1,
-          "intent": "执行能量缓冲层预案，停止强制隔离通讯"
-        }
-      ]
+      "dynamic": {
+        "three_inevitability_signs": true
+      }
     }
-  ]
+  },
+  "unresolved_conflicts": []
 }
