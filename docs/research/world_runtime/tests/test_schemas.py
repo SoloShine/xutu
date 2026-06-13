@@ -1,3 +1,5 @@
+import dataclasses
+import pytest
 from world_runtime.schemas import Effect, Snapshot, Event, ConflictResolution
 
 
@@ -45,3 +47,15 @@ def test_conflict_resolution_unresolved():
                             unresolved=True)
     assert c.unresolved is True
     assert c.winner is None
+
+
+def test_effect_is_frozen():
+    e = Effect(set={"x": 1})
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        e.priority = 4
+
+
+def test_event_is_frozen():
+    ev = Event(event_id="e1", tick=0, event_type="action")
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        ev.tick = 1

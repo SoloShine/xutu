@@ -5,8 +5,8 @@ from typing import Literal, Any
 @dataclass(frozen=True)
 class Effect:
     """结构化状态增量（delta 风格，Fowler 教训）。"""
-    set: dict
-    unset: list = field(default_factory=list)
+    set: dict[str, Any]
+    unset: list[str] = field(default_factory=list)
     intent: str = ""
     priority: int = 1  # world_will=4 > law_enforcer=3 > collective=2 > character=1
 
@@ -24,9 +24,17 @@ class Snapshot:
     alliance_resolution: str = ""         # 联盟决议
     alien_stance: str = ""                # 异族立场
     # 动态涌现
-    dynamic: dict = field(default_factory=dict)
+    dynamic: dict[str, Any] = field(default_factory=dict)
     # 未裁决矛盾（Wolf：同优先级冲突保留为燃料）
     unresolved_conflicts: list = field(default_factory=list)
+
+
+# 预定义的强类型状态字段（reducer 校验这些；其余进 dynamic）
+PREDEFINED_FIELDS = frozenset({
+    "seal_state", "han_zheng_status", "lu_status",
+    "squad_resolution", "network_resolution", "alliance_resolution",
+    "alien_stance",
+})
 
 
 @dataclass(frozen=True)
@@ -49,7 +57,11 @@ class Event:
 class ConflictResolution:
     """reducer 冲突裁决记录。"""
     key: str
-    conflicting: list          # [(effect, value), ...]
-    winner: tuple | None       # (effect, value) 或 None（未裁决）
+    conflicting: list[tuple[Effect, Any]]  # [(effect, value), ...]
+    winner: tuple[Effect, Any] | None       # (effect, value) 或 None（未裁决）
     reason: str
     unresolved: bool
+
+    # Note: winner/conflicting 在内存里持有 live Effect 引用，
+    # 但 dataclasses.asdict() 序列化时会把嵌套 Effect 转成 dict
+    # (downstream event store 读回时 winner[0] 是 dict 不是 Effect)
