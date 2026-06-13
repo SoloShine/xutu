@@ -79,3 +79,17 @@ def update_paragraph(conn, para_id, text, content_hash, beat_id, role):
         "UPDATE paragraph SET text=?, content_hash=?, beat_id=?, role=? WHERE para_id=?",
         (text, content_hash, beat_id, role, para_id))
     conn.commit()
+
+
+def mark_override(conn, beat_id, reason, author="human"):
+    """beat.status ∈ {deviated, written} → overridden。强制记 amendment（逃逸审计）。"""
+    from src.bedrock.repositories.governance import add_amendment
+    row = conn.execute("SELECT status FROM beat WHERE id=?", (beat_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"beat {beat_id} not found")
+    if row["status"] not in ("deviated", "written"):
+        raise ValueError(f"beat {beat_id} status={row['status']}，仅 deviated/written 可 override")
+    add_amendment(conn, entity_type="beat", entity_id=beat_id,
+                  field="status", old=row["status"], new="overridden", reason=reason, author=author)
+    conn.execute("UPDATE beat SET status='overridden' WHERE id=?", (beat_id,))
+    conn.commit()
