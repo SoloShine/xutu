@@ -13,48 +13,40 @@ if hasattr(sys.stderr, "reconfigure"):
 
 def call_llm(prompt: str, model: str = "sonnet",
              agent_id: str = None, tick: int = None,
-             event_store=None) -> str:
-    """通过 claude.cmd subprocess 调 LLM。所有调用统一入口（telemetry 可选）。
+             event_store=None, response_schema: dict = None):
+    """通过 claude.cmd subprocess 调 LLM。
 
-    --bare: 跳过项目 CLAUDE.md/hooks（纯 LLM，避免污染）
-    --output-format json: 取结构化 result + usage
+    response_schema 给定时：用 --json-schema constrained decoding，返回 structured_output（dict）。
+    不给时：返回 result（str），保持 MVP1 行为。
     """
+    claude_cmd = shutil.which("claude") or "claude"
     t0 = time.time()
     try:
-        # PATH 解析（无硬编码平台路径）。subprocess 在 Windows 上不会自动
-        # 搜索 PATHEXT（claude.CMD），故用 shutil.which 显式解析。
-        claude_cmd = shutil.which("claude") or "claude"
-
-        r = subprocess.run(
-            [claude_cmd, "-p", "--bare", "--output-format", "json", "--model", model],
-            input=prompt, capture_output=True, text=True, encoding="utf-8",
-        )
+        cmd = [claude_cmd, "-p", "--bare", "--output-format", "json", "--model", model]
+        if response_schema is not None:
+            cmd += ["--json-schema", json.dumps(response_schema, ensure_ascii=False)]
+        r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding="utf-8")
         duration_ms = (time.time() - t0) * 1000
         parsed = json.loads(r.stdout)
-        output = parsed.get("result", "")
+        if response_schema is not None:
+            output = parsed.get("structured_output", {})
+        else:
+            output = parsed.get("result", "")
         usage = parsed.get("usage", {})
-
         if event_store is not None:
             from .schemas import Event
             event_store.append(Event(
                 event_id=f"call_{agent_id}_t{tick}_{int(duration_ms)}",
-                tick=tick if tick is not None else 0,
-                event_type="call",
-                agent_id=agent_id,
-                payload={
-                    "prompt": prompt, "output": output,
-                    "duration_ms": duration_ms, "tokens": usage,
-                    "model": model, "status": "ok",
-                },
-            ))
+                tick=tick if tick is not None else 0, event_type="call", agent_id=agent_id,
+                payload={"prompt": prompt, "output": output, "duration_ms": duration_ms,
+                         "tokens": usage, "model": model, "status": "ok",
+                         "schema": bool(response_schema)}))
         return output
     except Exception as e:
         if event_store is not None:
             from .schemas import Event
             event_store.append(Event(
                 event_id=f"call_{agent_id}_t{tick}_err",
-                tick=tick if tick is not None else 0,
-                event_type="call", agent_id=agent_id,
-                payload={"status": "error", "error": str(e), "model": model},
-            ))
+                tick=tick if tick is not None else 0, event_type="call", agent_id=agent_id,
+                payload={"status": "error", "error": str(e), "model": model}))
         raise
