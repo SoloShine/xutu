@@ -172,6 +172,15 @@ def main():
     p_export.add_argument("--final", action="store_true")
     p_export.add_argument("--out", type=Path, default=None)
 
+    p_diag = sub.add_parser("diagnose", help="体检报告（聚合留痕旗/状态/欠债，可选live L2）")
+    p_diag.add_argument("--project", type=Path, required=True)
+    diag_scope = p_diag.add_mutually_exclusive_group(required=True)
+    diag_scope.add_argument("--volume", type=int, help="volume.id")
+    diag_scope.add_argument("--book", action="store_true")
+    p_diag.add_argument("--with-l2", action="store_true",
+                        help="现场跑 run_l2（仅 --volume，禁 --book）")
+    p_diag.add_argument("--out", type=Path, default=None)
+
     args = parser.parse_args()
     if args.cmd == "init":
         init_project(args.path, work_name=args.name, force=args.force)
@@ -295,6 +304,16 @@ def main():
             result = do_export(conn, args.project, scope, target,
                                args.format, args.final, args.out)
             print(result.path)
+        elif args.cmd == "diagnose":
+            from src.bedrock.cli.reader_commands import diagnose
+            scope = ("book", None) if args.book else ("volume", args.volume)
+            report = diagnose(conn, args.project, scope, with_l2=args.with_l2)
+            if args.out:
+                args.out.parent.mkdir(parents=True, exist_ok=True)
+                args.out.write_text(report, encoding="utf-8")
+                print(args.out)
+            else:
+                print(report)
     finally:
         conn.close()
 

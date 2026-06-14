@@ -298,3 +298,24 @@ def test_diagnose_book_aggregates_debt(tmp_project):
     assert "BLOCKING" in report
     assert "卷2欠债" in report
     conn.close()
+
+
+# ---- diagnose CLI 薄封装 tests (SP6-A Task 5) ----
+
+
+def test_diagnose_cli_smoke(tmp_project, capsys):
+    """diagnose CLI 子命令端到端：建卷章→CLI diagnose --volume→stdout 有报告。"""
+    from src.bedrock.__main__ import main
+    conn = get_connection(tmp_project)
+    vid, cid = _seed_volume_with_flag(conn, vol_number=1)   # Task 4 的 helper
+    conn.close()
+    import sys
+    old_argv = sys.argv
+    sys.argv = ["bedrock", "diagnose", "--project", str(tmp_project), "--volume", "1"]
+    try:
+        main()
+    finally:
+        sys.argv = old_argv
+    captured = capsys.readouterr()
+    assert "体检模式标记" in captured.out
+    assert "flag-only" in captured.out
