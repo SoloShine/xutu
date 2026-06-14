@@ -55,3 +55,18 @@ def list_fingerprints(conn, scope=None):
         if scope is None or fp.get("_scope") == scope:
             out.append(fp)
     return out
+
+
+def delete_volume_fingerprint(conn, volume_id):
+    """I1 upsert 助手：删除某 volume 的卷级指纹行（调用方在 save_fingerprint 前调）。
+    作品级指纹不动。"""
+    rows = conn.execute("SELECT id, fingerprint FROM style_template").fetchall()
+    to_delete = []
+    for r in rows:
+        fp = json.loads(r["fingerprint"])
+        if fp.get("_scope") == "volume" and fp.get("_volume_id") == volume_id:
+            to_delete.append(r["id"])
+    if to_delete:
+        placeholders = ",".join("?" * len(to_delete))
+        conn.execute(f"DELETE FROM style_template WHERE id IN ({placeholders})", to_delete)
+        conn.commit()
