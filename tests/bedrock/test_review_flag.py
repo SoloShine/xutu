@@ -2,7 +2,7 @@
 from src.bedrock.db.connection import get_connection
 from src.bedrock.orchestration.review_flag import (
     mark_unresolved, mark_polish_broke_beat, mark_forced_persist_failed,
-    get_review_flag,
+    mark_advisory_drift, get_review_flag,
 )
 from src.bedrock.checks.beat_fulfillment import BeatViolation
 from src.bedrock.repositories.plot_tree import create_volume, create_chapter
@@ -65,4 +65,18 @@ def test_upsert_preserves_prior_flags(tmp_project):
     assert flag["likely_rule_or_model_issue"] == 1
     assert flag["polish_broke_beat"] == 1
     assert flag["forced_persist_failed"] == 1
+    conn.close()
+
+
+def test_mark_advisory_drift_persists(tmp_project):
+    """advisory_drift 落库（SP5 VolumeReview 读）。"""
+    conn = get_connection(tmp_project)
+    _, cid = _seed(conn)
+    drift = {"word_count": {"declared": 9999, "recomputed": 10, "drifted": True}}
+    mark_advisory_drift(conn, cid, drift)
+    flag = get_review_flag(conn, cid)
+    import json as _json
+    persisted = _json.loads(flag["advisory_drift"])
+    assert persisted["word_count"]["drifted"] is True
+    assert persisted["word_count"]["declared"] == 9999
     conn.close()

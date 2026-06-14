@@ -55,6 +55,12 @@ def mark_forced_persist_failed(conn, chapter_id):
     _upsert(conn, chapter_id, {"forced_persist_failed": 1})
 
 
+def mark_advisory_drift(conn, chapter_id, drift):
+    """持久化 L2Report.drift（SP5 VolumeReview 读，识别自报造假高亮章）。
+    drift = {metric: {declared, recomputed, drifted}}（来自 run_l2 的 report.drift）。"""
+    _upsert(conn, chapter_id, {"advisory_drift": json.dumps(drift, ensure_ascii=False)})
+
+
 def get_review_flag(conn, chapter_id):
     row = conn.execute(
         "SELECT * FROM chapter_review_flag WHERE chapter_id=?", (chapter_id,)).fetchone()
