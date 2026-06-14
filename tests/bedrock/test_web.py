@@ -78,3 +78,59 @@ def test_report_missing_404(tmp_project):
     client = app.test_client()
     resp = client.get("/report/99")
     assert resp.status_code == 404
+
+
+def test_matrix_beat_expand_endpoint(tmp_project):
+    vid = _seed_app(tmp_project)
+    conn = get_connection(tmp_project)
+    cid = conn.execute("SELECT id FROM chapter WHERE global_number=1").fetchone()["id"]
+    hz = conn.execute("SELECT id FROM character WHERE name='韩峥'").fetchone()["id"]
+    conn.close()
+    app = create_app(str(tmp_project))
+    client = app.test_client()
+    resp = client.get("/matrix/beats", query_string={"chapter": cid, "character": hz})
+    assert resp.status_code == 200
+    body = resp.data.decode("utf-8")
+    assert "场景目的" in body   # beat purpose 出现
+
+
+def test_inspirations_advance_htmx(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    conn.close()
+    app = create_app(str(tmp_project))
+    client = app.test_client()
+    resp = client.post(f"/inspirations/{iid}/advance",
+                       data={"target": "refined"}, headers={"HX-Request": "true"})
+    assert resp.status_code == 200
+    assert "refined" in resp.data.decode("utf-8")   # 卡片 status 变
+
+
+def test_inspirations_advance_requires_htmx_header(tmp_project):
+    """H6：无 HX-Request 头 → 403（弱 CSRF）。"""
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    conn.close()
+    app = create_app(str(tmp_project))
+    client = app.test_client()
+    resp = client.post(f"/inspirations/{iid}/advance", data={"target": "refined"})   # 无 HX-Request 头
+    assert resp.status_code == 403
+
+
+def test_inspirations_advance_illegal_returns_error_card(tmp_project):
+    from src.bedrock.repositories.outline import advance_inspiration
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "discarded")   # 终态
+    conn.close()
+    app = create_app(str(tmp_project))
+    client = app.test_client()
+    resp = client.post(f"/inspirations/{iid}/advance",
+                       data={"target": "refined"}, headers={"HX-Request": "true"})
+    assert resp.status_code == 200   # 不崩，返回错误卡
+    body = resp.data.decode("utf-8")
+    assert "非法" in body or "error" in body.lower()
+    # 原 status 不变
+    conn = get_connection(tmp_project)
+    assert conn.execute("SELECT status FROM inspiration WHERE id=?", (iid,)).fetchone()["status"] == "discarded"
+    conn.close()

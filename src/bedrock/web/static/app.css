@@ -1,3 +1,12 @@
 .matrix-table { overflow-x: auto; }
-.pov-dot { cursor: pointer; }
-.status-raw { background:#ccc; } .status-refined{background:#6cf;} .status-consumed{background:#9c9;} .status-partial{background:#fc9;} .status-discarded{background:#f99;text-decoration:line-through;}
+.pov-dot { cursor: pointer; color: #c00; }
+.beat-list { background:#f5f5f5; padding:8px; border:1px solid #ddd; margin-top:4px; }
+.status-badge { padding:2px 6px; border-radius:3px; font-size:0.85em; }
+.status-raw { background:#ccc; }
+.status-refined { background:#6cf; }
+.status-consumed { background:#9c9; }
+.status-partial { background:#fc9; }
+.status-discarded { background:#f99; text-decoration: line-through; }
+.status-error { background:#f66; color:#fff; }
+.insp-card { border:1px solid #ddd; padding:8px; margin:8px 0; }
+.error-msg { color:#c00; }

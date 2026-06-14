@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, abort
 
 from src.bedrock.db.connection import get_connection
 from src.bedrock.web.queries import pov_matrix, list_volumes_simple
-from src.bedrock.repositories.outline import list_inspirations
+from src.bedrock.repositories.outline import list_inspirations, advance_inspiration
 from src.bedrock.cli.reader_commands import parse_review_outcomes
 
 
@@ -64,5 +64,36 @@ def create_app(project_dir):
         escalate_chs = {ch for ch, st in outcomes.items() if st == "escalate_human"}
         return render_template("report.html", html_body=html, volume_id=volume_id,
                                escalate_chs=escalate_chs, has_escalate=bool(escalate_chs))
+
+    @app.route("/matrix/beats")
+    def matrix_beats():
+        conn = get_connection(Path(app.config["PROJECT_DIR"]))
+        try:
+            chapter_id = request.args.get("chapter", type=int)
+            character_id = request.args.get("character", type=int)
+            beats = conn.execute(
+                "SELECT sequence, purpose FROM beat WHERE chapter_id=? AND pov_character_id=? ORDER BY sequence",
+                (chapter_id, character_id)).fetchall()
+            return render_template("_beats.html", beats=[dict(b) for b in beats])
+        finally:
+            conn.close()
+
+    @app.route("/inspirations/<int:iid>/advance", methods=["POST"])
+    def inspirations_advance(iid):
+        if not request.headers.get("HX-Request"):
+            abort(403)   # 弱 CSRF
+        target = request.form.get("target")
+        conn = get_connection(Path(app.config["PROJECT_DIR"]))
+        try:
+            try:
+                row = advance_inspiration(conn, iid, target)
+            except ValueError as e:
+                return render_template("_inspiration_card.html",
+                                       item={"id": iid, "status": "error",
+                                             "type": "", "content": "", "source": ""},
+                                       error=str(e))
+            return render_template("_inspiration_card.html", item=row)
+        finally:
+            conn.close()
 
     return app
