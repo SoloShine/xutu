@@ -3,6 +3,12 @@
 import json
 from dataclasses import asdict
 
+# _upsert 允许写入的列（白名单，防列名 f-string 注入脚枪）
+_ALLOWED_FLAG_COLUMNS = frozenset({
+    "l2_unresolved", "persisted_violations", "likely_rule_or_model_issue",
+    "polish_broke_beat", "forced_persist_failed", "advisory_drift",
+})
+
 
 def _beat_violation_to_dict(v):
     """BeatViolation dataclass → dict（含 fix_hint/detail）。"""
@@ -14,7 +20,13 @@ def _beat_violation_to_dict(v):
 
 
 def _upsert(conn, chapter_id, fields):
-    """INSERT OR UPDATE chapter_review_flag（保留既有列）。"""
+    """INSERT OR UPDATE chapter_review_flag（保留既有列）。
+
+    flagged_at 仅在首次 INSERT 时设（datetime('now') 默认值），后续 UPDATE 不动它——
+    记录"首次标记时间"，非"最后更新时间"。"""
+    bad = set(fields) - _ALLOWED_FLAG_COLUMNS
+    if bad:
+        raise ValueError(f"unknown review_flag columns: {sorted(bad)}")
     conn.execute(
         "INSERT INTO chapter_review_flag(chapter_id) VALUES(?) "
         "ON CONFLICT(chapter_id) DO NOTHING", (chapter_id,))
