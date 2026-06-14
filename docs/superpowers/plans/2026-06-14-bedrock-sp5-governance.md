@@ -148,45 +148,45 @@ def test_write_runtime_empty_inputs(tmp_project):
 
 - [ ] **Step 3: 实现 `orchestration/runtime_collect.py`**
 
+> **对抗审核修正（spec §三 ③）**：不复用 `record_agent_invocation`（它每次调用建一个新 chapter_runtime 行，N agent → N 行，聚合破坏）。改为：建**恰好一个** chapter_runtime 聚合行（用 SP1 `_create_runtime`），手动批量插 agent_invocation/llm_call 子行并累加 totals。
+
 ```python
 # src/bedrock/orchestration/runtime_collect.py
-"""黑墙遥测采集：封装 SP1 record_agent_invocation + record_llm_call。
-编排层（Workflow JS）在子代理结束后从 SDK usage 汇报 token/工具/阶段，传本函数落库。"""
-from src.bedrock.repositories.telemetry import record_agent_invocation, record_llm_call
-from src.bedrock.db.connection import get_connection  # noqa: F401（保持导入一致性）
+"""黑墙遥测采集：建一个 chapter_runtime 聚合行 + 批量挂 agent_invocation/llm_call 子行。
+编排层（Workflow JS）在子代理结束后从 SDK usage 汇报，传本函数落库。
+【新逻辑，非封装 record_agent_invocation】——后者一行/agent 会破坏单章聚合。"""
+from src.bedrock.repositories.telemetry import _create_runtime
 
 
 def write_runtime(conn, chapter_id, invocations, llm_calls, editing_rounds):
-    """写 chapter_runtime + agent_invocation + llm_call。
-    invocations: [{agent_type, black_wall_ms, start_ts?, end_ts?}]
+    """invocations: [{agent_type, black_wall_ms, start_ts?, end_ts?}]
     llm_calls: [{phase, model, prompt_tokens, completion_tokens, duration_ms}]
-    editing_rounds: 本章实际 Edit 派生次数。
-
-    实现说明：SP1 record_agent_invocation 每次调用创建一个新 chapter_runtime 行 +
-    一行 agent_invocation。为让 llm_calls 挂在同一 runtime_id，本函数取最后一次
-    invocation 的 runtime_id；若无 invocation 则用 _create_runtime 直接建一行。"""
-    from src.bedrock.repositories.telemetry import _create_runtime
-
-    runtime_id = None
+    建 1 个 chapter_runtime 行（editing_rounds + 累加 total_black_wall_ms/llm_tokens/llm_call_count）
+    + N agent_invocation 子行 + M llm_call 子行，全挂同一 runtime_id。"""
+    total_bw = sum(inv.get("black_wall_ms", 0) for inv in invocations)
+    total_tokens = sum(c.get("prompt_tokens", 0) + c.get("completion_tokens", 0) for c in llm_calls)
+    runtime_id = _create_runtime(conn, chapter_id, editing_rounds=editing_rounds)
+    # _create_runtime 只设 editing_rounds；这里补齐聚合列
+    conn.execute(
+        "UPDATE chapter_runtime SET total_black_wall_ms=?, tool_count=?, llm_tokens=?, llm_call_count=? "
+        "WHERE id=?",
+        (total_bw, len(invocations), total_tokens, len(llm_calls), runtime_id))
     for inv in invocations:
-        runtime_id = record_agent_invocation(
-            conn, chapter_id, inv["agent_type"], inv["black_wall_ms"],
-            start_ts=inv.get("start_ts"), end_ts=inv.get("end_ts"))
-
-    if runtime_id is None:
-        # 无 invocation 也要建 runtime 行承载 editing_rounds + llm_calls
-        runtime_id = _create_runtime(conn, chapter_id, editing_rounds=editing_rounds)
-    else:
-        conn.execute("UPDATE chapter_runtime SET editing_rounds=? WHERE id=?",
-                     (editing_rounds, runtime_id))
-        conn.commit()
-
-    for call in llm_calls:
-        record_llm_call(conn, runtime_id, call["phase"], call["model"],
-                        call["prompt_tokens"], call["completion_tokens"], call["duration_ms"])
+        conn.execute(
+            "INSERT INTO agent_invocation(runtime_id,agent_type,start_ts,end_ts,black_wall_ms) "
+            "VALUES(?,?,?,?,?)",
+            (runtime_id, inv["agent_type"], inv.get("start_ts"), inv.get("end_ts"),
+             inv.get("black_wall_ms", 0)))
+    for c in llm_calls:
+        conn.execute(
+            "INSERT INTO llm_call(runtime_id,phase,model,prompt_tokens,completion_tokens,duration_ms) "
+            "VALUES(?,?,?,?,?,?)",
+            (runtime_id, c["phase"], c["model"], c.get("prompt_tokens", 0),
+             c.get("completion_tokens", 0), c.get("duration_ms", 0)))
+    conn.commit()
 ```
 
-> **实现前先读 `src/bedrock/repositories/telemetry.py` 确认**：`record_agent_invocation` 返回 runtime_id（cur.lastrowid），`_create_runtime(conn, chapter_id, session_id=None, version=None, editing_rounds=0)` 返回 runtime_id，`record_llm_call(conn, runtime_id, phase, model, prompt_tokens, completion_tokens, duration_ms)`。若签名有出入，适配本文件不改 SP1。
+> **实现前读 `src/bedrock/repositories/telemetry.py` 确认** `_create_runtime(conn, chapter_id, session_id=None, version=None, editing_rounds=0)` 返回 runtime_id，且 chapter_runtime 列名（total_black_wall_ms/tool_count/llm_tokens/llm_call_count/editing_rounds）与上方一致（SP1 schema 已确认）。
 
 - [ ] **Step 4: 跑确认通过**（2 passed）+ 全量回归 → 106 + 2 = 108
 
@@ -514,7 +514,9 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - Create: `src/bedrock/orchestration/cross_volume_gate.py`
 - Test: `tests/bedrock/test_cross_volume_gate.py`
 
-**依赖**：SP1 `suspense_thread`（planned_resolve_volume/status）。**已确认**：`volume` 表有 `number` 列（NOT NULL UNIQUE，即卷序号），`create_volume(conn, number, ...)` 返回 volume.id（自增）。`suspense_thread.planned_resolve_volume` 存的是卷 **number**（非 id）。故 `check_cross_volume_debt(conn, volume_id)` 须先 `SELECT number FROM volume WHERE id=?` 映射。
+**依赖**：SP1 `suspense_thread`（planned_resolve_volume/status/importance）。**已确认**：`volume` 表有 `number` 列（NOT NULL UNIQUE，即卷序号），`create_volume(conn, number, ...)` 返回 volume.id（自增）。`suspense_thread.planned_resolve_volume` 存的是卷 **number**（非 id）。
+
+> **对抗审核修正（spec §五）**：用 `<= volume_number` 累积（捕获跨卷漏检欠债，与 SP2 `check_cross_volume_anchors` 一致）+ **仅 `importance='high'` BLOCKING**（与 SP2 blocking 桶单一真相）。medium/low 进报告 advisory 不阻断。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -525,19 +527,19 @@ from src.bedrock.orchestration.cross_volume_gate import check_cross_volume_debt,
 from src.bedrock.repositories.plot_tree import create_volume
 
 
-def _plant_thread(conn, tid, planned_resolve_volume_number, status):
+def _plant_thread(conn, tid, planned_resolve_volume_number, status, importance="high"):
     """planned_resolve_volume 用卷 number（非 id）。"""
     conn.execute(
         "INSERT INTO suspense_thread(id,content,thread_type,importance,origin,status,planned_resolve_volume) "
         "VALUES(?,?,?,?,?,?,?)",
-        (tid, "c", "mystery", "high", "scheduled", status, planned_resolve_volume_number))
+        (tid, "c", "mystery", importance, "scheduled", status, planned_resolve_volume_number))
     conn.commit()
 
 
 def test_no_debt_when_all_resolved(tmp_project):
     conn = get_connection(tmp_project)
-    vid = create_volume(conn, 1, "v", 1, 3, "opening")  # number=1, id=vid
-    _plant_thread(conn, 1, 1, "resolved")     # planned_resolve_volume=number 1
+    vid = create_volume(conn, 1, "v", 1, 3, "opening")  # number=1
+    _plant_thread(conn, 1, 1, "resolved")
     _plant_thread(conn, 2, 1, "abandoned")
     report = check_cross_volume_debt(conn, vid)
     assert report.blocking is False
@@ -545,27 +547,51 @@ def test_no_debt_when_all_resolved(tmp_project):
     conn.close()
 
 
-def test_debt_blocks_when_unresolved(tmp_project):
+def test_debt_blocks_when_unresolved_high(tmp_project):
     conn = get_connection(tmp_project)
     vid = create_volume(conn, 1, "v", 1, 3, "opening")
     _plant_thread(conn, 1, 1, "resolved")
-    _plant_thread(conn, 2, 1, "developing")   # 未兑现
-    _plant_thread(conn, 3, 1, "planted")      # 未兑现
+    _plant_thread(conn, 2, 1, "developing", importance="high")   # high 未兑现 → 阻断
+    _plant_thread(conn, 3, 1, "planted", importance="high")      # high 未兑现 → 阻断
     report = check_cross_volume_debt(conn, vid)
     assert report.blocking is True
     assert len(report.unresolved_threads) == 2
     conn.close()
 
 
-def test_ignores_other_volumes(tmp_project):
-    """只查 planned_resolve_volume=本卷 number 的悬链。"""
+def test_medium_importance_does_not_block(tmp_project):
+    """仅 high BLOCKING；medium/low 未兑现不阻断（与 SP2 单一真相）。"""
     conn = get_connection(tmp_project)
-    vid = create_volume(conn, 1, "v", 1, 3, "opening")  # number=1
-    _plant_thread(conn, 1, 1, "developing")        # 本卷（number 1）欠债
-    _plant_thread(conn, 2, 2, "developing")         # 别卷（number 2），不算
+    vid = create_volume(conn, 1, "v", 1, 3, "opening")
+    _plant_thread(conn, 1, 1, "developing", importance="medium")  # 不阻断
+    _plant_thread(conn, 2, 1, "planted", importance="low")        # 不阻断
+    report = check_cross_volume_debt(conn, vid)
+    assert report.blocking is False
+    assert len(report.unresolved_threads) == 0
+    conn.close()
+
+
+def test_leq_catches_earlier_volume_debt(tmp_project):
+    """<= 累积：planned_resolve_volume < 本卷 number 的 high 未兑现也捕获。"""
+    conn = get_connection(tmp_project)
+    vid = create_volume(conn, 5, "v", 1, 3, "opening")  # number=5
+    _plant_thread(conn, 1, 3, "developing", importance="high")   # vol3 计划，vol5 仍 open
+    _plant_thread(conn, 2, 5, "resolved")
     report = check_cross_volume_debt(conn, vid)
     assert report.blocking is True
-    assert len(report.unresolved_threads) == 1
+    assert len(report.unresolved_threads) == 1   # 只 vol3 那条（vol5 已 resolved）
+    conn.close()
+
+
+def test_ignores_future_volumes(tmp_project):
+    """planned_resolve_volume > 本卷 number 不算本卷欠债。"""
+    conn = get_connection(tmp_project)
+    vid = create_volume(conn, 1, "v", 1, 3, "opening")  # number=1
+    _plant_thread(conn, 1, 1, "developing", importance="high")  # 本卷欠债
+    _plant_thread(conn, 2, 2, "developing", importance="high")  # vol2 计划，不是本卷欠债
+    report = check_cross_volume_debt(conn, vid)
+    assert report.blocking is True
+    assert len(report.unresolved_threads) == 1   # 只 number<=1 的
     conn.close()
 ```
 
@@ -575,9 +601,9 @@ def test_ignores_other_volumes(tmp_project):
 
 ```python
 # src/bedrock/orchestration/cross_volume_gate.py
-"""跨卷悬链收敛门禁：dispatch 下一卷前查 planned_resolve_volume 未兑现悬链。纯 Python。
-卷间 BLOCKING：非空 → dispatch 下一卷被阻断。
-注意：suspense_thread.planned_resolve_volume 存的是卷 number（非 volume.id）。"""
+"""跨卷悬链收敛门禁：dispatch 下一卷前查 planned_resolve_volume <= 本卷 number 的 high 未兑现悬链。
+纯 Python。卷间 BLOCKING：非空 → dispatch 下一卷被阻断。
+注意：planned_resolve_volume 存卷 number（非 id）；仅 high BLOCKING（与 SP2 单一真相）。"""
 from dataclasses import dataclass, field
 
 
@@ -589,7 +615,7 @@ class CrossVolumeDebtReport:
 
 
 def check_cross_volume_debt(conn, volume_id):
-    """volume_id → volume.number → 查未兑现悬链。"""
+    """volume_id → volume.number → 查 planned_resolve_volume<=number AND high AND 未兑现。"""
     vrow = conn.execute("SELECT number FROM volume WHERE id=?", (volume_id,)).fetchone()
     if vrow is None:
         return CrossVolumeDebtReport(volume_id=volume_id)
@@ -597,7 +623,8 @@ def check_cross_volume_debt(conn, volume_id):
 
     rows = conn.execute(
         "SELECT id, content, importance FROM suspense_thread "
-        "WHERE planned_resolve_volume=? AND status NOT IN ('resolved','abandoned')",
+        "WHERE planned_resolve_volume<=? AND importance='high' "
+        "AND status NOT IN ('resolved','abandoned')",
         (volume_number,)).fetchall()
     unresolved = [{"thread_id": r["id"], "content": r["content"], "importance": r["importance"]}
                   for r in rows]
@@ -608,7 +635,7 @@ def check_cross_volume_debt(conn, volume_id):
     )
 ```
 
-- [ ] **Step 4: 跑确认通过**（3 passed）+ 全量回归 → 113 + 3 = 116
+- [ ] **Step 4: 跑确认通过**（5 passed）+ 全量回归 → 113 + 5 = 118
 
 - [ ] **Step 5: Commit**
 ```bash
@@ -660,18 +687,29 @@ async function pythonCli(cmdStr, opts = {}) {
 
 > **注意 cmdStr 拆分**：上方 `cmdStr.split(/\s+/)` 把整条命令（含 `--project X --chapter N`）拆成数组，第一个 token 是子命令名。但 `--export-path <path>` 可能含空格——若 exportPath 有空格风险，改用数组参数而非字符串拼接（下方调用处改为传数组）。**起步假设路径无空格**；若 Task 8 e2e 路径含空格，改为数组形式。
 
-- [ ] **Step 3: run-l2 后接 mark-advisory-drift**
+- [ ] **Step 3: run-l2 后接 mark-advisory-drift（worst-round）**
 
-在每处 `report = await pythonCli(\`run-l2 ...\`)` 之后，加 drift 持久化：
+> **对抗审核修正（spec §三 ④）**：drift 取**最差轮**（max over rounds by drifted 指标数），非 last-round。否则 round-1 大 drift 被 round-3 修好后覆盖，watchdog 看不到系统性造假。
+
+在 run-l2 调用点用一个 helper 跨轮保留 worst-drift，落盘 worst：
 
 ```javascript
-if (report.drift && Object.keys(report.drift).length > 0) {
+// 跨轮保留 worst-drift（drifted 指标数最多的轮）
+let worstDrift = {}
+function _persistDrift(report) {
+  if (!report.drift || Object.keys(report.drift).length === 0) return
+  const driftedCount = Object.values(report.drift).filter(d => d.drifted).length
+  const worstCount = Object.values(worstDrift).filter(d => d.drifted).length
+  if (driftedCount >= worstCount) worstDrift = report.drift
+}
+// 循环结束后落 worst（非每轮覆盖）：
+if (Object.keys(worstDrift).length > 0) {
   await pythonCli(`mark-advisory-drift --project ${project} --chapter ${chapter}`,
-                  { stdin: JSON.stringify(report.drift) })
+                  { stdin: JSON.stringify(worstDrift) })
 }
 ```
 
-（在 3 个 run-l2 调用点之后各加一处：初始 L2、每轮 repair 后、polish 后终检。可用一个小 helper `_persistDrift(report)` 避免重复。）
+（在每处 run-l2 后调 `_persistDrift(report)` 累积 worst；循环外一次性落盘。）
 
 - [ ] **Step 4: 人工 review**
 
@@ -681,7 +719,7 @@ if (report.drift && Object.keys(report.drift).length > 0) {
 - mark-advisory-drift 在 drift 非空时调用
 - collect-runtime 调用传 invocations/llm_calls（agent token 从各 agent 汇报——本 Task 用空数组占位，真采集留 Task 8 e2e 调通）
 
-- [ ] **Step 5: 全量回归**（JS 无单测）→ 116
+- [ ] **Step 5: 全量回归**（JS 无单测）→ 118
 
 - [ ] **Step 6: Commit**
 ```bash
@@ -698,7 +736,9 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - Create: `.claude/templates/bedrock/volume_review.md`
 - Create: `.claude/workflows/bedrock-volume-review.js`
 
-**依赖**：Task 4（watchdog）/ Task 5（cross_volume_gate）/ SP4（chapter_review_flag + run_l2）/ SP3（generate_repair_prompt）。无单测（agent 层，人工 review + Task 8 e2e）。
+**依赖**：Task 4（watchdog）/ Task 5（cross_volume_gate）/ SP4（chapter_review_flag + run_l2 + mark_*）。**不复用 SP3 generate_repair_prompt**（它只接 BeatViolation 结构违规；VolumeReview 语义修复用新 prompt）。无单测（agent 层，人工 review + Task 8 e2e）。
+
+> **对抗审核修正（spec §六）**：VR_FIX_ROUNDS=1（每章一次修正尝试）；Edit 后 **VolumeReview 二次复查**（L2 语义盲，必须 Opus 复查而非只信 L2，堵 A1/A4 漏洞）；三状态标注 verified_fixed/edited_unverified/escalate_human；语义修复 prompt 从 findings.fix_instruction 构造（非 RepairPrompt）。
 
 - [ ] **Step 1: 写 VolumeReview prompt 模板**
 
@@ -723,26 +763,29 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - 回收真实性：悬链 declared 推进是否实质（状态机迁移是数据事实，但实质推进是语义）
 - outline 合规：beat 段落 purpose 是否真兑现（bigram 匹配够不到的语义等价）
 
-### 阶段 B：修正闭环（Reviewer ≠ Fixer，抗博弈）
-对有 actionable findings 的章，**你不要直接改**——输出结构化 findings，主编排会派独立 Edit(Opus) 修。
-区分：
-- 语义发现（L2 盲区）→ actionable，Edit(Opus) 首次修，预期成功
-- 结构死结（l2_unresolved 过 3 轮）→ 你重诊断给新根因；若判断是 likely_rule_or_model → 标 escalate_human，不再修
+### 阶段 B：is_actionable 自分类（对抗审核修正）
+输出每章 `is_actionable` 字段，规则：
+- 语义发现（L2 盲区：代词/回收/outline）→ `is_actionable=True`（首次修）
+- 结构重诊断：若你判 likely_rule_or_model → `is_actionable=False`（escalate_human，不修）；否则 True（给一次 Opus 新机会）
+
+## 第二遍复查（主编排派你复用本 prompt）
+Edit 修完后，主编排会把你**再派一次**读已编辑的章，判语义问题是否真修好（L2 语义盲查不了，必须你复查）。第二遍你只对"被编辑过的章"输出 `verified`（修好）/ `unverified`（无法确认）/ `regressed`（引入新问题）。
 
 ## 输出（结构化，主编排写 review_report_vol{N}.md）
 ```
 旗章清单：
   chX [l2_unresolved]:
-    findings: 代词"她"在 beat3 指代不明（语义）→ actionable
+    findings: 代词"她"在 beat3 指代不明（语义）→ is_actionable=True
     fix_instruction: beat3 段落明确"她"=林深妻
   chY [l2_unresolved]:
     findings: beat2 缺角色，3 轮未过 → likely_rule_or_model
     fix_instruction: escalate_human（查 beat 兑现规则或换模型）
+    is_actionable=False
 watchdog: dash_per_kchar 贴边走 8/10 章
 跨卷悬链: ST007 未兑现
 ```
 
-**你不写 paragraphs**（Fixer 是独立 Edit agent）。你的 findings 进 review_report，actionable 的由主编排派 Edit 修。
+**你不写 paragraphs**（Fixer 是独立 Edit agent）。你的 findings 进 review_report，actionable 的由主编排派 Edit 修 + 你二次复查。
 ```
 
 - [ ] **Step 2: 写 bedrock-volume-review.js（Workflow JS）**
@@ -761,8 +804,10 @@ export const meta = {
 }
 
 // args: { project, volume, chapterRange: [start, end] }
+const VR_FIX_ROUNDS = 1  // 每章一次修正尝试（spec §六，不无限重试）
+
 export default async function ({ project, volume, chapterRange }) {
-  // 1. Gather：读旗章 + watchdog + 跨卷门禁
+  // 1. Gather：读旗章 + watchdog + 跨卷门禁（VolumeReview 无论 blocking 都跑，spec §六.0）
   phase('Gather')
   const watchdog = await pythonCli(`run-watchdog --project ${project} --volume ${volume}`)
   const debt = await pythonCli(`cross-volume-debt --project ${project} --volume ${volume}`)
@@ -773,60 +818,85 @@ export default async function ({ project, volume, chapterRange }) {
   }
   log(`gathered ${flagged.length} flagged chapters`)
 
-  // 2. Review：派 Opus 复查旗章
+  // 2. Review（第一遍）：派 Opus 复查旗章 → findings（含 is_actionable）
   phase('Review')
   const findings = await agent(volumeReviewPrompt(flagged, watchdog, debt),
                                 { label: 'VolumeReview-Opus', phase: 'Review', model: 'opus' })
 
-  // 3. Fix：对 actionable findings 派 Edit(Opus)（Reviewer ≠ Fixer）
+  // 3. Fix：对 is_actionable findings 派 Edit(Opus)（Reviewer ≠ Fixer；VR_FIX_ROUNDS=1）
   phase('Fix')
-  for (const f of findings.actionable) {
-    await agent(editFixPrompt(f), { label: `Edit-fix-ch${f.chapter}`, phase: 'Fix', model: 'opus' })
+  const edited = []  // 被编辑过的章（供二次复查）
+  for (const f of findings.actionable.slice(0, VR_FIX_ROUNDS ? findings.actionable.length : 0)) {
+    await agent(semanticEditPrompt(f), { label: `Edit-fix-ch${f.chapter}`, phase: 'Fix', model: 'opus' })
+    edited.push(f.chapter)
   }
 
-  // 4. Reverify：重跑 L2，Edit 不得破坏 beat
+  // 4. Reverify：L2 重跑（不得破坏 beat）+ VolumeReview 二次复查（L2 语义盲，必须 Opus 复查）
   phase('Reverify')
-  for (const f of findings.actionable) {
-    const after = await pythonCli(`run-l2 --project ${project} --chapter ${f.chapter}`)
+  const outcomes = {}  // chapter → verified_fixed/edited_unverified/escalate_human
+  for (const ch of edited) {
+    const after = await pythonCli(`run-l2 --project ${project} --chapter ${ch}`)
     if (!after.passed_hard_gate) {
-      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${f.chapter}`)
-      log(`ch${f.chapter}: edit introduced beat violation, flagged`)
+      // Edit 破坏 beat → 回滚策略：标 escalate（回滚具体段落留 SP6 diff 工具）
+      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${ch}`)
+      outcomes[ch] = 'escalate_human'   // edit 引入回归
+      continue
+    }
+  }
+  // 二次复查：VolumeReview 再读 edited 且 L2 未回归的章
+  const toRecheck = edited.filter(ch => outcomes[ch] !== 'escalate_human')
+  if (toRecheck.length > 0) {
+    const recheck = await agent(volumeReviewRecheckPrompt(toRecheck, project),
+                                { label: 'VolumeReview-recheck', phase: 'Reverify', model: 'opus' })
+    for (const ch of toRecheck) {
+      const v = recheck[ch]   // 'verified' | 'unverified' | 'regressed'
+      outcomes[ch] = v === 'verified' ? 'verified_fixed'
+                   : v === 'regressed' ? 'escalate_human'
+                   : 'edited_unverified'
     }
   }
 
-  // 5. Report：写 review_report_vol{N}.md
+  // 5. Report：写 review_report_vol{N}.md（三状态）
   phase('Report')
   await pythonCli(`write-review-report --project ${project} --volume ${volume}`,
-                  { stdin: JSON.stringify({ findings, watchdog, debt }) })
-  return { status: 'ok', reviewed: flagged.length, fixed: findings.actionable.length,
-           escalated: findings.escalate.length }
+                  { stdin: JSON.stringify({ findings, outcomes, watchdog, debt }) })
+  return { status: 'ok', reviewed: flagged.length,
+           verified_fixed: Object.values(outcomes).filter(o => o === 'verified_fixed').length,
+           escalated: Object.values(outcomes).filter(o => o === 'escalate_human').length }
 }
 
 function volumeReviewPrompt(flagged, watchdog, debt) { /* 嵌 volume_review.md + JSON */ }
-function editFixPrompt(f) { /* 从 f.fix_instruction 构造 Edit RepairPrompt */ }
+function volumeReviewRecheckPrompt(chapters, project) { /* 第二遍：只读已编辑章，输出 verified/unverified/regressed */ }
+function semanticEditPrompt(f) {
+  // 语义修复 prompt：从 f.fix_instruction 构造（非 RepairPrompt/BeatViolation）。
+  // 内含该章 paragraphs 上下文 + fix_instruction 自然语言指令 + "只改相关段落，不破坏 beat"。
+}
 async function pythonCli(_cmd, _opts) { /* 同 Task 6 的 subprocess dispatch */ }
 ```
 
-> **注意 CLI 依赖**：上方引用 `run-watchdog` / `cross-volume-debt` / `get-review-flag` / `write-review-report` 4 个 CLI 命令。Task 3 只建了 4 个（mark-*/collect-runtime）。**Task 7 需在 __main__.py 补这 4 个 CLI 包装**（run-watchdog→run_watchdog、cross-volume-debt→check_cross_volume_debt、get-review-flag→get_review_flag+has_flag 标志、write-review-report→写 review_report_vol{N}.md 文件）。把这 4 个 CLI 加到 Task 3 同样的 subparser/分支模式里，作为本 Task 的 Step 2.5。
+> **注意 CLI 依赖**：上方引用 `run-watchdog` / `cross-volume-debt` / `get-review-flag` / `write-review-report` / `unlock-volume` 5 个 CLI 命令。Task 3 只建了 4 个（mark-*/collect-runtime）。**Task 7 需在 __main__.py 补这 5 个治理 CLI**（见 Step 3）。
 
-- [ ] **Step 3: 补 4 个治理 CLI（__main__.py）**
+- [ ] **Step 3: 补 5 个治理 CLI（__main__.py）**
 
 追加 subparser + 分支：
-- `run-watchdog --project P --volume V` → `run_watchdog(conn, vid)` → JSON 打印 VolumeWatchdogReport（vid = `SELECT id FROM volume WHERE volume_index=?` 或按实际列）
+- `run-watchdog --project P --volume V` → `run_watchdog(conn, vid)` → JSON 打印 VolumeWatchdogReport（vid = volume.id；`--volume` 传 id）
 - `cross-volume-debt --project P --volume V` → `check_cross_volume_debt(conn, vid)` → JSON
-- `get-review-flag --project P --chapter N` → `get_review_flag(conn, cid)` → JSON + `has_flag` 字段（任一 flag 非 0 或 drift 非空）
-- `write-review-report --project P --volume V` → 读 stdin JSON → 写 `projects/<P>/review_report_vol{V}.md`（用模板拼装；路径同 V1 约定）
+- `get-review-flag --project P --chapter N` → `get_review_flag(conn, cid)` → JSON + `has_flag` 字段（任一 flag 非 0 或 drift ≠ '{}'）
+- `write-review-report --project P --volume V` → 读 stdin JSON → 写 `<P>/review_report_vol{V}.md`（用模板拼装；强制落盘治 Vol15）
+- `unlock-volume --project P --volume V --reason R` → **人工释放卷间 BLOCKING**（spec §十一）：`UPDATE volume_review SET blocking=0` + `governance.add_amendment(...)` 记录理由。author 固定 'human'。
 
-> volume 序号→id 映射：与 Task 5 同样需读 volume 表结构确认列名。
+> volume `--volume` 参数语义 = volume.id（watchdog/cross_volume_gate 都接 id；cross_volume_gate 内部 id→number 映射）。
 
 - [ ] **Step 4: 人工 review**
 
-通读 volume_review.md + bedrock-volume-review.js + 4 新 CLI，确认：
+通读 volume_review.md + bedrock-volume-review.js + 5 新 CLI，确认：
 - Reviewer（VolumeReview）不写 paragraphs，Fixer（Edit）独立
-- actionable（语义）vs escalate（结构死结）区分
+- is_actionable 自分类（语义→True；结构 likely_rule_or_model→False）
+- VR_FIX_ROUNDS=1 + 二次复查（verified_fixed/edited_unverified/escalate_human 三状态）
 - write-review-report 强制落盘（治 Vol15）
+- unlock-volume 写 amendment（人工释放留痕）
 
-- [ ] **Step 5: 全量回归** → 116（agent/CLI 无新单测；4 CLI 是薄封装）
+- [ ] **Step 5: 全量回归** → 118（agent/CLI 无新单测；5 CLI 是薄封装）
 
 - [ ] **Step 6: Commit**
 ```bash
@@ -933,7 +1003,7 @@ def test_micro_volume_full_pipeline(tmp_path):
 - [ ] **Step 3: 验证默认 skip**
 
 Run: `cd D:/novel_test && python -m pytest tests/bedrock/ -q`
-Expected: 116 passed, e2e 被 deselect（不跑）
+Expected: 118 passed, e2e 被 deselect（不跑）
 
 Run: `cd D:/novel_test && python -m pytest tests/bedrock/e2e/ -m e2e --co`
 Expected: 收集到 1 个 e2e 测试（`--co` 只 collect 不跑）
@@ -976,7 +1046,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 **4. 依赖顺序**：Task 1（schema）→ 2（runtime_collect）→ 3（CLI 用 2）→ 4（watchdog 用 1）→ 5（独立）→ 6（JS 用 3）→ 7（agent 用 4/5 + 补 CLI）→ 8（e2e 用全部）。满足依赖 ✓
 
-**5. 测试增量**：106（SP1-4）→ +2(runtime_collect)+5(watchdog)+3(cross_volume_gate) = **116 单测** + 1 e2e（默认 skip）。spec §十预估 118，差异：watchdog 5 vs 预估 6（合并了空 metrics 用例）。符合预期。
+**5. 测试增量**：106（SP1-4）→ +2(runtime_collect)+5(watchdog)+5(cross_volume_gate) = **118 单测** + 1 e2e（默认 skip，手动触发）。
 
 **6. 两个实现时验证点**（非 placeholder，给了 fallback）：
 - volume 表序号列名（Task 5/7）→ 读 plot_tree.create_volume
