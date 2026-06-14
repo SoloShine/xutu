@@ -67,22 +67,24 @@ def test_list_fingerprints(tmp_project):
 
 
 def test_delete_volume_fingerprint_clears_then_reinsert(tmp_project):
-    """I1: save_fingerprint 卷级无 upsert。delete_volume_fingerprint 先清旧行再 save，保证一卷一行。"""
-    from src.bedrock.style.template_repo import (
-        save_fingerprint, delete_volume_fingerprint, get_effective_fingerprint,
-    )
+    """I1: save_fingerprint 卷级无 upsert。delete_volume_fingerprint 先清旧行再 save，保证一卷一行；
+    且不动作品级指纹。"""
     conn = get_connection(tmp_project)
     vid, cid = _seed_paragraphs(conn, ["他来了。", "她走了。"])
+    # 先存一条作品级（delete 时应存活）
+    save_fingerprint(conn, scope="work", chapter_ids=[cid])
     save_fingerprint(conn, scope="volume", chapter_ids=[cid], volume_id=vid)
     # 再 save 一次（无 upsert → 插第二行）
     save_fingerprint(conn, scope="volume", chapter_ids=[cid], volume_id=vid)
-    # delete 后卷级行清空
+    # delete 后卷级行清空，作品级行存活
     delete_volume_fingerprint(conn, volume_id=vid)
     rows = conn.execute("SELECT fingerprint FROM style_template").fetchall()
     vol_rows = [r for r in rows if json.loads(r["fingerprint"]).get("_scope") == "volume"
                 and json.loads(r["fingerprint"]).get("_volume_id") == vid]
+    work_rows = [r for r in rows if json.loads(r["fingerprint"]).get("_scope") == "work"]
     assert len(vol_rows) == 0
-    # 重新 save → 恰好一行
+    assert len(work_rows) == 1  # 作品级未被误删
+    # 重新 save → 恰好一行卷级
     save_fingerprint(conn, scope="volume", chapter_ids=[cid], volume_id=vid)
     vol_rows = [r for r in conn.execute("SELECT fingerprint FROM style_template").fetchall()
                 if json.loads(r["fingerprint"]).get("_scope") == "volume"
