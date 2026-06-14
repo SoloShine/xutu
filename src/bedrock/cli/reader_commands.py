@@ -3,6 +3,7 @@ diagnose / show_review_report / diff 完全不写 DB；export 仅写 export_mani
 正文 SSOT = paragraph 表，export 单向导出绝不回填。"""
 import hashlib
 import json
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -301,3 +302,57 @@ def diagnose(conn, project_path, scope, with_l2):
     lines.append(f"<!-- diagnose-trace: mode={mode} scope={scope[0]}:{scope[1]} "
                  f"project={Path(project_path).name} generated_at={now_iso} -->")
     return "\n".join(lines) + "\n"
+
+
+# ---- show_review_report (SP6-A Task 6) ----
+
+_OUTCOME_RE = re.compile(
+    r"^- ch(\d+):\s*(verified_fixed|edited_unverified|escalate_human)\s*$",
+    re.MULTILINE)
+_ACTIONABLE_RE = re.compile(
+    r"^- ch(\d+)\s*\[is_actionable=[^\]]*\]:\s*(.+)$", re.MULTILINE)
+_MD_NOISE = re.compile(r"(^#{1,6}\s+)|(\*\*)|(```)|(\|)")
+
+
+def show_review_report(project_path, volume, escalate_only, plain):
+    """读 review_report_vol{volume}.md（volume=volume.id，与 write-review-report 文件名一致）。
+    只解析 SP5 _write_review_report 格式；V2 手写报告 escalate-only 返回空 + 警告。"""
+    report_path = Path(project_path) / f"review_report_vol{volume}.md"
+    if not report_path.exists():
+        raise SystemExit(f"报告不存在：{report_path}（show-review-report 不生成空报告）")
+    text = report_path.read_text(encoding="utf-8")
+
+    if not escalate_only:
+        return _strip_markdown(text) if plain else text
+
+    # escalate-only：outcomes 为主表，左连 actionable
+    outcomes = {int(m.group(1)): m.group(2) for m in _OUTCOME_RE.finditer(text)}
+    actionable = {int(m.group(1)): m.group(2).strip()
+                  for m in _ACTIONABLE_RE.finditer(text)}
+    escalate_chs = [ch for ch, st in outcomes.items() if st == "escalate_human"]
+
+    if not escalate_chs:
+        msg = ("（未检测到 SP5 格式 escalate_human 项——"
+               "可能是 V2 手写报告、空卷，或确无 escalate）")
+        return msg
+
+    lines = [f"## 卷 {volume} — 需人工判决（escalate_human）", ""]
+    for ch in sorted(escalate_chs):
+        lines.append(f"### ch{ch}")
+        fix = actionable.get(ch)
+        lines.append(
+            f"- 原发现（actionable fix_instruction）："
+            f"{fix if fix else '（无 fix_instruction，可能经由 polish_broke_beat/hard_gate 触发）'}")
+        lines.append(f"- 修正结果状态：escalate_human")
+        lines.append("")
+    result = "\n".join(lines)
+    return _strip_markdown(result) if plain else result
+
+
+def _strip_markdown(text):
+    """去 md 噪声：行首 #、**、代码围栏、表格管道符。json 块去围栏保留内容。"""
+    out = []
+    for line in text.splitlines():
+        line = _MD_NOISE.sub("", line)
+        out.append(line)
+    return "\n".join(out)

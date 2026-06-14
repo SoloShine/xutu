@@ -319,3 +319,83 @@ def test_diagnose_cli_smoke(tmp_project, capsys):
     captured = capsys.readouterr()
     assert "体检模式标记" in captured.out
     assert "flag-only" in captured.out
+
+
+# ---- show_review_report tests (SP6-A Task 6) ----
+
+from src.bedrock.cli.reader_commands import show_review_report
+
+SP5_REPORT = """# VolumeReview 报告 — 卷 3
+
+## 旗章发现（actionable）
+- ch7 [is_actionable=True]: 主语缺失，代词指向不明
+- ch9 [is_actionable=True]: beat 契约目的未兑现
+
+## 修正结果（三状态）
+- ch7: edited_unverified
+- ch9: escalate_human
+- ch12: escalate_human
+
+## Watchdog
+（无）
+
+## 跨卷悬链欠债
+（无）
+"""
+
+V2_REPORT = """# 卷三 复盘
+一、总体评价：本卷节奏偏快。
+2.1 林深的转变较突兀。
+"""
+
+
+def _write_report(project_path, vol_id, content):
+    report_path = project_path / f"review_report_vol{vol_id}.md"
+    report_path.write_text(content, encoding="utf-8")
+    return report_path
+
+
+def test_show_report_default_raw(tmp_project):
+    _write_report(tmp_project, 3, SP5_REPORT)
+    out = show_review_report(tmp_project, volume=3, escalate_only=False, plain=False)
+    assert "旗章发现" in out
+    assert out.strip() == SP5_REPORT.strip()
+
+
+def test_show_report_plain_strips_markdown(tmp_project):
+    _write_report(tmp_project, 3, SP5_REPORT)
+    out = show_review_report(tmp_project, volume=3, escalate_only=False, plain=True)
+    assert "###" not in out
+    assert "**" not in out
+
+
+def test_show_report_escalate_only_outcomes_primary(tmp_project):
+    """outcomes-escalate 为主表，左连 actionable。
+    ch9 有 actionable fix_instruction；ch12 在 outcomes 但 actionable 无 → 注无 fix_instruction。"""
+    _write_report(tmp_project, 3, SP5_REPORT)
+    out = show_review_report(tmp_project, volume=3, escalate_only=True, plain=False)
+    assert "ch9" in out and "ch12" in out               # 两个 escalate 都列
+    assert "beat 契约目的未兑现" in out                  # ch9 的 fix_instruction
+    assert "ch12" in out                                 # ch12 无 actionable → 仍列
+    assert "escalate_human" in out
+
+
+def test_show_report_escalate_only_plain_compose(tmp_project):
+    _write_report(tmp_project, 3, SP5_REPORT)
+    out = show_review_report(tmp_project, volume=3, escalate_only=True, plain=True)
+    assert "###" not in out
+    assert "ch9" in out
+
+
+def test_show_report_missing_file_exits(tmp_project):
+    import pytest
+    with pytest.raises(SystemExit):
+        show_review_report(tmp_project, volume=99, escalate_only=False, plain=False)
+
+
+def test_show_report_v2_format_tolerant(tmp_project):
+    """V2 手写报告 → escalate-only 返回空 + 警告，不崩溃。"""
+    _write_report(tmp_project, 3, V2_REPORT)
+    out = show_review_report(tmp_project, volume=3, escalate_only=True, plain=False)
+    # 不崩溃；空清单或提示
+    assert "escalate" in out.lower() or "无" in out or "未检测到" in out
