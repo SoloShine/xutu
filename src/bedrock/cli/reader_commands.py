@@ -356,3 +356,85 @@ def _strip_markdown(text):
         line = _MD_NOISE.sub("", line)
         out.append(line)
     return "\n".join(out)
+
+
+# ---- detect_drift (SP6-A Task 8) ----
+
+@dataclass
+class DriftReport:
+    rows: list   # [{ch_id, global_number, db_paras, file, status, diagnosis}]
+
+
+def detect_drift(conn, project_path, scope, target, fmt, final):
+    """DB 段落聚合内容 ↔ 已导出文件 漂移检测。纯读，不写 DB。
+    scope: 'chapter'|'volume'|'book'; target: chapter.id|volume.id|None。"""
+    project_path = Path(project_path)
+    if scope == "chapter":
+        ch_ids = [target]
+    elif scope == "volume":
+        ch_ids = [r["id"] for r in conn.execute(
+            "SELECT id FROM chapter WHERE volume_id=? AND status='completed' "
+            "ORDER BY global_number", (target,)).fetchall()]
+    else:  # book
+        ch_ids = [r["id"] for r in conn.execute(
+            "SELECT id FROM chapter WHERE status='completed' ORDER BY global_number").fetchall()]
+
+    exports_dir = project_path / ("exports/final" if final else "exports")
+    status_filter = "final" if final else "draft"
+    rows = []
+    for cid in ch_ids:
+        ch = conn.execute(
+            "SELECT id, global_number FROM chapter WHERE id=?", (cid,)).fetchone()
+        paras = list_paragraphs_in_chapter(conn, cid)
+        file_name = f"{chapter_filename(ch['global_number'])}.{fmt}"
+        file_path = exports_dir / file_name
+
+        if len(paras) == 0:
+            rows.append({"ch_id": cid, "global_number": ch["global_number"],
+                         "db_paras": 0, "file": str(file_path),
+                         "status": "missing_db", "diagnosis": ""})
+            continue
+        if not file_path.exists():
+            rows.append({"ch_id": cid, "global_number": ch["global_number"],
+                         "db_paras": len(paras), "file": str(file_path),
+                         "status": "missing_file", "diagnosis": ""})
+            continue
+
+        db_content = render_chapter_body(conn, cid, fmt)
+        db_hash = _sha256_text(db_content)
+        file_hash = _sha256_text(file_path.read_text(encoding="utf-8"))
+
+        if db_hash == file_hash:
+            rows.append({"ch_id": cid, "global_number": ch["global_number"],
+                         "db_paras": len(paras), "file": str(file_path),
+                         "status": "ok", "diagnosis": ""})
+        else:
+            diagnosis = _three_way_diagnose(
+                conn, cid, fmt, status_filter, db_hash, file_hash)
+            rows.append({"ch_id": cid, "global_number": ch["global_number"],
+                         "db_paras": len(paras), "file": str(file_path),
+                         "status": "drifted", "diagnosis": diagnosis})
+    return DriftReport(rows=rows)
+
+
+def _three_way_diagnose(conn, chapter_id, fmt, status_filter, db_hash, file_hash):
+    """三路定位：db_hash / file_hash / manifest_hash。纯读，不写 DB。
+    manifest 查询严格 (scope='chapter' AND target_id=chapter.id AND format AND status)，
+    绝不用 volume/book scope 的 hash 顶替单章（整卷/全书 hash 与单章不可比）。"""
+    man = conn.execute(
+        "SELECT content_hash FROM export_manifest "
+        "WHERE scope='chapter' AND target_id=? AND format=? AND status=? "
+        "ORDER BY id DESC LIMIT 1",
+        (chapter_id, fmt, status_filter)).fetchone()
+    if man is None:
+        return "drifted（无该章 chapter-scope manifest，降级两路；无法定位是谁改了）"
+    man_hash = man["content_hash"]
+    db_eq_man = (db_hash == man_hash)
+    file_eq_man = (file_hash == man_hash)
+    if db_eq_man and not file_eq_man:
+        return "drifted（文件侧被手改：DB 与 manifest 一致，文件被人改）"
+    if file_eq_man and not db_eq_man:
+        return "drifted（DB 侧被改后未重导：文件与 manifest 一致，DB 正文变了）"
+    if not db_eq_man and not file_eq_man:
+        return "drifted（DB 与文件都被改过）"
+    return "drifted（manifest 与当前一致但 db/file 不等——罕见，检查导出原子性）"

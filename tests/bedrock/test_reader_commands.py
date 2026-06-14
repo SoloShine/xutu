@@ -404,6 +404,97 @@ def test_show_report_v2_format_tolerant(tmp_project):
 # ---- show-review-report CLI 薄封装 tests (SP6-A Task 7) ----
 
 
+# ---- detect_drift tests (SP6-A Task 8) ----
+
+from src.bedrock.cli.reader_commands import detect_drift, DriftReport
+
+
+def test_diff_ok_after_export(tmp_project):
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    assert any(r["status"] == "ok" for r in report.rows)
+    conn.close()
+
+
+def test_diff_drifted_db_changed(tmp_project):
+    """export 后改 DB 段落 → drifted，三路定位指向 DB 侧被改。"""
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    # 改 DB 段落
+    conn.execute("UPDATE paragraph SET text='被手改的正文' WHERE chapter_id=?", (c1,))
+    conn.commit()
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    row = report.rows[0]
+    assert row["status"] == "drifted"
+    assert "DB 侧被改" in row.get("diagnosis", "")
+    conn.close()
+
+
+def test_diff_drifted_file_changed(tmp_project):
+    """export 后手改文件 → drifted，三路定位指向文件侧被改。"""
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    result = do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    # 手改文件
+    Path(result.path).write_text("被人手改的内容", encoding="utf-8")
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    row = report.rows[0]
+    assert row["status"] == "drifted"
+    assert "文件侧被手改" in row.get("diagnosis", "")
+    conn.close()
+
+
+def test_diff_missing_db(tmp_project):
+    conn = get_connection(tmp_project)
+    v1 = create_volume(conn, 1, "v", 1, 3, "opening")
+    cid = create_chapter(conn, volume_id=v1, global_number=1, title="x", status="completed")
+    # 无段落（未落盘）
+    report = detect_drift(conn, tmp_project, scope="chapter", target=cid, fmt="md", final=False)
+    assert report.rows[0]["status"] == "missing_db"
+    conn.close()
+
+
+def test_diff_missing_file(tmp_project):
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    # 不 export，直接 diff
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    assert report.rows[0]["status"] == "missing_file"
+    conn.close()
+
+
+def test_diff_manifest_key_only_chapter_scope(tmp_project):
+    """【核心不变量】该章仅 volume scope 导出过 → diff 不拿 volume hash 顶替，降级两路。"""
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    # 仅卷导出（target_id = volume.id，非 chapter.id）
+    do_export(conn, tmp_project, scope="volume", target=v1, fmt="md", final=False, out=None)
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    row = report.rows[0]
+    # 单章文件不存在（只导了整卷 vol1.md）→ missing_file（不误用 volume manifest）
+    assert row["status"] == "missing_file"
+    conn.close()
+
+
+def test_diff_final_status_split(tmp_project):
+    """【核心不变量】draft 覆盖 draft 区后，diff --final 仍基于 final manifest。"""
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    # 先 final 导出
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=True, out=None)
+    # 再 draft 导出（覆盖 exports/ch01.md，不动 final 区）
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    # 改 DB → draft 区 drifted；final 区文件未变但与 DB 已偏离
+    conn.execute("UPDATE paragraph SET text='改了' WHERE chapter_id=?", (c1,))
+    conn.commit()
+    report_final = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=True)
+    assert report_final.rows[0]["status"] == "drifted"   # final 快照与 DB 偏离被发现
+    conn.close()
+
+
 def test_show_review_cli_smoke(tmp_project, capsys):
     """show-review-report CLI 端到端：写 SP5 报告→CLI --escalate-only→stdout 有 ch9。"""
     from src.bedrock.__main__ import main
