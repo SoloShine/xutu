@@ -299,7 +299,8 @@ def diagnose(conn, project_path, scope, with_l2):
         lines.append("- （无需关注）")
     lines.append("")
 
-    lines.append(f"<!-- diagnose-trace: mode={mode} scope={scope[0]}:{scope[1]} "
+    scope_trace = scope[0] if scope[0] == "book" else f"{scope[0]}:{scope[1]}"
+    lines.append(f"<!-- diagnose-trace: mode={mode} scope={scope_trace} "
                  f"project={Path(project_path).name} generated_at={now_iso} -->")
     return "\n".join(lines) + "\n"
 

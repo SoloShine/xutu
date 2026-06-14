@@ -211,10 +211,9 @@ from src.bedrock.repositories.suspense import plant_thread
 from src.bedrock.repositories.plot_tree import create_beat
 
 
-def _seed_volume_with_flag(conn, vol_number=1, vid=None):
-    """建 1 卷 1 completed 章（落盘），返回 vid。"""
-    if vid is None:
-        vid = create_volume(conn, vol_number, f"卷{vol_number}", 1, 3, "opening")
+def _seed_volume_with_flag(conn, vol_number=1):
+    """建 1 卷 1 completed 章（落盘），返回 (vid, cid)。"""
+    vid = create_volume(conn, vol_number, f"卷{vol_number}", 1, 3, "opening")
     cid = create_chapter(conn, volume_id=vid, global_number=vol_number,
                          title="x", status="completed")
     create_paragraph(conn, chapter_id=cid, seq=1, text="一段足够长的正文内容用来测试。",
