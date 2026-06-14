@@ -65,3 +65,15 @@ def get_review_flag(conn, chapter_id):
     row = conn.execute(
         "SELECT * FROM chapter_review_flag WHERE chapter_id=?", (chapter_id,)).fetchone()
     return dict(row) if row else None
+
+
+def compute_has_flag(flag):
+    """任一硬 flag != 0 或 advisory_drift 非空（'{}' 等价空）→ True。
+    likely_rule_or_model_issue 不计入（l2_unresolved 的诊断子字段）。flag=None → False。"""
+    if flag is None:
+        return False
+    advisory = flag.get("advisory_drift") or "{}"
+    return (flag.get("l2_unresolved", 0) != 0
+            or flag.get("polish_broke_beat", 0) != 0
+            or flag.get("forced_persist_failed", 0) != 0
+            or advisory not in (None, "{}"))

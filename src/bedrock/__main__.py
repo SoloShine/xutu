@@ -6,6 +6,7 @@ from pathlib import Path
 
 from src.bedrock.init_project import init_project
 from src.bedrock.db.connection import get_connection
+from src.bedrock.db.chapter_lookup import chapter_id_by_global
 from src.bedrock.orchestration.l2_pipeline import run_l2
 from src.bedrock.orchestration.boot_context import get_chapter_boot_context
 from src.bedrock.orchestration.persist_gate import verify_chapter_persisted
@@ -18,18 +19,14 @@ from src.bedrock.orchestration.review_flag import (
 from src.bedrock.orchestration.runtime_collect import write_runtime
 from src.bedrock.orchestration.watchdog import run_watchdog
 from src.bedrock.orchestration.cross_volume_gate import check_cross_volume_debt
-from src.bedrock.orchestration.review_flag import get_review_flag
+from src.bedrock.orchestration.review_flag import get_review_flag, compute_has_flag
 from src.bedrock.repositories.governance import add_amendment
 from src.bedrock.checks.beat_fulfillment import BeatViolation
 
 
 def _chapter_id(conn, global_number):
-    """global_number → chapter.id。找不到时抛 SystemExit（CLI 边界，友好报错）。"""
-    row = conn.execute(
-        "SELECT id FROM chapter WHERE global_number=?", (global_number,)).fetchone()
-    if row is None:
-        sys.exit(f"找不到 global_number={global_number} 的章节")
-    return row["id"]
+    """global_number → chapter.id（委托共享函数，保 CLI 友好报错）。"""
+    return chapter_id_by_global(conn, global_number)
 
 
 def _write_review_report(report_path, volume, payload):
@@ -274,16 +271,7 @@ def main():
         elif args.cmd == "get-review-flag":
             cid = _chapter_id(conn, args.chapter)
             flag = get_review_flag(conn, cid)
-            # has_flag：任一硬 flag != 0 或 advisory_drift 非空（'{}' 等价于空）
-            # 注意：likely_rule_or_model_issue 不计入 has_flag——它是 l2_unresolved 的诊断
-            # 子字段（仅 l2_unresolved 时有意义），单独算会把"仅诊断"行误判为需 VolumeReview 复查。
-            has_flag = False
-            if flag is not None:
-                advisory = flag.get("advisory_drift") or "{}"
-                has_flag = (flag.get("l2_unresolved", 0) != 0
-                            or flag.get("polish_broke_beat", 0) != 0
-                            or flag.get("forced_persist_failed", 0) != 0
-                            or advisory not in (None, "{}"))
+            has_flag = compute_has_flag(flag)
             print(json.dumps({"has_flag": has_flag, "flag": flag},
                              ensure_ascii=False, default=str))
         elif args.cmd == "write-review-report":

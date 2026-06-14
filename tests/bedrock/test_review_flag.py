@@ -2,7 +2,7 @@
 from src.bedrock.db.connection import get_connection
 from src.bedrock.orchestration.review_flag import (
     mark_unresolved, mark_polish_broke_beat, mark_forced_persist_failed,
-    mark_advisory_drift, get_review_flag,
+    mark_advisory_drift, get_review_flag, compute_has_flag,
 )
 from src.bedrock.checks.beat_fulfillment import BeatViolation
 from src.bedrock.repositories.plot_tree import create_volume, create_chapter
@@ -80,3 +80,30 @@ def test_mark_advisory_drift_persists(tmp_project):
     assert persisted["word_count"]["drifted"] is True
     assert persisted["word_count"]["declared"] == 9999
     conn.close()
+
+
+def test_compute_has_flag_none():
+    assert compute_has_flag(None) is False
+
+
+def test_compute_has_flag_l2_unresolved():
+    assert compute_has_flag({"l2_unresolved": 1, "polish_broke_beat": 0,
+                             "forced_persist_failed": 0, "advisory_drift": "{}"}) is True
+
+
+def test_compute_has_flag_advisory_empty():
+    assert compute_has_flag({"l2_unresolved": 0, "polish_broke_beat": 0,
+                             "forced_persist_failed": 0, "advisory_drift": "{}"}) is False
+
+
+def test_compute_has_flag_advisory_nonempty():
+    assert compute_has_flag({"l2_unresolved": 0, "polish_broke_beat": 0,
+                             "forced_persist_failed": 0,
+                             "advisory_drift": '{"dash_count": 99}'}) is True
+
+
+def test_compute_has_flag_likely_rule_or_model_not_counted():
+    """likely_rule_or_model_issue 单独不计入（l2_unresolved 诊断子字段）。"""
+    assert compute_has_flag({"l2_unresolved": 0, "polish_broke_beat": 0,
+                             "forced_persist_failed": 0, "advisory_drift": "{}",
+                             "likely_rule_or_model_issue": 1}) is False
