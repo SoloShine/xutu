@@ -403,3 +403,12 @@ CREATE TABLE IF NOT EXISTS chapter_review_flag (
     advisory_drift TEXT NOT NULL DEFAULT '{}',
     flagged_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+
+-- ===== SP5 治理层：卷级 watchdog 发现（卷间 BLOCKING 门禁）=====
+CREATE TABLE IF NOT EXISTS volume_review (
+    volume_id INTEGER PRIMARY KEY REFERENCES volume(id),
+    watchdog_findings TEXT NOT NULL DEFAULT '{}',
+    blocking INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
