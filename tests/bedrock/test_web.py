@@ -134,3 +134,19 @@ def test_inspirations_advance_illegal_returns_error_card(tmp_project):
     conn = get_connection(tmp_project)
     assert conn.execute("SELECT status FROM inspiration WHERE id=?", (iid,)).fetchone()["status"] == "discarded"
     conn.close()
+
+
+def test_report_escalate_per_item_highlight(tmp_project):
+    """spec §4.3：含 escalate_human 的 outcome 行（<li>）加 escalate-highlight class。"""
+    (tmp_project / "review_report_vol1.md").write_text(
+        "# VolumeReview 报告 — 卷 1\n\n## 修正结果（三状态）\n- ch1: escalate_human\n- ch2: verified_fixed\n",
+        encoding="utf-8")
+    _seed_app(tmp_project)
+    app = create_app(str(tmp_project))
+    client = app.test_client()
+    resp = client.get("/report/1")
+    body = resp.data.decode("utf-8")
+    assert 'class="escalate-highlight"' in body
+    assert "ch1: escalate_human" in body   # escalate 行被高亮
+    # ch2 (verified_fixed) 不被高亮
+    assert body.count('class="escalate-highlight"') == 1

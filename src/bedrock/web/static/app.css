@@ -10,3 +10,4 @@
 .status-error { background:#f66; color:#fff; }
 .insp-card { border:1px solid #ddd; padding:8px; margin:8px 0; }
 .error-msg { color:#c00; }
+.escalate-highlight { border-left: 4px solid red; background: #ffc; padding-left: 6px; }

@@ -60,9 +60,18 @@ def create_app(project_dir):
             abort(404)
         text = report_path.read_text(encoding="utf-8")
         import markdown
+        import re
         html = markdown.markdown(text, extensions=["extra", "sane_lists"])
         outcomes = parse_review_outcomes(text)
         escalate_chs = {ch for ch, st in outcomes.items() if st == "escalate_human"}
+        # 逐项 escalate 高亮：SP5 报告里 escalate 信号在 outcome 行 "- ch{N}: escalate_human"，
+        # markdown 渲染成 <li>ch{N}: escalate_human</li>。给这些 <li> 注入 class（spec §4.3）。
+        if escalate_chs:
+            ch_alt = "|".join(str(c) for c in sorted(escalate_chs))
+            html = re.sub(
+                r"(<li>)(ch(?:%s):\s*escalate_human)" % ch_alt,
+                r'<li class="escalate-highlight">\2',
+                html)
         return render_template("report.html", html_body=html, volume_id=volume_id,
                                escalate_chs=escalate_chs, has_escalate=bool(escalate_chs))
 
