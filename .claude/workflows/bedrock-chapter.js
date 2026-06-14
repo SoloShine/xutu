@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process'
+
 export const meta = {
   name: 'bedrock-chapter',
   description: '磐石 V3 单章抗博弈管线：Boot→Write→L2→Edit(3轮软门禁)→Persist→Telemetry',
@@ -25,6 +27,7 @@ export default async function ({ project, chapter, volume, exportPath }) {
   // 3. L2 + Repair 循环（≤3 轮）
   phase('L2+Repair')
   let report = await pythonCli(`run-l2 --project ${project} --chapter ${chapter}`)
+  _trackDrift(report)
   let round = 0
   const violationSignaturesByRound = []  // 跨轮比对，诊断 likely_rule_or_model_issue
   while (!report.passed_hard_gate && round < 3) {
@@ -33,6 +36,7 @@ export default async function ({ project, chapter, volume, exportPath }) {
     // Edit repair：RepairPrompt（结构化字段）+ PolishPrompt
     await agent(editRepairPrompt(report), { label: `Edit-repair-r${round + 1}`, phase: 'L2+Repair' })
     report = await pythonCli(`run-l2 --project ${project} --chapter ${chapter}`)
+    _trackDrift(report)
     round++
   }
   // 诊断：同一签名多轮不变 → likely_rule_or_model_issue
@@ -49,16 +53,20 @@ export default async function ({ project, chapter, volume, exportPath }) {
   if (report.passed_hard_gate) {
     await agent(editPolishPrompt(ctx), { label: 'Edit-polish', phase: 'Polish' })
     const after = await pythonCli(`run-l2 --project ${project} --chapter ${chapter}`)
+    _trackDrift(after)
     if (!after.passed_hard_gate) {
       await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`)
       log('polish introduced beat violation, flagged')
     }
   }
 
+  // 章节定稿前：落最差轮 drift（watchdog 识别系统性自报造假，而非 last-round 被修好的假象）
+  await _flushDrift(project, chapter)
+
   // 5. Persist + Telemetry
   phase('Persist+Telemetry')
   const persisted = await pythonCli(`verify-persisted --project ${project} --chapter ${chapter} ${exportPath ? '--export-path ' + exportPath : ''}`)
-  if (persisted !== 'True') {
+  if (persisted !== true) {
     await pythonCli(`mark-forced-persist-failed --project ${project} --chapter ${chapter}`)
     return { status: 'failed', reason: 'forced_persist_failed' }
   }
@@ -94,6 +102,42 @@ function editPolishPrompt(ctx) {
     '对准分布修，保持剧情，不压缩字数。',
   ].join('\n')
 }
-// pythonCli：封装 `python -m src.bedrock <cmd>`，读 stdout/传 stdin
-// （运行时辅助；端到端调通留 SP5）
-async function pythonCli(_cmd, _opts) { throw new Error('pythonCli runtime not wired (SP5)') }
+// 最差轮 drift 累积器（模块级单例，跨 run-l2 调用保留；每次 Workflow 调用独立 JS 模块加载）
+// 对抗审核修正：drift 取最差轮（max over rounds by drifted 指标数），非 last-round。
+// 否则 round-1 大 drift 被 round-3 修好后覆盖，watchdog 看不到系统性造假。
+let worstDrift = {}
+function _trackDrift(report) {
+  if (!report || !report.drift || Object.keys(report.drift).length === 0) return
+  const driftedCount = Object.values(report.drift).filter(d => d && d.drifted).length
+  const worstCount = Object.values(worstDrift).filter(d => d && d.drifted).length
+  // >= 保留更晚轮的同分情况（同样代表系统性问题未被消除）
+  if (driftedCount >= worstCount) worstDrift = report.drift
+}
+async function _flushDrift(project, chapter) {
+  if (Object.keys(worstDrift).length === 0) return Promise.resolve()
+  return pythonCli(`mark-advisory-drift --project ${project} --chapter ${chapter}`,
+                   { stdin: JSON.stringify(worstDrift) })
+}
+
+// pythonCli：spawn `python -m src.bedrock <cmd>`，传 stdin，返回 stdout。
+// - run-l2：stdout 为 JSON → 自动 JSON.parse
+// - verify-persisted：stdout 为 'True'/'False' → 返回 bool
+// - 其他：返回 trim 后的字符串
+// 注意：cmdStr.split(/\s+/) 拆命令——若路径含空格会出错；起步假设路径无空格
+// （Task 8 e2e 路径无空格），若风险则改数组形式。
+async function pythonCli(cmdStr, opts = {}) {
+  const [sub, ...rest] = cmdStr.split(/\s+/)
+  const out = execFileSync('python', ['-m', 'src.bedrock', sub, ...rest], {
+    input: opts.stdin ? opts.stdin : undefined,
+    encoding: 'utf-8',
+    cwd: process.cwd(),
+  })
+  const trimmed = out.trim()
+  if (sub === 'run-l2') {
+    try { return JSON.parse(trimmed) } catch { return trimmed }
+  }
+  if (sub === 'verify-persisted') {
+    return trimmed === 'True'
+  }
+  return trimmed
+}
