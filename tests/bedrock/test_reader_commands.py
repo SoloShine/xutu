@@ -296,6 +296,7 @@ def test_diagnose_book_aggregates_debt(tmp_project):
     report = diagnose(conn, tmp_project, scope=("book", None), with_l2=False)
     assert "BLOCKING" in report
     assert "卷2欠债" in report
+    assert "scope=book" in report          # 锁 book trace 分支（避免 book:None）
     conn.close()
 
 

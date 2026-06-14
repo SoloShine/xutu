@@ -155,10 +155,12 @@ def do_export(conn, project_path, scope, target, fmt, final, out):
     # manifest 留痕：独立短事务，失败降级警告（不阻断文件导出）
     target_id = target if scope != "book" else None
     global_numbers = [c["global_number"] for c in chapters]
+    import datetime as _dt   # CLI 进程内，datetime 安全（非 workflow JS 脚本）
     source_snapshot = json.dumps(
         {"chapter_count": len(chapters), "global_numbers": global_numbers,
          "paragraph_total": sum(
-             len(list_paragraphs_in_chapter(conn, c["id"])) for c in chapters)},
+             len(list_paragraphs_in_chapter(conn, c["id"])) for c in chapters),
+         "rendered_at_iso": _dt.datetime.now().isoformat()},
         ensure_ascii=False)
     status = "final" if final else "draft"
     try:
