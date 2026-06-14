@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>磐石 Bedrock</title>
+<script src="https://unpkg.com/htmx.org"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<nav>
+<a href="/">首页</a> |
+<a href="/matrix">POV矩阵</a> |
+<a href="/inspirations">灵感池</a>
+</nav>
+<hr>
+{% block content %}{{ content|safe if content else '' }}{% endblock %}
+</body>
+</html>

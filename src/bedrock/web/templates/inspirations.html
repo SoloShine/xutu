@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>灵感池</h2>
+<form method="get" action="/inspirations">
+type: <input name="type" value="{{ type_f or '' }}">
+status: <input name="status" value="{{ status_f or '' }}">
+<button>筛选</button>
+</form>
+{% for item in items %}
+{% include "_inspiration_card.html" %}
+{% endfor %}
+{% endblock %}

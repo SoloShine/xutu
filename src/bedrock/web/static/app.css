@@ -1,0 +1,3 @@
+.matrix-table { overflow-x: auto; }
+.pov-dot { cursor: pointer; }
+.status-raw { background:#ccc; } .status-refined{background:#6cf;} .status-consumed{background:#9c9;} .status-partial{background:#fc9;} .status-discarded{background:#f99;text-decoration:line-through;}

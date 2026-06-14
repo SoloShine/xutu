@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Review 报告 — 卷 {{ volume_id }}</h2>
+{% if not has_escalate %}
+<p><small>（未检测到 SP5 格式 escalate_human 项——可能是 V2 手写报告或确无 escalate）</small></p>
+{% endif %}
+<div class="report-body">{{ html_body|safe }}</div>
+{% endblock %}

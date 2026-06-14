@@ -1,0 +1,6 @@
+<div class="insp-card" id="insp-{{ item.id }}">
+<span class="status-badge status-{{ item.status }}">[{{ item.type }}] {{ item.status }}</span>
+<p>{{ item.content }}</p>
+{% if item.source %}<small>来源：{{ item.source }}</small>{% endif %}
+<!-- 推进按钮 Task 5 加（htmx POST /inspirations/<id>/advance） -->
+</div>
