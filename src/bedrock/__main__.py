@@ -9,7 +9,13 @@ from src.bedrock.db.connection import get_connection
 from src.bedrock.orchestration.l2_pipeline import run_l2
 from src.bedrock.orchestration.boot_context import get_chapter_boot_context
 from src.bedrock.orchestration.persist_gate import verify_chapter_persisted
-from src.bedrock.orchestration.review_flag import mark_unresolved
+from src.bedrock.orchestration.review_flag import (
+    mark_unresolved,
+    mark_polish_broke_beat,
+    mark_forced_persist_failed,
+    mark_advisory_drift,
+)
+from src.bedrock.orchestration.runtime_collect import write_runtime
 from src.bedrock.checks.beat_fulfillment import BeatViolation
 
 
@@ -51,6 +57,23 @@ def main():
     p_mark.add_argument("--rule-or-model", type=int, required=True,
                         help="1=疑似规则/模型问题，0=否")
 
+    p_mark_pbb = sub.add_parser("mark-polish-broke-beat")
+    p_mark_pbb.add_argument("--project", type=Path, required=True)
+    p_mark_pbb.add_argument("--chapter", type=int, required=True)
+
+    p_mark_fpf = sub.add_parser("mark-forced-persist-failed")
+    p_mark_fpf.add_argument("--project", type=Path, required=True)
+    p_mark_fpf.add_argument("--chapter", type=int, required=True)
+
+    p_mark_drift = sub.add_parser("mark-advisory-drift")
+    p_mark_drift.add_argument("--project", type=Path, required=True)
+    p_mark_drift.add_argument("--chapter", type=int, required=True)
+
+    p_collect = sub.add_parser("collect-runtime")
+    p_collect.add_argument("--project", type=Path, required=True)
+    p_collect.add_argument("--chapter", type=int, required=True)
+    p_collect.add_argument("--editing-rounds", type=int, default=0)
+
     args = parser.parse_args()
     if args.cmd == "init":
         init_project(args.path, work_name=args.name, force=args.force)
@@ -87,6 +110,33 @@ def main():
             mark_unresolved(
                 conn, cid, violations,
                 likely_rule_or_model_issue=bool(args.rule_or_model))
+            print("ok")
+        elif args.cmd == "mark-polish-broke-beat":
+            cid = _chapter_id(conn, args.chapter)
+            mark_polish_broke_beat(conn, cid)
+            print("ok")
+        elif args.cmd == "mark-forced-persist-failed":
+            cid = _chapter_id(conn, args.chapter)
+            mark_forced_persist_failed(conn, cid)
+            print("ok")
+        elif args.cmd == "mark-advisory-drift":
+            cid = _chapter_id(conn, args.chapter)
+            try:
+                drift = json.loads(sys.stdin.buffer.read().decode("utf-8"))
+            except (json.JSONDecodeError, ValueError) as e:
+                sys.exit(f"invalid drift JSON on stdin: {e}")
+            mark_advisory_drift(conn, cid, drift)
+            print("ok")
+        elif args.cmd == "collect-runtime":
+            cid = _chapter_id(conn, args.chapter)
+            try:
+                payload = json.loads(sys.stdin.buffer.read().decode("utf-8"))
+                invocations = payload.get("invocations", [])
+                llm_calls = payload.get("llm_calls", [])
+            except (json.JSONDecodeError, ValueError) as e:
+                sys.exit(f"invalid runtime JSON on stdin: {e}")
+            write_runtime(conn, cid, invocations, llm_calls,
+                          editing_rounds=args.editing_rounds)
             print("ok")
     finally:
         conn.close()
