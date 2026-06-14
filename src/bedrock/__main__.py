@@ -63,13 +63,10 @@ def main():
         if args.cmd == "run-l2":
             cid = _chapter_id(conn, args.chapter)
             report = run_l2(conn, cid)
-            print(f"passed_hard_gate: {report.passed_hard_gate}")
-            print(f"beat_violations: {len(report.beat_violations)}")
-            if report.drift:
-                drift_keys = sorted(report.drift.keys())
-                print(f"drift_keys: {drift_keys}")
-            else:
-                print("drift_keys: []")
+            # 输出 JSON（机器可读，Workflow JS 解析 passed_hard_gate / beat_violations[]）
+            # asdict 递归转 BeatViolation dataclass；cross_volume 已在 l2_pipeline 转 dict。
+            from dataclasses import asdict
+            print(json.dumps(asdict(report), ensure_ascii=False))
         elif args.cmd == "boot-context":
             cid = _chapter_id(conn, args.chapter)
             ctx = get_chapter_boot_context(conn, cid, volume_id=args.volume)
