@@ -180,3 +180,25 @@ def test_export_manifest_short_transaction_failure_warns(tmp_project, capsys):
     captured = capsys.readouterr()
     assert "manifest" in captured.err.lower() or "留痕" in captured.err
     conn.close()
+
+
+# ---- export CLI 薄封装 tests (SP6-A Task 3) ----
+
+
+def test_export_cli_smoke(tmp_project):
+    """export CLI 子命令端到端冒烟：建章→CLI export→文件存在。"""
+    from src.bedrock.__main__ import main
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)   # 复用 Task 2 的 seed
+    conn.close()
+    import sys
+    old_argv = sys.argv
+    sys.argv = ["bedrock", "export", "--project", str(tmp_project),
+                "--chapter", "1", "--format", "md"]
+    try:
+        main()
+    finally:
+        sys.argv = old_argv
+    # 文件应落在 exports/ch01.md（_seed 里 global_number=1）
+    out = tmp_project / "exports" / "ch01.md"
+    assert out.exists()

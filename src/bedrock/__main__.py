@@ -161,6 +161,17 @@ def main():
     p_unlock.add_argument("--volume", type=int, required=True, help="volume.id")
     p_unlock.add_argument("--reason", required=True)
 
+    # SP6-A 只读工具集
+    p_export = sub.add_parser("export", help="导出正文（paragraph→文件，单向）")
+    p_export.add_argument("--project", type=Path, required=True)
+    scope_x = p_export.add_mutually_exclusive_group(required=True)
+    scope_x.add_argument("--chapter", type=int, help="global_number")
+    scope_x.add_argument("--volume", type=int, help="volume.id")
+    scope_x.add_argument("--book", action="store_true")
+    p_export.add_argument("--format", choices=["md", "txt"], default="md")
+    p_export.add_argument("--final", action="store_true")
+    p_export.add_argument("--out", type=Path, default=None)
+
     args = parser.parse_args()
     if args.cmd == "init":
         init_project(args.path, work_name=args.name, force=args.force)
@@ -272,6 +283,18 @@ def main():
                           new="0", reason=args.reason, author="human")
             conn.commit()
             print("ok")
+        elif args.cmd == "export":
+            from src.bedrock.cli.reader_commands import do_export
+            if args.book:
+                scope, target = "book", None
+            elif args.chapter is not None:
+                cid = _chapter_id(conn, args.chapter)   # global_number → id
+                scope, target = "chapter", cid
+            else:
+                scope, target = "volume", args.volume
+            result = do_export(conn, args.project, scope, target,
+                               args.format, args.final, args.out)
+            print(result.path)
     finally:
         conn.close()
 
