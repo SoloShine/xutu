@@ -11,6 +11,7 @@ from src.bedrock.repositories.worldbook import add_constant
 from src.bedrock.mcp_server import (
     export_project, diagnose, show_review_report, list_volumes,
     diff_drift, run_l2_check, get_chapter_flag, list_chapters,
+    _project_ok,
 )
 from src.bedrock.cli.reader_commands import do_export
 
@@ -164,3 +165,59 @@ def test_list_chapters_volume_filter(tmp_project):
     chs = list_chapters(str(tmp_project), volume_id=v2)
     assert len(chs) == 1
     assert chs[0]["global_number"] == 3
+
+
+# ---- SP6-B 边界鲁棒性测试（§8 层 2）----
+
+def test_project_path_traversal_rejected(tmp_project, monkeypatch):
+    """R2：project 路径越界 workspace → 错误。tmp_project 是合法 workspace，
+    一个 workspace 外的路径应被拒。autouse 已设 NOVEL_WORKSPACE=tmp_project，
+    这里显式再设一次（monkeypatch 后设的覆盖 autouse 的）。"""
+    monkeypatch.setenv("NOVEL_WORKSPACE", str(tmp_project))
+    err = _project_ok(str(tmp_project.parent / "other"))
+    assert err and "越界" in err
+
+
+def test_missing_db_returns_structured_error(tmp_project, tmp_path, monkeypatch):
+    """目录无 bedrock.db → 错误，且不创建空 db。empty_dir 在 tmp_path 下而非
+    tmp_project 下，所以把 workspace 放宽到 tmp_path（覆盖 autouse 的 tmp_project）。"""
+    empty_dir = tmp_path / "empty_proj"
+    empty_dir.mkdir()
+    monkeypatch.setenv("NOVEL_WORKSPACE", str(tmp_path))   # 覆盖 autouse，让 empty_dir 在 workspace 下
+    result = export_project(str(empty_dir), scope="book")
+    assert isinstance(result, dict) and "error" in result
+    assert not (empty_dir / "bedrock.db").exists()   # 不创建空 db
+
+
+def test_unknown_global_number_returns_structured_error(tmp_project):
+    """global_number 不存在 → SystemExit 被 catch → 结构化错误，不崩。"""
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    conn.close()
+    result = run_l2_check(str(tmp_project), global_number=999)
+    assert isinstance(result, dict) and "error" in result
+
+
+def test_scope_chapter_missing_target_returns_error(tmp_project):
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    conn.close()
+    result = export_project(str(tmp_project), scope="chapter", target=None)
+    assert isinstance(result, dict) and "error" in result
+    assert "target" in result["error"]
+
+
+def test_tool_catches_exception_no_crash(tmp_project, monkeypatch):
+    """注入纯函数抛异常 → 结构化错误，函数正常返回（server 存活）。"""
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    conn.close()
+    import src.bedrock.mcp_server as ms
+
+    def boom(*a, **k):
+        raise RuntimeError("injected")
+
+    monkeypatch.setattr(ms, "do_export", boom)
+    result = export_project(str(tmp_project), scope="chapter", target=1)
+    assert isinstance(result, dict) and "error" in result
+    assert "injected" in result["error"]
