@@ -31,28 +31,38 @@ def _max_importance(importances):
 
 
 def check_cross_volume_anchors(conn, volume_id):
-    """卷收尾时检查跨卷锚点兑现。high 未兑现 → blocking；其他 → advisory。"""
+    """卷收尾时检查跨卷锚点兑现。high 未兑现 → blocking；其他 → advisory。
+
+    比较器用卷 **number**（planned_resolve_volume / expected_volume 都存 number）。
+    volume_id 是 autoincrement id，须先映射 id→number（SP2 follow-up 修正：原直接用
+    volume_id 比较，id≠number 时错位）。与 SP5 cross_volume_gate 单一真相。"""
     report = CrossVolumeDebtReport()
 
+    vrow = conn.execute("SELECT number FROM volume WHERE id=?", (volume_id,)).fetchone()
+    volume_number = vrow["number"] if vrow else None
+
     # 1. 悬链 planned_resolve_volume 兑现
-    rows = conn.execute(
-        "SELECT id, content, importance, status FROM suspense_thread "
-        "WHERE planned_resolve_volume IS NOT NULL AND planned_resolve_volume <= ? "
-        "AND status NOT IN ('resolved','abandoned')",
-        (volume_id,)).fetchall()
+    if volume_number is not None:
+        rows = conn.execute(
+            "SELECT id, content, importance, status FROM suspense_thread "
+            "WHERE planned_resolve_volume IS NOT NULL AND planned_resolve_volume <= ? "
+            "AND status NOT IN ('resolved','abandoned')",
+            (volume_number,)).fetchall()
+    else:
+        rows = []
     for r in rows:
         _classify(Anchor(
             kind="thread_overdue", ref_id=str(r["id"]),
             importance=r["importance"],
-            detail=f"悬链 {r['id']}（{r['content'][:20]}）应于卷{volume_id}回收但 status={r['status']}"),
+            detail=f"悬链 {r['id']}（{r['content'][:20]}）应于卷{volume_number}回收但 status={r['status']}"),
             report)
 
     # 2. 里程碑兑现
     mo = get_master_outline(conn)
-    if mo:
+    if mo and volume_number is not None:
         milestones = json.loads(mo["key_milestones"]) if mo["key_milestones"] else []
         for ms in milestones:
-            if ms.get("expected_volume") != volume_id:
+            if ms.get("expected_volume") != volume_number:
                 continue
             resolves = ms.get("resolves_threads", [])
             if not resolves:
