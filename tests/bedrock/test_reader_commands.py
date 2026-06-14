@@ -479,19 +479,62 @@ def test_diff_manifest_key_only_chapter_scope(tmp_project):
     conn.close()
 
 
-def test_diff_final_status_split(tmp_project):
-    """【核心不变量】draft 覆盖 draft 区后，diff --final 仍基于 final manifest。"""
+def test_diff_manifest_where_clause_locks_chapter_scope(tmp_project):
+    """【WHERE 子句直压】chapter 导出后（manifest scope=chapter,target=ch_id），
+    再做一次 volume 导出（追加 manifest scope=volume,target=v_id，且 id 更大/更新）。
+    篡改单章文件 → 三路定位必须用 chapter-scope 行（man_hash=导出时的 chapter hash），
+    diagnosis 必须是"文件侧被手改"。若 WHERE 漏了 scope='chapter'，
+    ORDER BY id DESC 会取更新的 volume 行 → man_hash 是整卷 hash ≠ 文件 hash ≠ db hash
+    → diagnosis 会变成"两边都改"而非"文件侧被手改"，测试失败。"""
     conn = get_connection(tmp_project)
     v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
-    # 先 final 导出
-    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=True, out=None)
-    # 再 draft 导出（覆盖 exports/ch01.md，不动 final 区）
+    # 1. 先 chapter 导出（写 ch01.md + manifest chapter-scope）
     do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
-    # 改 DB → draft 区 drifted；final 区文件未变但与 DB 已偏离
+    # 2. 再 volume 导出（追加 manifest volume-scope，id 更大）
+    do_export(conn, tmp_project, scope="volume", target=v1, fmt="md", final=False, out=None)
+    # 3. 篡改单章文件
+    ch_file = tmp_project / "exports" / "ch01.md"
+    ch_file.write_text("被人手改的单章内容", encoding="utf-8")
+    # 4. diff：diagnosis 必须锁"文件侧被手改"（证明用了 chapter-scope manifest 行，没被 volume 行顶替）
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    row = report.rows[0]
+    assert row["status"] == "drifted"
+    assert "文件侧被手改" in row["diagnosis"], (
+        f"diagnosis 应为'文件侧被手改'，实际：{row['diagnosis']}（说明 WHERE 漏了 scope='chapter'，被 volume 行顶替）")
+    conn.close()
+
+
+def test_diff_final_status_split(tmp_project):
+    """【核心不变量 + status_filter 直压】draft 导出绝不污染 final 区，
+    且 diff --final 的三路定位必须用 status='final' 的 manifest 行（status_filter 正确分流）。
+    场景顺序刻意让 draft manifest hash ≠ final 文件 hash，以拉开"正确分流"与"错误分流"的诊断差异：
+      ① final 导出（DB=原文）→ final 文件=原文，final man_hash=原文
+      ② 改 DB（DB=改后）→ 此时 final 文件仍是原文（final 区不被 DB 变动影响）
+      ③ draft 导出（DB=改后）→ draft 文件=改后（覆盖 exports/ch01.md），draft man_hash=改后
+    然后 diff --final：
+      - 读 exports/final/ch01.md（原文，draft 导出没碰它）→ 证明 draft 不污染 final 区
+      - db_hash=改后，file_hash=原文
+      - 正确 status_filter='final' → man_hash=原文 → file_eq_man=True, db_eq_man=False
+        → diagnosis="DB 侧被改后未重导"（含'DB 侧被改'）
+      - 若 status_filter 错误查到 draft 行 → man_hash=改后 → file_eq_man=False, db_eq_man=True
+        → diagnosis="文件侧被手改"（不含'DB 侧被改'），测试失败
+    两种分流诊断不同，断言才能锁死 status_filter。"""
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    # ① final 导出
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=True, out=None)
+    # ② 改 DB
     conn.execute("UPDATE paragraph SET text='改了' WHERE chapter_id=?", (c1,))
     conn.commit()
+    # ③ draft 导出（覆盖 exports/ch01.md，但 exports/final/ch01.md 不动）
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
     report_final = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=True)
     assert report_final.rows[0]["status"] == "drifted"   # final 快照与 DB 偏离被发现
+    # 【status_filter 直压】正确分流 → diagnosis 必须含"DB 侧被改"
+    # （final 文件没动过=原文=final man_hash；db_hash 变成改后≠final man_hash）
+    assert "DB 侧被改" in report_final.rows[0]["diagnosis"], (
+        f"diagnosis 应为'DB 侧被改'，实际：{report_final.rows[0]['diagnosis']}"
+        f"（若为'文件侧被手改'，说明 status_filter 错误查到了 draft manifest 行）")
     conn.close()
 
 
