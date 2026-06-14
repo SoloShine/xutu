@@ -181,6 +181,13 @@ def main():
                         help="现场跑 run_l2（仅 --volume，禁 --book）")
     p_diag.add_argument("--out", type=Path, default=None)
 
+    p_show = sub.add_parser("show-review-report", help="读 review_report_vol{N}.md")
+    p_show.add_argument("--project", type=Path, required=True)
+    p_show.add_argument("--volume", type=int, required=True, help="volume.id（文件名以此定位）")
+    p_show.add_argument("--escalate-only", action="store_true")
+    p_show.add_argument("--plain", action="store_true")
+    p_show.add_argument("--out", type=Path, default=None)
+
     args = parser.parse_args()
     if args.cmd == "init":
         init_project(args.path, work_name=args.name, force=args.force)
@@ -314,6 +321,16 @@ def main():
                 print(args.out)
             else:
                 print(report)
+        elif args.cmd == "show-review-report":
+            from src.bedrock.cli.reader_commands import show_review_report
+            out = show_review_report(args.project, args.volume,
+                                     args.escalate_only, args.plain)
+            if args.out:
+                args.out.parent.mkdir(parents=True, exist_ok=True)
+                args.out.write_text(out, encoding="utf-8")
+                print(args.out)
+            else:
+                print(out)
     finally:
         conn.close()
 

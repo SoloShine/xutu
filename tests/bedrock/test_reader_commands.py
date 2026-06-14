@@ -399,3 +399,23 @@ def test_show_report_v2_format_tolerant(tmp_project):
     out = show_review_report(tmp_project, volume=3, escalate_only=True, plain=False)
     # 不崩溃；空清单或提示
     assert "escalate" in out.lower() or "无" in out or "未检测到" in out
+
+
+# ---- show-review-report CLI 薄封装 tests (SP6-A Task 7) ----
+
+
+def test_show_review_cli_smoke(tmp_project, capsys):
+    """show-review-report CLI 端到端：写 SP5 报告→CLI --escalate-only→stdout 有 ch9。"""
+    from src.bedrock.__main__ import main
+    _write_report(tmp_project, 3, SP5_REPORT)   # Task 6 的 helper + fixture 报告
+    import sys
+    old_argv = sys.argv
+    sys.argv = ["bedrock", "show-review-report", "--project", str(tmp_project),
+                "--volume", "3", "--escalate-only"]
+    try:
+        main()
+    finally:
+        sys.argv = old_argv
+    captured = capsys.readouterr()
+    assert "ch9" in captured.out
+    assert "escalate_human" in captured.out
