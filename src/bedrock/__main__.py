@@ -16,6 +16,10 @@ from src.bedrock.orchestration.review_flag import (
     mark_advisory_drift,
 )
 from src.bedrock.orchestration.runtime_collect import write_runtime
+from src.bedrock.orchestration.watchdog import run_watchdog
+from src.bedrock.orchestration.cross_volume_gate import check_cross_volume_debt
+from src.bedrock.orchestration.review_flag import get_review_flag
+from src.bedrock.repositories.governance import add_amendment
 from src.bedrock.checks.beat_fulfillment import BeatViolation
 
 
@@ -26,6 +30,67 @@ def _chapter_id(conn, global_number):
     if row is None:
         sys.exit(f"找不到 global_number={global_number} 的章节")
     return row["id"]
+
+
+def _write_review_report(report_path, volume, payload):
+    """拼装 review_report_vol{N}.md 并落盘（强制，治 Vol15 报告丢失）。
+
+    payload 结构：{findings: {actionable:[...]|{...}}, outcomes: {chN: state},
+                   watchdog: {...}, debt: {...}}。
+    容错：各段缺失时输出空段而非崩溃（CLI 薄封装，不挡 e2e）。"""
+    findings = payload.get("findings") or {}
+    outcomes = payload.get("outcomes") or {}
+    watchdog = payload.get("watchdog") or {}
+    debt = payload.get("debt") or {}
+
+    # findings.actionable 可能是 list 或 dict；统一拍平为 (chapter, f) 行
+    actionable = findings.get("actionable") if isinstance(findings, dict) else None
+    lines = [f"# VolumeReview 报告 — 卷 {volume}", ""]
+
+    lines.append("## 旗章发现（actionable）")
+    if isinstance(actionable, list) and actionable:
+        for f in actionable:
+            ch = f.get("chapter") if isinstance(f, dict) else "?"
+            fi = f.get("fix_instruction", "") if isinstance(f, dict) else str(f)
+            ia = f.get("is_actionable", "") if isinstance(f, dict) else ""
+            lines.append(f"- ch{ch} [is_actionable={ia}]: {fi}")
+    elif isinstance(actionable, dict) and actionable:
+        for ch, f in actionable.items():
+            fi = f.get("fix_instruction", "") if isinstance(f, dict) else str(f)
+            ia = f.get("is_actionable", "") if isinstance(f, dict) else ""
+            lines.append(f"- ch{ch} [is_actionable={ia}]: {fi}")
+    else:
+        lines.append("- （无 actionable 发现）")
+    lines.append("")
+
+    lines.append("## 修正结果（三状态）")
+    if outcomes:
+        for ch, state in outcomes.items():
+            lines.append(f"- ch{ch}: {state}")
+    else:
+        lines.append("- （无编辑章）")
+    lines.append("")
+
+    lines.append("## Watchdog（贴边走 / drift 聚合）")
+    if isinstance(watchdog, dict) and watchdog:
+        lines.append("```json")
+        lines.append(json.dumps(watchdog, ensure_ascii=False, indent=2))
+        lines.append("```")
+    else:
+        lines.append("- （无 watchdog 信号）")
+    lines.append("")
+
+    lines.append("## 跨卷悬链欠债")
+    if isinstance(debt, dict) and debt:
+        lines.append("```json")
+        lines.append(json.dumps(debt, ensure_ascii=False, indent=2))
+        lines.append("```")
+    else:
+        lines.append("- （无欠债）")
+    lines.append("")
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main():
@@ -73,6 +138,28 @@ def main():
     p_collect.add_argument("--project", type=Path, required=True)
     p_collect.add_argument("--chapter", type=int, required=True)
     p_collect.add_argument("--editing-rounds", type=int, default=0)
+
+    # SP5 治理层：卷级 watchdog / 跨卷门禁 / 旗查询 / 报告落盘 / 人工释放
+    p_watchdog = sub.add_parser("run-watchdog", help="跨章 statistical watchdog（贴边走+drift）")
+    p_watchdog.add_argument("--project", type=Path, required=True)
+    p_watchdog.add_argument("--volume", type=int, required=True, help="volume.id")
+
+    p_debt = sub.add_parser("cross-volume-debt", help="跨卷悬链收敛门禁")
+    p_debt.add_argument("--project", type=Path, required=True)
+    p_debt.add_argument("--volume", type=int, required=True, help="volume.id")
+
+    p_flag = sub.add_parser("get-review-flag", help="读 SP4 chapter_review_flag + 派生 has_flag")
+    p_flag.add_argument("--project", type=Path, required=True)
+    p_flag.add_argument("--chapter", type=int, required=True)
+
+    p_report = sub.add_parser("write-review-report", help="拼装 review_report_vol{N}.md 强制落盘")
+    p_report.add_argument("--project", type=Path, required=True)
+    p_report.add_argument("--volume", type=int, required=True, help="volume.id")
+
+    p_unlock = sub.add_parser("unlock-volume", help="人工释放卷间 BLOCKING（写 amendment 留痕）")
+    p_unlock.add_argument("--project", type=Path, required=True)
+    p_unlock.add_argument("--volume", type=int, required=True, help="volume.id")
+    p_unlock.add_argument("--reason", required=True)
 
     args = parser.parse_args()
     if args.cmd == "init":
@@ -137,6 +224,53 @@ def main():
                 sys.exit(f"invalid runtime JSON on stdin: {e}")
             write_runtime(conn, cid, invocations, llm_calls,
                           editing_rounds=args.editing_rounds)
+            print("ok")
+        elif args.cmd == "run-watchdog":
+            # volume 参数语义 = volume.id（run_watchdog/check_cross_volume_debt 都接 id）
+            report = run_watchdog(conn, args.volume)
+            from dataclasses import asdict
+            print(json.dumps(asdict(report), ensure_ascii=False))
+        elif args.cmd == "cross-volume-debt":
+            report = check_cross_volume_debt(conn, args.volume)
+            from dataclasses import asdict
+            print(json.dumps(asdict(report), ensure_ascii=False))
+        elif args.cmd == "get-review-flag":
+            cid = _chapter_id(conn, args.chapter)
+            flag = get_review_flag(conn, cid)
+            # has_flag：任一硬 flag != 0 或 advisory_drift 非空（'{}' 等价于空）
+            # 注意：likely_rule_or_model_issue 不计入 has_flag——它是 l2_unresolved 的诊断
+            # 子字段（仅 l2_unresolved 时有意义），单独算会把"仅诊断"行误判为需 VolumeReview 复查。
+            has_flag = False
+            if flag is not None:
+                advisory = flag.get("advisory_drift") or "{}"
+                has_flag = (flag.get("l2_unresolved", 0) != 0
+                            or flag.get("polish_broke_beat", 0) != 0
+                            or flag.get("forced_persist_failed", 0) != 0
+                            or advisory not in (None, "{}"))
+            print(json.dumps({"has_flag": has_flag, "flag": flag},
+                             ensure_ascii=False, default=str))
+        elif args.cmd == "write-review-report":
+            # 读 stdin JSON（findings/outcomes/watchdog/debt）→ 拼装 markdown → 强制落盘（治 Vol15）
+            try:
+                payload = json.loads(sys.stdin.buffer.read().decode("utf-8"))
+            except (json.JSONDecodeError, ValueError) as e:
+                sys.exit(f"invalid report JSON on stdin: {e}")
+            report_path = args.project / f"review_report_vol{args.volume}.md"
+            _write_review_report(report_path, args.volume, payload)
+            print(str(report_path))
+        elif args.cmd == "unlock-volume":
+            # 人工释放卷间 BLOCKING：UPDATE blocking=0 + amendment 留痕（author='human'）
+            row = conn.execute(
+                "SELECT blocking FROM volume_review WHERE volume_id=?",
+                (args.volume,)).fetchone()
+            old_blocking = row["blocking"] if row is not None else None
+            conn.execute(
+                "UPDATE volume_review SET blocking=0 WHERE volume_id=?",
+                (args.volume,))
+            add_amendment(conn, entity_type="volume_review", entity_id=args.volume,
+                          field="blocking", old=str(old_blocking) if old_blocking is not None else None,
+                          new="0", reason=args.reason, author="human")
+            conn.commit()
             print("ok")
     finally:
         conn.close()
