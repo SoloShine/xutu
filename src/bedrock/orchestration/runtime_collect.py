@@ -9,14 +9,19 @@ def write_runtime(conn, chapter_id, invocations, llm_calls, editing_rounds):
     """invocations: [{agent_type, black_wall_ms, start_ts?, end_ts?}]
     llm_calls: [{phase, model, prompt_tokens, completion_tokens, duration_ms}]
     建 1 个 chapter_runtime 行（editing_rounds + 累加 total_black_wall_ms/llm_tokens/llm_call_count）
-    + N agent_invocation 子行 + M llm_call 子行，全挂同一 runtime_id。"""
+    + N agent_invocation 子行 + M llm_call 子行，全挂同一 runtime_id。
+
+    tool_count：顶层 spec §3.10 定义 = tool_call 表行数（per-tool，非 per-agent）。
+    本函数不写 tool_call 行（JS 层暂未采集工具调用），故 tool_count=0 诚实留空，
+    待 SP6 工具采集接 record_tool_call 后再补。agent 调用数可由
+    COUNT(*) FROM agent_invocation WHERE runtime_id=? 复原。"""
     total_bw = sum(inv.get("black_wall_ms", 0) for inv in invocations)
     total_tokens = sum(c.get("prompt_tokens", 0) + c.get("completion_tokens", 0) for c in llm_calls)
     runtime_id = _create_runtime(conn, chapter_id, editing_rounds=editing_rounds)
     conn.execute(
         "UPDATE chapter_runtime SET total_black_wall_ms=?, tool_count=?, llm_tokens=?, llm_call_count=? "
         "WHERE id=?",
-        (total_bw, len(invocations), total_tokens, len(llm_calls), runtime_id))
+        (total_bw, 0, total_tokens, len(llm_calls), runtime_id))
     for inv in invocations:
         conn.execute(
             "INSERT INTO agent_invocation(runtime_id,agent_type,start_ts,end_ts,black_wall_ms) "
