@@ -1,6 +1,7 @@
 # src/bedrock/web/app.py
 """SP6-C Flask app。create_app(project_dir) 工厂。每请求开/关 conn，不缓存。
-唯一写点 = advance_inspiration（POST /inspirations/<id>/advance，校验 HX-Request）——本 task 先不加 advance 端点（Task 5）。"""
+唯一写点 = advance_inspiration（POST /inspirations/<id>/advance，校验 HX-Request 头作弱 CSRF）。
+POV 矩阵 / review_report 纯只读；灵感池状态推进经状态机（outline.advance_inspiration）。"""
 from pathlib import Path
 from flask import Flask, render_template, request, abort
 
