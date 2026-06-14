@@ -553,3 +553,41 @@ def test_show_review_cli_smoke(tmp_project, capsys):
     captured = capsys.readouterr()
     assert "ch9" in captured.out
     assert "escalate_human" in captured.out
+
+
+# ---- diff CLI + render_drift_report tests (SP6-A Task 9) ----
+
+from src.bedrock.cli.reader_commands import detect_drift, render_drift_report
+
+
+def test_diff_cli_smoke(tmp_project, capsys):
+    """diff CLI 端到端：建章→export→改DB→CLI diff → stdout 有 drifted。"""
+    from src.bedrock.__main__ import main
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    conn.execute("UPDATE paragraph SET text='改了' WHERE chapter_id=?", (c1,))
+    conn.commit()
+    conn.close()
+    import sys
+    old_argv = sys.argv
+    sys.argv = ["bedrock", "diff", "--project", str(tmp_project), "--chapter", "1", "--format", "md"]
+    try:
+        main()
+    finally:
+        sys.argv = old_argv
+    captured = capsys.readouterr()
+    assert "漂移检测" in captured.out
+    assert "drifted" in captured.out
+
+
+def test_render_drift_report_markdown(tmp_project):
+    conn = get_connection(tmp_project)
+    v1, v2, c1, c2, c3 = _seed_multi_volume_book(conn)
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    report = detect_drift(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False)
+    rendered = render_drift_report(report, "ch1", "md", False)
+    assert "漂移检测" in rendered
+    assert "汇总" in rendered
+    assert "ok: 1" in rendered
+    conn.close()

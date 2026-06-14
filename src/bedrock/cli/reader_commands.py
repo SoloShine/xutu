@@ -438,3 +438,34 @@ def _three_way_diagnose(conn, chapter_id, fmt, status_filter, db_hash, file_hash
     if not db_eq_man and not file_eq_man:
         return "drifted（DB 与文件都被改过）"
     return "drifted（manifest 与当前一致但 db/file 不等——罕见，检查导出原子性）"
+
+
+def render_drift_report(report, scope_desc, fmt, final):
+    """DriftReport → markdown 报告。纯渲染，不读 DB/文件。"""
+    lines = [f"# 漂移检测 — {scope_desc}", ""]
+    lines.append(f"> 比对：DB paragraph 表（SSOT）↔ exports/{'final/' if final else ''}文件")
+    lines.append(f"> 格式：{fmt}（文件名据此选择）")
+    lines.append(f"> 信任边界：manifest 为留痕非密码学证据，三路定位假设 manifest 未被直接篡改。")
+    lines.append("")
+    lines.append("| ch | global | DB段落 | 文件 | 状态 |")
+    lines.append("|----|--------|--------|------|------|")
+    counts = {"ok": 0, "drifted": 0, "missing_file": 0, "missing_db": 0}
+    details = []
+    for r in report.rows:
+        mark = {"ok": "✓ ok", "drifted": "⚠️ drifted",
+                "missing_file": "✗ missing_file",
+                "missing_db": "✗ missing_db"}[r["status"]]
+        lines.append(f"| {r['ch_id']} | {r['global_number']} | {r['db_paras']}段 | "
+                     f"{Path(r['file']).name} | {mark} |")
+        counts[r["status"]] = counts.get(r["status"], 0) + 1
+        if r["status"] == "drifted" and r["diagnosis"]:
+            details.append(f"- **ch{r['global_number']}**: {r['diagnosis']}")
+    lines.append("")
+    if details:
+        lines.append("## 漂移详情")
+        lines.extend(details)
+        lines.append("")
+    lines.append("## 汇总")
+    lines.append(f"- ok: {counts['ok']} / drifted: {counts['drifted']} / "
+                 f"missing_file: {counts['missing_file']} / missing_db: {counts['missing_db']}")
+    return "\n".join(lines) + "\n"

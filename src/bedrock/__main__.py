@@ -188,6 +188,16 @@ def main():
     p_show.add_argument("--plain", action="store_true")
     p_show.add_argument("--out", type=Path, default=None)
 
+    p_diff = sub.add_parser("diff", help="DB↔文件漂移检测（RC3 反向校验）")
+    p_diff.add_argument("--project", type=Path, required=True)
+    diff_scope = p_diff.add_mutually_exclusive_group(required=True)
+    diff_scope.add_argument("--chapter", type=int, help="global_number")
+    diff_scope.add_argument("--volume", type=int, help="volume.id")
+    diff_scope.add_argument("--book", action="store_true")
+    p_diff.add_argument("--format", choices=["md", "txt"], default="md")
+    p_diff.add_argument("--final", action="store_true", help="比对 exports/final/ 区")
+    p_diff.add_argument("--out", type=Path, default=None)
+
     args = parser.parse_args()
     if args.cmd == "init":
         init_project(args.path, work_name=args.name, force=args.force)
@@ -331,6 +341,23 @@ def main():
                 print(args.out)
             else:
                 print(out)
+        elif args.cmd == "diff":
+            from src.bedrock.cli.reader_commands import detect_drift, render_drift_report
+            if args.book:
+                scope, target, desc = "book", None, "全书"
+            elif args.chapter is not None:
+                cid = _chapter_id(conn, args.chapter)
+                scope, target, desc = "chapter", cid, f"ch{args.chapter}"
+            else:
+                scope, target, desc = "volume", args.volume, f"vol(id={args.volume})"
+            report = detect_drift(conn, args.project, scope, target, args.format, args.final)
+            rendered = render_drift_report(report, desc, args.format, args.final)
+            if args.out:
+                args.out.parent.mkdir(parents=True, exist_ok=True)
+                args.out.write_text(rendered, encoding="utf-8")
+                print(args.out)
+            else:
+                print(rendered)
     finally:
         conn.close()
 
