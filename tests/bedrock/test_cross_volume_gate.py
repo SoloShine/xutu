@@ -102,3 +102,28 @@ def test_uses_volume_number_not_id(tmp_project):
     assert report.blocking is False
     assert len(report.unresolved_threads) == 0
     conn.close()
+
+
+def test_debt_persists_to_volume_review_blocking(tmp_project):
+    """I1 修正：欠债时 OR 进 volume_review.blocking（与 watchdog 同字段，单一真相）。
+    check_cross_volume_debt 不 reset 为 0（清零由 watchdog 重跑负责）。"""
+    conn = get_connection(tmp_project)
+    vid = create_volume(conn, 1, "v", 1, 3, "opening")
+    _plant_thread(conn, 1, 1, "developing", importance="high")  # 欠债
+    report = check_cross_volume_debt(conn, vid)
+    assert report.blocking is True
+    vr = conn.execute("SELECT blocking FROM volume_review WHERE volume_id=?", (vid,)).fetchone()
+    assert vr is not None and vr["blocking"] == 1   # 欠债持久化到门禁字段
+    conn.close()
+
+
+def test_no_debt_does_not_touch_volume_review(tmp_project):
+    """无欠债时 check_cross_volume_debt 不写 volume_review（不动 watchdog 设的值）。"""
+    conn = get_connection(tmp_project)
+    vid = create_volume(conn, 1, "v", 1, 3, "opening")
+    _plant_thread(conn, 1, 1, "resolved")  # 无欠债
+    check_cross_volume_debt(conn, vid)
+    # 无欠债 → 不插 volume_review 行（让 watchdog 自己建）
+    vr = conn.execute("SELECT blocking FROM volume_review WHERE volume_id=?", (vid,)).fetchone()
+    assert vr is None
+    conn.close()

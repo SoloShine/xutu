@@ -19,7 +19,9 @@ class CrossVolumeDebtReport:
 
 
 def check_cross_volume_debt(conn, volume_id):
-    """volume_id → volume.number → 查 planned_resolve_volume<=number AND high AND 未兑现。"""
+    """volume_id → volume.number → 查 planned_resolve_volume<=number AND high AND 未兑现。
+    卷间 BLOCKING：若欠债，OR 进 volume_review.blocking（与 watchdog 同字段，单一真相）。
+    不 reset 为 0——blocking 的清零由 run_watchdog 重跑负责；本函数只升不降。"""
     vrow = conn.execute("SELECT number FROM volume WHERE id=?", (volume_id,)).fetchone()
     if vrow is None:
         return CrossVolumeDebtReport(volume_id=volume_id)
@@ -32,8 +34,19 @@ def check_cross_volume_debt(conn, volume_id):
         (volume_number,)).fetchall()
     unresolved = [{"thread_id": r["id"], "content": r["content"], "importance": r["importance"]}
                   for r in rows]
+    blocking = len(unresolved) > 0
+
+    # I1 修正：欠债时 OR 进 volume_review.blocking（与 watchdog 共享门禁字段）。
+    # 只升不降——清零由 run_watchdog 重跑负责（§六.0 顺序：watchdog 先跑设基线，本函数后跑只加不减）。
+    if blocking:
+        conn.execute(
+            "INSERT INTO volume_review(volume_id, blocking) VALUES(?, 1) "
+            "ON CONFLICT(volume_id) DO UPDATE SET blocking=1",
+            (volume_id,))
+        conn.commit()
+
     return CrossVolumeDebtReport(
         volume_id=volume_id,
         unresolved_threads=unresolved,
-        blocking=len(unresolved) > 0,
+        blocking=blocking,
     )
