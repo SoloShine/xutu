@@ -2,7 +2,6 @@
 8 tool 全部只读或仅 export。tool 体内联 try/except 专抓 SystemExit（FastMCP 已兜 Exception，
 但 SystemExit 是 BaseException 子类穿透它杀进程；纯函数层大量 raise SystemExit）。
 不暴露治理写入（mark-*/unlock-volume）——抗博弈。"""
-import json
 import os
 from pathlib import Path
 from mcp.server.fastmcp import FastMCP
@@ -50,10 +49,6 @@ def _open_conn(project):
 def _err(msg):
     """统一错误返回（dict，便于对话层/测试解析）。"""
     return {"error": msg}
-
-
-# 别名：与 SP6-B plan 命名一致。
-json_error = _err
 
 
 @mcp.tool()
@@ -152,9 +147,9 @@ def diff_drift(project: str, scope: str, target: int = None,
     try:
         err = _project_ok(project)
         if err:
-            return json_error(err)
+            return _err(err)
         if scope in ("chapter", "volume") and target is None:
-            return json_error(f"scope={scope} 需 target")
+            return _err(f"scope={scope} 需 target")
         conn = _open_conn(project)
         try:
             if scope == "chapter":
@@ -169,7 +164,7 @@ def diff_drift(project: str, scope: str, target: int = None,
         finally:
             conn.close()
     except (SystemExit, Exception) as e:
-        return json_error(f"{type(e).__name__}: {e}")
+        return _err(f"{type(e).__name__}: {e}")
 
 
 @mcp.tool()
