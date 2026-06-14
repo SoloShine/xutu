@@ -1,4 +1,5 @@
 # src/bedrock/repositories/outline.py
+import datetime as _dt
 import json
 
 
@@ -51,14 +52,68 @@ def add_inspiration(conn, content, type, source="", status="raw"):
 
 
 def consume_inspiration(conn, inspiration_id, target_type, target_id):
-    row = conn.execute("SELECT consumed_into FROM inspiration WHERE id=?",
+    """记录灵感用进某 target。若 status 非 consumed，先 advance 推到 consumed（状态机校验 + 设 promoted_at）；
+    若已 consumed，直接追加 consumed_into（允许多 target）。组合 advance 消除双写点。"""
+    row = conn.execute("SELECT status FROM inspiration WHERE id=?",
                        (inspiration_id,)).fetchone()
-    into = json.loads(row["consumed_into"]) if row and row["consumed_into"] else []
+    if row is None:
+        raise ValueError(f"inspiration {inspiration_id} 不存在")
+    if row["status"] != "consumed":
+        advance_inspiration(conn, inspiration_id, "consumed")
+    row2 = conn.execute("SELECT consumed_into FROM inspiration WHERE id=?",
+                        (inspiration_id,)).fetchone()
+    into = json.loads(row2["consumed_into"]) if row2 and row2["consumed_into"] else []
     into.append({"target_type": target_type, "target_id": target_id})
-    conn.execute(
-        "UPDATE inspiration SET status='consumed', consumed_into=? WHERE id=?",
-        (json.dumps(into, ensure_ascii=False), inspiration_id))
+    conn.execute("UPDATE inspiration SET consumed_into=? WHERE id=?",
+                 (json.dumps(into, ensure_ascii=False), inspiration_id))
     conn.commit()
+
+
+_LEGAL_TRANSITIONS = {
+    "raw": {"refined", "consumed", "discarded"},
+    "refined": {"consumed", "partial", "discarded"},
+    "partial": {"consumed", "discarded"},
+    "consumed": {"discarded"},
+    "discarded": set(),
+}
+
+
+def list_inspirations(conn, type_filter=None, status_filter=None):
+    """灵感池列表，created_at 倒序。type/status 可选筛选（参数化，防注入）。"""
+    sql = "SELECT * FROM inspiration"
+    clauses, params = [], []
+    if type_filter:
+        clauses.append("type=?"); params.append(type_filter)
+    if status_filter:
+        clauses.append("status=?"); params.append(status_filter)
+    if clauses:
+        sql += " WHERE " + " AND ".join(clauses)
+    sql += " ORDER BY created_at DESC, id DESC"
+    return [dict(r) for r in conn.execute(sql, params).fetchall()]
+
+
+def advance_inspiration(conn, inspiration_id, target):
+    """推进状态。校验 (current, target) 合法；非法 raise ValueError。设对应时间戳。
+    状态机唯一入口——consume_inspiration 组合本函数。返回更新后 row（dict）。"""
+    row = conn.execute("SELECT status FROM inspiration WHERE id=?",
+                       (inspiration_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"inspiration {inspiration_id} 不存在")
+    current = row["status"]
+    if target not in _LEGAL_TRANSITIONS.get(current, set()):
+        raise ValueError(f"非法转移 {current}→{target}")
+    now = _dt.datetime.now().isoformat()
+    sets = {"status": target}
+    if current == "raw" and target == "refined":
+        sets["refined_at"] = now
+    if target in ("consumed", "partial"):
+        sets["promoted_at"] = now
+    set_clause = ", ".join(f"{k}=?" for k in sets)
+    conn.execute(f"UPDATE inspiration SET {set_clause} WHERE id=?",
+                 [*sets.values(), inspiration_id])
+    conn.commit()
+    return dict(conn.execute("SELECT * FROM inspiration WHERE id=?",
+                             (inspiration_id,)).fetchone())
 
 
 class OutlineLockedError(Exception):

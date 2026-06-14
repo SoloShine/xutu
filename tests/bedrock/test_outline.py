@@ -36,3 +36,102 @@ def test_inspiration_lifecycle(tmp_project):
     row = conn.execute("SELECT status FROM inspiration WHERE id=?", (iid,)).fetchone()
     assert row["status"] == "consumed"
     conn.close()
+
+
+from src.bedrock.repositories.outline import (
+    list_inspirations, advance_inspiration,
+)
+
+
+def test_list_inspirations_all(tmp_project):
+    conn = get_connection(tmp_project)
+    add_inspiration(conn, content="a", type="scene")
+    add_inspiration(conn, content="b", type="twist")
+    items = list_inspirations(conn)
+    assert len(items) == 2
+    assert items[0]["content"] == "b"   # created_at 倒序
+
+
+def test_list_inspirations_filter(tmp_project):
+    conn = get_connection(tmp_project)
+    add_inspiration(conn, content="a", type="scene")
+    add_inspiration(conn, content="b", type="twist")
+    assert len(list_inspirations(conn, type_filter="scene")) == 1
+    assert len(list_inspirations(conn, status_filter="raw")) == 2
+
+
+def test_advance_raw_to_refined_sets_refined_at(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    row = advance_inspiration(conn, iid, "refined")
+    assert row["status"] == "refined"
+    assert row["refined_at"] is not None
+
+
+def test_advance_refined_to_consumed_sets_promoted_at(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "refined")
+    row = advance_inspiration(conn, iid, "consumed")
+    assert row["status"] == "consumed"
+    assert row["promoted_at"] is not None
+
+
+def test_advance_partial_to_consumed(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "refined")
+    advance_inspiration(conn, iid, "partial")
+    row = advance_inspiration(conn, iid, "consumed")
+    assert row["status"] == "consumed"
+
+
+def test_advance_raw_to_consumed_direct(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    row = advance_inspiration(conn, iid, "consumed")
+    assert row["status"] == "consumed"
+
+
+def test_advance_illegal_rejected(tmp_project):
+    import pytest
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "refined")
+    advance_inspiration(conn, iid, "consumed")
+    with pytest.raises(ValueError):   # consumed → raw 非法
+        advance_inspiration(conn, iid, "raw")
+    assert conn.execute("SELECT status FROM inspiration WHERE id=?", (iid,)).fetchone()["status"] == "consumed"
+    conn.close()
+
+
+def test_advance_discarded_terminal(tmp_project):
+    import pytest
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "discarded")
+    with pytest.raises(ValueError):
+        advance_inspiration(conn, iid, "refined")
+    conn.close()
+
+
+def test_advance_unknown_id(tmp_project):
+    import pytest
+    conn = get_connection(tmp_project)
+    with pytest.raises(ValueError):
+        advance_inspiration(conn, 999, "refined")
+    conn.close()
+
+
+def test_consume_inspiration_composes_advance_and_multi_target(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")  # raw
+    consume_inspiration(conn, iid, target_type="character", target_id=1)
+    row1 = conn.execute("SELECT status, promoted_at, consumed_into FROM inspiration WHERE id=?", (iid,)).fetchone()
+    assert row1["status"] == "consumed"
+    assert row1["promoted_at"] is not None   # 经 advance 设了
+    consume_inspiration(conn, iid, target_type="chapter", target_id=5)
+    row2 = conn.execute("SELECT consumed_into FROM inspiration WHERE id=?", (iid,)).fetchone()
+    into = json.loads(row2["consumed_into"])
+    assert len(into) == 2   # 多 target
+    conn.close()
