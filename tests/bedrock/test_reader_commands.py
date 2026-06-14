@@ -202,3 +202,99 @@ def test_export_cli_smoke(tmp_project):
     # 文件应落在 exports/ch01.md（_seed 里 global_number=1）
     out = tmp_project / "exports" / "ch01.md"
     assert out.exists()
+
+
+# ---- diagnose tests (SP6-A Task 4) ----
+
+from src.bedrock.cli.reader_commands import diagnose
+from src.bedrock.repositories.suspense import plant_thread
+from src.bedrock.repositories.plot_tree import create_beat
+
+
+def _seed_volume_with_flag(conn, vol_number=1, vid=None):
+    """建 1 卷 1 completed 章（落盘），返回 vid。"""
+    if vid is None:
+        vid = create_volume(conn, vol_number, f"卷{vol_number}", 1, 3, "opening")
+    cid = create_chapter(conn, volume_id=vid, global_number=vol_number,
+                         title="x", status="completed")
+    create_paragraph(conn, chapter_id=cid, seq=1, text="一段足够长的正文内容用来测试。",
+                     content_hash="h", beat_id=None, role="narration")
+    return vid, cid
+
+
+def test_diagnose_requires_scope(tmp_project):
+    import pytest
+    conn = get_connection(tmp_project)
+    with pytest.raises(SystemExit):
+        diagnose(conn, tmp_project, scope=None, with_l2=False)
+    conn.close()
+
+
+def test_diagnose_book_with_l2_mutex(tmp_project):
+    import pytest
+    conn = get_connection(tmp_project)
+    with pytest.raises(SystemExit):
+        diagnose(conn, tmp_project, scope=("book", None), with_l2=True)
+    conn.close()
+
+
+def test_diagnose_flag_only_has_mode_banner_and_trace(tmp_project):
+    conn = get_connection(tmp_project)
+    vid, cid = _seed_volume_with_flag(conn, vol_number=1)
+    report = diagnose(conn, tmp_project, scope=("volume", vid), with_l2=False)
+    assert "体检模式标记" in report
+    assert "flag-only" in report
+    assert "未对当前正文做 L2 重算" in report          # 可信度声明
+    assert "flag（留痕）" in report                    # L2 来源列
+    assert "diagnose-trace" in report                  # trace 注释
+    conn.close()
+
+
+def test_diagnose_flag_only_l2_hard_gate_column_na(tmp_project):
+    """flag-only 模式 L2 hard_gate 列填 n/a（flag-only），不裸 '-'。"""
+    conn = get_connection(tmp_project)
+    vid, cid = _seed_volume_with_flag(conn, vol_number=1)
+    report = diagnose(conn, tmp_project, scope=("volume", vid), with_l2=False)
+    assert "n/a（flag-only）" in report
+    conn.close()
+
+
+def test_diagnose_with_l2_runs_run_l2(tmp_project):
+    conn = get_connection(tmp_project)
+    vid, cid = _seed_volume_with_flag(conn, vol_number=1)
+    report = diagnose(conn, tmp_project, scope=("volume", vid), with_l2=True)
+    assert "flag + live-L2" in report
+    assert "live（当前正文）" in report               # L2 来源列
+    conn.close()
+
+
+def test_diagnose_does_not_write_volume_review(tmp_project):
+    """【核心不变量】diagnose 绝不写 volume_review（不调 check_cross_volume_debt）。"""
+    conn = get_connection(tmp_project)
+    vid, cid = _seed_volume_with_flag(conn, vol_number=1)
+    # 故意种一条本卷 high 未兑现悬链（若 diagnose 调 check_cross_volume_debt 会写 blocking=1）
+    bid = create_beat(conn, chapter_id=cid, sequence=1, purpose="一个足够长的场景目的描述")
+    plant_thread(conn, content="未兑现线索", thread_type="mystery", importance="high",
+                 planted_at_beat=bid, origin="emergent", planned_resolve_volume=1)
+    before = conn.execute(
+        "SELECT blocking FROM volume_review WHERE volume_id=?", (vid,)).fetchone()
+    report = diagnose(conn, tmp_project, scope=("volume", vid), with_l2=False)
+    after = conn.execute(
+        "SELECT blocking FROM volume_review WHERE volume_id=?", (vid,)).fetchone()
+    assert before == after                              # 状态不变
+    assert "未兑现线索" in report                       # 但报告里仍列出欠债（纯读读出来）
+    conn.close()
+
+
+def test_diagnose_book_aggregates_debt(tmp_project):
+    """--book 逐卷欠债聚合：任一卷 high 未兑现 → 全书标 BLOCKING。"""
+    conn = get_connection(tmp_project)
+    v1, _ = _seed_volume_with_flag(conn, vol_number=1)
+    v2, c2 = _seed_volume_with_flag(conn, vol_number=2)
+    bid = create_beat(conn, chapter_id=c2, sequence=1, purpose="一个足够长的场景目的描述")
+    plant_thread(conn, content="卷2欠债", thread_type="mystery", importance="high",
+                 planted_at_beat=bid, origin="emergent", planned_resolve_volume=2)
+    report = diagnose(conn, tmp_project, scope=("book", None), with_l2=False)
+    assert "BLOCKING" in report
+    assert "卷2欠债" in report
+    conn.close()

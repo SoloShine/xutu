@@ -9,6 +9,8 @@ from pathlib import Path
 
 from src.bedrock.repositories.plot_tree import list_paragraphs_in_chapter
 from src.bedrock.repositories.worldbook import get_constant
+from src.bedrock.orchestration.persist_gate import verify_chapter_persisted
+from src.bedrock.orchestration.l2_pipeline import run_l2
 
 
 def chapter_filename(global_number):
@@ -169,3 +171,133 @@ def do_export(conn, project_path, scope, target, fmt, final, out):
 
     return ExportResult(path=str(file_path), content_hash=content_hash,
                         chapter_count=len(chapters))
+
+
+def _read_overdue_threads(conn, volume_number):
+    """【只读】查 planned_resolve_volume<=number 且 high 且未兑现的悬链。
+    绝不调 check_cross_volume_debt（它有写副作用，会污染 volume_review）。"""
+    return conn.execute(
+        "SELECT id, content, importance, status, planned_resolve_volume FROM suspense_thread "
+        "WHERE planned_resolve_volume IS NOT NULL AND planned_resolve_volume <= ? "
+        "AND importance='high' AND status NOT IN ('resolved','abandoned')",
+        (volume_number,)).fetchall()
+
+
+def _chapter_flag_row(conn, chapter_id):
+    return conn.execute(
+        "SELECT l2_unresolved, polish_broke_beat, forced_persist_failed, advisory_drift "
+        "FROM chapter_review_flag WHERE chapter_id=?", (chapter_id,)).fetchone()
+
+
+def diagnose(conn, project_path, scope, with_l2):
+    """体检报告。scope: ('volume', volume_id) | ('book', None) | None。
+    纯读，不写 DB。"""
+    if scope is None:
+        raise SystemExit("diagnose 必须指定 --volume 或 --book")
+    if scope[0] == "book" and with_l2:
+        raise SystemExit("--book 与 --with-l2 互斥（全书逐章重算太重）")
+
+    mode = "flag + live-L2" if with_l2 else "flag-only"
+    import datetime as _dt   # 本函数在 CLI 进程内运行（非 workflow JS 脚本），datetime 安全
+    now_iso = _dt.datetime.now().isoformat()
+
+    if scope[0] == "volume":
+        volumes = [conn.execute(
+            "SELECT id, number, name FROM volume WHERE id=?", (scope[1],)).fetchone()]
+    else:  # book
+        volumes = conn.execute(
+            "SELECT id, number, name FROM volume ORDER BY number").fetchall()
+
+    lines = []
+    scope_desc = (f"volume {volumes[0]['number']}（id={volumes[0]['id']}）"
+                  if scope[0] == "volume"
+                  else f"book 全书 {len(volumes)} 卷")
+    lines.append("> **⚠️ 体检模式标记 — 请先读本块**")
+    lines.append(f"> - **模式**：{mode}")
+    lines.append(f"> - **范围**：{scope_desc}")
+    lines.append(f"> - **生成时间**：{now_iso}")
+    lines.append(">")
+    if mode == "flag-only":
+        lines.append("> **可信度声明**：本报告基于【管线留痕旗 + chapter.status + "
+                     "volume_review + 跨卷欠债】，**未对当前正文做 L2 重算**。"
+                     "正文在管线跑完后若被手改，本报告**不会**反映。"
+                     "如需对当前正文的独立信任检查，请用 `--volume N --with-l2` 重跑。")
+    else:
+        lines.append("> **可信度声明**：本报告含对当前正文的逐章 run_l2 重算，反映正文最新状态。")
+    lines.append("")
+
+    lines.append("## 卷级门禁")
+    all_debt = []
+    for v in volumes:
+        vr = conn.execute(
+            "SELECT blocking FROM volume_review WHERE volume_id=?", (v["id"],)).fetchone()
+        blocking = vr["blocking"] if vr else 0
+        debt = _read_overdue_threads(conn, v["number"])
+        lines.append(f"- 卷 {v['number']}(id={v['id']}): volume_review.blocking = {blocking}"
+                     f"，high 未兑现悬链 {len(debt)} 条")
+        all_debt.extend((v["number"], t) for t in debt)
+    lines.append("")
+
+    lines.append("## 跨卷悬链欠债")
+    if all_debt:
+        for vnum, t in all_debt:
+            lines.append(f"- [BLOCKING] 悬链 #{t['id']}「{t['content'][:20]}」"
+                         f"应于卷{t['planned_resolve_volume']}回收，status={t['status']}")
+    else:
+        lines.append("- （无 high 未兑现悬链）")
+    lines.append("")
+
+    lines.append("## 章级状态矩阵")
+    lines.append("| ch | global | status | 落盘 | l2_unresolved | polish_broke_beat | "
+                 "forced_persist_failed | advisory_drift | L2 hard_gate | L2 来源 |")
+    lines.append("|----|--------|--------|------|---------------|-------------------|"
+                 "-----------------------|----------------|--------------|---------|")
+    attention = {"未落盘": [], "l2_unresolved": [], "polish_broke_beat": [],
+                 "forced_persist_failed": [], "advisory_drift": []}
+    for v in volumes:
+        chs = conn.execute(
+            "SELECT id, global_number, status FROM chapter WHERE volume_id=? "
+            "ORDER BY global_number", (v["id"],)).fetchall()
+        for ch in chs:
+            persisted = verify_chapter_persisted(conn, ch["id"])
+            flag = _chapter_flag_row(conn, ch["id"])
+            if ch["status"] != "completed":
+                row = (f"| {ch['id']} | {ch['global_number']} | {ch['status']} | "
+                       f"{'✓' if persisted else '✗'} | - | - | - | - | n/a | n/a |")
+            else:
+                l2_src = "live（当前正文）" if with_l2 else "flag（留痕）"
+                if with_l2:
+                    l2_gate = "pass" if run_l2(conn, ch["id"]).passed_hard_gate else "fail"
+                else:
+                    l2_gate = "n/a（flag-only）"
+                if flag is None:
+                    flag = {"l2_unresolved": 0, "polish_broke_beat": 0,
+                            "forced_persist_failed": 0, "advisory_drift": "{}"}
+                row = (f"| {ch['id']} | {ch['global_number']} | {ch['status']} | "
+                       f"{'✓' if persisted else '✗'} | {flag['l2_unresolved']} | "
+                       f"{flag['polish_broke_beat']} | {flag['forced_persist_failed']} | "
+                       f"{flag['advisory_drift']} | {l2_gate} | {l2_src} |")
+                if not persisted:
+                    attention["未落盘"].append(ch["global_number"])
+                if flag["l2_unresolved"]:
+                    attention["l2_unresolved"].append(ch["global_number"])
+                if flag["polish_broke_beat"]:
+                    attention["polish_broke_beat"].append(ch["global_number"])
+                if flag["forced_persist_failed"]:
+                    attention["forced_persist_failed"].append(ch["global_number"])
+                if flag["advisory_drift"] not in (None, "{}"):
+                    attention["advisory_drift"].append(ch["global_number"])
+            lines.append(row)
+    lines.append("")
+
+    lines.append("## 需关注清单")
+    for kind, chs in attention.items():
+        if chs:
+            lines.append(f"- {kind}：ch{chs}")
+    if not any(attention.values()):
+        lines.append("- （无需关注）")
+    lines.append("")
+
+    lines.append(f"<!-- diagnose-trace: mode={mode} scope={scope[0]}:{scope[1]} "
+                 f"project={Path(project_path).name} generated_at={now_iso} -->")
+    return "\n".join(lines) + "\n"
