@@ -5,6 +5,7 @@ from src.bedrock.repositories.plot_tree import (
 from src.bedrock.repositories.worldbook import add_constant
 from src.bedrock.cli.reader_commands import (
     chapter_filename, render_chapter_body, do_export,
+    parse_review_outcomes,
 )
 
 
@@ -591,3 +592,28 @@ def test_render_drift_report_markdown(tmp_project):
     assert "汇总" in rendered
     assert "ok: 1" in rendered
     conn.close()
+
+
+# ---- parse_review_outcomes tests (SP6-C Task 2) ----
+
+SP5_FOR_PARSE = """# VolumeReview 报告 — 卷 3
+
+## 修正结果（三状态）
+- ch7: edited_unverified
+- ch9: escalate_human
+- ch12: escalate_human
+"""
+
+V2_FOR_PARSE = """# 卷三 复盘
+一、总体评价：本卷节奏偏快。
+"""
+
+
+def test_parse_review_outcomes_sp5():
+    outcomes = parse_review_outcomes(SP5_FOR_PARSE)
+    assert outcomes == {7: "edited_unverified", 9: "escalate_human", 12: "escalate_human"}
+
+
+def test_parse_review_outcomes_v2_empty():
+    """V2 手写报告 → 空 dict，不抛错。"""
+    assert parse_review_outcomes(V2_FOR_PARSE) == {}

@@ -317,6 +317,12 @@ _ACTIONABLE_RE = re.compile(
 _MD_NOISE = re.compile(r"(^#{1,6}\s+)|(\*\*)|(```)|(\|)")
 
 
+def parse_review_outcomes(text):
+    """解析 SP5 review_report 的 outcomes 段，返回 {global_number: state} dict。
+    V2 手写报告（无 SP5 格式段）→ 空 dict（不抛错）。CLI/Web 共用。"""
+    return {int(m.group(1)): m.group(2) for m in _OUTCOME_RE.finditer(text)}
+
+
 def show_review_report(project_path, volume, escalate_only, plain):
     """读 review_report_vol{volume}.md（volume=volume.id，与 write-review-report 文件名一致）。
     只解析 SP5 _write_review_report 格式；V2 手写报告 escalate-only 返回空 + 警告。"""
@@ -329,7 +335,7 @@ def show_review_report(project_path, volume, escalate_only, plain):
         return _strip_markdown(text) if plain else text
 
     # escalate-only：outcomes 为主表，左连 actionable
-    outcomes = {int(m.group(1)): m.group(2) for m in _OUTCOME_RE.finditer(text)}
+    outcomes = parse_review_outcomes(text)
     actionable = {int(m.group(1)): m.group(2).strip()
                   for m in _ACTIONABLE_RE.finditer(text)}
     escalate_chs = [ch for ch, st in outcomes.items() if st == "escalate_human"]
