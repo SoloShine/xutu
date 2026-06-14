@@ -5,6 +5,11 @@
       "args": ["-m", "novel_kg.server"],
       "cwd": "${workspaceFolder}/src",
       "disabled": true
+    },
+    "bedrock": {
+      "command": "python",
+      "args": ["-m", "src.bedrock.mcp_server"],
+      "cwd": "${workspaceFolder}"
     }
   }
 }
