@@ -29,8 +29,15 @@ def _volume_id_of_chapter(conn, chapter_id):
 
 
 def _drift_metric(declared, recomputed):
-    """单指标 drift 检测。返回 {declared, recomputed, drifted}。"""
-    if declared is None or recomputed in (None, 0):
+    """单指标 drift 检测。返回 {declared, recomputed, drifted}。
+
+    当前仅用于 word_count（recomputed=0 = 空初稿，由硬门禁 unwritten_beat 兜住，
+    不算 drift）。若日后扩到 grep/consumption（0 可能是合法重算值），需为各指标
+    分别处理 0 分母语义，勿复用本函数的 recomputed==0 短路。"""
+    if declared is None or recomputed is None:
+        return {"declared": declared, "recomputed": recomputed, "drifted": False}
+    if recomputed == 0:
+        # word_count 专用：空初稿不算 drift（硬门禁兜底）
         return {"declared": declared, "recomputed": recomputed, "drifted": False}
     delta = abs(declared - recomputed)
     drifted = (delta / abs(recomputed)) > DRIFT_THRESHOLD
@@ -69,6 +76,8 @@ def run_l2(conn, chapter_id):
     # authoritative metrics
     wc = compute_word_count(paragraphs)
     total_beats = len(list_beats_in_chapter(conn, chapter_id))
+    # yield = written/total；只数 unwritten_beat（结构缺失）。missing_character/
+    # thread_not_advanced 是内容失败（已由 passed_hard_gate 兜），不算结构未兑现。
     unwritten = sum(1 for v in beat_violations if v.kind == "unwritten_beat")
     beat_yield = ((total_beats - unwritten) / total_beats) if total_beats else 0.0
 
