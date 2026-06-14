@@ -390,3 +390,16 @@ CREATE TABLE IF NOT EXISTS beat_character (
     role TEXT NOT NULL DEFAULT '',
     PRIMARY KEY(beat_id, character_id, role)
 );
+
+
+-- ===== SP4 抗博弈管线：诊断标记（SP5 VolumeReview 消费）=====
+CREATE TABLE IF NOT EXISTS chapter_review_flag (
+    chapter_id INTEGER PRIMARY KEY REFERENCES chapter(id),
+    l2_unresolved INTEGER NOT NULL DEFAULT 0,
+    persisted_violations TEXT NOT NULL DEFAULT '[]',
+    likely_rule_or_model_issue INTEGER NOT NULL DEFAULT 0,
+    polish_broke_beat INTEGER NOT NULL DEFAULT 0,
+    forced_persist_failed INTEGER NOT NULL DEFAULT 0,
+    advisory_drift TEXT NOT NULL DEFAULT '{}',
+    flagged_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
