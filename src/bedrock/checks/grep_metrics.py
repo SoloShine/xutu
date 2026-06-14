@@ -1,7 +1,9 @@
 import re
+from src.bedrock.style.lexicon import SENTENCE_STRUCTURE_PATTERNS
 
 _CN_CHAR = re.compile(r"[一-鿿]")
-_NOTXISY = re.compile(r"不是.{1,15}[，。].{0,5}是")
+# 从 SP3 lexicon 取 notXisY（域语义单一真相源，防与指纹提取器静默漂移）
+_NOTXISY = re.compile(SENTENCE_STRUCTURE_PATTERNS["notXisY"])
 _DASH = "——"
 _PERIOD = "。"
 
