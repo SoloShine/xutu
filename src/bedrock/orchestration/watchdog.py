@@ -70,6 +70,8 @@ def run_watchdog(conn, volume_id):
                                (cid,)).fetchone()
             if row is not None and row["advisory_drift"] and row["advisory_drift"] != "{}":
                 drift_nonempty += 1
+        # drift 分母用 len(cids)（全章）非 len(valid)：无 chapter_review_flag 行 = 无 drift 信号
+        # 本身有意义（章未跑过 L2），与 hug 的"有 metrics 才算"语义不同。
         drift_ratio = drift_nonempty / n
     drift_flagged = drift_ratio > WATCHDOG_DRIFT_RATIO
 
