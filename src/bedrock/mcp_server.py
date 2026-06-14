@@ -11,8 +11,11 @@ from src.bedrock.db.connection import get_connection
 from src.bedrock.db.chapter_lookup import chapter_id_by_global
 from src.bedrock.cli.reader_commands import (
     do_export, diagnose as diagnose_fn, show_review_report as show_fn,
+    detect_drift, render_drift_report,
 )
 from src.bedrock.orchestration.review_flag import get_review_flag, compute_has_flag
+from src.bedrock.orchestration.l2_pipeline import run_l2
+from dataclasses import asdict
 
 mcp = FastMCP("bedrock", instructions=(
     "磐石 V3 小说管线只读工具集。导出成稿(export_project)、体检报告"
@@ -47,6 +50,10 @@ def _open_conn(project):
 def _err(msg):
     """统一错误返回（dict，便于对话层/测试解析）。"""
     return {"error": msg}
+
+
+# 别名：与 SP6-B plan 命名一致。
+json_error = _err
 
 
 @mcp.tool()
@@ -134,6 +141,106 @@ def list_volumes(project: str) -> list:
             conn.close()
     except (SystemExit, Exception) as e:
         return [_err(f"{type(e).__name__}: {e}")]
+
+
+@mcp.tool()
+def diff_drift(project: str, scope: str, target: int = None,
+               fmt: str = "md", final: bool = False) -> str:
+    """DB 段落与已导出文件的漂移检测（正文 SSOT 一致性）。三路 hash 定位是谁改了
+    (DB改/文件改/两边)。scope=chapter/volume/book，target 同 export_project。
+    final=True 比对 exports/final/ 定稿快照。返回 markdown。"""
+    try:
+        err = _project_ok(project)
+        if err:
+            return json_error(err)
+        if scope in ("chapter", "volume") and target is None:
+            return json_error(f"scope={scope} 需 target")
+        conn = _open_conn(project)
+        try:
+            if scope == "chapter":
+                cid = chapter_id_by_global(conn, target)
+                t, desc = cid, f"ch{target}"
+            elif scope == "volume":
+                t, desc = target, f"vol(id={target})"
+            else:
+                t, desc = None, "全书"
+            report = detect_drift(conn, project, scope, t, fmt, final)
+            return render_drift_report(report, desc, fmt, final)
+        finally:
+            conn.close()
+    except (SystemExit, Exception) as e:
+        return json_error(f"{type(e).__name__}: {e}")
+
+
+@mcp.tool()
+def run_l2_check(project: str, global_number: int) -> dict:
+    """单章 beat 硬门禁 live 重算（信任锚，零 LLM）。回答'此刻 DB 正文过不过硬约束'。
+    返回 {passed_hard_gate, violations_count, beat_violations:[{beat_id,kind,detail,fix_hint}]}。"""
+    try:
+        err = _project_ok(project)
+        if err:
+            return {"error": err}
+        conn = _open_conn(project)
+        try:
+            cid = chapter_id_by_global(conn, global_number)
+            report = run_l2(conn, cid)
+            return {
+                "passed_hard_gate": report.passed_hard_gate,
+                "violations_count": len(report.beat_violations),
+                "beat_violations": [asdict(v) for v in report.beat_violations],
+            }
+        finally:
+            conn.close()
+    except (SystemExit, Exception) as e:
+        return {"error": f"{type(e).__name__}: {e}"}
+
+
+@mcp.tool()
+def get_chapter_flag(project: str, global_number: int) -> dict:
+    """查章节的留痕旗(chapter_review_flag 全字段)+派生 has_flag。has_flag=True 表示
+    该章需 VolumeReview 复查。global_number=全局章号。"""
+    try:
+        err = _project_ok(project)
+        if err:
+            return {"error": err}
+        conn = _open_conn(project)
+        try:
+            cid = chapter_id_by_global(conn, global_number)
+            flag = get_review_flag(conn, cid)
+            return {"has_flag": compute_has_flag(flag), "flag": flag}
+        finally:
+            conn.close()
+    except (SystemExit, Exception) as e:
+        return {"error": f"{type(e).__name__}: {e}"}
+
+
+@mcp.tool()
+def list_chapters(project: str, volume_id: int = None) -> list:
+    """列出章节(id/global_number/title/status/volume_id/volume_number/volume_name)，
+    按 global_number 升序。volume_id 可选过滤到单卷。"""
+    try:
+        err = _project_ok(project)
+        if err:
+            return [{"error": err}]
+        conn = _open_conn(project)
+        try:
+            if volume_id is not None:
+                rows = conn.execute(
+                    "SELECT c.id, c.global_number, c.title, c.status, c.volume_id, "
+                    "v.number AS volume_number, v.name AS volume_name "
+                    "FROM chapter c JOIN volume v ON c.volume_id=v.id "
+                    "WHERE c.volume_id=? ORDER BY c.global_number", (volume_id,)).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT c.id, c.global_number, c.title, c.status, c.volume_id, "
+                    "v.number AS volume_number, v.name AS volume_name "
+                    "FROM chapter c JOIN volume v ON c.volume_id=v.id "
+                    "ORDER BY c.global_number").fetchall()
+            return [dict(r) for r in rows]
+        finally:
+            conn.close()
+    except (SystemExit, Exception) as e:
+        return [{"error": f"{type(e).__name__}: {e}"}]
 
 
 if __name__ == "__main__":

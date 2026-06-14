@@ -10,7 +10,9 @@ from src.bedrock.repositories.plot_tree import (
 from src.bedrock.repositories.worldbook import add_constant
 from src.bedrock.mcp_server import (
     export_project, diagnose, show_review_report, list_volumes,
+    diff_drift, run_l2_check, get_chapter_flag, list_chapters,
 )
+from src.bedrock.cli.reader_commands import do_export
 
 
 @pytest.fixture(autouse=True)
@@ -87,3 +89,78 @@ def test_list_volumes_tool(tmp_project):
     assert len(vols) == 1
     assert vols[0]["number"] == 1
     assert vols[0]["name"] == "第一卷"
+
+
+def test_diff_drift_tool(tmp_project):
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    do_export(conn, tmp_project, scope="chapter", target=c1, fmt="md", final=False, out=None)
+    conn.close()
+    out = diff_drift(str(tmp_project), scope="chapter", target=1)
+    assert "漂移检测" in out
+
+
+def test_run_l2_check_returns_compact(tmp_project):
+    """R1：beat_violations 含真实四字段 beat_id/kind/detail/fix_hint；无 advisory/metrics/drift。"""
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    conn.close()
+    result = run_l2_check(str(tmp_project), global_number=1)
+    assert "passed_hard_gate" in result
+    assert "violations_count" in result
+    assert "beat_violations" in result
+    assert isinstance(result["beat_violations"], list)
+    if result["beat_violations"]:   # 若有 violation，断言四字段
+        v0 = result["beat_violations"][0]
+        assert {"beat_id", "kind", "detail", "fix_hint"} <= set(v0.keys())
+    assert "advisory" not in result   # 精简：不含大字段
+    assert "metrics" not in result
+    assert "drift" not in result
+
+
+def test_get_chapter_flag_no_flag(tmp_project):
+    """章无旗行 → {has_flag:False, flag:None}。"""
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    conn.close()
+    result = get_chapter_flag(str(tmp_project), global_number=1)
+    assert result["has_flag"] is False
+    assert result["flag"] is None
+
+
+def test_get_chapter_flag_with_flag(tmp_project):
+    from src.bedrock.orchestration.review_flag import mark_unresolved
+    from src.bedrock.checks.beat_fulfillment import BeatViolation
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    mark_unresolved(conn, c1, [BeatViolation(beat_id=1, kind="unwritten_beat",
+                                             detail="d", fix_hint="h")],
+                    likely_rule_or_model_issue=False)
+    conn.commit()
+    conn.close()
+    result = get_chapter_flag(str(tmp_project), global_number=1)
+    assert result["has_flag"] is True
+    assert result["flag"]["l2_unresolved"] == 1
+
+
+def test_list_chapters_joins_volume_number(tmp_project):
+    """Y5：list_chapters 返回含 volume_number/volume_name。"""
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    conn.close()
+    chs = list_chapters(str(tmp_project))
+    assert len(chs) == 1
+    assert chs[0]["global_number"] == 1
+    assert chs[0]["volume_number"] == 1
+    assert chs[0]["volume_name"] == "第一卷"
+
+
+def test_list_chapters_volume_filter(tmp_project):
+    conn = get_connection(tmp_project)
+    v1, c1 = _seed(conn)
+    v2 = create_volume(conn, 2, "第二卷", 3, 4, "climax")
+    create_chapter(conn, volume_id=v2, global_number=3, title="乙", status="planned")
+    conn.close()
+    chs = list_chapters(str(tmp_project), volume_id=v2)
+    assert len(chs) == 1
+    assert chs[0]["global_number"] == 3
