@@ -85,3 +85,20 @@ def test_ignores_future_volumes(tmp_project):
     assert report.blocking is True
     assert len(report.unresolved_threads) == 1
     conn.close()
+
+
+def test_uses_volume_number_not_id(tmp_project):
+    """回归：volume.id != volume.number 时，比较器必须用 number（非 autoincrement id）。
+    构造 id≠number：先建卷 number=2（id=1），再建 number=1（id=2）。查 number=1 的卷
+    （其 id=2）：一条 planned_resolve_volume=2 的 high 未兑现悬链——按 number 比较 2<=1
+    为假（不阻断）；若错用 id 比较 2<=2 为真（会误阻断）。锁 SP5 用 number。"""
+    conn = get_connection(tmp_project)
+    create_volume(conn, 2, "v2", 4, 6, "opening")        # number=2, id=1
+    vid_num1 = create_volume(conn, 1, "v1", 1, 3, "opening")  # number=1, id=2
+    assert vid_num1 != 1   # 确认 id≠number（id=2, number=1）
+    _plant_thread(conn, 1, 2, "developing", importance="high")  # planned_resolve_volume=2
+    report = check_cross_volume_debt(conn, vid_num1)     # 本卷 number=1
+    # 2 <= 1 为假 → 不阻断（若错用 id=2 比较：2<=2 真 → 误阻断，此测试会失败）
+    assert report.blocking is False
+    assert len(report.unresolved_threads) == 0
+    conn.close()
