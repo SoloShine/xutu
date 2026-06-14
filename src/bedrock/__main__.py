@@ -80,8 +80,13 @@ def main():
             print("True" if ok else "False")
         elif args.cmd == "mark-unresolved":
             cid = _chapter_id(conn, args.chapter)
-            raw = json.load(sys.stdin)
-            violations = [BeatViolation(**d) for d in raw]
+            # 显式按 UTF-8 解 stdin（Windows OEM 码页如 cp936 会把 UTF-8 JSON 解成乱码，
+            # 后续 ensure_ascii=False 写回时 UnicodeEncodeError）。读 buffer 原始字节再 decode。
+            try:
+                raw = json.loads(sys.stdin.buffer.read().decode("utf-8"))
+                violations = [BeatViolation(**d) for d in raw]
+            except (json.JSONDecodeError, TypeError, ValueError) as e:
+                sys.exit(f"invalid violations JSON on stdin: {e}")
             mark_unresolved(
                 conn, cid, violations,
                 likely_rule_or_model_issue=bool(args.rule_or_model))
