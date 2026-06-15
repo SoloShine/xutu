@@ -1,6 +1,7 @@
 """SP6-C demo seed：造一个带数据的 bedrock 项目给 Web UI 展示。
 用法：python scripts/seed_bedrock_demo.py（覆盖式重建 projects/bedrock_demo）"""
 import sys
+import json
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -83,6 +84,21 @@ def main():
 
         i5 = add_inspiration(conn, content="加入时间穿越元素", type="mechanic", source="脑洞")
         advance_inspiration(conn, i5, "discarded")  # 弃用
+
+        # master_outline + volume_outline（大纲模式冒烟）
+        conn.execute(
+            "INSERT OR REPLACE INTO master_outline(id,theme_evolution,key_arcs,key_milestones,rhythm_curve) "
+            "VALUES(1,?,?,?,?)",
+            ("韩峥从抗拒到承担系统的代价", json.dumps(["韩峥觉醒线", "林深隐痛线"]),
+             json.dumps(["ch1 觉知", "ch3 对峙"]), "缓起-急转"))
+        conn.execute(
+            "INSERT OR IGNORE INTO volume_outline(volume_id,status,beat_contracts) VALUES(?, 'drafted', ?)",
+            (v1, json.dumps([{"beat_id": 1, "purpose": "韩峥触膜觉知"}])))
+        # 世界观（总览内联编辑冒烟）
+        from src.bedrock.repositories.worldbook import add_location, add_theme, add_motif
+        add_location(conn, name="封锁线", loc_type="border", description="城市边缘那层温热的膜")
+        add_theme(conn, name="边界", description="人与系统之间的不可见界线", evolution="从物理到存在")
+        add_motif(conn, name="电流声", meaning="韩峥与系统共振的感知象征", evolution="渐强")
 
         # review_report_vol1.md（SP5 格式，含 escalate_human）
         report = """# VolumeReview 报告 — 卷 1

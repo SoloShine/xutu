@@ -16,7 +16,7 @@
     {
       "name": "bedrock-web",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "src.bedrock.web", "--project", "projects/bedrock_demo", "--port", "5050"],
+      "runtimeArgs": ["-m", "src.bedrock.web", "--projects-root", "projects", "--port", "5050"],
       "port": 5050
     }
   ]
