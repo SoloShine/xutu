@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NSelect, NMenu, NSpin } from 'naive-ui'
+import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NSelect, NMenu, NSpin, NMessageProvider, NDialogProvider, NConfigProvider, darkTheme } from 'naive-ui'
 import { useWorkspace } from './stores/workspace'
 
 const ws = useWorkspace()
@@ -34,6 +34,9 @@ const menuOptions = computed(() => {
 </script>
 
 <template>
+  <NConfigProvider :theme="darkTheme">
+  <NMessageProvider>
+  <NDialogProvider>
   <NLayout has-sider style="height:100vh">
     <NLayoutSider bordered :width="220" content-style="padding:12px;background:#18181c">
       <div style="margin-bottom:12px">
@@ -54,4 +57,7 @@ const menuOptions = computed(() => {
       </NLayoutContent>
     </NLayout>
   </NLayout>
+  </NDialogProvider>
+  </NMessageProvider>
+  </NConfigProvider>
 </template>
