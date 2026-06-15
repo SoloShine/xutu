@@ -1,15 +1,18 @@
 <!-- src/App.vue -->
 <script setup lang="ts">
-import { onMounted, computed, watch } from 'vue'
+import { onMounted, computed, watch, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NSelect, NMenu, NSpin, NMessageProvider, NDialogProvider, NConfigProvider, darkTheme } from 'naive-ui'
+import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NSelect, NMenu, NSpin, NButton, NMessageProvider, NDialogProvider, NConfigProvider, darkTheme } from 'naive-ui'
 import { useWorkspace } from './stores/workspace'
-import { themeOverrides } from './theme'
+import { useThemeStore } from './stores/theme'
+import ThemePanel from './components/ThemePanel.vue'
 
 const ws = useWorkspace()
+const theme = useThemeStore()
 const route = useRoute()
 const router = useRouter()
-onMounted(() => ws.loadWorks())
+const themePanelShow = ref(false)
+onMounted(() => { ws.loadWorks(); theme.load() })
 
 const workOptions = computed(() => ws.works.map(w => ({ label: `${w.name}（${w.volumes}卷）`, value: w.id })))
 watch(() => route.params.wid, (wid) => { if (wid) ws.setActive(wid as string) }, { immediate: true })
@@ -48,7 +51,7 @@ function onMenu(key: string) {
 </script>
 
 <template>
-  <NConfigProvider :theme="darkTheme" :theme-overrides="themeOverrides">
+  <NConfigProvider :theme="darkTheme" :theme-overrides="theme.overrides">
   <NMessageProvider>
   <NDialogProvider>
   <NLayout has-sider style="height:100vh">
@@ -62,8 +65,10 @@ function onMenu(key: string) {
     </NLayoutSider>
     <NLayout>
       <NLayoutHeader bordered style="height:48px;padding:0 20px;display:flex;align-items:center;background:#18181c">
-        <strong style="color:#4ec9b0">磐石 Bedrock</strong>
+        <strong :style="{ color: theme.primary }">磐石 Bedrock</strong>
         <span style="margin-left:12px;color:#888">{{ ws.active?.name }}</span>
+        <div style="flex:1"></div>
+        <NButton quaternary size="small" @click="themePanelShow = true">🎨 主题</NButton>
       </NLayoutHeader>
       <NLayoutContent content-style="padding:20px;background:#15171c" style="height:calc(100vh - 48px);overflow:auto">
         <RouterView v-if="ws.activeId" />
@@ -71,6 +76,7 @@ function onMenu(key: string) {
       </NLayoutContent>
     </NLayout>
   </NLayout>
+  <ThemePanel v-model:show="themePanelShow"/>
   </NDialogProvider>
   </NMessageProvider>
   </NConfigProvider>
