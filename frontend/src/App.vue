@@ -29,8 +29,21 @@ const menuOptions = computed(() => {
     { label: 'Review 报告', key: 'report' },
     { label: '正文·阅读', key: 'read' },
     { label: '正文·大纲', key: 'outline' },
-  ].map(m => ({ ...m, props: { onClick: () => router.push(m.key === 'overview' ? base : `${base}/${m.key}`) } }))
+  ].map(m => ({ label: m.label, key: m.key }))
 })
+
+// 当前激活的菜单 key（从路由末段反推，用于高亮）
+const activeMenuKey = computed(() => {
+  const seg = route.path.split('/').filter(Boolean).pop() || 'overview'
+  const known = ['overview', 'characters', 'matrix', 'inspirations', 'report', 'read', 'outline']
+  return known.includes(seg) ? seg : 'overview'
+})
+
+function onMenu(key: string) {
+  const w = ws.activeId
+  if (!w) return
+  router.push(key === 'overview' ? `/works/${w}` : `/works/${w}/${key}`)
+}
 </script>
 
 <template>
@@ -43,7 +56,7 @@ const menuOptions = computed(() => {
         <NSelect v-if="workOptions.length" :value="ws.activeId" :options="workOptions" @update:value="onWork" placeholder="选择作品"/>
         <NSpin v-else size="small"/>
       </div>
-      <NMenu :options="menuOptions" :disabled="!ws.activeId"/>
+      <NMenu :options="menuOptions" :value="activeMenuKey" @update:value="onMenu" :disabled="!ws.activeId" :indent="18" :collapsed-width="220" :collapsed-icon-size="0"/>
       <div style="position:absolute;bottom:8px;font-size:11px;color:#666;padding:0 4px">{{ ws.activeId || '未选作品' }}</div>
     </NLayoutSider>
     <NLayout>
