@@ -7,6 +7,9 @@ from src.bedrock.repositories.outline import (
     add_inspiration, consume_inspiration,
 )
 from src.bedrock.repositories.plot_tree import create_volume
+import pytest
+from src.bedrock.repositories.character import create_character
+from src.bedrock.repositories.outline import update_inspiration_content
 
 
 def test_volume_outline_lock(tmp_project):
@@ -134,4 +137,66 @@ def test_consume_inspiration_composes_advance_and_multi_target(tmp_project):
     row2 = conn.execute("SELECT consumed_into FROM inspiration WHERE id=?", (iid,)).fetchone()
     into = json.loads(row2["consumed_into"])
     assert len(into) == 2   # 多 target
+    conn.close()
+
+
+def test_update_content_raw_ok(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="原", type="scene")
+    row = update_inspiration_content(conn, iid, content="新内容")
+    assert row["content"] == "新内容"
+    conn.close()
+
+
+def test_update_content_refined_partial_ok(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "refined")
+    update_inspiration_content(conn, iid, content="改")
+    iid2 = add_inspiration(conn, content="y", type="scene")
+    advance_inspiration(conn, iid2, "refined"); advance_inspiration(conn, iid2, "partial")
+    update_inspiration_content(conn, iid2, content="改2")
+    conn.close()
+
+
+def test_update_content_frozen_consumed(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    hz = create_character(conn, name="韩", pronoun="他", role="protagonist")
+    consume_inspiration(conn, iid, target_type="character", target_id=hz)
+    with pytest.raises(ValueError):
+        update_inspiration_content(conn, iid, content="改")
+    assert conn.execute("SELECT content FROM inspiration WHERE id=?", (iid,)).fetchone()["content"] == "x"
+    conn.close()
+
+
+def test_update_content_frozen_discarded(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "discarded")
+    with pytest.raises(ValueError):
+        update_inspiration_content(conn, iid, content="改")
+    conn.close()
+
+
+def test_update_content_unknown_id(tmp_project):
+    conn = get_connection(tmp_project)
+    with pytest.raises(ValueError):
+        update_inspiration_content(conn, 9999, content="x")
+    conn.close()
+
+
+def test_update_content_empty_rejected(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    with pytest.raises(ValueError):
+        update_inspiration_content(conn, iid, content="   ")
+    conn.close()
+
+
+def test_update_content_with_source(tmp_project):
+    conn = get_connection(tmp_project)
+    iid = add_inspiration(conn, content="x", type="scene")
+    row = update_inspiration_content(conn, iid, content="改", source="新来源")
+    assert row["source"] == "新来源"
     conn.close()

@@ -2,6 +2,8 @@
 import datetime as _dt
 import json
 
+from src.bedrock.repositories._amendment import record_amendment
+
 
 def save_volume_outline(conn, volume_id, beat_contracts):
     conn.execute(
@@ -187,3 +189,29 @@ def get_beat_contract(conn, volume_id, beat_id):
         if c.get("beat_id") == beat_id:
             return c
     return None
+
+
+def update_inspiration_content(conn, inspiration_id, content, source=None):
+    """编辑灵感内容（仅未消费时）。guard：status IN (raw,refined,partial) 且 consumed_into 为空。
+    content 去空后非空。source 非 None 一并更新。UPDATE 前 raise。返回更新后整行 dict。"""
+    row = conn.execute("SELECT status, consumed_into, content, source FROM inspiration WHERE id=?",
+                      (inspiration_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"inspiration {inspiration_id} 不存在")
+    into = json.loads(row["consumed_into"]) if row["consumed_into"] else []
+    if row["status"] not in ("raw", "refined", "partial") or into:
+        raise ValueError(f"inspiration {inspiration_id} 已消费/已弃用，内容冻结")
+    content = (content or "").strip()
+    if not content:
+        raise ValueError("content 不能为空")
+    sets = {"content": content}
+    if source is not None:
+        sets["source"] = source
+    set_clause = ", ".join(f"{k}=?" for k in sets)
+    conn.execute(f"UPDATE inspiration SET {set_clause} WHERE id=?", [*sets.values(), inspiration_id])
+    if "content" in sets:
+        record_amendment(conn, "inspiration", inspiration_id, "content", row["content"], content)
+    if source is not None:
+        record_amendment(conn, "inspiration", inspiration_id, "source", row["source"], source)
+    conn.commit()
+    return dict(conn.execute("SELECT * FROM inspiration WHERE id=?", (inspiration_id,)).fetchone())
