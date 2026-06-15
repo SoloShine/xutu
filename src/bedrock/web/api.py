@@ -91,6 +91,22 @@ def api_matrix(work_id):
         conn.close()
 
 
+@bp.get("/works/<work_id>/matrix/beats")
+def api_matrix_beats(work_id):
+    wd = _resolve_work(work_id)
+    cid = request.args.get("chapter", type=int)
+    chid = request.args.get("character", type=int)
+    conn = get_connection(wd)
+    try:
+        rows = conn.execute(
+            "SELECT sequence, purpose, status, deviation_note FROM beat "
+            "WHERE chapter_id=? AND pov_character_id=? ORDER BY sequence",
+            (cid, chid)).fetchall()
+        return jsonify([dict(r) for r in rows])
+    finally:
+        conn.close()
+
+
 @bp.get("/works/<work_id>/inspirations")
 def api_inspirations(work_id):
     wd = _resolve_work(work_id)

@@ -17,6 +17,8 @@ export const api = {
   works: () => req('GET', '/api/works'),
   overview: (w: string) => req('GET', `/api/works/${w}/overview`),
   matrix: (w: string, v?: number) => req('GET', `/api/works/${w}/matrix${v ? '?volume=' + v : ''}`),
+  matrixBeats: (w: string, chapter: number, character: number) =>
+    req('GET', `/api/works/${w}/matrix/beats?chapter=${chapter}&character=${character}`),
   inspirations: (w: string, type?: string, status?: string) =>
     req('GET', `/api/works/${w}/inspirations${[type, status].filter(Boolean).length ? '?' + [type && 'type=' + type, status && 'status=' + status].filter(Boolean).join('&') : ''}`),
   advance: (w: string, id: number, target: string) =>

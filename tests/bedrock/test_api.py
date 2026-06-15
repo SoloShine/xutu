@@ -326,3 +326,12 @@ def test_api_patch_requires_json_content_type(tmp_path):
     r = create_app(str(root)).test_client().patch(f"/api/works/w0/characters/{cid}",
         data="personality=x")  # form
     assert r.status_code == 415
+
+
+def test_api_matrix_beats(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    conn = get_connection(work)
+    cid = conn.execute("SELECT id FROM chapter WHERE global_number=1").fetchone()["id"]
+    hz = conn.execute("SELECT id FROM character WHERE name='韩峥'").fetchone()["id"]; conn.close()
+    d = create_app(str(root)).test_client().get(f"/api/works/w0/matrix/beats?chapter={cid}&character={hz}").get_json()
+    assert d[0]["purpose"]  # beat purpose 非空
