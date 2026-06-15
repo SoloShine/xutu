@@ -193,8 +193,8 @@ function cancel() {
   <NDrawer v-model:show="showModel" :width="600" placement="right">
     <NDrawerContent title="编辑角色" :native-scrollbar="false" closable>
       <template #header>
-        <span style="color:#e6e9ef">编辑角色</span>
-        <small style="color:#7c8494;font-size:12px;margin-left:8px">{{ character?.name }}</small>
+        <span style="color:var(--br-text1)">编辑角色</span>
+        <small style="color:var(--br-text3);font-size:12px;margin-left:8px">{{ character?.name }}</small>
       </template>
 
       <NForm label-placement="top" v-if="character">
@@ -272,8 +272,8 @@ function cancel() {
 .readonly-box {
   margin-top: 12px;
   padding: 12px;
-  background: #1a1d24;
-  border: 1px solid #2a2e38;
+  background: var(--br-card);
+  border: 1px solid var(--br-border);
   border-radius: 6px;
 }
 .ro-head {
@@ -283,17 +283,17 @@ function cancel() {
   margin-bottom: 8px;
 }
 .ro-title {
-  color: #4ec9b0;
+  color: var(--br-primary);
   font-weight: 600;
 }
 .ro-counts {
-  color: #b8bfd0;
+  color: var(--br-text2);
   font-size: 13px;
   display: flex;
   gap: 24px;
 }
 .ro-counts b {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-variant-numeric: tabular-nums;
 }
 </style>

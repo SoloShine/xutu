@@ -2,7 +2,7 @@
 // 响应式主题：primary/radius/mode/font 可调，存 localStorage，App.vue 绑定实时生效。
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { buildOverrides, DEFAULT_PRIMARY, DEFAULT_RADIUS, DEFAULT_MODE, DEFAULT_FONT, type ThemeMode } from '../theme'
+import { buildOverrides, cssVars, DEFAULT_PRIMARY, DEFAULT_RADIUS, DEFAULT_MODE, DEFAULT_FONT, type ThemeMode } from '../theme'
 
 const LS_KEY = 'bedrock-theme'
 
@@ -14,6 +14,8 @@ export const useThemeStore = defineStore('theme', () => {
   const mode = ref<ThemeMode>(DEFAULT_MODE)
   const font = ref(DEFAULT_FONT)
   const overrides = computed(() => buildOverrides({ primary: primary.value, radius: radius.value, mode: mode.value, font: font.value }))
+  // 语义 CSS 变量：绑到根元素，scoped style 用 var(--br-xxx) 引用，随 mode/primary 切换实时生效
+  const cssStyleVars = computed(() => cssVars({ primary: primary.value, radius: radius.value, mode: mode.value, font: font.value }))
   // Naive NConfigProvider :theme —— dark 用 darkTheme，light 用 null（Naive 默认亮色）
   const naiveTheme = computed(() => mode.value === 'dark' ? 'dark' : null)
 
@@ -58,6 +60,6 @@ export const useThemeStore = defineStore('theme', () => {
     } catch { return false }
   }
 
-  return { primary, radius, mode, font, overrides, naiveTheme, load, persist, snapshot, applySaved,
+  return { primary, radius, mode, font, overrides, cssStyleVars, naiveTheme, load, persist, snapshot, applySaved,
     setPrimary, setRadius, setMode, setFont, applyPreset, reset, exportJSON, importJSON }
 })

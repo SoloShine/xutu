@@ -167,9 +167,9 @@ const rowProps = (row: CharacterRow) => ({
 
 <template>
   <div>
-    <h2 style="color:#e6e9ef;margin-top:0">
+    <h2 style="color:var(--br-text1);margin-top:0">
       角色
-      <small style="color:#7c8494;font-size:14px;margin-left:8px">{{ filtered.length }} / {{ rows.length }} 人</small>
+      <small style="color:var(--br-text3);font-size:14px;margin-left:8px">{{ filtered.length }} / {{ rows.length }} 人</small>
     </h2>
 
     <NSpace style="margin-bottom:16px">
@@ -216,20 +216,20 @@ const rowProps = (row: CharacterRow) => ({
 
 <style scoped>
 :deep(.char-table) {
-  background: #1a1d24;
+  background: var(--br-card);
 }
 /* 表头深色 */
 :deep(.char-table .n-data-table-thead) {
-  background: #20242d !important;
+  background: var(--br-elevated) !important;
 }
 :deep(.char-table .n-data-table-th) {
-  background: #20242d !important;
-  color: #b8bfd0 !important;
+  background: var(--br-elevated) !important;
+  color: var(--br-text2) !important;
   font-weight: 600;
 }
 :deep(.char-table .n-data-table-td) {
-  background: #1a1d24;
-  color: #e6e9ef;
+  background: var(--br-card);
+  color: var(--br-text1);
 }
 :deep(.char-table .n-data-table-tr:hover .n-data-table-td) {
   background: rgba(78, 201, 176, 0.08) !important;
@@ -238,20 +238,20 @@ const rowProps = (row: CharacterRow) => ({
   background: rgba(78, 201, 176, 0.08) !important;
 }
 .cell-name {
-  color: #4ec9b0;
+  color: var(--br-primary);
   font-weight: 600;
 }
 .cell-muted {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 13px;
 }
 .cell-excerpt {
-  color: #b8bfd0;
+  color: var(--br-text2);
   font-size: 13px;
   line-height: 1.5;
 }
 .cell-count {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-variant-numeric: tabular-nums;
 }
 </style>

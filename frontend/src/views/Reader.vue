@@ -241,7 +241,7 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   padding: 6px 8px;
   border-radius: 4px;
   cursor: pointer;
-  color: #b8bdc9;
+  color: var(--br-text2);
   font-size: 13px;
   transition: background 0.15s;
 }
@@ -277,7 +277,7 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   margin: 8px 0 28px;
 }
 .chapter-title {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-size: 26px;
   font-weight: 600;
   margin: 0;
@@ -285,7 +285,7 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   line-height: 1.4;
 }
 .title-edit-btn {
-  color: #4ec9b0;
+  color: var(--br-primary);
   flex: 0 0 auto;
 }
 .title-edit-row {
@@ -306,7 +306,7 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   margin: 0 0 14px;
 }
 .no-text {
-  color: #8a8f9c;
+  color: var(--br-text3);
   text-align: center;
   padding: 60px 0;
 }
@@ -320,5 +320,5 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   align-items: center;
   gap: 12px;
 }
-.nav-pos { color: #8a8f9c; font-size: 13px; font-variant-numeric: tabular-nums; }
+.nav-pos { color: var(--br-text3); font-size: 13px; font-variant-numeric: tabular-nums; }
 </style>

@@ -61,8 +61,8 @@ watch(showModel, v => emit('update:show', v))
   <NDrawer v-model:show="showModel" :width="480" placement="right">
     <NDrawerContent title="Beat 明细" :native-scrollbar="false">
       <template #header>
-        <span style="color:#e6e9ef">Beat 明细</span>
-        <small style="color:#7c8494;font-size:12px;margin-left:8px">{{ characterName }}</small>
+        <span style="color:var(--br-text1)">Beat 明细</span>
+        <small style="color:var(--br-text3);font-size:12px;margin-left:8px">{{ characterName }}</small>
       </template>
 
       <NSpin v-if="loading" />
@@ -93,8 +93,8 @@ watch(showModel, v => emit('update:show', v))
   gap: 12px;
 }
 .beat-card {
-  background: #1a1d24;
-  border: 1px solid #2a2e38;
+  background: var(--br-card);
+  border: 1px solid var(--br-border);
   border-radius: 6px;
   padding: 12px;
 }
@@ -105,25 +105,25 @@ watch(showModel, v => emit('update:show', v))
   margin-bottom: 8px;
 }
 .beat-seq {
-  color: #4ec9b0;
+  color: var(--br-primary);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .beat-purpose {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-size: 14px;
   line-height: 1.6;
 }
 .beat-deviation {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed #3a3e48;
+  border-top: 1px dashed var(--br-border);
   color: #e06c6c;
   font-size: 13px;
   line-height: 1.5;
 }
 .dev-label {
-  color: #c47b7b;
+  color: var(--br-text3);
   font-weight: 600;
 }
 </style>

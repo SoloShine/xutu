@@ -45,29 +45,29 @@ function onFocus() { panels.focus(props.panel.id) }
   height: 100%;
   min-width: 0;
   min-height: 0;
-  border: 1px solid var(--n-border-color, #2a2f3a);
+  border: 1px solid var(--n-border-color, var(--br-border));
   border-radius: 4px;
   overflow: hidden;
-  background: var(--body-bg, #15171c);
+  background: var(--body-bg, var(--br-page));
 }
 .panel-pane.focused {
-  border-color: var(--n-primary-color, #4ec9b0);
-  box-shadow: 0 0 0 1px var(--n-primary-color, #4ec9b0) inset;
+  border-color: var(--n-primary-color, var(--br-primary));
+  box-shadow: 0 0 0 1px var(--n-primary-color, var(--br-primary)) inset;
 }
 .panel-head {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 4px 6px;
-  background: var(--n-color, #1a1d24);
-  border-bottom: 1px solid var(--n-border-color, #2a2f3a);
+  background: var(--n-color, var(--br-card));
+  border-bottom: 1px solid var(--n-border-color, var(--br-border));
   flex: 0 0 auto;
 }
 .panel-pane.focused .panel-head {
-  background: color-mix(in srgb, var(--n-primary-color, #4ec9b0) 12%, var(--n-color, #1a1d24));
+  background: color-mix(in srgb, var(--n-primary-color, var(--br-primary)) 12%, var(--n-color, var(--br-card)));
 }
 .panel-close {
-  color: #888;
+  color: var(--br-text3);
 }
 .panel-body {
   flex: 1 1 auto;

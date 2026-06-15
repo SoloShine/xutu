@@ -123,17 +123,17 @@ function openDrawer(chapterId: number, characterId: number, name: string) {
 
 <template>
   <div>
-    <h2 style="color:#e6e9ef;margin-top:0">POV 矩阵</h2>
+    <h2 style="color:var(--br-text1);margin-top:0">POV 矩阵</h2>
 
     <NSpace style="margin-bottom:16px" align="center">
-      <span style="color:#7c8494;font-size:13px">卷</span>
+      <span style="color:var(--br-text3);font-size:13px">卷</span>
       <NSelect
         v-model:value="vid"
         :options="volumeOptions"
         placeholder="选择卷"
         style="width:220px"
       />
-      <span v-if="data" style="color:#7c8494;font-size:13px">
+      <span v-if="data" style="color:var(--br-text3);font-size:13px">
         {{ data.volume_name }} · {{ rows.length }} 章 · {{ data.characters.length }} POV 角色
       </span>
     </NSpace>
@@ -164,19 +164,19 @@ function openDrawer(chapterId: number, characterId: number, name: string) {
 
 <style scoped>
 :deep(.mx-table) {
-  background: #1a1d24;
+  background: var(--br-card);
 }
 :deep(.mx-table .n-data-table-thead) {
-  background: #20242d !important;
+  background: var(--br-elevated) !important;
 }
 :deep(.mx-table .n-data-table-th) {
-  background: #20242d !important;
-  color: #b8bfd0 !important;
+  background: var(--br-elevated) !important;
+  color: var(--br-text2) !important;
   font-weight: 600;
 }
 :deep(.mx-table .n-data-table-td) {
-  background: #1a1d24;
-  color: #e6e9ef;
+  background: var(--br-card);
+  color: var(--br-text1);
 }
 :deep(.mx-table .n-data-table-tr:hover .n-data-table-td) {
   background: rgba(78, 201, 176, 0.08) !important;
@@ -187,16 +187,16 @@ function openDrawer(chapterId: number, characterId: number, name: string) {
   line-height: 1.4;
 }
 .cell-chap .gnum {
-  color: #4ec9b0;
+  color: var(--br-primary);
   font-weight: 600;
   font-size: 13px;
 }
 .cell-chap .ctitle {
-  color: #b8bfd0;
+  color: var(--br-text2);
   font-size: 12px;
 }
 :deep(.pov-dot) {
-  color: #4ec9b0 !important;
+  color: var(--br-primary) !important;
   font-size: 18px;
   line-height: 1;
   transition: transform 0.12s ease;
@@ -208,11 +208,11 @@ function openDrawer(chapterId: number, characterId: number, name: string) {
   display: inline-block;
 }
 .cell-count {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
 }
 .cell-muted {
-  color: #7c8494;
+  color: var(--br-text3);
 }
 </style>

@@ -75,7 +75,7 @@ function onImportApply() {
 
         <NDivider style="margin:0" />
 
-        <div style="background:var(--n-color,#1a1d24);border:1px solid var(--n-border-color,#2c313c);border-radius:10px;padding:14px">
+        <div style="background:var(--n-color,var(--br-card));border:1px solid var(--n-border-color,var(--br-border));border-radius:10px;padding:14px">
           <NText depth="3" style="font-size:12px">实时预览</NText>
           <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
             <NButton type="primary" size="small">主按钮</NButton>

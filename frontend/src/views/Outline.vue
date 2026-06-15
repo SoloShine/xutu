@@ -258,24 +258,24 @@ function onSaved() {
 
 <template>
   <div>
-    <h2 style="color:#e6e9ef;margin-top:0">正文 · 大纲</h2>
+    <h2 style="color:var(--br-text1);margin-top:0">正文 · 大纲</h2>
 
     <NSpace style="margin-bottom:16px" align="center">
-      <span style="color:#7c8494;font-size:13px">卷</span>
+      <span style="color:var(--br-text3);font-size:13px">卷</span>
       <NSelect
         v-model:value="selectedVid"
         :options="volumeOptions"
         placeholder="选择卷"
         style="width:240px"
       />
-      <span v-if="data" style="color:#7c8494;font-size:13px">
+      <span v-if="data" style="color:var(--br-text3);font-size:13px">
         {{ data.volumes.length }} 卷
       </span>
     </NSpace>
 
     <NSpin v-if="loading" />
     <div v-else-if="error" style="color:#e06c6c;padding:16px">加载失败：{{ error }}</div>
-    <div v-else-if="!data" style="color:#7c8494;padding:16px">请从左侧选择一个作品。</div>
+    <div v-else-if="!data" style="color:var(--br-text3);padding:16px">请从左侧选择一个作品。</div>
     <div v-else>
       <!-- 顶部 master_outline 卡片（字段全空则不渲染） -->
       <NCard
@@ -365,15 +365,15 @@ function onSaved() {
 
 <style scoped>
 .section-card {
-  background: #1a1d24;
-  border: 1px solid #2a2f3a;
+  background: var(--br-card);
+  border: 1px solid var(--br-border);
 }
 .section-title {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-weight: 600;
 }
 :deep(.section-card .n-card-header__main) {
-  color: #e6e9ef;
+  color: var(--br-text1);
 }
 
 /* master_outline 卡片 */
@@ -388,21 +388,21 @@ function onSaved() {
   gap: 12px;
 }
 .mo-key {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 13px;
   min-width: 80px;
   flex-shrink: 0;
   padding-top: 2px;
 }
 .mo-val {
-  color: #b8bfd0;
+  color: var(--br-text2);
   font-size: 13px;
   line-height: 1.6;
 }
 
 /* NTree 节点渲染（深色） */
 :deep(.n-tree .n-tree-node) {
-  color: #e6e9ef;
+  color: var(--br-text1);
 }
 :deep(.n-tree .n-tree-node-content) {
   padding: 2px 0;
@@ -419,7 +419,7 @@ function onSaved() {
   flex-wrap: wrap;
 }
 .vol-label {
-  color: #4ec9b0;
+  color: var(--br-primary);
   font-weight: 600;
 }
 .vol-sub {
@@ -436,7 +436,7 @@ function onSaved() {
   flex-wrap: wrap;
 }
 .ch-label {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-weight: 500;
 }
 .beat-node {
@@ -452,11 +452,11 @@ function onSaved() {
   flex-wrap: wrap;
 }
 .beat-label {
-  color: #b8bfd0;
+  color: var(--br-text2);
   font-size: 13px;
 }
 .beat-pov {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 12px;
 }
 .beat-para {
@@ -468,11 +468,11 @@ function onSaved() {
   margin-left: 8px;
 }
 .beat-purpose {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 12px;
   line-height: 1.5;
   padding-left: 8px;
-  border-left: 2px solid #2a2f3a;
+  border-left: 2px solid var(--br-border);
   margin: 2px 0;
   max-width: 600px;
 }

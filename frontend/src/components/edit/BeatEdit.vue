@@ -240,8 +240,8 @@ function cancel() {
 .lock-box {
   margin-top: 8px;
   padding: 8px 10px;
-  background: #1a1d24;
-  border: 1px solid #2a2e38;
+  background: var(--br-card);
+  border: 1px solid var(--br-border);
   border-radius: 6px;
 }
 </style>

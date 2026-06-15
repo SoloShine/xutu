@@ -73,8 +73,8 @@ const presetSeg = [
   gap: 8px;
   padding: 4px 10px;
   flex: 0 0 auto;
-  background: var(--n-color, #18181c);
-  border-bottom: 1px solid var(--n-border-color, #2a2f3a);
+  background: var(--n-color, var(--br-sider));
+  border-bottom: 1px solid var(--n-border-color, var(--br-border));
 }
 .ws-body {
   flex: 1 1 auto;
@@ -93,11 +93,11 @@ const presetSeg = [
 /* 分隔条随主题 */
 .ws-body :deep(.splitpanes--vertical > .splitpanes__splitter),
 .ws-body :deep(.splitpanes--horizontal > .splitpanes__splitter) {
-  background: var(--n-border-color, #2c313c);
-  border-color: var(--n-border-color, #2c313c);
+  background: var(--n-border-color, var(--br-border));
+  border-color: var(--n-border-color, var(--br-border));
 }
 .ws-body :deep(.splitpanes__splitter:hover) {
-  background: var(--n-primary-color, #4ec9b0);
+  background: var(--n-primary-color, var(--br-primary));
 }
 .ws-col-pane :deep(.splitpanes__pane),
 .ws-row-pane {

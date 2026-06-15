@@ -200,7 +200,7 @@ async function saveMotif(mo: Motif, field: 'meaning' | 'evolution') {
 }
 .wb-row {
   padding: 8px 10px;
-  background: #15171c;
+  background: var(--br-page);
   border-radius: 4px;
 }
 .wb-row-head {
@@ -210,7 +210,7 @@ async function saveMotif(mo: Motif, field: 'meaning' | 'evolution') {
   margin-bottom: 4px;
 }
 .wb-name {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-weight: 600;
 }
 .wb-display {
@@ -224,17 +224,17 @@ async function saveMotif(mo: Motif, field: 'meaning' | 'evolution') {
 }
 .wb-desc {
   margin: 0;
-  color: #b8bfd0;
+  color: var(--br-text2);
   font-size: 13px;
   line-height: 1.6;
 }
 .wb-evol {
   margin: 0;
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 12px;
 }
 .wb-empty {
-  color: #5a6070;
+  color: var(--br-text-disabled);
   font-style: italic;
 }
 .wb-edit {
@@ -245,6 +245,6 @@ async function saveMotif(mo: Motif, field: 'meaning' | 'evolution') {
 }
 .wb-edit-btn {
   flex: 0 0 auto;
-  color: #4ec9b0;
+  color: var(--br-primary);
 }
 </style>

@@ -120,14 +120,14 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
 
 <template>
   <div>
-    <h2 style="color:#e6e9ef;margin-top:0">
+    <h2 style="color:var(--br-text1);margin-top:0">
       总览
-      <small v-if="data?.name" style="color:#7c8494;font-size:14px;margin-left:8px">{{ data.name }}</small>
+      <small v-if="data?.name" style="color:var(--br-text3);font-size:14px;margin-left:8px">{{ data.name }}</small>
     </h2>
 
     <NSpin v-if="loading" />
     <div v-else-if="error" style="color:#e06c6c;padding:16px">加载失败：{{ error }}</div>
-    <div v-else-if="!data" style="color:#7c8494;padding:16px">请从左侧选择一个作品。</div>
+    <div v-else-if="!data" style="color:var(--br-text3);padding:16px">请从左侧选择一个作品。</div>
     <div v-else>
       <!-- 统计网格 -->
       <NGrid :cols="'1 600:3 900:6'" :x-gap="12" :y-gap="12" style="margin-bottom:20px">
@@ -249,22 +249,22 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
 .stat-card,
 .section-card,
 .char-card {
-  background: #1a1d24;
-  border: 1px solid #2a2f3a;
+  background: var(--br-card);
+  border: 1px solid var(--br-border);
 }
 :deep(.stat-card .n-statistic .n-statistic-value__content),
 :deep(.stat-card .n-statistic .n-statistic__label) {
-  color: #e6e9ef;
+  color: var(--br-text1);
 }
 :deep(.stat-card .n-statistic .n-statistic__label) {
-  color: #7c8494;
+  color: var(--br-text3);
 }
 .section-title {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-weight: 600;
 }
 :deep(.section-card .n-card-header__main) {
-  color: #e6e9ef;
+  color: var(--br-text1);
 }
 .vol-list {
   display: flex;
@@ -276,7 +276,7 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
-  background: #15171c;
+  background: var(--br-page);
   border-radius: 4px;
 }
 .vol-row-edit {
@@ -297,20 +297,20 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
   flex-wrap: wrap;
 }
 .vol-seeds-label {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 12px;
   flex: 0 0 auto;
 }
 .vol-edit-btn {
-  color: #4ec9b0;
+  color: var(--br-primary);
 }
 .vol-name {
-  color: #e6e9ef;
+  color: var(--br-text1);
   font-weight: 600;
   min-width: 60px;
 }
 .vol-meta {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 12px;
 }
 .char-card {
@@ -318,7 +318,7 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
   transition: border-color 0.15s;
 }
 .char-card:hover {
-  border-color: #4ec9b0;
+  border-color: var(--br-primary);
 }
 .char-head {
   display: flex;
@@ -327,7 +327,7 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
   margin-bottom: 6px;
 }
 .char-name {
-  color: #4ec9b0;
+  color: var(--br-primary);
   font-weight: 600;
 }
 .char-meta {
@@ -337,12 +337,12 @@ async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[
   margin-bottom: 4px;
 }
 .char-pronoun {
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 12px;
 }
 .char-excerpt {
   margin: 4px 0 0;
-  color: #7c8494;
+  color: var(--br-text3);
   font-size: 13px;
   line-height: 1.5;
 }

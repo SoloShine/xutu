@@ -121,4 +121,31 @@ export function buildOverrides(p: ThemeParams): GlobalThemeOverrides {
   }
 }
 
+// 语义 CSS 变量：暴露 NEUTRAL 色板 + 主色为 CSS custom properties，
+// 供各视图 scoped style 用 var(--br-xxx) 引用，从而随 mode 切换实时生效。
+// （Naive 组件走 themeOverrides；scoped style 里的字面 hex 不受 themeOverrides 影响，必须用 CSS 变量。）
+export const CSS_VARS = [
+  'page', 'sider', 'card', 'elevated', 'modal', 'border', 'border-soft',
+  'text1', 'text2', 'text3', 'text-disabled', 'primary',
+] as const
+export type CssVarName = (typeof CSS_VARS)[number]
+
+export function cssVars(p: ThemeParams): Record<string, string> {
+  const n = NEUTRAL[p.mode]
+  return {
+    '--br-page': n.page,
+    '--br-sider': n.sider,
+    '--br-card': n.card,
+    '--br-elevated': n.elevated,
+    '--br-modal': n.modal,
+    '--br-border': n.border,
+    '--br-border-soft': n.borderSoft,
+    '--br-text1': n.text1,
+    '--br-text2': n.text2,
+    '--br-text3': n.text3,
+    '--br-text-disabled': n.textDisabled,
+    '--br-primary': p.primary,
+  }
+}
+
 export const themeOverrides: GlobalThemeOverrides = buildOverrides({ primary: DEFAULT_PRIMARY, radius: DEFAULT_RADIUS, mode: DEFAULT_MODE, font: DEFAULT_FONT })

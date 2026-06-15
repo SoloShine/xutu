@@ -54,7 +54,7 @@ async function saveEdit() {
 </script>
 
 <template>
-  <h2 style="color:#e6e9ef">灵感池 <small style="color:#666;font-size:13px">{{ items.length }} 条</small></h2>
+  <h2 style="color:var(--br-text1)">灵感池 <small style="color:var(--br-text3);font-size:13px">{{ items.length }} 条</small></h2>
   <NSpace style="margin-bottom:16px">
     <NSelect v-model:value="typeF" :options="typeOpts" placeholder="类型" clearable style="width:140px" @update:value="load"/>
     <NSelect v-model:value="statusF" :options="statusOpts" placeholder="状态" clearable style="width:140px" @update:value="load"/>
@@ -68,8 +68,8 @@ async function saveEdit() {
         <NTag size="small" round :type="statusColor[it.status]">{{ it.status }}</NTag>
         <NButton v-if="editable(it)" size="tiny" quaternary @click="openEdit(it)">编辑</NButton>
       </NSpace>
-      <p style="margin:4px 0;color:#e6e9ef">{{ it.content }}</p>
-      <small style="color:#666">{{ it.source }}</small>
+      <p style="margin:4px 0;color:var(--br-text1)">{{ it.content }}</p>
+      <small style="color:var(--br-text3)">{{ it.source }}</small>
       <div v-if="it.consumed_into?.length" style="margin-top:4px">
         <NTag v-for="(c,i) in it.consumed_into" :key="i" size="tiny" type="success">{{ c.target_type }}#{{ c.target_id }}</NTag>
       </div>
