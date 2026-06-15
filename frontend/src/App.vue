@@ -4,6 +4,7 @@ import { onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NSelect, NMenu, NSpin, NMessageProvider, NDialogProvider, NConfigProvider, darkTheme } from 'naive-ui'
 import { useWorkspace } from './stores/workspace'
+import { themeOverrides } from './theme'
 
 const ws = useWorkspace()
 const route = useRoute()
@@ -47,7 +48,7 @@ function onMenu(key: string) {
 </script>
 
 <template>
-  <NConfigProvider :theme="darkTheme">
+  <NConfigProvider :theme="darkTheme" :theme-overrides="themeOverrides">
   <NMessageProvider>
   <NDialogProvider>
   <NLayout has-sider style="height:100vh">
