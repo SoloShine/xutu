@@ -46,4 +46,3 @@ graphify-out/cache/
 frontend/node_modules/
 frontend/dist/
 src/bedrock/web/static/*
-!src/bedrock/web/static/.gitkeep
