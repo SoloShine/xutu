@@ -16,7 +16,15 @@ from src.bedrock.web.queries import (
     list_works, overview_stats, chapter_text, outline_tree, pov_matrix,
     list_characters, worldbook_overview, list_factions,
 )
-from src.bedrock.repositories.outline import list_inspirations
+from src.bedrock.repositories.outline import (
+    list_inspirations, advance_inspiration, update_inspiration_content,
+    update_master_outline, update_beat_contract, OutlineLockedError,
+)
+from src.bedrock.repositories.character import update_character
+from src.bedrock.repositories.plot_tree import (
+    update_chapter_meta, update_volume_meta, update_beat_meta, update_beat_status,
+)
+from src.bedrock.repositories.worldbook import update_location, update_theme, update_motif
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -187,3 +195,134 @@ def api_factions(work_id):
 # 引用占位，避免 linter 抱怨未用（worldbook_overview 已被 overview_stats 内嵌使用，
 # 此处显式 re-export 供未来 worldbook 独立端点复用）。
 __all__ = ["bp", "worldbook_overview"]
+
+
+# --- P1-T7: write 端点 ---
+
+def _require_json():
+    if not request.is_json:
+        abort(415)
+
+
+def _ok(item):
+    return jsonify({"ok": True, "item": item})
+
+
+def _err(msg):
+    return jsonify({"ok": False, "error": str(msg)})
+
+
+def _run(mutator):
+    """跑写函数；ValueError/锁异常/其他业务错 → {ok:false}；成功 → {ok,item}。"""
+    try:
+        return _ok(mutator())
+    except Exception as e:  # ValueError / OutlineLockedError / 其他业务错
+        return _err(e)
+
+
+@bp.post("/works/<work_id>/inspirations/<int:iid>/advance")
+def api_advance(work_id, iid):
+    _require_json()
+    wd = _resolve_work(work_id)
+    target = (request.get_json(silent=True) or {}).get("target")
+    conn = get_connection(wd)
+    try:
+        return _run(lambda: advance_inspiration(conn, iid, target))
+    finally:
+        conn.close()
+
+
+@bp.patch("/works/<work_id>/inspirations/<int:iid>")
+def api_edit_inspiration(work_id, iid):
+    _require_json()
+    wd = _resolve_work(work_id)
+    body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        return _run(lambda: update_inspiration_content(conn, iid, body.get("content"), source=body.get("source")))
+    finally:
+        conn.close()
+
+
+def _patch_entity(work_id, key, fn):
+    _require_json()
+    wd = _resolve_work(work_id)
+    body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        return _run(lambda: fn(conn, key, **body))
+    finally:
+        conn.close()
+
+
+@bp.patch("/works/<work_id>/characters/<int:eid>")
+def api_edit_character(work_id, eid):
+    _require_json(); wd = _resolve_work(work_id); body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        return _run(lambda: update_character(conn, eid, **body))
+    finally:
+        conn.close()
+
+
+@bp.patch("/works/<work_id>/chapters/<int:eid>")
+def api_edit_chapter(work_id, eid):
+    return _patch_entity(work_id, eid, update_chapter_meta)
+
+
+@bp.patch("/works/<work_id>/volumes/<int:eid>")
+def api_edit_volume(work_id, eid):
+    return _patch_entity(work_id, eid, update_volume_meta)
+
+
+@bp.patch("/works/<work_id>/locations/<int:eid>")
+def api_edit_location(work_id, eid):
+    return _patch_entity(work_id, eid, update_location)
+
+
+@bp.patch("/works/<work_id>/themes/<name>")
+def api_edit_theme(work_id, name):
+    # theme 无 id，按 name(PK) 键
+    return _patch_entity(work_id, name, update_theme)
+
+
+@bp.patch("/works/<work_id>/motifs/<name>")
+def api_edit_motif(work_id, name):
+    return _patch_entity(work_id, name, update_motif)
+
+
+@bp.patch("/works/<work_id>/beats/<int:eid>")
+def api_edit_beat(work_id, eid):
+    _require_json(); wd = _resolve_work(work_id); body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        def go():
+            if "status" in body or "deviation_note" in body:
+                update_beat_status(conn, eid, body.get("status"), body.get("deviation_note"))
+            meta = {k: body[k] for k in ("purpose", "scene_setting") if k in body}
+            if meta:
+                update_beat_meta(conn, eid, **meta)
+            return dict(conn.execute("SELECT * FROM beat WHERE id=?", (eid,)).fetchone())
+        return _run(go)
+    finally:
+        conn.close()
+
+
+@bp.patch("/works/<work_id>/volumes/<int:vid>/beats/<int:bid>/contract")
+def api_edit_beat_contract(work_id, vid, bid):
+    _require_json(); wd = _resolve_work(work_id); body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        return _run(lambda: (update_beat_contract(conn, vid, bid, body), {"volume_id": vid, "beat_id": bid})[1])
+    finally:
+        conn.close()
+
+
+@bp.patch("/works/<work_id>/master_outline")
+def api_edit_master_outline(work_id):
+    _require_json(); wd = _resolve_work(work_id); body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        return _run(lambda: update_master_outline(conn, **body))
+    finally:
+        conn.close()

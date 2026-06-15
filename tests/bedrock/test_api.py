@@ -1,4 +1,5 @@
 # tests/bedrock/test_api.py
+import json
 import pytest
 from src.bedrock.db.connection import get_connection
 from src.bedrock.init_project import init_project
@@ -8,7 +9,7 @@ from src.bedrock.repositories.plot_tree import (
 from src.bedrock.repositories.character import create_character
 from src.bedrock.repositories.worldbook import add_location, add_theme, add_motif
 from src.bedrock.repositories.outline import (
-    add_inspiration, consume_inspiration,
+    add_inspiration, consume_inspiration, advance_inspiration,
 )
 from src.bedrock.web.app import create_app
 
@@ -185,3 +186,143 @@ def test_create_app_rejects_file(tmp_path):
     f.write_text("x")
     with pytest.raises(SystemExit):
         create_app(str(f))  # 不是目录
+
+
+# --- P1-T7: write 端点 ---
+
+_JSON_HDR = {"Content-Type": "application/json"}
+
+
+def test_api_advance_ok(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root)
+    conn = get_connection(work); iid = add_inspiration(conn, content="x", type="scene"); conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().post(f"/api/works/w0/inspirations/{iid}/advance",
+        data=json.dumps({"target": "refined"}), headers=_JSON_HDR)
+    d = r.get_json(); assert r.status_code == 200 and d["ok"] and d["item"]["status"] == "refined"
+
+
+def test_api_advance_illegal(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root)
+    conn = get_connection(work); iid = add_inspiration(conn, content="x", type="scene")
+    advance_inspiration(conn, iid, "discarded"); conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().post(f"/api/works/w0/inspirations/{iid}/advance",
+        data=json.dumps({"target": "refined"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"] is False
+    conn = get_connection(work)
+    assert conn.execute("SELECT status FROM inspiration WHERE id=?", (iid,)).fetchone()["status"] == "discarded"
+    conn.close()
+
+
+def test_api_advance_requires_json_content_type(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root)
+    conn = get_connection(work); iid = add_inspiration(conn, content="x", type="scene"); conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().post(f"/api/works/w0/inspirations/{iid}/advance",
+        data="target=refined")  # form，无 JSON content-type
+    assert r.status_code == 415
+
+
+def test_api_edit_content_ok(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root)
+    conn = get_connection(work); iid = add_inspiration(conn, content="x", type="scene"); conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/inspirations/{iid}",
+        data=json.dumps({"content": "新内容"}), headers=_JSON_HDR)
+    d = r.get_json(); assert d["ok"] and d["item"]["content"] == "新内容"
+
+
+def test_api_edit_content_frozen(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root)
+    conn = get_connection(work); iid = add_inspiration(conn, content="x", type="scene")
+    hz = create_character(conn, name="韩", pronoun="他", role="protagonist")
+    consume_inspiration(conn, iid, target_type="character", target_id=hz); conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/inspirations/{iid}",
+        data=json.dumps({"content": "改"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"] is False
+
+
+def test_api_edit_character(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    cid = get_connection(work).execute("SELECT id FROM character WHERE name='韩峥'").fetchone()["id"]
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/characters/{cid}",
+        data=json.dumps({"personality": "新性格"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_edit_character_name_conflict(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    conn = get_connection(work); cid = conn.execute("SELECT id FROM character WHERE name='韩峥'").fetchone()["id"]
+    create_character(conn, name="林深", pronoun="她", role="supporting"); conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/characters/{cid}",
+        data=json.dumps({"name": "林深"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"] is False
+
+
+def test_api_edit_chapter_title(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    cid = get_connection(work).execute("SELECT id FROM chapter WHERE global_number=1").fetchone()["id"]
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/chapters/{cid}",
+        data=json.dumps({"title": "新甲"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_edit_volume_meta(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    r = create_app(str(root)).test_client().patch("/api/works/w0/volumes/1",
+        data=json.dumps({"name": "新卷名", "theme_seeds": ["a"]}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_edit_location(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    lid = get_connection(work).execute("SELECT id FROM location WHERE name='城'").fetchone()["id"]
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/locations/{lid}",
+        data=json.dumps({"description": "新城"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_edit_theme_by_name(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    r = create_app(str(root)).test_client().patch("/api/works/w0/themes/边界",
+        data=json.dumps({"description": "新边界"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_edit_beat_contract_locked(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    conn = get_connection(work)
+    bid = conn.execute("SELECT id FROM beat").fetchone()["id"]
+    conn.execute("INSERT OR IGNORE INTO volume_outline(volume_id,status,beat_contracts) VALUES(1,'locked','[]')")
+    conn.commit(); conn.close()
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/volumes/1/beats/{bid}/contract",
+        data=json.dumps({"purpose": "新契约"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"] is False  # locked
+
+
+def test_api_edit_beat_meta_purpose_short(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    bid = get_connection(work).execute("SELECT id FROM beat").fetchone()["id"]
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/beats/{bid}",
+        data=json.dumps({"purpose": "短"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"] is False
+
+
+def test_api_edit_beat_status(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    bid = get_connection(work).execute("SELECT id FROM beat").fetchone()["id"]
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/beats/{bid}",
+        data=json.dumps({"status": "written", "deviation_note": "已写"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_edit_master_outline(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    r = create_app(str(root)).test_client().patch("/api/works/w0/master_outline",
+        data=json.dumps({"theme_evolution": "演进"}), headers=_JSON_HDR)
+    assert r.get_json()["ok"]
+
+
+def test_api_patch_requires_json_content_type(tmp_path):
+    root = tmp_path / "root"; root.mkdir(); work = _make_work(root); _seed(work)
+    cid = get_connection(work).execute("SELECT id FROM character WHERE name='韩峥'").fetchone()["id"]
+    r = create_app(str(root)).test_client().patch(f"/api/works/w0/characters/{cid}",
+        data="personality=x")  # form
+    assert r.status_code == 415
