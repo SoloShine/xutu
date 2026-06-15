@@ -62,15 +62,25 @@ def main():
                                 v["chapter_end"], v.get("volume_type", "opening"))
             vol_id[v["number"]] = vid
 
-        # 章 + beat(状态 planned,未写)
+        # 章 + beat(状态 planned,未写)。收集 beat 契约按卷聚合,供 volume_outline。
+        contracts_by_vol = {vid: [] for vid in vol_id.values()}
         for ch in setup.get("chapters", []):
             cid = create_chapter(conn, volume_id=vol_id[ch["volume"]],
                                  global_number=ch["global_number"],
                                  title=ch["title"], status="planned")
             for b in ch.get("beats", []):
                 pov = char_id.get(b.get("pov"))
-                create_beat(conn, chapter_id=cid, sequence=b["seq"],
-                            purpose=b["purpose"], pov_character_id=pov)
+                bid = create_beat(conn, chapter_id=cid, sequence=b["seq"],
+                                  purpose=b["purpose"], pov_character_id=pov)
+                contracts_by_vol[vol_id[ch["volume"]]].append(
+                    {"beat_id": bid, "purpose": b["purpose"]})
+
+        # volume_outline(boot-context 必需:beat 契约从此读)。status=drafted(可被 lock/relock)。
+        for vid, contracts in contracts_by_vol.items():
+            conn.execute(
+                "INSERT OR REPLACE INTO volume_outline(volume_id,status,beat_contracts) "
+                "VALUES(?, 'drafted', ?)",
+                (vid, json.dumps(contracts, ensure_ascii=False)))
 
         # worldbook
         for loc in setup.get("locations", []):
