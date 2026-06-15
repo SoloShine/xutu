@@ -6,6 +6,7 @@ import {
 } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 import { api } from '../api/client'
+import CharacterForm from '../components/edit/CharacterForm.vue'
 
 const props = defineProps<{ wid: string }>()
 
@@ -140,10 +141,22 @@ const columns = computed<DataTableColumns<CharacterRow>>(() => [
   },
 ])
 
-// 本 Task 只读：点行暂 console.log（NDrawer 编辑表单留 Task 17）
+// 点行 → 打开编辑 Drawer
+const drawerShow = ref(false)
+const drawerChar = ref<CharacterRow | null>(null)
+
 function onRowClick(row: CharacterRow) {
-  // eslint-disable-next-line no-console
-  console.log('character row clicked:', row.id, row.name)
+  drawerChar.value = row
+  drawerShow.value = true
+}
+
+function onSaved(item: any) {
+  if (!item) return
+  const idx = rows.value.findIndex(r => r.id === item.id)
+  if (idx >= 0) {
+    // 合并返回字段（保留 secrets/knowledge 计数等未返回字段）
+    rows.value[idx] = { ...rows.value[idx], ...item }
+  }
 }
 
 const rowProps = (row: CharacterRow) => ({
@@ -189,6 +202,14 @@ const rowProps = (row: CharacterRow) => ({
       :single-line="false"
       size="small"
       class="char-table"
+    />
+
+    <CharacterForm
+      :show="drawerShow"
+      :wid="wid"
+      :character="drawerChar"
+      @update:show="drawerShow = $event"
+      @saved="onSaved"
     />
   </div>
 </template>
