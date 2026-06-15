@@ -12,6 +12,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8766", "--directory", "D:/novel_test/docs/research/render_poc"],
       "port": 8766
+    },
+    {
+      "name": "bedrock-web",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "src.bedrock.web", "--project", "projects/bedrock_demo", "--port", "5050"],
+      "port": 5050
     }
   ]
 }
