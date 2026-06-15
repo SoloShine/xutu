@@ -90,6 +90,7 @@ def test_api_chapters(tmp_path):
     work = _make_work(root)
     _seed(work)
     d = create_app(str(root)).test_client().get("/api/works/w0/chapters").get_json()
+    assert d[0]["id"]
     assert d[0]["title"] == "甲"
 
 

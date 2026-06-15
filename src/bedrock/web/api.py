@@ -156,10 +156,10 @@ def api_chapters(work_id):
     conn = get_connection(wd)
     try:
         rows = conn.execute(
-            "SELECT c.global_number, c.title, c.status, v.id vid, v.name vname "
+            "SELECT c.id, c.global_number, c.title, c.status, v.id vid, v.name vname "
             "FROM chapter c JOIN volume v ON c.volume_id=v.id ORDER BY c.global_number").fetchall()
-        return jsonify([{"global_number": r["global_number"], "title": r["title"], "status": r["status"],
-                         "volume_id": r["vid"], "volume_name": r["vname"]} for r in rows])
+        return jsonify([{"id": r["id"], "global_number": r["global_number"], "title": r["title"],
+                         "status": r["status"], "volume_id": r["vid"], "volume_name": r["vname"]} for r in rows])
     finally:
         conn.close()
 

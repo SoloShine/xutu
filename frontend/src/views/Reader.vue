@@ -7,6 +7,7 @@ import { api } from '../api/client'
 const props = defineProps<{ wid: string }>()
 
 interface ChapterMeta {
+  id: number
   global_number: number
   title: string
   volume_id: number
@@ -44,34 +45,9 @@ const currentTitle = computed(() => text.value?.chapter?.title || '')
 
 // ---- 章标题内联编辑 ----
 const msg = useMessage()
-// global_number -> 内部 chapter id 的映射（懒加载自 outline 端点）
-// PATCH /chapters/<eid> 用的是内部 id，不是 global_number
-const gnumToId = ref<Map<number, number>>(new Map())
-const idMapLoaded = ref(false)
-const idMapLoading = ref(false)
 const titleEditing = ref(false)
 const titleDraft = ref('')
 const titleSaving = ref(false)
-
-async function ensureIdMap() {
-  if (idMapLoaded.value || idMapLoading.value) return
-  idMapLoading.value = true
-  try {
-    const data: any = await api.outline(props.wid)
-    const m = new Map<number, number>()
-    for (const v of data?.volumes ?? []) {
-      for (const c of v?.chapters ?? []) {
-        if (c?.global_number != null && c?.id != null) m.set(c.global_number, c.id)
-      }
-    }
-    gnumToId.value = m
-    idMapLoaded.value = true
-  } catch (e: any) {
-    msg.error('加载章节映射失败：' + (e?.message || String(e)))
-  } finally {
-    idMapLoading.value = false
-  }
-}
 
 function startTitleEdit() {
   if (selectedGnum.value === null) return
@@ -86,9 +62,10 @@ async function saveTitle() {
   if (selectedGnum.value === null || !props.wid) return
   const title = (titleDraft.value || '').trim()
   if (!title) { msg.error('章标题不能为空'); return }
-  await ensureIdMap()
-  const cid = gnumToId.value.get(selectedGnum.value)
-  if (cid == null) { msg.error('未找到章节内部 id，无法保存'); return }
+  // 直接用 chapters 列表项的内部 id（/chapters 已返回 id）
+  const ch = chapters.value.find((c) => c.global_number === selectedGnum.value)
+  if (!ch || ch.id == null) { msg.error('未找到章节 id，无法保存'); return }
+  const cid = ch.id
   titleSaving.value = true
   try {
     const res = await api.patch(props.wid, 'chapters', cid, { title })
@@ -96,8 +73,7 @@ async function saveTitle() {
     msg.success('已保存章标题')
     // 更新本地：text + chapters 列表对应项
     if (text.value?.chapter) text.value.chapter.title = title
-    const ch = chapters.value.find((c) => c.global_number === selectedGnum.value)
-    if (ch) ch.title = title
+    ch.title = title
     titleEditing.value = false
   } catch (e: any) {
     msg.error(e?.message || String(e))
@@ -167,8 +143,6 @@ function nextChapter() {
 onMounted(loadList)
 watch(() => props.wid, () => {
   selectedGnum.value = null
-  idMapLoaded.value = false
-  gnumToId.value = new Map()
   titleEditing.value = false
   loadList()
 })
@@ -215,7 +189,6 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
           <NInput
             v-model:value="titleDraft"
             placeholder="章标题（非空）"
-            :loading="idMapLoading"
             @keyup.enter="saveTitle"
             @keyup.esc="cancelTitleEdit"
           />
