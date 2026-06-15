@@ -215,3 +215,29 @@ def update_inspiration_content(conn, inspiration_id, content, source=None):
         record_amendment(conn, "inspiration", inspiration_id, "source", row["source"], source)
     conn.commit()
     return dict(conn.execute("SELECT * FROM inspiration WHERE id=?", (inspiration_id,)).fetchone())
+
+
+def update_master_outline(conn, theme_evolution=None, key_arcs=None, key_milestones=None, rhythm_curve=None):
+    """更新 master_outline(id=1)。JSON 字段须为 list。记 amendment。返回更新后 dict。"""
+    conn.execute("INSERT OR IGNORE INTO master_outline(id) VALUES(1)")
+    sets, params = [], []
+    row = conn.execute("SELECT * FROM master_outline WHERE id=1").fetchone()
+    if row is None:
+        raise ValueError("master_outline 不存在")
+    spec = {"theme_evolution": (theme_evolution, False), "rhythm_curve": (rhythm_curve, False),
+            "key_arcs": (key_arcs, True), "key_milestones": (key_milestones, True)}
+    for k, (v, is_list) in spec.items():
+        if v is None:
+            continue
+        if is_list and not isinstance(v, list):
+            raise ValueError(f"{k} 须为列表")
+        sets.append(f"{k}=?"); params.append(json.dumps(v, ensure_ascii=False) if is_list else v)
+    if not sets:
+        raise ValueError("无字段可更新")
+    params.append(1)
+    conn.execute(f"UPDATE master_outline SET {', '.join(sets)} WHERE id=?", params)
+    for k, (v, is_list) in spec.items():
+        if v is not None:
+            record_amendment(conn, "master_outline", 1, k, row[k], v)
+    conn.commit()
+    return dict(conn.execute("SELECT * FROM master_outline WHERE id=1").fetchone())

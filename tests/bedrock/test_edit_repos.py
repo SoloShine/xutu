@@ -8,6 +8,11 @@ from src.bedrock.repositories.plot_tree import (
     create_volume, create_chapter, create_beat,
     update_chapter_meta, update_volume_meta, update_beat_meta,
 )
+from src.bedrock.repositories.worldbook import (
+    add_location, add_theme, add_motif,
+    update_location, update_theme, update_motif,
+)
+from src.bedrock.repositories.outline import update_master_outline
 
 
 def test_update_character_fields(tmp_project):
@@ -108,4 +113,53 @@ def test_update_beat_meta_ok(tmp_project):
     b = create_beat(conn, chapter_id=c, sequence=1, purpose="一个足够长的初始场景目的描述文字")
     row = update_beat_meta(conn, b, purpose="这是一个新的足够长的场景目的描述文字", scene_setting={"place": "城门"})
     assert row["purpose"] == "这是一个新的足够长的场景目的描述文字"
+    conn.close()
+
+
+def test_update_location(tmp_project):
+    conn = get_connection(tmp_project)
+    lid = add_location(conn, name="城", loc_type="city", description="旧")
+    row = update_location(conn, lid, description="新城", state="废弃")
+    assert row["description"] == "新城" and row["state"] == "废弃"
+    conn.close()
+
+
+def test_update_theme_by_name(tmp_project):
+    conn = get_connection(tmp_project)
+    add_theme(conn, name="边界", description="旧", evolution="初")
+    row = update_theme(conn, name="边界", description="新", evolution="进")
+    assert row["evolution"] == "进" and row["description"] == "新"
+    conn.close()
+
+
+def test_update_motif_by_name(tmp_project):
+    conn = get_connection(tmp_project)
+    add_motif(conn, name="电流", meaning="旧")
+    row = update_motif(conn, name="电流", meaning="新意", evolution="深")
+    assert row["meaning"] == "新意"
+    conn.close()
+
+
+def test_update_master_outline(tmp_project):
+    conn = get_connection(tmp_project)
+    row = update_master_outline(conn, theme_evolution="从对抗到共生", key_arcs=["韩峥线", "林深线"])
+    assert row["theme_evolution"] == "从对抗到共生"
+    import json as _j
+    assert _j.loads(conn.execute("SELECT key_arcs FROM master_outline WHERE id=1").fetchone()["key_arcs"]) == ["韩峥线", "林深线"]
+    conn.close()
+
+
+def test_update_master_outline_bad_json(tmp_project):
+    conn = get_connection(tmp_project)
+    with pytest.raises(ValueError):
+        update_master_outline(conn, key_milestones="不是列表")
+    conn.close()
+
+
+def test_update_worldbook_unknown(tmp_project):
+    conn = get_connection(tmp_project)
+    with pytest.raises(ValueError):
+        update_location(conn, 9999, description="x")
+    with pytest.raises(ValueError):
+        update_theme(conn, name="不存在", description="x")
     conn.close()
