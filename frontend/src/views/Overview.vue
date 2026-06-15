@@ -1,16 +1,16 @@
 <!-- src/views/Overview.vue -->
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import {
   NSpin, NGrid, NGridItem, NStatistic, NCard, NTag, NEmpty, NSpace,
   NInput, NDynamicTags, NButton, useMessage,
 } from 'naive-ui'
 import { api } from '../api/client'
+import { usePanels } from '../stores/panels'
 import WorldbookInline from '../components/edit/WorldbookInline.vue'
 
 const props = defineProps<{ wid: string }>()
-const router = useRouter()
+const panels = usePanels()
 
 interface Overview {
   name?: string
@@ -74,7 +74,7 @@ const inspItems = (d: Overview) => [
   { key: 'discarded', label: 'discarded', n: d.inspirations.discarded, type: 'error' as const },
 ]
 
-function goCharacters() { router.push(`/works/${props.wid}/characters`) }
+function goCharacters() { panels.setFocusedView('characters') }
 
 // ---- 卷名 / theme_seeds 内联编辑 ----
 const msg = useMessage()
