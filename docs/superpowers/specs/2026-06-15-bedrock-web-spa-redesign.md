@@ -8,7 +8,7 @@
 
 把当前"裸 HTML 工作台"重做成**专业 SPA 工作台**：左侧栏作品切换 + 导航，主区多视图，现成组件库撑起专业度（解决 POV 矩阵 100px 小表这类手搓丑件）。
 
-**范围 = 1 个 Vue3 SPA + Flask 退成 JSON API + 2 个写操作（灵感池状态推进 `advance_inspiration` + 未消费内容编辑 `update_inspiration_content`）**：
+**范围 = 1 个 Vue3 SPA + Flask 退成 JSON API + 多个写操作（灵感状态推进 / 灵感内容编辑 / 元数据编辑 / 大纲编辑），全部走 `add_amendment` 审计骨架**：
 
 | 视图 | 模式/说明 | 读/写 |
 |------|-----------|-------|
@@ -19,7 +19,7 @@
 | 正文 · 阅读模式 | 散文式排版（段落按 seq） | 只读 |
 | 正文 · 大纲模式 | 作品→卷→章→beat 多级分组树 | 只读 |
 
-**不在范围**：在线编辑正文（正文 SSOT 由管线写）；治理写入（mark-*/unlock，留 CLI/MCP）；多用户/身份/部署（本地 loopback 单用户）；前端单元测试（本地工具，手动冒烟）；**schema 改动**（本 spec 零 schema 迁移，全部基于既有表）。
+**不在范围**：在线编辑**正文段落**（paragraph.text —— SSOT 由管线写，本期不开；见 §12 正文独立 spec）；治理写入 flip（volume_outline lock/unlock、mark-*，留 CLI/MCP —— Web 可触发 lock-guard 错误但不禁/解锁）；多用户/身份/部署（本地 loopback 单用户）；前端单元测试（本地工具，手动冒烟）；**schema 改动**（本 spec 零 schema 迁移，全部基于既有表）。
 
 ## 2. 关键设计决策
 
@@ -31,6 +31,8 @@
 - **两个写操作**：
   - **状态推进** `advance_inspiration`（状态机单向，复用 SP6-C）。业务失败（非法转移/未知 iid/缺 target）返回 `200 {ok:false,error}` 且 DB 不变；**请求不合格**（Content-Type 非 application/json）返回 **415**。
   - **内容编辑** `update_inspiration_content`（新增）。**可编辑 ⟺ `status ∈ {raw,refined,partial}` 且 `consumed_into` 为空**；consumed / discarded 一律冻结（已消费进正文 = 历史记录，编辑会与正文使用脱节）。编辑字段 = `content`（必填非空）+ `source`（可选）。业务失败（已冻结/未知 iid/content 空）返回 `200 {ok:false,error}` 且 DB 不变；Content-Type 非 JSON → 415。
+- **审计骨架 = `governance.add_amendment`**：所有 Web 手动编辑（灵感内容 + 元数据 + 大纲）在 repo 层写字段后**记一条 amendment**（`entity_type, entity_id, field, old, new`）。这是管线既有的修正记录机制（beat override→amendment 即此），让 Web 编辑可审计、可被 drift 检测识别。amendment 记录失败不阻断主写（best-effort，记日志）。
+- **元数据 / 大纲编辑（层1+层2）**：复用既有 `update_beat_contract`（lock-guarded）/ `update_beat_status`；新建 `update_character`/`update_chapter_meta`/`update_volume_meta`/`update_location`/`update_theme`/`update_motif`/`update_beat_meta`/`update_master_outline`。详见 §5.7。所有编辑同样走 amendment + 失败语义（业务 `200{ok:false}` / 请求不合格 `415`）。
 - **CSRF = 同源 + `Content-Type: application/json` 校验**（替代 htmx 的 HX-Request；simple form 发不出 JSON content-type）。
 - **路径穿越校验（写全）**：路由用 `<wid>`（string converter，不含 `/`）；`wid` 含 `/`、`\`、等于 `..`/`.` 或匹配盘符前缀（`r'^[A-Za-z]:'`）→ 404；再 `(root.resolve() / wid).resolve()` 后 `is_relative_to(root.resolve())` 失败 → 404；最终需含 `bedrock.db`。
 - **node 构建物不入 git**：**主动新增** `.gitignore` 三条：`frontend/node_modules/`、`frontend/dist/`、`src/bedrock/web/static/`（保留 `src/bedrock/web/static/.gitkeep`）。
@@ -156,6 +158,33 @@ Naive `NLayout`（`has-sider`）：
   - 空字段优雅省略（无 volume_outline 行 / 无 beat / master_outline 字段全空 → 不渲染该节点）。
 - 数据来自 `outline_tree(conn, volume_id|None)`：基于 `volume` LEFT JOIN `volume_outline`、`chapter`、`beat`（+ `paragraph` 计数 + `character` 取 POV 名），详见 §7。
 
+## 5.7 可编辑实体工作台（层1 元数据 + 层2 大纲）
+
+所有编辑走统一模式：前端表单（NModal/NDrawer）→ `PATCH /api/works/<wid>/<entity>/<id>`（JSON）→ repo 函数（校验 + 写 + 记 amendment）→ 返回更新后对象。失败语义与灵感编辑一致（业务 `200{ok:false}` / 请求不合格 `415`）。
+
+**v1 可编辑清单**（repo 列：✅既有 / 🆕新建）：
+
+| 实体 | 可编辑字段 | repo 函数 | guard / 备注 | 前端落点 |
+|------|-----------|----------|--------------|---------|
+| 角色 character | name / pronoun / gender / role / personality / goals / abilities / aliases / state | 🆕 `update_character(conn, cid, **fields)` | name UNIQUE 冲突 → `{ok:false}`；state/pronoun/role 须在 schema CHECK 枚举内 | 总览→角色区，或新「角色」标签页 |
+| 章节 chapter | title | 🆕 `update_chapter_meta(conn, ch_id, title)` | title 非空 | 阅读模式章标题旁「编辑」 |
+| 卷 volume | name / theme_seeds(JSON) | 🆕 `update_volume_meta(conn, vid, name, theme_seeds)` | theme_seeds 须合法 JSON 数组；status/volume_type **不动**（治理） | 总览卷列表 / 大纲卷节点 |
+| 地点 location | description / state / loc_type | 🆕 `update_location(...)` | — | （v1 可并入总览，或延后） |
+| 主题 theme | description / evolution | 🆕 `update_theme(...)` | — | 同上 |
+| 母题 motif | meaning / evolution | 🆕 `update_motif(...)` | — | 同上 |
+| beat 契约 | volume_outline.beat_contracts 项 | ✅ `update_beat_contract(conn, vid, beat_id, new_contract)` | **locked → OutlineLockedError → `{ok:false}`**（不禁/解锁，提示用户走 CLI unlock） | 大纲模式 beat 节点 |
+| beat 行 | status / deviation_note | ✅ `update_beat_status(conn, beat_id, status, deviation_note)` | status 须在枚举内 | 大纲模式 beat 节点 |
+| beat 行 | purpose / scene_setting | 🆕 `update_beat_meta(conn, beat_id, purpose, scene_setting)` | purpose `CHECK(length>=10)` → 违例 `{ok:false}` | 大纲模式 beat 节点 |
+| master_outline | theme_evolution / key_arcs / key_milestones / rhythm_curve | 🆕 `update_master_outline(conn, **fields)` | JSON 字段须合法数组/串 | 大纲模式顶部「作品大纲」卡片 |
+
+**架构约束**：
+- **不动的字段（治理/SSOT owned）**：volume.status / volume.volume_type（governance）；chapter.status（管线）；paragraph.*（正文，§12 独立 spec）；inspiration.status 由状态机推进（不在此 PATCH）。
+- **统一失败语义**：业务失败（枚举违例/UNIQUE 冲突/locked/未知 id/字段非法）→ `200 {ok:false,error}` + DB 不变 + 前端 NMessage；请求不合格（Content-Type 非 JSON）→ 415。
+- **amendment 记录**：每个 update repo 在 commit 前读 old、写后调 `add_amendment(entity_type, entity_id, field, old, new)`（多字段改 → 多条 amendment）。amendment 写失败 best-effort（记日志，不阻断）。
+- **JSON 字段**：theme_seeds / scene_setting / abilities / aliases / key_arcs / key_milestones 在 repo 入口 `json.loads` 校验合法性，非法 → `{ok:false}`。
+
+**前端**：各视图在其展示的实体上加「编辑」入口（NButton/双击）→ NModal 表单（按字段类型：text/textarea/NSelect 枚举/NTag 输入数组）→ PATCH → 乐观更新或重拉。失败 NMessage。locked beat 契约的编辑按钮禁用并 tooltip 提示「卷已锁定，需 CLI unlock」。
+
 ## 6. API 设计（`/api` 蓝图）
 
 全部按 `work_id`（= projects_root 下的子目录名）作用域。**路径解析**（§2 规则）：路由 `<wid>`（string，不含 `/`）；含 `/`/`\`/`..`/`.`/盘符 → 404；`(root.resolve()/wid).resolve()` 不在 `root.resolve()` 内 → 404；无 `bedrock.db` → 404。
@@ -214,6 +243,20 @@ GET  /api/works/<wid>/outline?volume=<vid>          // volume 省略 = 全部卷
             beats:[{id,sequence,purpose,pov_name,scene_setting,status,deviation_note,paragraph_count}]}]}]}
 ```
 
+**编辑端点（层1+层2，统一 PATCH，Content-Type: application/json，失败语义同灵感编辑）**：
+```
+PATCH /api/works/<wid>/characters/<id>         body: {任意可编辑 character 字段}   → 200 {ok,item}|{ok:false,error}
+PATCH /api/works/<wid>/chapters/<id>           body: {title}
+PATCH /api/works/<wid>/volumes/<id>            body: {name, theme_seeds}
+PATCH /api/works/<wid>/locations/<id>          body: {description, state, loc_type}
+PATCH /api/works/<wid>/themes/<id>             body: {description, evolution}
+PATCH /api/works/<wid>/motifs/<id>             body: {meaning, evolution}
+PATCH /api/works/<wid>/volumes/<vid>/beats/<bid>/contract   body: {purpose?, scene_setting?, pov?, ...}   // → update_beat_contract；locked → {ok:false}
+PATCH /api/works/<wid>/beats/<id>              body: {status?, deviation_note?, purpose?, scene_setting?}  // status/note→update_beat_status；purpose/scene→update_beat_meta
+PATCH /api/works/<wid>/master_outline          body: {theme_evolution?, key_arcs?, key_milestones?, rhythm_curve?}
+```
+所有 PATCH：Content-Type 非 JSON → 415；业务失败（枚举违例/UNIQUE/locked/未知 id/字段非法/JSON 非法）→ `200 {ok:false,error}` + DB 不变 + 记 amendment（仅成功时）。
+
 ## 7. queries.py 新增函数（纯函数，pytest 锁）
 
 ```python
@@ -253,6 +296,17 @@ def outline_tree(conn, volume_id=None):
 ```
 
 > **schema 已核对**（本次审核已逐表确认）：`volume`(number/name/volume_type/status/theme_seeds)、`volume_outline`(volume_id/status/locked_at/beat_contracts)、`master_outline`(id=1/theme_evolution/key_arcs/key_milestones/rhythm_curve)、`chapter`(volume_id/global_number/title/status)、`beat`(chapter_id/sequence/purpose/pov_character_id/scene_setting/status/deviation_note)、`paragraph`(chapter_id/seq/text/beat_id/role，主键 para_id)、`character`(name)。**无 chapter_arc/outline_entry**（那是 novel_kg）。
+
+### §7.1 编辑 repo 函数（层1+层2，分布在 character.py / plot_tree.py / worldbook.py / outline.py）
+
+统一模式：读 old → 校验（枚举/UNIQUE/非空/JSON 合法）→ 非法在 UPDATE 前 raise ValueError → UPDATE → `add_amendment`（best-effort）→ commit → 返回更新后 dict。
+
+- 🆕 `character.py :: update_character(conn, cid, **fields)` — 白名单字段（name/pronoun/gender/role/personality/goals/abilities/aliases/state）；name 改值先查 UNIQUE 冲突；JSON 列（abilities/aliases）入参可 list 或 str，存 `json.dumps`；枚举字段（pronoun/role/state/gender）校验。
+- 🆕 `plot_tree.py :: update_chapter_meta(conn, ch_id, title)` / `update_volume_meta(conn, vid, name=None, theme_seeds=None)` / `update_beat_meta(conn, beat_id, purpose=None, scene_setting=None)` — purpose 校验 `length>=10`。
+- 🆕 `worldbook.py :: update_location / update_theme / update_motif(conn, id, **fields)`。
+- 🆕 `outline.py :: update_master_outline(conn, **fields)` — JSON 字段（key_arcs/key_milestones）入参 list，存 `json.dumps`；theme_evolution/rhythm_curve 字符串。
+- ✅ 既有复用：`update_beat_contract`（lock-guarded，OutlineLockedError 透传）、`update_beat_status`。
+- 🆕 各 update 内部统一调 `governance.add_amendment(conn, entity_type, entity_id, field, old, new)`（每改一字段一条）。封装一个私有 `_record amendments` 助手避免重复。
 
 ## 8. 开发与启动
 
@@ -303,6 +357,19 @@ python -m src.bedrock.web --projects-root projects
 - `test_update_content_empty_rejected`（content 空白 → ValueError）
 - `test_update_content_with_source`（source 一并更新）
 
+### 层 1.6：纯函数 `tests/bedrock/test_edit_repos.py`（层1+层2 编辑 repo）
+- `test_update_character_fields`（personality/goals 等改成功 + 记 amendment）
+- `test_update_character_name_unique_conflict`（重名 → ValueError，DB 不变）
+- `test_update_character_enum_invalid`（pronoun 非法枚举 → ValueError）
+- `test_update_chapter_meta_title` / `test_update_volume_meta_theme_seeds_json`
+- `test_update_beat_meta_purpose_too_short`（<10 → ValueError）
+- `test_update_location/theme/motif`
+- `test_update_master_outline_json_fields`
+- `test_update_beat_contract_locked_rejected`（locked → OutlineLockedError，beat_contracts 不变）
+- `test_update_beat_status_records_amendment`
+- `test_update_unknown_id`（各实体 → ValueError）
+- `test_amendment_recorded_on_every_edit`（每次成功编辑产出对应 amendment 行）
+
 ### 层 2：API（Flask test client）`tests/bedrock/test_api.py`（**取代** `test_web.py`）
 - `test_api_works_lists`
 - `test_api_overview` / `test_api_overview_empty`
@@ -312,6 +379,7 @@ python -m src.bedrock.web --projects-root projects
 - `test_api_edit_content_ok`（raw 未消费 → PATCH 改 content 成功）
 - `test_api_edit_content_frozen`（consumed/discarded → `{ok:false}` + DB 不变）
 - `test_api_edit_content_empty_rejected` / `_requires_json_content_type`（415）
+- **层1+层2 编辑 API**：`test_api_edit_character` / `_name_unique_conflict` / `_enum_invalid` / `test_api_edit_chapter_title` / `test_api_edit_volume_meta` / `test_api_edit_beat_contract_locked`（→ {ok:false}）/ `test_api_edit_beat_status` / `test_api_edit_beat_meta_purpose_short` / `test_api_edit_master_outline` / `test_api_edit_unknown_id_404_or_okfalse`
 - `test_api_reports_scan`（列出有报告的卷）
 - `test_api_report_renders_markdown` / `_escalate_highlight` / `_v2_tolerant_empty_escalate` / `_missing_404`
 - `test_api_chapters`
@@ -344,6 +412,8 @@ python -m src.bedrock.web --projects-root projects
 - POV 矩阵 NDataTable 撑满宽度、● 点击弹 beat drawer。
 - 灵感池推进：合法生效 + 时间戳；非法/未知 iid/缺 target → `{ok:false}` + DB 不变 + NMessage；Content-Type 非 JSON → 415；consumed 显示 consumed_into、discarded 无按钮。
 - 灵感池内容编辑：raw/refined/partial 且未消费 → 可编辑 content(+source)；consumed/discarded → 冻结（`{ok:false}` + DB 不变）；编辑按钮仅可编辑卡显示。
+- 元数据编辑（层1）：角色档案 / 章标题 / 卷名+theme_seeds / 世界观（location/theme/motif）可 PATCH；name UNIQUE 冲突 / 枚举违例 → `{ok:false}` + DB 不变；每次成功编辑记 amendment。
+- 大纲编辑（层2）：beat 契约（locked → `{ok:false}` 提示 unlock）/ beat 状态+偏差 / beat purpose(>=10)+scene_setting / master_outline 字段可 PATCH；purpose 过短 → `{ok:false}`；记 amendment。
 - 正文阅读：段落按 seq、散文排版、上下章导航（首末章禁用）。
 - 正文大纲：作品→卷→章→beat 多级树、可折叠、master_outline/volume_outline/beat.status/deviation_note 展示、缺字段优雅省略。
 - 报告：markdown 渲染 + escalate 逐项高亮；V2 报告不报错。
@@ -360,3 +430,5 @@ python -m src.bedrock.web --projects-root projects
 - **`create_app` 签名变更**：断 `__main__.py` + `test_web.py`（后者删除，前者随改）；`launch.json` 同步。
 - **JSON 列解析**：theme_seeds/beat_contracts/scene_setting/key_arcs/key_milestones/consumed_into 全部在纯函数/API 层 `json.loads`，异常降级，避免前端拿到原始字符串。
 - **内容编辑冻结边界**：guard 同时检查 `status`（非 consumed/discarded）**和** `consumed_into`（空），双条件防"consumed 状态但无 into 记录"或"partial 已部分消费"被误编辑。非法时 UPDATE 前 raise，DB 不变。
+- **正文编辑（paragraph）= 独立后续 spec，本期不开**。机器已就绪（`update_paragraph(para_id,text,content_hash,beat_id,role)` / `insert_paragraph_at` 存在）。策略已定：**开 + 完整保护**（重算 content_hash + 记 amendment + 导出后编辑标 drift，与 export_manifest 比对）。本 spec 仅在此记录策略，实现留独立 spec，避免本期 scope 失控。
+- **amendment best-effort**：amendment 写失败不阻断主字段写入（仅记日志），保证编辑可用性优先于审计完整性；本地单用户场景可接受。
