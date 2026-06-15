@@ -906,25 +906,26 @@ def test_update_location(tmp_project):
     conn.close()
 
 
-def test_update_theme(tmp_project):
+def test_update_theme_by_name(tmp_project):
+    # theme 表无 id 列（name 是 PK）—— 按 name 键
     conn = get_connection(tmp_project)
-    tid = add_theme(conn, name="边界", description="旧", evolution="初")
-    row = update_theme(conn, tid, description="新", evolution="进")
-    assert row["evolution"] == "进"
+    add_theme(conn, name="边界", description="旧", evolution="初")
+    row = update_theme(conn, name="边界", description="新", evolution="进")
+    assert row["evolution"] == "进" and row["description"] == "新"
     conn.close()
 
 
-def test_update_motif(tmp_project):
+def test_update_motif_by_name(tmp_project):
+    # motif 表无 id 列（name 是 PK）—— 按 name 键
     conn = get_connection(tmp_project)
-    mid = add_motif(conn, name="电流", meaning="旧")
-    row = update_motif(conn, mid, meaning="新意", evolution="深")
+    add_motif(conn, name="电流", meaning="旧")
+    row = update_motif(conn, name="电流", meaning="新意", evolution="深")
     assert row["meaning"] == "新意"
     conn.close()
 
 
 def test_update_master_outline(tmp_project):
     conn = get_connection(tmp_project)
-    # master_outline id=1 行由 init_project 创建（DEFAULT）
     row = update_master_outline(conn, theme_evolution="从对抗到共生", key_arcs=["韩峥线", "林深线"])
     assert row["theme_evolution"] == "从对抗到共生"
     import json as _j
@@ -939,10 +940,12 @@ def test_update_master_outline_bad_json(tmp_project):
     conn.close()
 
 
-def test_update_worldbook_unknown_id(tmp_project):
+def test_update_worldbook_unknown(tmp_project):
     conn = get_connection(tmp_project)
     with pytest.raises(ValueError):
         update_location(conn, 9999, description="x")
+    with pytest.raises(ValueError):
+        update_theme(conn, name="不存在", description="x")
     conn.close()
 ```
 
@@ -958,48 +961,52 @@ Expected: FAIL。
 from src.bedrock.repositories._amendment import record_amendment
 
 
-def _update_simple(conn, table, entity_type, eid, allowed, **fields):
+def _update_by_col(conn, table, entity_type, key_col, key_val, allowed, **fields):
+    """通用 update：按 key_col(如 id/name) 定位行。非法字段/未知行/空字段 → raise。记 amendment。"""
     illegal = set(fields) - allowed
     if illegal:
         raise ValueError(f"非法字段: {illegal}")
-    row = conn.execute(f"SELECT * FROM {table} WHERE id=?", (eid,)).fetchone()
+    row = conn.execute(f"SELECT * FROM {table} WHERE {key_col}=?", (key_val,)).fetchone()
     if row is None:
-        raise ValueError(f"{entity_type} {eid} 不存在")
+        raise ValueError(f"{entity_type} {key_val} 不存在")
     if not fields:
         raise ValueError("无字段可更新")
     sets, params = [], []
     for k, v in fields.items():
         sets.append(f"{k}=?"); params.append(v if v is not None else "")
-    params.append(eid)
-    conn.execute(f"UPDATE {table} SET {', '.join(sets)} WHERE id=?", params)
+    params.append(key_val)
+    conn.execute(f"UPDATE {table} SET {', '.join(sets)} WHERE {key_col}=?", params)
     for k in fields:
-        record_amendment(conn, entity_type, eid, k, row[k], fields[k])
+        record_amendment(conn, entity_type, key_val, k, row[k], fields[k])
     conn.commit()
-    return dict(conn.execute(f"SELECT * FROM {table} WHERE id=?", (eid,)).fetchone())
+    return dict(conn.execute(f"SELECT * FROM {table} WHERE {key_col}=?", (key_val,)).fetchone())
 
 
 def update_location(conn, location_id, description=None, state=None, loc_type=None):
+    # location 表有 id 列
     fields = {}
     if description is not None: fields["description"] = description
     if state is not None: fields["state"] = state
     if loc_type is not None: fields["loc_type"] = loc_type
-    return _update_simple(conn, "location", "location", location_id,
+    return _update_by_col(conn, "location", "location", "id", location_id,
                           {"description", "state", "loc_type"}, **fields)
 
 
-def update_theme(conn, theme_id, description=None, evolution=None):
+def update_theme(conn, name, description=None, evolution=None):
+    # theme 表无 id 列（name 是 PK）—— 按 name 键
     fields = {}
     if description is not None: fields["description"] = description
     if evolution is not None: fields["evolution"] = evolution
-    return _update_simple(conn, "theme", "theme", theme_id,
+    return _update_by_col(conn, "theme", "theme", "name", name,
                           {"description", "evolution"}, **fields)
 
 
-def update_motif(conn, motif_id, meaning=None, evolution=None):
+def update_motif(conn, name, meaning=None, evolution=None):
+    # motif 表无 id 列（name 是 PK）—— 按 name 键
     fields = {}
     if meaning is not None: fields["meaning"] = meaning
     if evolution is not None: fields["evolution"] = evolution
-    return _update_simple(conn, "motif", "motif", motif_id,
+    return _update_by_col(conn, "motif", "motif", "name", name,
                           {"meaning", "evolution"}, **fields)
 ```
 
@@ -1725,16 +1732,30 @@ def api_edit_location(work_id, eid):
     return _patch_entity(work_id, eid, update_location, **body)
 
 
-@bp.patch("/works/<work_id>/themes/<int:eid>")
-def api_edit_theme(work_id, eid):
+@bp.patch("/works/<work_id>/themes/<name>")
+def api_edit_theme(work_id, name):
+    # theme 表无 id，按 name(PK) 键
+    _require_json()
+    wd = _resolve_work(work_id)
     body = request.get_json(silent=True) or {}
-    return _patch_entity(work_id, eid, update_theme, **body)
+    conn = _conn(wd)
+    try:
+        return _run(lambda: update_theme(conn, name, **body))
+    finally:
+        conn.close()
 
 
-@bp.patch("/works/<work_id>/motifs/<int:eid>")
-def api_edit_motif(work_id, eid):
+@bp.patch("/works/<work_id>/motifs/<name>")
+def api_edit_motif(work_id, name):
+    # motif 表无 id，按 name(PK) 键
+    _require_json()
+    wd = _resolve_work(work_id)
     body = request.get_json(silent=True) or {}
-    return _patch_entity(work_id, eid, update_motif, **body)
+    conn = _conn(wd)
+    try:
+        return _run(lambda: update_motif(conn, name, **body))
+    finally:
+        conn.close()
 
 
 @bp.patch("/works/<work_id>/beats/<int:eid>")

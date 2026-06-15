@@ -272,8 +272,8 @@ PATCH /api/works/<wid>/characters/<id>         body: {任意可编辑 character 
 PATCH /api/works/<wid>/chapters/<id>           body: {title}
 PATCH /api/works/<wid>/volumes/<id>            body: {name, theme_seeds}
 PATCH /api/works/<wid>/locations/<id>          body: {description, state, loc_type}
-PATCH /api/works/<wid>/themes/<id>             body: {description, evolution}
-PATCH /api/works/<wid>/motifs/<id>             body: {meaning, evolution}
+PATCH /api/works/<wid>/themes/<name>           body: {description, evolution}   // theme 无 id，name 是 PK
+PATCH /api/works/<wid>/motifs/<name>           body: {meaning, evolution}       // motif 无 id，name 是 PK
 PATCH /api/works/<wid>/volumes/<vid>/beats/<bid>/contract   body: {purpose?, scene_setting?, pov?, ...}   // → update_beat_contract；locked → {ok:false}
 PATCH /api/works/<wid>/beats/<id>              body: {status?, deviation_note?, purpose?, scene_setting?}  // status/note→update_beat_status；purpose/scene→update_beat_meta
 PATCH /api/works/<wid>/master_outline          body: {theme_evolution?, key_arcs?, key_milestones?, rhythm_curve?}
