@@ -1,8 +1,0 @@
-<!-- _beats.html：矩阵单元格 ● 展开的 beat 列表片段（htmx 局部） -->
-<div class="beat-list">
-{% for b in beats %}
-<p><strong>beat {{ b.sequence }}</strong>：{{ b.purpose }}</p>
-{% else %}
-<p>（无 beat）</p>
-{% endfor %}
-</div>
