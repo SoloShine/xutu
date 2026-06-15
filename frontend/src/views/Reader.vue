@@ -27,6 +27,7 @@ const chapters = ref<ChapterMeta[]>([])
 // 按 volume_name -> 该卷章节列表（按 chapters 全局序）
 const grouped = ref<Array<{ volume_name: string; items: ChapterMeta[] }>>([])
 const expanded = ref<string[]>([])
+const tocCollapsed = ref(false)
 
 const selectedGnum = ref<number | null>(null)
 const text = ref<ChapterText | null>(null)
@@ -152,7 +153,10 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
 <template>
   <div class="reader-root">
     <!-- 左侧目录 -->
-    <aside class="reader-toc">
+    <aside class="reader-toc" :class="{ collapsed: tocCollapsed }">
+      <div class="toc-head">
+        <NButton size="tiny" quaternary :title="tocCollapsed ? '' : '折叠目录'" @click="tocCollapsed = true">«</NButton>
+      </div>
       <div v-if="loadingList" class="toc-loading"><NSpin size="small" /></div>
       <template v-else-if="grouped.length">
         <NCollapse v-model:expanded-names="expanded" arrow-placement="left" display-directive="show">
@@ -181,6 +185,9 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
 
     <!-- 右侧主区 -->
     <main class="reader-main">
+      <div v-if="tocCollapsed" class="toc-reopen">
+        <NButton size="tiny" quaternary title="展开目录" @click="tocCollapsed = false">» 目录</NButton>
+      </div>
       <div v-if="loadingText" class="main-loading"><NSpin /></div>
       <div v-else-if="error" class="main-error">{{ error }}</div>
       <div v-else-if="!text" class="main-empty"><NEmpty description="请选择章节" /></div>
@@ -230,8 +237,21 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   flex: 0 0 260px;
   overflow-y: auto;
   padding: 12px 8px;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid var(--br-border);
+  transition: flex-basis 0.2s, padding 0.2s;
 }
+.reader-toc.collapsed {
+  flex: 0 0 0;
+  padding: 0;
+  border-right: none;
+  overflow: hidden;
+}
+.toc-head {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+.toc-reopen { margin-bottom: 8px; }
 .toc-loading { padding: 16px; }
 .toc-list { list-style: none; margin: 0; padding: 0; }
 .toc-item {
@@ -245,10 +265,10 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   font-size: 13px;
   transition: background 0.15s;
 }
-.toc-item:hover { background: rgba(255, 255, 255, 0.05); }
+.toc-item:hover { background: color-mix(in srgb, var(--br-text1) 6%, transparent); }
 .toc-item.active {
-  background: rgba(0, 200, 200, 0.12);
-  color: #00e5e5;
+  background: color-mix(in srgb, var(--br-primary) 16%, transparent);
+  color: var(--br-primary);
 }
 .toc-num { flex: 0 0 auto; opacity: 0.6; font-variant-numeric: tabular-nums; }
 .toc-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -299,7 +319,7 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   max-width: 420px;
 }
 .paragraph {
-  color: #d8dce6;
+  color: var(--br-text2);
   font-size: 16px;
   line-height: 1.9;
   text-indent: 2em;

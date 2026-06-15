@@ -16,6 +16,11 @@ const panels = usePanels()
 const route = useRoute()
 const router = useRouter()
 const themePanelShow = ref(false)
+const siderCollapsed = ref(localStorage.getItem('bedrock-sider') === '1')
+function toggleSider() {
+  siderCollapsed.value = !siderCollapsed.value
+  localStorage.setItem('bedrock-sider', siderCollapsed.value ? '1' : '0')
+}
 onMounted(() => { ws.loadWorks(); theme.load(); panels.load() })
 
 const workOptions = computed(() => ws.works.map(w => ({ label: `${w.name}（${w.volumes}卷）`, value: w.id })))
@@ -61,7 +66,7 @@ function onMenu(key: string) {
   <NMessageProvider>
   <NDialogProvider>
   <NLayout has-sider :style="theme.cssStyleVars" style="height:100vh">
-    <NLayoutSider bordered :width="220" :content-style="{ padding: '12px', background: 'var(--br-sider)' }">
+    <NLayoutSider bordered :width="220" :collapsed-width="0" :collapsed="siderCollapsed" :native-scrollbar="true" :content-style="{ padding: '12px', background: 'var(--br-sider)' }">
       <div style="margin-bottom:12px">
         <NSelect v-if="workOptions.length" :value="ws.activeId" :options="workOptions" @update:value="onWork" placeholder="选择作品"/>
         <NSpin v-else size="small"/>
@@ -71,6 +76,7 @@ function onMenu(key: string) {
     </NLayoutSider>
     <NLayout>
       <NLayoutHeader bordered style="height:48px;padding:0 20px;display:flex;align-items:center;background:var(--br-header,var(--br-sider))">
+        <NButton quaternary size="small" :title="siderCollapsed ? '展开侧栏' : '折叠侧栏'" style="margin-left:-8px;margin-right:4px" @click="toggleSider">{{ siderCollapsed ? '☰' : '«' }}</NButton>
         <strong :style="{ color: theme.primary }">磐石 Bedrock</strong>
         <span style="margin-left:12px;color:var(--br-text3)">{{ ws.active?.name }}</span>
         <div style="flex:1"></div>
