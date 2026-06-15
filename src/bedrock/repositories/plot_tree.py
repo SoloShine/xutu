@@ -3,6 +3,8 @@ import json
 import sqlite3
 from typing import Optional
 
+from src.bedrock.repositories._amendment import record_amendment
+
 
 def create_volume(conn, number, name, chapter_start, chapter_end, volume_type,
                   theme_seeds=None):
@@ -136,3 +138,67 @@ def reorder_paragraphs(conn, chapter_id, para_id_list):
     for i, pid in enumerate(para_id_list, start=1):
         conn.execute("UPDATE paragraph SET seq=? WHERE para_id=?", (i, pid))
     conn.commit()
+
+
+def update_chapter_meta(conn, chapter_id, title):
+    title = (title or "").strip()
+    if not title:
+        raise ValueError("title 不能为空")
+    row = conn.execute("SELECT title FROM chapter WHERE id=?", (chapter_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"chapter {chapter_id} 不存在")
+    conn.execute("UPDATE chapter SET title=? WHERE id=?", (title, chapter_id))
+    record_amendment(conn, "chapter", chapter_id, "title", row["title"], title)
+    conn.commit()
+    return dict(conn.execute("SELECT * FROM chapter WHERE id=?", (chapter_id,)).fetchone())
+
+
+def update_volume_meta(conn, volume_id, name=None, theme_seeds=None):
+    sets, params = [], []
+    row = conn.execute("SELECT name, theme_seeds FROM volume WHERE id=?", (volume_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"volume {volume_id} 不存在")
+    if name is not None:
+        nm = name.strip()
+        if not nm:
+            raise ValueError("name 不能为空")
+        sets.append("name=?"); params.append(nm)
+    if theme_seeds is not None:
+        if not isinstance(theme_seeds, list):
+            raise ValueError("theme_seeds 须为列表")
+        sets.append("theme_seeds=?"); params.append(json.dumps(theme_seeds, ensure_ascii=False))
+    if not sets:
+        raise ValueError("无字段可更新")
+    params.append(volume_id)
+    conn.execute(f"UPDATE volume SET {', '.join(sets)} WHERE id=?", params)
+    if name is not None:
+        record_amendment(conn, "volume", volume_id, "name", row["name"], name)
+    if theme_seeds is not None:
+        record_amendment(conn, "volume", volume_id, "theme_seeds", row["theme_seeds"], theme_seeds)
+    conn.commit()
+    return dict(conn.execute("SELECT * FROM volume WHERE id=?", (volume_id,)).fetchone())
+
+
+def update_beat_meta(conn, beat_id, purpose=None, scene_setting=None):
+    sets, params = [], []
+    row = conn.execute("SELECT purpose, scene_setting FROM beat WHERE id=?", (beat_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"beat {beat_id} 不存在")
+    if purpose is not None:
+        if len(purpose) < 10:
+            raise ValueError("purpose 至少 10 字")
+        sets.append("purpose=?"); params.append(purpose)
+    if scene_setting is not None:
+        if not isinstance(scene_setting, dict):
+            raise ValueError("scene_setting 须为 dict")
+        sets.append("scene_setting=?"); params.append(json.dumps(scene_setting, ensure_ascii=False))
+    if not sets:
+        raise ValueError("无字段可更新")
+    params.append(beat_id)
+    conn.execute(f"UPDATE beat SET {', '.join(sets)} WHERE id=?", params)
+    if purpose is not None:
+        record_amendment(conn, "beat", beat_id, "purpose", row["purpose"], purpose)
+    if scene_setting is not None:
+        record_amendment(conn, "beat", beat_id, "scene_setting", row["scene_setting"], scene_setting)
+    conn.commit()
+    return dict(conn.execute("SELECT * FROM beat WHERE id=?", (beat_id,)).fetchone())
