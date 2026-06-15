@@ -2,9 +2,11 @@
 <script setup lang="ts">
 import { ref, computed, watch, h } from 'vue'
 import {
-  NSpin, NCard, NTag, NTree, NSelect, NSpace, NEmpty,
+  NSpin, NCard, NTag, NTree, NSelect, NSpace, NEmpty, NButton,
 } from 'naive-ui'
 import { api } from '../api/client'
+import BeatEdit from '../components/edit/BeatEdit.vue'
+import MasterOutlineEdit from '../components/edit/MasterOutlineEdit.vue'
 
 const props = defineProps<{ wid: string }>()
 
@@ -17,6 +19,7 @@ interface Beat {
   status?: string | null
   deviation_note?: string | null
   paragraph_count?: number | null
+  volume_id?: number | null
 }
 interface Chapter {
   id: number
@@ -131,6 +134,9 @@ type ONode = {
   ch?: Chapter
   // beat
   b?: Beat
+  // beat 所属卷 id（契约编辑需要）+ 卷锁定状态
+  volumeId?: number
+  volumeLocked?: boolean
 }
 
 // NTree 数据：把后端 outline → ONode 树
@@ -143,23 +149,28 @@ const treeData = computed<ONode[]>(() => {
 })
 
 function volumesToNodes(volumes: Volume[]): ONode[] {
-  return volumes.map(v => ({
-    key: `vol-${v.id}`,
-    kind: 'vol' as const,
-    v,
-    children: (v.chapters ?? []).map(ch => ({
-      key: `ch-${ch.id}`,
-      kind: 'ch' as const,
-      ch,
-      children: (ch.beats ?? []).map(b => ({
-        key: `beat-${ch.id}-${b.id}`,
-        kind: 'beat' as const,
-        b,
-        isLeaf: true,
+  return volumes.map(v => {
+    const locked = v.volume_outline?.status === 'locked'
+    return {
+      key: `vol-${v.id}`,
+      kind: 'vol' as const,
+      v,
+      children: (v.chapters ?? []).map(ch => ({
+        key: `ch-${ch.id}`,
+        kind: 'ch' as const,
+        ch,
+        children: (ch.beats ?? []).map(b => ({
+          key: `beat-${ch.id}-${b.id}`,
+          kind: 'beat' as const,
+          b,
+          volumeId: v.id,
+          volumeLocked: locked,
+          isLeaf: true,
+        })),
+        isLeaf: !(ch.beats && ch.beats.length),
       })),
-      isLeaf: !(ch.beats && ch.beats.length),
-    })),
-  }))
+    }
+  })
 }
 
 // NTree label 渲染函数
@@ -204,6 +215,15 @@ function renderLabel({ option }: { option: any }): any {
       h(NTag, { size: 'tiny', type: beatStatusType(b.status), bordered: false, round: true }, { default: () => b.status || 'planned' }),
       b.pov_name ? h('span', { class: 'beat-pov' }, `· ${b.pov_name}`) : null,
       b.paragraph_count != null ? h('span', { class: 'beat-para' }, `¶${b.paragraph_count}`) : null,
+      h(NButton, {
+        size: 'tiny',
+        quaternary: true,
+        class: 'beat-edit-btn',
+        onClick: (e: Event) => {
+          e.stopPropagation()
+          openBeat(b, o.volumeId, o.volumeLocked)
+        },
+      }, { default: () => '编辑' }),
     ]
     const parts: any[] = [h('div', { class: 'beat-head' }, head)]
     if (b.purpose) parts.push(h('div', { class: 'beat-purpose' }, b.purpose))
@@ -213,6 +233,26 @@ function renderLabel({ option }: { option: any }): any {
     return h('div', { class: 'beat-node' }, parts)
   }
   return ''
+}
+
+// ---- 编辑入口 ----
+const beatEditShow = ref(false)
+const editingBeat = ref<any>(null)
+const editingVolumeLocked = ref(false)
+const masterEditShow = ref(false)
+
+function openBeat(b: Beat, volumeId: number | undefined, locked: boolean | undefined) {
+  editingBeat.value = { ...b, volume_id: volumeId ?? b.volume_id ?? null }
+  editingVolumeLocked.value = !!locked
+  beatEditShow.value = true
+}
+
+function openMaster() {
+  masterEditShow.value = true
+}
+
+function onSaved() {
+  load()
 }
 </script>
 
@@ -244,7 +284,10 @@ function renderLabel({ option }: { option: any }): any {
         size="small"
         style="margin-bottom:20px"
       >
-        <template #header><span class="section-title">主题大纲 · master_outline</span></template>
+        <template #header>
+          <span class="section-title">主题大纲 · master_outline</span>
+          <NButton size="tiny" quaternary style="margin-left:8px" @click="openMaster">编辑</NButton>
+        </template>
         <div class="mo-grid">
           <div v-if="master?.theme_evolution" class="mo-row">
             <span class="mo-key">主题演进</span>
@@ -302,6 +345,21 @@ function renderLabel({ option }: { option: any }): any {
         />
       </NCard>
     </div>
+
+    <!-- 编辑弹窗（始终挂载，wid 选定即可；beat/master 为 null 时组件内自处理） -->
+    <BeatEdit
+      v-model:show="beatEditShow"
+      :wid="wid"
+      :beat="editingBeat"
+      :volume-locked="editingVolumeLocked"
+      @saved="onSaved"
+    />
+    <MasterOutlineEdit
+      v-model:show="masterEditShow"
+      :wid="wid"
+      :master="master"
+      @saved="onSaved"
+    />
   </div>
 </template>
 
@@ -405,6 +463,9 @@ function renderLabel({ option }: { option: any }): any {
   color: #56b6c2;
   font-size: 11px;
   margin-left: auto;
+}
+.beat-edit-btn {
+  margin-left: 8px;
 }
 .beat-purpose {
   color: #7c8494;
