@@ -51,7 +51,7 @@ function onMenu(key: string) {
 </script>
 
 <template>
-  <NConfigProvider :theme="darkTheme" :theme-overrides="theme.overrides">
+  <NConfigProvider :theme="theme.mode === 'dark' ? darkTheme : null" :theme-overrides="theme.overrides">
   <NMessageProvider>
   <NDialogProvider>
   <NLayout has-sider style="height:100vh">

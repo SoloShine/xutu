@@ -1,19 +1,22 @@
 // frontend/src/theme.ts
-// 深色主题构造器 + 颜色助手。主色/圆角参数化，供主题自定义面板实时调。
-// 静态中性色固定；主色派生 hover/pressed/suppl（naive 不从 hex 自动派生）。
+// 主题构造器 + 颜色助手。主色/圆角/明暗/字体参数化，供主题面板实时调。
 import type { GlobalThemeOverrides } from 'naive-ui'
 
+export type ThemeMode = 'dark' | 'light'
 export const DEFAULT_PRIMARY = '#4ec9b0'
 export const DEFAULT_RADIUS = 6
+export const DEFAULT_MODE: ThemeMode = 'dark'
+export const DEFAULT_FONT = 'sans'
 
-// 中性深灰尺度（固定，不随主色变）
-const BG_PAGE = '#15171c'
-const BG_CARD = '#1a1d24'
-const BG_ELEVATED = '#20242d'
-const BORDER = '#2c313c'
-const BORDER_SOFT = '#232831'
+export interface FontOption { label: string; value: string; stack: string }
+export const FONTS: FontOption[] = [
+  { label: '无衬线（系统）', value: 'sans', stack: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Roboto, Helvetica, Arial, sans-serif' },
+  { label: '衬线（宋体）', value: 'serif', stack: '"Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", Georgia, "Times New Roman", serif' },
+  { label: '等宽', value: 'mono', stack: '"JetBrains Mono", "Cascadia Code", "Sarasa Mono SC", Consolas, "Courier New", monospace' },
+  { label: '圆体', value: 'round', stack: '"Yuanti SC", "YouSheBiaoTiHei", "Hiragino Maru Gothic Pro", "Microsoft YaHei", sans-serif' },
+]
 
-// ---- 颜色助手：hex<->hsl + 明暗派生 ----
+// ---- 颜色助手 ----
 export function hexToHsl(hex: string): [number, number, number] {
   let h = hex.replace('#', '')
   if (h.length === 3) h = h.split('').map(c => c + c).join('')
@@ -35,7 +38,6 @@ export function hexToHsl(hex: string): [number, number, number] {
   }
   return [hh * 360, s * 100, l * 100]
 }
-
 export function hslToHex(h: number, s: number, l: number): string {
   s /= 100; l /= 100
   const k = (n: number) => (n + h / 30) % 12
@@ -46,17 +48,9 @@ export function hslToHex(h: number, s: number, l: number): string {
   }
   return `#${f(0)}${f(8)}${f(4)}`
 }
+export function lighten(hex: string, amt: number): string { const [h, s, l] = hexToHsl(hex); return hslToHex(h, s, Math.min(100, l + amt)) }
+export function darken(hex: string, amt: number): string { const [h, s, l] = hexToHsl(hex); return hslToHex(h, s, Math.max(0, l - amt)) }
 
-export function lighten(hex: string, amt: number): string {
-  const [h, s, l] = hexToHsl(hex)
-  return hslToHex(h, s, Math.min(100, l + amt))
-}
-export function darken(hex: string, amt: number): string {
-  const [h, s, l] = hexToHsl(hex)
-  return hslToHex(h, s, Math.max(0, l - amt))
-}
-
-// ---- 预设主色 ----
 export interface ThemePreset { label: string; primary: string }
 export const PRESETS: ThemePreset[] = [
   { label: '青绿', primary: '#4ec9b0' },
@@ -67,69 +61,64 @@ export const PRESETS: ThemePreset[] = [
   { label: '粉', primary: '#ff7ac6' },
 ]
 
-// ---- 构造完整 overrides ----
-export function buildOverrides(primary: string, radius: number): GlobalThemeOverrides {
-  const hover = lighten(primary, 12)
-  const pressed = darken(primary, 14)
-  const r = `${radius}px`
+// 明暗两套中性色
+const NEUTRAL = {
+  dark: {
+    page: '#15171c', card: '#1a1d24', modal: '#1d2128', elevated: '#20242d',
+    border: '#2c313c', borderSoft: '#232831',
+    text1: '#e6e9ef', text2: '#b8bdc9', text3: '#7c8494', textDisabled: '#5a6270',
+    sider: '#18181c', header: '#18181c',
+  },
+  light: {
+    page: '#f4f5f7', card: '#ffffff', modal: '#ffffff', elevated: '#eef0f4',
+    border: '#e2e5ea', borderSoft: '#edeff2',
+    text1: '#1f2329', text2: '#4e5969', text3: '#86909c', textDisabled: '#c9cdd4',
+    sider: '#ffffff', header: '#ffffff',
+  },
+}
+
+export interface ThemeParams { primary: string; radius: number; mode: ThemeMode; font: string }
+
+export function buildOverrides(p: ThemeParams): GlobalThemeOverrides {
+  const n = NEUTRAL[p.mode]
+  // 深色：hover 提亮、pressed 加深；浅色：hover 加深、pressed 更深
+  const hover = p.mode === 'dark' ? lighten(p.primary, 12) : darken(p.primary, 6)
+  const pressed = darken(p.primary, p.mode === 'dark' ? 14 : 14)
+  const fontStack = (FONTS.find(f => f.value === p.font) || FONTS[0]).stack
+  const r = `${p.radius}px`
+  const rSm = `${Math.max(2, p.radius - 2)}px`
   return {
     common: {
-      primaryColor: primary,
-      primaryColorHover: hover,
-      primaryColorPressed: pressed,
-      primaryColorSuppl: hover,
-      bodyColor: BG_PAGE,
-      cardColor: BG_CARD,
-      modalColor: '#1d2128',
-      popoverColor: BG_ELEVATED,
-      tableColor: BG_CARD,
-      tableHeaderColor: BG_ELEVATED,
-      inputColor: BG_ELEVATED,
-      inputColorDisabled: BG_CARD,
-      actionColor: BG_ELEVATED,
-      hoverColor: `${primary}14`, // 8% 透明主色作 hover
-      borderColor: BORDER,
-      dividerColor: BORDER_SOFT,
-      textColor1: '#e6e9ef',
-      textColor2: '#b8bdc9',
-      textColor3: '#7c8494',
-      textColorDisabled: '#5a6270',
-      placeholderColor: '#7c8494',
-      iconColor: '#b8bdc9',
-      iconColorHover: primary,
-      borderRadius: r,
-      borderRadiusSmall: `${Math.max(2, radius - 2)}px`,
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Roboto, Helvetica, Arial, sans-serif',
-      fontSize: '14px',
-      fontSizeSmall: '13px',
+      primaryColor: p.primary, primaryColorHover: hover, primaryColorPressed: pressed, primaryColorSuppl: hover,
+      bodyColor: n.page, cardColor: n.card, modalColor: n.modal, popoverColor: n.elevated,
+      tableColor: n.card, tableHeaderColor: n.elevated, inputColor: n.elevated, inputColorDisabled: n.card,
+      actionColor: n.elevated, hoverColor: `${p.primary}14`, borderColor: n.border, dividerColor: n.borderSoft,
+      textColor1: n.text1, textColor2: n.text2, textColor3: n.text3, textColorDisabled: n.textDisabled,
+      placeholderColor: n.text3, iconColor: n.text2, iconColorHover: p.primary,
+      borderRadius: r, borderRadiusSmall: rSm, fontFamily: fontStack, fontSize: '14px', fontSizeSmall: '13px',
     },
-    Card: { color: BG_CARD, colorModal: '#1d2128', borderColor: BORDER, borderRadius: `${radius + 4}px`, paddingMedium: '16px 20px', titleFontSizeMedium: '15px', titleFontWeight: '600' },
-    Button: { borderRadiusMedium: r, borderRadiusSmall: `${Math.max(2, radius - 2)}px`, fontWeight: '500' },
+    Card: { color: n.card, colorModal: n.modal, borderColor: n.border, borderRadius: `${p.radius + 4}px`, paddingMedium: '16px 20px', titleFontSizeMedium: '15px', titleFontWeight: '600' },
+    Button: { borderRadiusMedium: r, borderRadiusSmall: rSm, fontWeight: '500' },
     Tag: { borderRadius: '999px', fontWeightStrong: '600' },
     DataTable: {
-      thColor: BG_ELEVATED, thColorHover: BG_ELEVATED, tdColor: BG_CARD,
-      tdColorHover: `${primary}0d`, borderColor: BORDER_SOFT, thTextColor: '#b8bdc9',
-      tdTextColor: '#e6e9ef', thFontWeight: '600', borderRadius: `${radius + 4}px`, fontSizeMedium: '13.5px',
+      thColor: n.elevated, thColorHover: n.elevated, tdColor: n.card, tdColorHover: `${p.primary}0d`,
+      borderColor: n.borderSoft, thTextColor: n.text2, tdTextColor: n.text1, thFontWeight: '600',
+      borderRadius: `${p.radius + 4}px`, fontSizeMedium: '13.5px',
     },
     Menu: {
       itemHeight: '38px', borderRadius: r,
-      itemColorActive: `${primary}1f`, itemColorActiveHover: `${primary}29`,
-      itemColorHover: BG_ELEVATED, itemTextColorActive: primary, itemTextColorActiveHover: primary,
-      itemTextColorHoverHorizontal: '#e6e9ef', arrowColorActive: primary,
+      itemColorActive: `${p.primary}1f`, itemColorActiveHover: `${p.primary}29`, itemColorHover: n.elevated,
+      itemTextColorActive: p.primary, itemTextColorActiveHover: p.primary, itemTextColorHoverHorizontal: n.text1, arrowColorActive: p.primary,
     },
-    Input: {
-      borderHover: `1px solid ${pressed}`, borderFocus: `1px solid ${primary}`,
-      boxShadowFocus: `0 0 0 2px ${primary}26`, borderRadius: r,
-    },
+    Input: { borderHover: `1px solid ${pressed}`, borderFocus: `1px solid ${p.primary}`, boxShadowFocus: `0 0 0 2px ${p.primary}26`, borderRadius: r },
     Select: { peers: { InternalSelection: { borderRadius: r } } },
-    Layout: { color: BG_PAGE, siderColor: '#18181c', headerColor: '#18181c' },
-    Statistic: { valueFontWeight: '600', valueTextColor: '#e6e9ef', labelTextColor: '#7c8494' },
-    Alert: { borderRadius: `${radius + 2}px` },
-    Modal: { borderRadius: `${radius + 6}px` },
+    Layout: { color: n.page, siderColor: n.sider, headerColor: n.header },
+    Statistic: { valueFontWeight: '600', valueTextColor: n.text1, labelTextColor: n.text3 },
+    Alert: { borderRadius: `${p.radius + 2}px` },
+    Modal: { borderRadius: `${p.radius + 6}px` },
     Drawer: { borderRadius: '0px' },
-    Empty: { textColor: '#7c8494' },
+    Empty: { textColor: n.text3 },
   }
 }
 
-// 默认主题（无自定义时）
-export const themeOverrides: GlobalThemeOverrides = buildOverrides(DEFAULT_PRIMARY, DEFAULT_RADIUS)
+export const themeOverrides: GlobalThemeOverrides = buildOverrides({ primary: DEFAULT_PRIMARY, radius: DEFAULT_RADIUS, mode: DEFAULT_MODE, font: DEFAULT_FONT })
