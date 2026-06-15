@@ -8,13 +8,13 @@
 
 把当前"裸 HTML 工作台"重做成**专业 SPA 工作台**：左侧栏作品切换 + 导航，主区多视图，现成组件库撑起专业度（解决 POV 矩阵 100px 小表这类手搓丑件）。
 
-**范围 = 1 个 Vue3 SPA + Flask 退成 JSON API + 1 个写点（灵感池状态推进，复用 `advance_inspiration`）**：
+**范围 = 1 个 Vue3 SPA + Flask 退成 JSON API + 2 个写操作（灵感池状态推进 `advance_inspiration` + 未消费内容编辑 `update_inspiration_content`）**：
 
 | 视图 | 模式/说明 | 读/写 |
 |------|-----------|-------|
 | 总览 | 作品仪表盘（统计 + 卷列表） | 只读 |
 | POV 矩阵 | NDataTable，行=章/列=角色，● 展开 beat | 只读 |
-| 灵感池 | 卡片/表格 + 状态推进 | 读 + 推进（唯一写点） |
+| 灵感池 | 卡片/表格 + 状态推进 + 内容编辑 | 读 + 推进 + 编辑（未消费时） |
 | Review 报告 | markdown 渲染 + escalate 高亮 | 只读 |
 | 正文 · 阅读模式 | 散文式排版（段落按 seq） | 只读 |
 | 正文 · 大纲模式 | 作品→卷→章→beat 多级分组树 | 只读 |
@@ -28,7 +28,9 @@
 - **纯函数层零改动复用**：`repositories/outline.py`、`queries.py`、`reader_commands.parse_review_outcomes`、`checks/word_count.compute_word_count`。新增查询函数（`list_works`/`overview_stats`/`chapter_text`/`outline_tree`）放 `queries.py`，pytest 锁。
 - **多作品 = 扫描 projects root**：`list_works(projects_root)` glob 子目录找 `bedrock.db`，每个开 conn 读 `get_constant(conn,"work_name")` + 卷/章计数。侧边栏作品下拉 = 工作区切换。
 - **每请求开/关 conn，不缓存**（沿用 SP6-C）。无 context_processor。
-- **唯一写点不变**：`advance_inspiration`（状态机单向）。API 包一层 JSON，业务失败（非法转移/未知 iid/缺 target）返回 `200 {ok:false,error}` 且 DB 不变；**请求不合格**（Content-Type 非 application/json）返回 **415**。
+- **两个写操作**：
+  - **状态推进** `advance_inspiration`（状态机单向，复用 SP6-C）。业务失败（非法转移/未知 iid/缺 target）返回 `200 {ok:false,error}` 且 DB 不变；**请求不合格**（Content-Type 非 application/json）返回 **415**。
+  - **内容编辑** `update_inspiration_content`（新增）。**可编辑 ⟺ `status ∈ {raw,refined,partial}` 且 `consumed_into` 为空**；consumed / discarded 一律冻结（已消费进正文 = 历史记录，编辑会与正文使用脱节）。编辑字段 = `content`（必填非空）+ `source`（可选）。业务失败（已冻结/未知 iid/content 空）返回 `200 {ok:false,error}` 且 DB 不变；Content-Type 非 JSON → 415。
 - **CSRF = 同源 + `Content-Type: application/json` 校验**（替代 htmx 的 HX-Request；simple form 发不出 JSON content-type）。
 - **路径穿越校验（写全）**：路由用 `<wid>`（string converter，不含 `/`）；`wid` 含 `/`、`\`、等于 `..`/`.` 或匹配盘符前缀（`r'^[A-Za-z]:'`）→ 404；再 `(root.resolve() / wid).resolve()` 后 `is_relative_to(root.resolve())` 失败 → 404；最终需含 `bedrock.db`。
 - **node 构建物不入 git**：**主动新增** `.gitignore` 三条：`frontend/node_modules/`、`frontend/dist/`、`src/bedrock/web/static/`（保留 `src/bedrock/web/static/.gitkeep`）。
@@ -111,6 +113,7 @@ Naive `NLayout`（`has-sider`）：
 - **consumed 条**：额外展示「已采用」+ `consumed_into` 解析后的 target 列表（只读）+ 作废按钮。
 - **discarded 条**（终态）：**不渲染任何推进按钮**（合法转移为空集），仅置灰删除线。
 - **时间戳**：`created_at`/`refined_at`/`promoted_at` 按 sqlite `datetime('now')` 存（UTC），前端**只显示日期**或按本地时区展示，避免 8 小时偏差。
+- **内容编辑**：可编辑卡（status ∈ {raw,refined,partial} 且 consumed_into 空）显示「编辑」按钮 → NModal 表单（content textarea + source input）→ `PATCH .../inspirations/<iid>`。成功乐观更新；`{ok:false}` → NMessage。consumed/discarded 卡不显示编辑按钮。
 - 推进 → `POST .../advance` `{target}`：成功乐观更新当前条；`{ok:false}` → `NMessage.error(error)`，DB 不变。
 
 ### 5.4 Review 报告 `Report.vue` · `GET /api/works/<wid>/report/<vid>`
@@ -179,7 +182,14 @@ POST /api/works/<wid>/inspirations/<iid>/advance   header: Content-Type: applica
      → Content-Type != application/json      → 415                      // 请求不合格
      → 业务失败（非法转移 / 未知 iid / 缺 target / target 非法）
                                               → 200 {ok:false, error}    // DB 不变，前端 NMessage.error
-     → 成功                                    → 200 {ok:true, item:{...}}  // 唯一写点
+     → 成功                                    → 200 {ok:true, item:{...}}  // 写操作 1：状态推进
+
+PATCH /api/works/<wid>/inspirations/<iid>      header: Content-Type: application/json
+     body: {content, source?}
+     → Content-Type != application/json      → 415
+     → 业务失败（已冻结：consumed/discarded 或 consumed_into 非空 / 未知 iid / content 空）
+                                              → 200 {ok:false, error}    // DB 不变
+     → 成功                                    → 200 {ok:true, item:{...}}  // 写操作 2：内容编辑（仅未消费）
 
 GET  /api/works/<wid>/reports
      → [{volume_id, exists}]   // 扫描 review_report_vol{N}.md
@@ -225,6 +235,13 @@ def overview_stats(conn):
 def chapter_text(conn, global_number):
     """阅读模式：SELECT seq, text FROM paragraph WHERE chapter_id=(该 gnum) ORDER BY seq。
     返回 {chapter:{global_number,title}, paragraphs:[{seq,text}]}。无段落 → 空 paragraphs。"""
+
+def update_inspiration_content(conn, inspiration_id, content, source=None):
+    """编辑灵感内容（仅未消费时）。guard：
+    status IN ('raw','refined','partial') 且 json.loads(consumed_into or '[]')==[] —— 否则 raise
+    ValueError（已消费/已弃用 = 冻结）。content 去空后非空校验。source 非 None 则一并更新。
+    在任何 UPDATE 前 raise（与 advance_inspiration 同模式，保证非法时不落库）。
+    返回更新后整行 dict。"""
 
 def outline_tree(conn, volume_id=None):
     """大纲模式（真实表）：volume [LEFT JOIN volume_outline] → chapter → beat
@@ -277,12 +294,24 @@ python -m src.bedrock.web --projects-root projects
 - `test_outline_tree_master_outline`（master_outline 字段空则省略）
 - `test_outline_tree_groups_by_volume`
 
+### 层 1.5：纯函数 `tests/bedrock/test_outline.py`（+内容编辑）
+- `test_update_content_raw_ok`（raw + consumed_into 空 → 改 content 成功）
+- `test_update_content_refined_partial_ok`（refined/partial 未消费 → 可改）
+- `test_update_content_frozen_consumed`（status=consumed 或 consumed_into 非空 → ValueError，DB 不变）
+- `test_update_content_frozen_discarded`（discarded → ValueError）
+- `test_update_content_unknown_id`（ValueError）
+- `test_update_content_empty_rejected`（content 空白 → ValueError）
+- `test_update_content_with_source`（source 一并更新）
+
 ### 层 2：API（Flask test client）`tests/bedrock/test_api.py`（**取代** `test_web.py`）
 - `test_api_works_lists`
 - `test_api_overview` / `test_api_overview_empty`
 - `test_api_matrix` / `test_api_matrix_no_pov_volume`（NEmpty 分支）/ `test_api_matrix_null_pov_row`
 - `test_api_inspirations_filter` / `test_api_inspirations_consumed_into_parsed`（返回 list 非 JSON 字符串）
 - `test_api_advance_ok` / `_illegal_returns_error_db_unchanged` / `_unknown_iid_returns_error` / `_missing_target` / `_requires_json_content_type`（415）
+- `test_api_edit_content_ok`（raw 未消费 → PATCH 改 content 成功）
+- `test_api_edit_content_frozen`（consumed/discarded → `{ok:false}` + DB 不变）
+- `test_api_edit_content_empty_rejected` / `_requires_json_content_type`（415）
 - `test_api_reports_scan`（列出有报告的卷）
 - `test_api_report_renders_markdown` / `_escalate_highlight` / `_v2_tolerant_empty_escalate` / `_missing_404`
 - `test_api_chapters`
@@ -314,6 +343,7 @@ python -m src.bedrock.web --projects-root projects
 - 6 视图（总览/矩阵/灵感池/报告/正文阅读/正文大纲）均可访问、数据正确。
 - POV 矩阵 NDataTable 撑满宽度、● 点击弹 beat drawer。
 - 灵感池推进：合法生效 + 时间戳；非法/未知 iid/缺 target → `{ok:false}` + DB 不变 + NMessage；Content-Type 非 JSON → 415；consumed 显示 consumed_into、discarded 无按钮。
+- 灵感池内容编辑：raw/refined/partial 且未消费 → 可编辑 content(+source)；consumed/discarded → 冻结（`{ok:false}` + DB 不变）；编辑按钮仅可编辑卡显示。
 - 正文阅读：段落按 seq、散文排版、上下章导航（首末章禁用）。
 - 正文大纲：作品→卷→章→beat 多级树、可折叠、master_outline/volume_outline/beat.status/deviation_note 展示、缺字段优雅省略。
 - 报告：markdown 渲染 + escalate 逐项高亮；V2 报告不报错。
@@ -329,3 +359,4 @@ python -m src.bedrock.web --projects-root projects
 - **多作品性能**：`list_works` 每个开 conn 读计数，项目少（个位数）开销可忽略；不缓存（避免脏读）。
 - **`create_app` 签名变更**：断 `__main__.py` + `test_web.py`（后者删除，前者随改）；`launch.json` 同步。
 - **JSON 列解析**：theme_seeds/beat_contracts/scene_setting/key_arcs/key_milestones/consumed_into 全部在纯函数/API 层 `json.loads`，异常降级，避免前端拿到原始字符串。
+- **内容编辑冻结边界**：guard 同时检查 `status`（非 consumed/discarded）**和** `consumed_into`（空），双条件防"consumed 状态但无 into 记录"或"partial 已部分消费"被误编辑。非法时 UPDATE 前 raise，DB 不变。
