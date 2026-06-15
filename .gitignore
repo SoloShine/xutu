@@ -45,5 +45,5 @@ graphify-out/cache/
 # bedrock web SPA build artifacts
 frontend/node_modules/
 frontend/dist/
-src/bedrock/web/static/
+src/bedrock/web/static/*
 !src/bedrock/web/static/.gitkeep
