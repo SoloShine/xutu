@@ -1,7 +1,7 @@
 <!-- src/views/Reader.vue -->
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import { NSpin, NEmpty, NButton, NCollapse, NCollapseItem } from 'naive-ui'
+import { NSpin, NEmpty, NButton, NCollapse, NCollapseItem, NInput, useMessage } from 'naive-ui'
 import { api } from '../api/client'
 
 const props = defineProps<{ wid: string }>()
@@ -42,6 +42,70 @@ const isLast = computed(() => selectedGnum.value === lastGnum.value)
 
 const currentTitle = computed(() => text.value?.chapter?.title || '')
 
+// ---- 章标题内联编辑 ----
+const msg = useMessage()
+// global_number -> 内部 chapter id 的映射（懒加载自 outline 端点）
+// PATCH /chapters/<eid> 用的是内部 id，不是 global_number
+const gnumToId = ref<Map<number, number>>(new Map())
+const idMapLoaded = ref(false)
+const idMapLoading = ref(false)
+const titleEditing = ref(false)
+const titleDraft = ref('')
+const titleSaving = ref(false)
+
+async function ensureIdMap() {
+  if (idMapLoaded.value || idMapLoading.value) return
+  idMapLoading.value = true
+  try {
+    const data: any = await api.outline(props.wid)
+    const m = new Map<number, number>()
+    for (const v of data?.volumes ?? []) {
+      for (const c of v?.chapters ?? []) {
+        if (c?.global_number != null && c?.id != null) m.set(c.global_number, c.id)
+      }
+    }
+    gnumToId.value = m
+    idMapLoaded.value = true
+  } catch (e: any) {
+    msg.error('加载章节映射失败：' + (e?.message || String(e)))
+  } finally {
+    idMapLoading.value = false
+  }
+}
+
+function startTitleEdit() {
+  if (selectedGnum.value === null) return
+  titleDraft.value = currentTitle.value
+  titleEditing.value = true
+}
+function cancelTitleEdit() {
+  titleEditing.value = false
+  titleDraft.value = ''
+}
+async function saveTitle() {
+  if (selectedGnum.value === null || !props.wid) return
+  const title = (titleDraft.value || '').trim()
+  if (!title) { msg.error('章标题不能为空'); return }
+  await ensureIdMap()
+  const cid = gnumToId.value.get(selectedGnum.value)
+  if (cid == null) { msg.error('未找到章节内部 id，无法保存'); return }
+  titleSaving.value = true
+  try {
+    const res = await api.patch(props.wid, 'chapters', cid, { title })
+    if (res && res.ok === false) { msg.error(res.error || '保存失败'); return }
+    msg.success('已保存章标题')
+    // 更新本地：text + chapters 列表对应项
+    if (text.value?.chapter) text.value.chapter.title = title
+    const ch = chapters.value.find((c) => c.global_number === selectedGnum.value)
+    if (ch) ch.title = title
+    titleEditing.value = false
+  } catch (e: any) {
+    msg.error(e?.message || String(e))
+  } finally {
+    titleSaving.value = false
+  }
+}
+
 async function loadList() {
   if (!props.wid) { loadingList.value = false; return }
   loadingList.value = true
@@ -74,6 +138,7 @@ async function loadText(gnum: number) {
   loadingText.value = true
   error.value = ''
   text.value = null
+  titleEditing.value = false
   try {
     text.value = (await api.chapterText(props.wid, gnum)) as ChapterText
   } catch (e: any) {
@@ -100,7 +165,13 @@ function nextChapter() {
 }
 
 onMounted(loadList)
-watch(() => props.wid, () => { selectedGnum.value = null; loadList() })
+watch(() => props.wid, () => {
+  selectedGnum.value = null
+  idMapLoaded.value = false
+  gnumToId.value = new Map()
+  titleEditing.value = false
+  loadList()
+})
 watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
 </script>
 
@@ -140,7 +211,21 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
       <div v-else-if="error" class="main-error">{{ error }}</div>
       <div v-else-if="!text" class="main-empty"><NEmpty description="请选择章节" /></div>
       <article v-else class="prose">
-        <h1 class="chapter-title">{{ currentTitle }}</h1>
+        <div v-if="titleEditing" class="title-edit-row">
+          <NInput
+            v-model:value="titleDraft"
+            placeholder="章标题（非空）"
+            :loading="idMapLoading"
+            @keyup.enter="saveTitle"
+            @keyup.esc="cancelTitleEdit"
+          />
+          <NButton size="small" type="primary" :loading="titleSaving" @click="saveTitle">保存</NButton>
+          <NButton size="small" @click="cancelTitleEdit">取消</NButton>
+        </div>
+        <div v-else class="chapter-title-row">
+          <h1 class="chapter-title">{{ currentTitle }}</h1>
+          <NButton size="tiny" quaternary class="title-edit-btn" @click="startTitleEdit">编辑</NButton>
+        </div>
         <template v-if="text.paragraphs && text.paragraphs.length">
           <p
             v-for="p in [...text.paragraphs].sort((a, b) => a.seq - b.seq)"
@@ -211,13 +296,34 @@ watch(selectedGnum, (g) => { if (g !== null) loadText(g) })
   margin: 0 auto;
   width: 100%;
 }
+.chapter-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0 28px;
+}
 .chapter-title {
   color: #e6e9ef;
   font-size: 26px;
   font-weight: 600;
-  margin: 8px 0 28px;
+  margin: 0;
   text-align: center;
   line-height: 1.4;
+}
+.title-edit-btn {
+  color: #4ec9b0;
+  flex: 0 0 auto;
+}
+.title-edit-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0 28px;
+}
+.title-edit-row :deep(.n-input) {
+  max-width: 420px;
 }
 .paragraph {
   color: #d8dce6;

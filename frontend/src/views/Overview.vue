@@ -3,9 +3,11 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  NSpin, NGrid, NGridItem, NStatistic, NCard, NTag, NCollapse, NCollapseItem, NEmpty, NSpace,
+  NSpin, NGrid, NGridItem, NStatistic, NCard, NTag, NEmpty, NSpace,
+  NInput, NDynamicTags, NButton, useMessage,
 } from 'naive-ui'
 import { api } from '../api/client'
+import WorldbookInline from '../components/edit/WorldbookInline.vue'
 
 const props = defineProps<{ wid: string }>()
 const router = useRouter()
@@ -17,7 +19,7 @@ interface Overview {
   characters: number
   word_total: number
   inspirations: { raw: number; refined: number; consumed: number; partial: number; discarded: number }
-  volume_list: Array<{ id: number; number: number; name: string; volume_type: string; status: string; chapter_count: number }>
+  volume_list: Array<{ id: number; number: number; name: string; volume_type: string; status: string; chapter_count: number; theme_seeds: string[] }>
   character_snapshot: Array<{ id: number; name: string; role: string; state: string; pronoun: string; personality_excerpt: string }>
   worldbook: {
     locations: Array<{ id: number; name: string; loc_type: string; description: string; state: string }>
@@ -73,6 +75,47 @@ const inspItems = (d: Overview) => [
 ]
 
 function goCharacters() { router.push(`/works/${props.wid}/characters`) }
+
+// ---- 卷名 / theme_seeds 内联编辑 ----
+const msg = useMessage()
+// 卷名编辑态：volume_id -> 是否编辑；草稿
+const volNameEditing = ref<Record<number, boolean>>({})
+const volNameDraft = ref<Record<number, string>>({})
+
+function startVolName(v: { id: number; name: string; number: number }) {
+  volNameEditing.value[v.id] = true
+  volNameDraft.value[v.id] = v.name || ('卷' + v.number)
+}
+async function saveVolName(v: { id: number; name: string; number: number }) {
+  if (!props.wid || !data.value) return
+  const nm = (volNameDraft.value[v.id] || '').trim()
+  if (!nm) { msg.error('卷名不能为空'); return }
+  try {
+    const res = await api.patch(props.wid, 'volumes', v.id, { name: nm })
+    if (res && res.ok === false) { msg.error(res.error || '保存失败'); return }
+    msg.success('已保存卷名')
+    v.name = nm
+    volNameEditing.value[v.id] = false
+  } catch (e: any) {
+    msg.error(e?.message || String(e))
+  }
+}
+function cancelVolName(v: { id: number }) {
+  volNameEditing.value[v.id] = false
+}
+
+// theme_seeds：NDynamicTags 直接驱动，变化即保存
+async function onSeedsChange(v: { id: number; name: string; theme_seeds: string[] }, seeds: string[]) {
+  if (!props.wid || !data.value) return
+  try {
+    const res = await api.patch(props.wid, 'volumes', v.id, { theme_seeds: seeds })
+    if (res && res.ok === false) { msg.error(res.error || '保存失败'); return }
+    msg.success('已保存 theme_seeds')
+    v.theme_seeds = seeds
+  } catch (e: any) {
+    msg.error(e?.message || String(e))
+  }
+}
 </script>
 
 <template>
@@ -135,11 +178,39 @@ function goCharacters() { router.push(`/works/${props.wid}/characters`) }
         <template #header><span class="section-title">卷列表</span></template>
         <NEmpty v-if="!data.volume_list.length" description="无卷" />
         <div v-else class="vol-list">
-          <div v-for="v in data.volume_list" :key="v.id" class="vol-row">
-            <span class="vol-name">{{ v.name || ('卷' + v.number) }}</span>
-            <NTag size="small" type="info" :bordered="false">{{ v.volume_type }}</NTag>
-            <span class="vol-meta">{{ v.chapter_count }} 章</span>
-            <NTag size="small" :type="volStatusType(v.status)" :bordered="false">{{ v.status }}</NTag>
+          <div v-for="v in data.volume_list" :key="v.id" class="vol-row vol-row-edit">
+            <div class="vol-line">
+              <!-- 卷名内联编辑 -->
+              <NInput
+                v-if="volNameEditing[v.id]"
+                v-model:value="volNameDraft[v.id]"
+                size="small"
+                style="width:180px"
+                @keyup.enter="saveVolName(v)"
+                @keyup.esc="cancelVolName(v)"
+              />
+              <template v-else>
+                <span class="vol-name">{{ v.name || ('卷' + v.number) }}</span>
+                <NButton size="tiny" quaternary class="vol-edit-btn" @click="startVolName(v)">编辑名</NButton>
+              </template>
+              <template v-if="volNameEditing[v.id]">
+                <NButton size="tiny" type="primary" @click="saveVolName(v)">保存</NButton>
+                <NButton size="tiny" @click="cancelVolName(v)">取消</NButton>
+              </template>
+              <NTag size="small" type="info" :bordered="false">{{ v.volume_type }}</NTag>
+              <span class="vol-meta">{{ v.chapter_count }} 章</span>
+              <NTag size="small" :type="volStatusType(v.status)" :bordered="false">{{ v.status }}</NTag>
+            </div>
+            <!-- theme_seeds 内联编辑 -->
+            <div class="vol-seeds">
+              <span class="vol-seeds-label">theme_seeds：</span>
+              <NDynamicTags
+                :value="v.theme_seeds || []"
+                size="small"
+                :max="50"
+                @update:value="(s: string[]) => onSeedsChange(v, s)"
+              />
+            </div>
           </div>
         </div>
       </NCard>
@@ -165,50 +236,10 @@ function goCharacters() { router.push(`/works/${props.wid}/characters`) }
         </NGrid>
       </NCard>
 
-      <!-- 世界观（只读，折叠分组） -->
+      <!-- 世界观（内联编辑，WorldbookInline 三组） -->
       <NCard class="section-card" size="small">
         <template #header><span class="section-title">世界观</span></template>
-        <NCollapse :default-expanded-names="['locations','themes','motifs']">
-          <NCollapseItem title="地点 / Locations" name="locations">
-            <NEmpty v-if="!data.worldbook.locations.length" description="无地点" />
-            <div v-else class="wb-list">
-              <div v-for="loc in data.worldbook.locations" :key="loc.id" class="wb-row">
-                <div class="wb-row-head">
-                  <span class="wb-name">{{ loc.name }}</span>
-                  <NTag v-if="loc.loc_type" size="tiny" type="info" :bordered="false">{{ loc.loc_type }}</NTag>
-                  <NTag v-if="loc.state" size="tiny" :bordered="false">{{ loc.state }}</NTag>
-                </div>
-                <p v-if="loc.description" class="wb-desc">{{ loc.description }}</p>
-              </div>
-            </div>
-          </NCollapseItem>
-
-          <NCollapseItem title="主题 / Themes" name="themes">
-            <NEmpty v-if="!data.worldbook.themes.length" description="无主题" />
-            <div v-else class="wb-list">
-              <div v-for="th in data.worldbook.themes" :key="th.name" class="wb-row">
-                <div class="wb-row-head">
-                  <span class="wb-name">{{ th.name }}</span>
-                </div>
-                <p v-if="th.description" class="wb-desc">{{ th.description }}</p>
-                <p v-if="th.evolution" class="wb-evol">演进：{{ th.evolution }}</p>
-              </div>
-            </div>
-          </NCollapseItem>
-
-          <NCollapseItem title="母题 / Motifs" name="motifs">
-            <NEmpty v-if="!data.worldbook.motifs.length" description="无母题" />
-            <div v-else class="wb-list">
-              <div v-for="mo in data.worldbook.motifs" :key="mo.name" class="wb-row">
-                <div class="wb-row-head">
-                  <span class="wb-name">{{ mo.name }}</span>
-                </div>
-                <p v-if="mo.meaning" class="wb-desc">{{ mo.meaning }}</p>
-                <p v-if="mo.evolution" class="wb-evol">演进：{{ mo.evolution }}</p>
-              </div>
-            </div>
-          </NCollapseItem>
-        </NCollapse>
+        <WorldbookInline :wid="props.wid" :worldbook="data.worldbook" @updated="load" />
       </NCard>
     </div>
   </div>
@@ -235,8 +266,7 @@ function goCharacters() { router.push(`/works/${props.wid}/characters`) }
 :deep(.section-card .n-card-header__main) {
   color: #e6e9ef;
 }
-.vol-list,
-.wb-list {
+.vol-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -248,6 +278,31 @@ function goCharacters() { router.push(`/works/${props.wid}/characters`) }
   padding: 8px 10px;
   background: #15171c;
   border-radius: 4px;
+}
+.vol-row-edit {
+  flex-direction: column;
+  align-items: stretch;
+}
+.vol-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.vol-seeds {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.vol-seeds-label {
+  color: #7c8494;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+.vol-edit-btn {
+  color: #4ec9b0;
 }
 .vol-name {
   color: #e6e9ef;
@@ -290,30 +345,5 @@ function goCharacters() { router.push(`/works/${props.wid}/characters`) }
   color: #7c8494;
   font-size: 13px;
   line-height: 1.5;
-}
-.wb-row {
-  padding: 8px 10px;
-  background: #15171c;
-  border-radius: 4px;
-}
-.wb-row-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.wb-name {
-  color: #e6e9ef;
-  font-weight: 600;
-}
-.wb-desc {
-  margin: 4px 0 0;
-  color: #b8bfd0;
-  font-size: 13px;
-  line-height: 1.6;
-}
-.wb-evol {
-  margin: 2px 0 0;
-  color: #7c8494;
-  font-size: 12px;
 }
 </style>
