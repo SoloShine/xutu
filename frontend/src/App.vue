@@ -5,14 +5,18 @@ import { useRoute, useRouter } from 'vue-router'
 import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NSelect, NMenu, NSpin, NButton, NMessageProvider, NDialogProvider, NConfigProvider, darkTheme } from 'naive-ui'
 import { useWorkspace } from './stores/workspace'
 import { useThemeStore } from './stores/theme'
+import { usePanels } from './stores/panels'
+import { isViewKey } from './views/registry'
 import ThemePanel from './components/ThemePanel.vue'
+import PanelWorkspace from './components/PanelWorkspace.vue'
 
 const ws = useWorkspace()
 const theme = useThemeStore()
+const panels = usePanels()
 const route = useRoute()
 const router = useRouter()
 const themePanelShow = ref(false)
-onMounted(() => { ws.loadWorks(); theme.load() })
+onMounted(() => { ws.loadWorks(); theme.load(); panels.load() })
 
 const workOptions = computed(() => ws.works.map(w => ({ label: `${w.name}（${w.volumes}卷）`, value: w.id })))
 watch(() => route.params.wid, (wid) => { if (wid) ws.setActive(wid as string) }, { immediate: true })
@@ -36,17 +40,19 @@ const menuOptions = computed(() => {
   ].map(m => ({ label: m.label, key: m.key }))
 })
 
-// 当前激活的菜单 key（从路由末段反推，用于高亮）
-const activeMenuKey = computed(() => {
-  const seg = route.path.split('/').filter(Boolean).pop() || 'overview'
-  const known = ['overview', 'characters', 'matrix', 'inspirations', 'report', 'read', 'outline']
-  return known.includes(seg) ? seg : 'overview'
+// 侧栏高亮 = 聚焦面板的 view（找不到聚焦面板时回退 overview）
+const focusedView = computed(() => {
+  for (const row of panels.rows) {
+    const p = row.find(x => x.id === panels.focusedId)
+    if (p) return p.view
+  }
+  return 'overview'
 })
 
 function onMenu(key: string) {
-  const w = ws.activeId
-  if (!w) return
-  router.push(key === 'overview' ? `/works/${w}` : `/works/${w}/${key}`)
+  if (!ws.activeId || !isViewKey(key)) return
+  // 把聚焦面板换成该视图，不再整页跳转
+  panels.setFocusedView(key)
 }
 </script>
 
@@ -60,7 +66,7 @@ function onMenu(key: string) {
         <NSelect v-if="workOptions.length" :value="ws.activeId" :options="workOptions" @update:value="onWork" placeholder="选择作品"/>
         <NSpin v-else size="small"/>
       </div>
-      <NMenu :options="menuOptions" :value="activeMenuKey" @update:value="onMenu" :disabled="!ws.activeId" :indent="18" :collapsed-width="220" :collapsed-icon-size="0"/>
+      <NMenu :options="menuOptions" :value="focusedView" @update:value="onMenu" :disabled="!ws.activeId" :indent="18" :collapsed-width="220" :collapsed-icon-size="0"/>
       <div style="position:absolute;bottom:8px;font-size:11px;color:#666;padding:0 4px">{{ ws.activeId || '未选作品' }}</div>
     </NLayoutSider>
     <NLayout>
@@ -70,8 +76,8 @@ function onMenu(key: string) {
         <div style="flex:1"></div>
         <NButton quaternary size="small" @click="themePanelShow = true">🎨 主题</NButton>
       </NLayoutHeader>
-      <NLayoutContent content-style="padding:20px;background:#15171c" style="height:calc(100vh - 48px);overflow:auto">
-        <RouterView v-if="ws.activeId" />
+      <NLayoutContent content-style="padding:0;background:#15171c" style="height:calc(100vh - 48px);overflow:hidden">
+        <PanelWorkspace v-if="ws.activeId" :wid="ws.activeId" style="height:100%" />
         <div v-else style="color:#666;padding:40px">请从左侧选择一个作品。</div>
       </NLayoutContent>
     </NLayout>
