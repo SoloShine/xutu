@@ -12,7 +12,8 @@
 
 | 视图 | 模式/说明 | 读/写 |
 |------|-----------|-------|
-| 总览 | 作品仪表盘（统计 + 卷列表） | 只读 |
+| 总览 | 作品仪表盘（统计 + 卷列表 + 角色快照 + 世界观编辑） | 读 + 世界观编辑 |
+| 角色 | 角色档案列表 + 全字段表单编辑 | 读 + 编辑 |
 | POV 矩阵 | NDataTable，行=章/列=角色，● 展开 beat | 只读 |
 | 灵感池 | 卡片/表格 + 状态推进 + 内容编辑 | 读 + 推进 + 编辑（未消费时） |
 | Review 报告 | markdown 渲染 + escalate 高亮 | 只读 |
@@ -88,7 +89,7 @@ Naive `NLayout`（`has-sider`）：
 
 - **左侧栏（NLayoutSider）**：
   - 顶部 `WorkSwitcher`：NSelect 列 `/api/works`。选中 → pinia 设 active work + `router.push('/works/:wid/overview')`。
-  - 下方 `SideNav`：NMenu，项 = 总览 / POV矩阵 / 灵感池 / Review报告 / 正文·阅读 / 正文·大纲（全部按 active work 作用域；无 active work 时禁用）。
+  - 下方 `SideNav`：NMenu，项 = 总览 / 角色 / POV矩阵 / 灵感池 / Review报告 / 正文·阅读 / 正文·大纲（全部按 active work 作用域；无 active work 时禁用）。
   - 底部：projects_root 路径（小字）。
 - **顶栏（NLayoutHeader）**：作品名（NText strong）+ 面包屑（当前视图名）。
 - **主区（NLayoutContent）**：`<router-view>`，深色主题。
@@ -99,7 +100,20 @@ Naive `NLayout`（`has-sider`）：
 ### 5.1 总览 `Overview.vue` · `GET /api/works/<wid>/overview`
 
 - 顶部 NStatistic 网格：卷数 / 章节(completed) / 章节(writing) / 角色数 / 字数总计 / 灵感各状态计数。
-- 下方卷列表（NCard / NList）：每卷 = 名称 + volume_type + 章数 + status 徽章 + escalate 计数（有报告时）。
+- **卷列表**（NCard / NList）：每卷 = 名称 + volume_type + 章数 + status 徽章 + escalate 计数（有报告时）+ 内联编辑 name/theme_seeds（PATCH /volumes/<id>）。
+- **角色快照**（NCard 网格，**只读**）：每角色 = 名字 + role 徽章 + state + pronoun + personality 摘要（截断）。点击卡片 → 跳 `/works/:wid/characters`（角色标签页）。不在总览内编辑角色（字段重，留角色页）。
+- **世界观区**（**内联可编辑** NCard 列表）：三组——
+  - 地点 location：name + loc_type + description（textarea 内联编辑，PATCH /locations/<id>）。
+  - 主题 theme：name + description + evolution（内联编辑，PATCH /themes/<id>）。
+  - 母题 motif：name + meaning + evolution（内联编辑，PATCH /motifs/<id>）。
+  - 每组可折叠；条目多时组内滚动。需 `GET /api/works/<wid>/worldbook` 拉这三组列表。
+
+### 5.1a 角色 `Characters.vue` · `GET /api/works/<wid>/characters`（独立标签页）
+
+- **列表**：NDataTable，列 = name / role(徽章) / state(徽章) / pronoun / faction / personality 摘要。支持按 role、state 筛选（NSelect）。点行 → NDrawer 全字段编辑表单。
+- **编辑表单**（NDrawer，宽）：name(text) / pronoun(NSelect: 他她它祂TA) / gender(NSelect) / role(NSelect: protagonist/supporting/antagonist/minor) / state(NSelect: active/dormant/deceased/ascended/merged) / faction(NSelect，拉 /api/.../factions) / personality(textarea) / goals(textarea) / abilities(NTag 动态输入数组) / aliases(NTag 动态输入数组) → `PATCH /api/works/<wid>/characters/<id>`（仅提交改动字段）。
+- **只读展示**（v1 不编辑）：character_secret 数（带可见性模式标签）、character_knowledge 条数。展示为折叠区，附"v1 暂不可编辑，请用 CLI"提示。
+- 失败：name UNIQUE 冲突 / 枚举违例 → NMessage.error + 不变。
 
 ### 5.2 POV 矩阵 `Matrix.vue` · `GET /api/works/<wid>/matrix?volume=<vid>`
 
@@ -166,12 +180,12 @@ Naive `NLayout`（`has-sider`）：
 
 | 实体 | 可编辑字段 | repo 函数 | guard / 备注 | 前端落点 |
 |------|-----------|----------|--------------|---------|
-| 角色 character | name / pronoun / gender / role / personality / goals / abilities / aliases / state | 🆕 `update_character(conn, cid, **fields)` | name UNIQUE 冲突 → `{ok:false}`；state/pronoun/role 须在 schema CHECK 枚举内 | 总览→角色区，或新「角色」标签页 |
+| 角色 character | name / pronoun / gender / role / personality / goals / abilities / aliases / state | 🆕 `update_character(conn, cid, **fields)` | name UNIQUE 冲突 → `{ok:false}`；state/pronoun/role/gender 须在 schema CHECK 枚举内 | **独立「角色」标签页**（总览仅只读快照） |
 | 章节 chapter | title | 🆕 `update_chapter_meta(conn, ch_id, title)` | title 非空 | 阅读模式章标题旁「编辑」 |
-| 卷 volume | name / theme_seeds(JSON) | 🆕 `update_volume_meta(conn, vid, name, theme_seeds)` | theme_seeds 须合法 JSON 数组；status/volume_type **不动**（治理） | 总览卷列表 / 大纲卷节点 |
-| 地点 location | description / state / loc_type | 🆕 `update_location(...)` | — | （v1 可并入总览，或延后） |
-| 主题 theme | description / evolution | 🆕 `update_theme(...)` | — | 同上 |
-| 母题 motif | meaning / evolution | 🆕 `update_motif(...)` | — | 同上 |
+| 卷 volume | name / theme_seeds(JSON) | 🆕 `update_volume_meta(conn, vid, name, theme_seeds)` | theme_seeds 须合法 JSON 数组；status/volume_type **不动**（治理） | 总览卷列表内联 |
+| 地点 location | description / state / loc_type | 🆕 `update_location(...)` | — | **总览世界观区内联** |
+| 主题 theme | description / evolution | 🆕 `update_theme(...)` | — | 总览世界观区内联 |
+| 母题 motif | meaning / evolution | 🆕 `update_motif(...)` | — | 总览世界观区内联 |
 | beat 契约 | volume_outline.beat_contracts 项 | ✅ `update_beat_contract(conn, vid, beat_id, new_contract)` | **locked → OutlineLockedError → `{ok:false}`**（不禁/解锁，提示用户走 CLI unlock） | 大纲模式 beat 节点 |
 | beat 行 | status / deviation_note | ✅ `update_beat_status(conn, beat_id, status, deviation_note)` | status 须在枚举内 | 大纲模式 beat 节点 |
 | beat 行 | purpose / scene_setting | 🆕 `update_beat_meta(conn, beat_id, purpose, scene_setting)` | purpose `CHECK(length>=10)` → 违例 `{ok:false}` | 大纲模式 beat 节点 |
@@ -196,7 +210,16 @@ GET  /api/works
 GET  /api/works/<wid>/overview
      → {name, volumes:n, chapters:{completed,writing,total}, characters:n,
         word_total, inspirations:{raw,refined,consumed,partial,discarded},
-        volume_list:[{id,number,name,volume_type,chapter_count,status,escalate_count?}]}
+        volume_list:[{id,number,name,volume_type,chapter_count,status,escalate_count?}],
+        character_snapshot:[{id,name,role,state,pronoun,personality_excerpt}],   // 总览只读快照
+        worldbook:{locations:[...],themes:[...],motifs:[...]}}                    // 总览内联编辑用
+
+GET  /api/works/<wid>/characters
+     → [{id,name,pronoun,gender,role,faction_id,faction_name,state,personality,goals,abilities[],aliases[],
+         secret_count,knowledge_count}]   // 角色标签页列表（含只读子实体计数）
+
+GET  /api/works/<wid>/factions
+     → [{id,name,ftype,stance,state}]   // 角色表单 faction 下拉用
 
 GET  /api/works/<wid>/matrix?volume=<vid>
      → {volume_name, characters:[{id,name}], chapters:[{id,global_number,title,povs:[char_id]}]}
@@ -293,6 +316,16 @@ def outline_tree(conn, volume_id=None):
     所有 LEFT JOIN → 缺行字段 null。JSON 列(theme_seeds/beat_contracts/scene_setting/
     key_arcs/key_milestones)在函数内 json.loads（异常降级 []/''）。
     返回结构见 §6 outline。"""
+
+def list_characters(conn):
+    """角色标签页列表：SELECT character.*（JSON 列 abilities/aliases 解析为 list）
+    + LEFT JOIN faction 取 faction_name + 子查询计 secret_count/knowledge_count。"""
+
+def worldbook_overview(conn):
+    """总览世界观区：{locations:[...], themes:[...], motifs:[...]}（各表全量，description 类字段直读）。"""
+
+def list_factions(conn):
+    """角色表单 faction 下拉用：[{id,name,ftype,stance,state}]。"""
 ```
 
 > **schema 已核对**（本次审核已逐表确认）：`volume`(number/name/volume_type/status/theme_seeds)、`volume_outline`(volume_id/status/locked_at/beat_contracts)、`master_outline`(id=1/theme_evolution/key_arcs/key_milestones/rhythm_curve)、`chapter`(volume_id/global_number/title/status)、`beat`(chapter_id/sequence/purpose/pov_character_id/scene_setting/status/deviation_note)、`paragraph`(chapter_id/seq/text/beat_id/role，主键 para_id)、`character`(name)。**无 chapter_arc/outline_entry**（那是 novel_kg）。
@@ -347,6 +380,8 @@ python -m src.bedrock.web --projects-root projects
 - `test_outline_tree_missing_fields_null`（无 volume_outline / 无 beat → null/空，不崩）
 - `test_outline_tree_master_outline`（master_outline 字段空则省略）
 - `test_outline_tree_groups_by_volume`
+- `test_list_characters_with_subcounts`（secret_count/knowledge_count + JSON 字段解析）
+- `test_worldbook_overview`（locations/themes/motifs 三组）
 
 ### 层 1.5：纯函数 `tests/bedrock/test_outline.py`（+内容编辑）
 - `test_update_content_raw_ok`（raw + consumed_into 空 → 改 content 成功）
@@ -383,6 +418,8 @@ python -m src.bedrock.web --projects-root projects
 - `test_api_reports_scan`（列出有报告的卷）
 - `test_api_report_renders_markdown` / `_escalate_highlight` / `_v2_tolerant_empty_escalate` / `_missing_404`
 - `test_api_chapters`
+- `test_api_characters`（列表 + 子实体计数）
+- `test_api_worldbook`（三组）
 - `test_api_chapter_text` / `test_api_chapter_text_missing_gnum`
 - `test_api_outline` / `test_api_outline_empty_volume`
 - `test_api_path_traversal_rejected`（`wid=../etc` / `wid=a/b` / `wid=C:x` → 404）
@@ -408,11 +445,13 @@ python -m src.bedrock.web --projects-root projects
 
 - 一键启动 `scripts/start_webui.bat` 起整个工作台（首次自动 build，缺 npm 报错退出）。
 - 侧边栏列作品（至少 `bedrock_demo`），切换工作区生效。
-- 6 视图（总览/矩阵/灵感池/报告/正文阅读/正文大纲）均可访问、数据正确。
+- 7 视图（总览/角色/矩阵/灵感池/报告/正文阅读/正文大纲）均可访问、数据正确。
+- 总览含角色只读快照（点击跳角色页）+ 世界观内联可编辑区（location/theme/motif）。
 - POV 矩阵 NDataTable 撑满宽度、● 点击弹 beat drawer。
 - 灵感池推进：合法生效 + 时间戳；非法/未知 iid/缺 target → `{ok:false}` + DB 不变 + NMessage；Content-Type 非 JSON → 415；consumed 显示 consumed_into、discarded 无按钮。
 - 灵感池内容编辑：raw/refined/partial 且未消费 → 可编辑 content(+source)；consumed/discarded → 冻结（`{ok:false}` + DB 不变）；编辑按钮仅可编辑卡显示。
-- 元数据编辑（层1）：角色档案 / 章标题 / 卷名+theme_seeds / 世界观（location/theme/motif）可 PATCH；name UNIQUE 冲突 / 枚举违例 → `{ok:false}` + DB 不变；每次成功编辑记 amendment。
+- 角色标签页：列表（筛 role/state）→ NDrawer 全字段编辑（name/pronoun/gender/role/state/faction/personality/goals/abilities/aliases）；name UNIQUE 冲突 / 枚举违例 → `{ok:false}` + DB 不变；secrets/knowledge 只读展示。
+- 其他元数据编辑：章标题（阅读模式内联）/ 卷名+theme_seeds（总览内联）/ 世界观 location·theme·motif（总览内联）可 PATCH；name UNIQUE 冲突 / 枚举违例 / JSON 非法 → `{ok:false}` + DB 不变；每次成功编辑记 amendment。
 - 大纲编辑（层2）：beat 契约（locked → `{ok:false}` 提示 unlock）/ beat 状态+偏差 / beat purpose(>=10)+scene_setting / master_outline 字段可 PATCH；purpose 过短 → `{ok:false}`；记 amendment。
 - 正文阅读：段落按 seq、散文排版、上下章导航（首末章禁用）。
 - 正文大纲：作品→卷→章→beat 多级树、可折叠、master_outline/volume_outline/beat.status/deviation_note 展示、缺字段优雅省略。
