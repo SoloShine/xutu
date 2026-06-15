@@ -1,8 +1,9 @@
 // src/stores/panels.ts
 // 多面板分屏布局 store。布局模型 = rows: Panel[][]（每行若干列）。
-// 持久化到 localStorage 'bedrock-panels'，结构损坏时 reset。
+// 持久化到 localStorage 'bedrock-panels'（rows/focusedId/idCounter/named 布局）。
+// maximizedId/dragId 为瞬态（不持久化）。
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { isViewKey, type ViewKey } from '../views/registry'
 
 export interface Panel {
@@ -13,6 +14,11 @@ export interface Panel {
 const LS_KEY = 'bedrock-panels'
 
 type PresetName = 'single' | 'dual' | 'triple' | 'grid'
+
+export interface SavedLayout {
+  rows: Panel[][]
+  focusedId: number
+}
 
 function makeRows(views: ViewKey[], colsPerRow: number): Panel[][] {
   const rows: Panel[][] = []
@@ -38,6 +44,12 @@ export const usePanels = defineStore('panels', () => {
   const rows = ref<Panel[][]>(makeRows(['overview'], 1))
   const focusedId = ref<number>(1)
   const idCounter = ref<number>(1)
+  // 命名布局：name -> {rows, focusedId}
+  const namedLayouts = ref<Record<string, SavedLayout>>({})
+  // 瞬态：当前最大化的面板 id（null=正常分屏）
+  const maximizedId = ref<number | null>(null)
+  // 瞬态：拖拽源面板 id
+  const dragId = ref<number | null>(null)
 
   function nextId(): number {
     idCounter.value += 1
@@ -48,6 +60,7 @@ export const usePanels = defineStore('panels', () => {
     try {
       localStorage.setItem(LS_KEY, JSON.stringify({
         rows: rows.value, focusedId: focusedId.value, idCounter: idCounter.value,
+        named: namedLayouts.value,
       }))
     } catch { /* 忽略存储失败 */ }
   }
@@ -61,9 +74,17 @@ export const usePanels = defineStore('panels', () => {
       if (!r.length) { reset(); return }
       rows.value = r
       idCounter.value = Number.isFinite(data?.idCounter) ? data.idCounter : Math.max(...allIds(r), 0)
-      // 聚焦面板若不存在，回退到第一个面板
       const ids = allIds(r)
       focusedId.value = data?.focusedId && ids.includes(data.focusedId) ? data.focusedId : ids[0]
+      // 命名布局：逐个校验，非法的丢弃
+      const named: Record<string, SavedLayout> = {}
+      if (data?.named && typeof data.named === 'object') {
+        for (const [k, v] of Object.entries(data.named)) {
+          const nr = normalizeRows((v as SavedLayout)?.rows)
+          if (nr.length) named[k] = { rows: nr, focusedId: (v as SavedLayout).focusedId ?? allIds(nr)[0] }
+        }
+      }
+      namedLayouts.value = named
     } catch {
       reset()
     }
@@ -73,6 +94,7 @@ export const usePanels = defineStore('panels', () => {
     rows.value = makeRows(['overview'], 1)
     focusedId.value = 1
     idCounter.value = 1
+    maximizedId.value = null
     persist()
   }
 
@@ -127,6 +149,7 @@ export const usePanels = defineStore('panels', () => {
       }
     }
     if (rows.value.length === 0) { reset(); return }
+    if (maximizedId.value === id) maximizedId.value = null
     const ids = allIds(rows.value)
     if (!ids.includes(focusedId.value)) focusedId.value = ids[0]
     persist()
@@ -136,6 +159,7 @@ export const usePanels = defineStore('panels', () => {
     rows.value = preset(name)
     idCounter.value = Math.max(...allIds(rows.value), 0)
     focusedId.value = allIds(rows.value)[0] ?? 1
+    maximizedId.value = null
     persist()
   }
 
@@ -146,18 +170,70 @@ export const usePanels = defineStore('panels', () => {
     if (!ids.includes(focusedId.value)) focusedId.value = ids[0]
   }
 
+  // ---- 面板最大化（瞬态）----
+  function toggleMaximize(id: number) {
+    maximizedId.value = maximizedId.value === id ? null : id
+  }
+
+  // ---- 拖拽换位：交换两面板在网格中的位置 ----
+  function swapPanels(idA: number, idB: number) {
+    if (idA === idB) return
+    const a = locate(idA), b = locate(idB)
+    if (!a || !b) return
+    const tmp = rows.value[a.row][a.col]
+    rows.value[a.row][a.col] = rows.value[b.row][b.col]
+    rows.value[b.row][b.col] = tmp
+    persist()
+  }
+
+  // ---- 命名布局 ----
+  const layoutNames = computed(() => Object.keys(namedLayouts.value).sort())
+
+  function saveLayout(name: string) {
+    const n = name.trim()
+    if (!n) return false
+    namedLayouts.value[n] = { rows: JSON.parse(JSON.stringify(rows.value)), focusedId: focusedId.value }
+    persist()
+    return true
+  }
+  function applyLayout(name: string) {
+    const l = namedLayouts.value[name]
+    if (!l) return false
+    const nr = normalizeRows(l.rows)
+    if (!nr.length) return false
+    rows.value = nr
+    idCounter.value = Math.max(idCounter.value, ...allIds(nr), 0)
+    const ids = allIds(nr)
+    focusedId.value = ids.includes(l.focusedId) ? l.focusedId : ids[0]
+    maximizedId.value = null
+    persist()
+    return true
+  }
+  function deleteLayout(name: string) {
+    if (namedLayouts.value[name]) {
+      delete namedLayouts.value[name]
+      persist()
+    }
+  }
+
   // ---- helpers ----
+  function locate(panelId: number): { row: number; col: number } | null {
+    for (let i = 0; i < rows.value.length; i++) {
+      const j = rows.value[i].findIndex(p => p.id === panelId)
+      if (j >= 0) return { row: i, col: j }
+    }
+    return null
+  }
   function rowIndexOf(panelId: number): number {
     return rows.value.findIndex(r => r.some(p => p.id === panelId))
   }
-
   function allIds(rs: Panel[][]): number[] {
     const out: number[] = []
     for (const r of rs) for (const p of r) out.push(p.id)
     return out
   }
 
-  // 校验并规范化从 localStorage 读回的 rows：剔除非法结构；返回 [] 表示彻底损坏
+  // 校验并规范化 rows：剔除非法结构；返回 [] 表示彻底损坏
   function normalizeRows(raw: unknown): Panel[][] {
     if (!Array.isArray(raw)) return []
     const out: Panel[][] = []
@@ -174,13 +250,13 @@ export const usePanels = defineStore('panels', () => {
       }
       out.push(validRow)
     }
-    // 至少要有 1 个面板，且无空行
     return out.every(r => r.length > 0) && out.length > 0 ? out : []
   }
 
   return {
-    rows, focusedId,
+    rows, focusedId, namedLayouts, layoutNames, maximizedId, dragId,
     load, persist, reset, focus,
     setPanelView, setFocusedView, addPanelRight, addRow, closePanel, applyPreset,
+    toggleMaximize, swapPanels, saveLayout, applyLayout, deleteLayout,
   }
 })
