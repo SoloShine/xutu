@@ -41,8 +41,13 @@ def create_beat(conn, chapter_id, sequence, purpose, pov_character_id=None,
         "story_time,timeline_id,status) VALUES(?,?,?,?,?,?,?,?)",
         (chapter_id, sequence, purpose, pov_character_id,
          json.dumps(scene_setting or {}, ensure_ascii=False), story_time, timeline_id, status))
+    beat_id = cur.lastrowid
+    # 绑 pov → beat_character，让 L2 missing_character 规则生效（防垃圾章过 L2）
+    if pov_character_id is not None:
+        from src.bedrock.repositories.beat_link import link_beat_character
+        link_beat_character(conn, beat_id, pov_character_id, role="pov")
     conn.commit()
-    return cur.lastrowid
+    return beat_id
 
 
 def get_beat(conn, beat_id):
@@ -80,6 +85,21 @@ def update_paragraph(conn, para_id, text, content_hash, beat_id, role):
     conn.execute(
         "UPDATE paragraph SET text=?, content_hash=?, beat_id=?, role=? WHERE para_id=?",
         (text, content_hash, beat_id, role, para_id))
+    conn.commit()
+
+
+def update_paragraph_text(conn, para_id, text):
+    """只改段落文本（保留原 beat_id/role），内部重算 content_hash。
+    编辑写面的常用路径——外科手术 update op。"""
+    import hashlib
+    row = conn.execute(
+        "SELECT beat_id, role FROM paragraph WHERE para_id=?", (para_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"paragraph {para_id} 不存在")
+    chash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    conn.execute(
+        "UPDATE paragraph SET text=?, content_hash=? WHERE para_id=?",
+        (text, chash, para_id))
     conn.commit()
 
 
@@ -137,6 +157,34 @@ def reorder_paragraphs(conn, chapter_id, para_id_list):
     conn.execute("UPDATE paragraph SET seq=seq+1000000 WHERE chapter_id=?", (chapter_id,))
     for i, pid in enumerate(para_id_list, start=1):
         conn.execute("UPDATE paragraph SET seq=? WHERE para_id=?", (i, pid))
+    conn.commit()
+
+
+def set_chapter_status(conn, chapter_id, status):
+    """流转章节工作流状态（planned→drafted→…）。非治理字段，不记 amendment。"""
+    row = conn.execute("SELECT id FROM chapter WHERE id=?", (chapter_id,)).fetchone()
+    if row is None:
+        raise ValueError(f"chapter {chapter_id} 不存在")
+    conn.execute("UPDATE chapter SET status=? WHERE id=?", (status, chapter_id))
+    conn.commit()
+
+
+def clear_chapter_paragraphs(conn, chapter_id):
+    """清空该章全部段落（commit-paragraphs 幂等重写前置；repair/polish 重落盘用）。"""
+    conn.execute("DELETE FROM paragraph WHERE chapter_id=?", (chapter_id,))
+    conn.commit()
+
+
+def mark_beats_written(conn, beat_ids):
+    """把给定 beat 的 status 推进到 written（planned→written，L2 规则0 的写面落点）。
+    仅 planned 态翻转；已 written/deviated/overridden 不回退。"""
+    if not beat_ids:
+        return
+    placeholders = ",".join("?" * len(beat_ids))
+    conn.execute(
+        f"UPDATE beat SET status='written' WHERE id IN ({placeholders}) "
+        f"AND status='planned'",
+        list(beat_ids))
     conn.commit()
 
 

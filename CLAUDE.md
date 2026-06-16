@@ -39,8 +39,13 @@ V3(代号 Bedrock)是当前唯一管线。三件事记住:
   → show-review-report --escalate-only 读 escalate_human 项 → 人工判决
 ```
 
-- `bedrock-chapter.js` 内部:Boot → Write → L2+Repair(≤3轮) → Polish → Persist+Telemetry
-- `bedrock-volume-review.js` 内部:Gather(旗章+watchdog+跨卷欠债) → Review(Opus) → Fix → Reverify → Report
+- `bedrock-chapter.js` 内部:Boot → Write(ChapterWriter→`commit-paragraphs` 入库) → L2+Repair(≤3轮) → Polish(重 `commit-paragraphs`) → Persist+Telemetry
+- `bedrock-chapter-edit.js` 内部(已落盘章节编辑,四模式):`mode=rewrite`(指令重写)/`polish`(按需润色)/`surgical`(段落外科,出 ops→`edit-paragraphs`)/`recheck`(重检+修复)。全复用精简 relay,L2/verify 信任锚不破。
+- `bedrock-volume-review.js` 内部:Gather(旗章+watchdog+跨卷欠债) → Review(Opus) → Fix(**ops,经 edit-paragraphs**;agent 吐叙述/正文→解析失败→escalate,章节不动) → Reverify → Report。**Reviewer≠Fixer,每章1轮**。各 checkpoint 自动出 JSON 备份(章写→draft / 章编辑→first_review / 卷审→final)。
+
+> **卷 Fix 必须 ops,禁整章 prose-return**(2026-06-17 教训):prose-return 时 Fix agent 会吐工作日志/思考过程当正文,commit-paragraphs 覆盖毁章(L2 语义盲曾静默放行)。现 Fix 走 edit-paragraphs ops,叙述无法解析→escalate 不碰章;加 commit-paragraphs 工作日志拒绝 + L2 pov 绑定(missing_character)+ empty_beat 规则三层兜底。
+
+> **工作流运行时模型(2026-06-16 修正)**:Workflow 引擎是无 Node 沙箱(`require`/`process`/`execFileSync`/静态 `import`/`export default` 全不可用)。三个工作流(`bedrock-chapter.js` / `bedrock-chapter-edit.js` / `bedrock-volume-review.js`)均已按沙箱模型重写:`export const meta` 必须第一条;入参全局 `args` 在本 harness 以**字符串**传入须 `JSON.parse`;`pythonCli` 改派 Bash-runner 子代理执行 CLI;**模块级 `const`(schemas/worstDrift 等)必须声明在主流程之前,否则 TDZ**。
 
 ---
 
@@ -54,6 +59,11 @@ V3(代号 Bedrock)是当前唯一管线。三件事记住:
 | `run-l2 --project <p> --chapter N` | 单章 L2 全量重算(零 LLM),JSON 输出 |
 | `boot-context --project <p> --chapter N --volume V` | 装配子代理启动上下文 |
 | `verify-persisted --project <p> --chapter N [--export-path]` | 强制落盘门禁 |
+| `commit-paragraphs --project <p> --chapter N`(stdin=本章正文纯文本) | 正文入库 paragraph 表 + beat→written + 章→writing(幂等重写;可选 `@@beat:N@@` 标记分 beat) |
+| `show-paragraphs --project <p> --chapter N` | 读章节段落 JSON(para_id/seq/beat_id/text),编辑定位用 |
+| `edit-paragraphs --project <p> --chapter N`(stdin=ops JSON) | 段落级编辑写面:update/insert/delete/reorder 多 op 事务化(补铁律"写面只走 CLI"的段落编辑缺口) |
+| `export-chapter-json --project <p> --chapter N --stage {draft\|first_review\|final}` | 章节结构化 JSON 备份(写完=draft / 编辑后=first_review / 卷审后=final),冗余备份 |
+| `import-chapter-json --project <p> --chapter N --stage <s>` | 从 JSON 备份忠实恢复章节(清空重建,保 seq/beat_id/role);备份-恢复闭环的恢复端 |
 | `mark-unresolved --project <p> --chapter N --rule-or-model {0\|1}` | 3轮耗尽(违规 JSON 走 stdin) |
 | `mark-polish-broke-beat --project <p> --chapter N` | polish 引入 beat 违规 |
 | `mark-forced-persist-failed --project <p> --chapter N` | 落盘失败 |

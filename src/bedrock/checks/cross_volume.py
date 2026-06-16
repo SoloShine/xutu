@@ -62,6 +62,10 @@ def check_cross_volume_anchors(conn, volume_id):
     if mo and volume_number is not None:
         milestones = json.loads(mo["key_milestones"]) if mo["key_milestones"] else []
         for ms in milestones:
+            # key_milestones 可存为纯描述字符串（向导/seed 默认形态）；仅 dict 形态带
+            # expected_volume/resolves_threads 才参与跨卷锚点校验，字符串形态跳过。
+            if not isinstance(ms, dict):
+                continue
             if ms.get("expected_volume") != volume_number:
                 continue
             resolves = ms.get("resolves_threads", [])

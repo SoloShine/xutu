@@ -1,6 +1,8 @@
 # src/bedrock/__main__.py
 import argparse
+import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -21,12 +23,271 @@ from src.bedrock.orchestration.watchdog import run_watchdog
 from src.bedrock.orchestration.cross_volume_gate import check_cross_volume_debt
 from src.bedrock.orchestration.review_flag import get_review_flag, compute_has_flag
 from src.bedrock.repositories.governance import add_amendment
+from src.bedrock.repositories.plot_tree import (
+    create_paragraph, list_beats_in_chapter,
+    set_chapter_status, clear_chapter_paragraphs, mark_beats_written,
+    update_paragraph_text, insert_paragraph_at, delete_paragraph, reorder_paragraphs,
+)
 from src.bedrock.checks.beat_fulfillment import BeatViolation
 
 
 def _chapter_id(conn, global_number):
     """global_number → chapter.id（委托共享函数，保 CLI 友好报错）。"""
     return chapter_id_by_global(conn, global_number)
+
+
+# 段落内可能的 beat 标记：行首 @@beat:N@@ 或 【beat:N】 或 === beat N ===
+_BEAT_MARKER = re.compile(r"^\s*(?:@@beat:(\d+)@@|【beat:(\d+)】|={2,}\s*beat\s*(\d+)\s*={2,})\s*$")
+
+# agent 元叙述前置语（"我将直接撰写本章/遵循beat契约…"）—— ChapterWriter 偶尔把开场白当正文吐出，
+# L2 语义盲查不出。落盘前剥掉开头连续的此类段，防污染 SSOT。
+_META_PREAMBLE = re.compile(
+    r"^\s*(我|下面|本[章节]|首先|好的?|没问题)[^。\n]{0,40}?"
+    r"(撰写|写一?篇?|创作|生成|遵循|按照|依照|遵循|节拍|beat|契约|既定|语调|风格|要求|prompt)")
+
+
+def _is_meta_preamble(text):
+    """是否为 agent 自述前置语（非小说正文）。短段 + 第一人称/指令词 + 写作任务词。"""
+    t = text.strip()
+    return len(t) <= 60 and bool(_META_PREAMBLE.match(t))
+
+
+# 纯分隔符/符号段（"——"、"---"、"***"、孤立星号等），agent 前置语常带，非正文。
+_SEP_ONLY = re.compile(r"^[\s—–\-_=*~·•#※　]+$")
+
+
+def _is_lead_junk(text):
+    """开头应剥除的垃圾段：agent 自述前置语 / 纯分隔符段 / 管线术语回显。"""
+    t = text.strip()
+    if not t:
+        return True
+    return _is_meta_preamble(t) or bool(_SEP_ONLY.match(t)) or _is_pipeline_echo(t)
+
+
+# 管线术语（提示词/boot context/pov/节拍N/契约…）——agent 偶尔把 boot context 或 beat 摘要
+# 回显成开头段。这些词基本不会出现在小说正文开头，作 lead-junk 剥除。
+_PIPELINE_ECHO = re.compile(r"(提示词|boot[ _-]?context|叙事目的|视角角色|\bpov\b|fingerprint|"
+                            r"beat\s*契约|节拍\s*\d|系统重查)")
+
+
+def _is_pipeline_echo(text):
+    """开头短段是否像管线术语回显（boot context / beat 摘要等），非小说正文。"""
+    t = text.strip()
+    return len(t) <= 90 and bool(_PIPELINE_ECHO.search(t))
+
+
+# agent 工作日志特征词（修复汇报/操作记录/管线术语）——这类内容绝不该当正文入库。
+# 命中 ≥2 个不同特征 → 判为工作日志，commit-paragraphs 拒绝（防 Fix agent 把日志覆盖成正文）。
+_WORKLOG_TOKENS = (
+    "操作记录", "修复完成", "修复目标", "已删除", "已通过", "已修复", "修改前后",
+    "para_id", "surgical", "edit-paragraphs", "commit-paragraphs", "run-l2", "seq=",
+    "l2 硬门禁", "l2检测", "l2门禁", "违规", "真相之源", "标准设定",
+    "节拍契约依然", "手术式", "元数据残留", "删除该 paragraph", "以下是",
+)
+
+
+def _looks_like_worklog(raw):
+    """输入是否像 agent 工作日志而非小说正文（≥2 个特征词命中）。"""
+    low = raw.lower()
+    return sum(1 for t in _WORKLOG_TOKENS if t in low) >= 2
+
+
+def _split_paragraphs(raw):
+    """正文 → [(beat_seq_or_None, text), ...]。
+    - 空行分段；丢弃空白段。
+    - 行首 beat 标记（如 @@beat:2@@）标记其后段落归属的 beat sequence；
+      无标记的段落 beat_seq=None（由 _commit_paragraphs 按章内 beat 兜底分配）。"""
+    blocks = re.split(r"\n\s*\n", raw)
+    out, current_beat = [], None
+    for b in blocks:
+        b = b.strip()
+        if not b:
+            continue
+        m = _BEAT_MARKER.match(b)
+        if m:
+            current_beat = int(next(g for g in m.groups() if g))
+            # 标记行本身不含正文；若同行后跟正文则取标记后部分
+            rest = _BEAT_MARKER.sub("", b).strip()
+            if rest:
+                out.append((current_beat, rest))
+            continue
+        out.append((current_beat, b))
+    return out
+
+
+def _commit_paragraphs(conn, chapter_id, raw, role="narration"):
+    """正文纯文本 → 入库 paragraph（幂等：先清空该章段落再重写），章状态→drafted。
+
+    beat 归属策略：
+      - 显式标记段：用标记的 beat sequence。
+      - 无标记：若全章仅 1 个 beat，全部挂它；若多 beat，按 beat 顺序均分 contiguous 段。
+    返回 {chapter_id, paragraph_count, beats_used, status}。"""
+    # 安全网：agent 工作日志（"修复完成。操作记录：…"）绝不该当正文入库。
+    # 命中即拒绝，不清空 DB——防卷 Fix agent 把日志覆盖成正文（曾毁 ch1/8/11）。
+    if _looks_like_worklog(raw):
+        sys.exit("commit-paragraphs: 拒绝入库——输入像是 agent 工作日志/操作记录，而非小说正文。"
+                 "（Fix agent 应返回整章正文，不是修复汇报）")
+    paras = _split_paragraphs(raw)
+    if not paras:
+        sys.exit("commit-paragraphs: stdin 无有效段落（空正文？）")
+
+    # 剥离开头的垃圾段（agent 自述前置语 / 纯分隔符"——"等），遇正文即停；至少留 1 段。
+    while len(paras) > 1 and _is_lead_junk(paras[0][1]):
+        paras.pop(0)
+
+    beats = list_beats_in_chapter(conn, chapter_id)
+    if not beats:
+        sys.exit(f"commit-paragraphs: 章 {chapter_id} 无 beat 契约，无法落盘")
+    seq_to_id = {b["sequence"]: b["id"] for b in beats}
+    id_set = {b["id"] for b in beats}   # 标记亦接受 beat_id（beat_contract 只暴露 beat_id）
+    beat_ids = [b["id"] for b in beats]
+
+    # 解析每段 beat_id
+    beat_ids_for_para = []
+    for (bseq, _text) in paras:
+        bid = None
+        if bseq is not None:
+            if bseq in seq_to_id:        # 标记 = sequence
+                bid = seq_to_id[bseq]
+            elif bseq in id_set:         # 标记 = beat_id
+                bid = bseq
+        beat_ids_for_para.append(bid)
+
+    # 兜底：未标记段
+    if any(b is None for b in beat_ids_for_para):
+        if len(beats) == 1:
+            only = beat_ids[0]
+            beat_ids_for_para = [b if b is not None else only for b in beat_ids_for_para]
+        else:
+            # 多 beat：把未标记段按顺序 contiguous 均分到各 beat
+            n = len(paras)
+            for i in range(n):
+                if beat_ids_for_para[i] is None:
+                    beat_ids_for_para[i] = beat_ids[min(i * len(beats) // n, len(beats) - 1)]
+
+    clear_chapter_paragraphs(conn, chapter_id)
+    for seq_i, ((_bseq, text), bid) in enumerate(zip(paras, beat_ids_for_para), start=1):
+        chash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        create_paragraph(conn, chapter_id, seq_i, text, chash, bid, role)
+    mark_beats_written(conn, sorted(set(beat_ids_for_para)))
+    # schema CHECK: status ∈ {planned, writing, completed}；正文落盘 → writing。
+    set_chapter_status(conn, chapter_id, "writing")
+    return {
+        "chapter_id": chapter_id,
+        "paragraph_count": len(paras),
+        "beats_used": sorted(set(beat_ids_for_para)),
+        "status": "writing",
+    }
+
+
+def _export_chapter_json(conn, project_path, chapter_id, global_number, stage):
+    """章节结构化 JSON 备份（冗余用）：段落 + meta + 字数。
+    写到 <project>/exports/json/ch<NN>.<stage>.json。stage ∈ draft|first_review|final。
+    用于管线各 checkpoint 快照：即使 DB 被覆盖（如卷 Fix 事故）也可从此恢复正文。"""
+    ch = conn.execute(
+        "SELECT global_number, title, status, volume_id FROM chapter WHERE id=?",
+        (chapter_id,)).fetchone()
+    paras = conn.execute(
+        "SELECT seq, beat_id, role, text FROM paragraph WHERE chapter_id=? ORDER BY seq",
+        (chapter_id,)).fetchall()
+    full = "".join(p["text"] for p in paras)
+    word_count = len(re.findall(r"[一-鿿]", full))
+    import datetime
+    payload = {
+        "project": project_path.name,
+        "stage": stage,
+        "exported_at": datetime.datetime.now().isoformat(timespec="seconds"),
+        "chapter": {
+            "global_number": ch["global_number"],
+            "title": ch["title"],
+            "status": ch["status"],
+            "volume_id": ch["volume_id"],
+        },
+        "word_count": word_count,
+        "paragraph_count": len(paras),
+        "paragraphs": [
+            {"seq": p["seq"], "beat_id": p["beat_id"], "role": p["role"], "text": p["text"]}
+            for p in paras],
+    }
+    out_dir = project_path / "exports" / "json"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    nn = f"{global_number:02d}"
+    out_path = out_dir / f"ch{nn}.{stage}.json"
+    out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return out_path
+
+
+def _import_chapter_json(conn, project_path, chapter_id, global_number, stage):
+    """从 JSON 备份忠实恢复章节：清空该章段落，按备份的 seq/beat_id/role 重建。
+    备份-恢复闭环的恢复端（卷 Fix 事故、误改等均可从此恢复）。"""
+    nn = f"{global_number:02d}"
+    src = project_path / "exports" / "json" / f"ch{nn}.{stage}.json"
+    if not src.exists():
+        sys.exit(f"import-chapter-json: 备份不存在 {src}")
+    data = json.loads(src.read_text(encoding="utf-8"))
+    paras = data.get("paragraphs", [])
+    if not paras:
+        sys.exit(f"import-chapter-json: 备份 {src} 无段落")
+    clear_chapter_paragraphs(conn, chapter_id)
+    for p in paras:
+        text = p["text"]
+        chash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        create_paragraph(conn, chapter_id, p["seq"], text, chash, p.get("beat_id"), p.get("role", "narration"))
+    mark_beats_written(conn, [b["id"] for b in list_beats_in_chapter(conn, chapter_id)])
+    set_chapter_status(conn, chapter_id, "writing")
+    return {"chapter_id": chapter_id, "stage": stage, "restored_from": str(src),
+            "paragraph_count": len(paras), "word_count": data.get("word_count")}
+
+
+def _resolve_beat_for_insert(conn, chapter_id, after_seq):
+    nbr = conn.execute(
+        "SELECT beat_id FROM paragraph WHERE chapter_id=? AND seq<=? "
+        "ORDER BY seq DESC LIMIT 1", (chapter_id, after_seq)).fetchone()
+    if nbr and nbr["beat_id"] is not None:
+        return nbr["beat_id"]
+    beats = list_beats_in_chapter(conn, chapter_id)
+    return beats[0]["id"] if beats else None
+
+
+def _apply_paragraph_ops(conn, chapter_id, ops):
+    """段落级编辑写面：按序应用 update/insert/delete/reorder（事务化）。
+
+    op schema:
+      {"op":"update","para_id":N,"text":"..."}
+      {"op":"insert","after_seq":N,"text":"..."}        # after_seq=0 → 章首
+      {"op":"delete","para_id":N}
+      {"op":"reorder","order":[para_id,...]}            # 必须是该章全部 para_id 的排列
+    应用后：章状态→writing，已落段落的 beat→written。返回 {applied, paragraph_count}。"""
+    if not isinstance(ops, list) or not ops:
+        sys.exit("edit-paragraphs: stdin 需为非空 ops 数组")
+    applied = []
+    try:
+        for op in ops:
+            kind = op.get("op")
+            if kind == "update":
+                update_paragraph_text(conn, int(op["para_id"]), op["text"])
+            elif kind == "insert":
+                bid = _resolve_beat_for_insert(conn, chapter_id, int(op.get("after_seq", 0)))
+                text = op["text"]
+                chash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+                insert_paragraph_at(conn, chapter_id, int(op.get("after_seq", 0)),
+                                    text, chash, bid, "narration")
+            elif kind == "delete":
+                delete_paragraph(conn, int(op["para_id"]))
+            elif kind == "reorder":
+                reorder_paragraphs(conn, chapter_id, [int(x) for x in op["order"]])
+            else:
+                sys.exit(f"edit-paragraphs: 未知 op {kind!r}")
+            applied.append(kind)
+        beat_ids = [b["id"] for b in list_beats_in_chapter(conn, chapter_id)]
+        mark_beats_written(conn, beat_ids)
+        set_chapter_status(conn, chapter_id, "writing")
+    except Exception as e:
+        conn.rollback()
+        sys.exit(f"edit-paragraphs 回滚: {e}")
+    count = conn.execute(
+        "SELECT COUNT(*) FROM paragraph WHERE chapter_id=?", (chapter_id,)).fetchone()[0]
+    return {"chapter_id": chapter_id, "applied": applied, "paragraph_count": count}
 
 
 def _write_review_report(report_path, volume, payload):
@@ -112,6 +373,40 @@ def main():
     p_verify.add_argument("--project", type=Path, required=True)
     p_verify.add_argument("--chapter", type=int, required=True)
     p_verify.add_argument("--export-path", type=Path, default=None)
+
+    p_commit = sub.add_parser(
+        "commit-paragraphs",
+        help="正文入库（stdin=本章正文纯文本；幂等重写，状态→drafted）")
+    p_commit.add_argument("--project", type=Path, required=True)
+    p_commit.add_argument("--chapter", type=int, required=True)
+    p_commit.add_argument("--role", default="narration",
+                          help="段落 role 默认 narration")
+
+    p_showp = sub.add_parser("show-paragraphs", help="读章节段落 JSON（para_id/seq/beat_id/text）")
+    p_showp.add_argument("--project", type=Path, required=True)
+    p_showp.add_argument("--chapter", type=int, required=True)
+
+    p_editp = sub.add_parser(
+        "edit-paragraphs",
+        help="段落级编辑（stdin=ops JSON：update/insert/delete/reorder，事务化）")
+    p_editp.add_argument("--project", type=Path, required=True)
+    p_editp.add_argument("--chapter", type=int, required=True)
+
+    p_expjson = sub.add_parser(
+        "export-chapter-json",
+        help="章节结构化 JSON 备份（初稿/一审/二审核稿，冗余备份用）")
+    p_expjson.add_argument("--project", type=Path, required=True)
+    p_expjson.add_argument("--chapter", type=int, required=True)
+    p_expjson.add_argument("--stage", required=True,
+                           choices=["draft", "first_review", "final"],
+                           help="draft=写完初稿 / first_review=编辑改后一审 / final=卷审后二审核稿(终稿)")
+
+    p_impjson = sub.add_parser(
+        "import-chapter-json",
+        help="从 JSON 备份恢复章节（清空该章段落，按备份忠实重建 seq/beat_id/role）")
+    p_impjson.add_argument("--project", type=Path, required=True)
+    p_impjson.add_argument("--chapter", type=int, required=True)
+    p_impjson.add_argument("--stage", required=True, choices=["draft", "first_review", "final"])
 
     p_mark = sub.add_parser("mark-unresolved", help="3轮重试耗尽：写 l2_unresolved=1")
     p_mark.add_argument("--project", type=Path, required=True)
@@ -219,6 +514,37 @@ def main():
             cid = _chapter_id(conn, args.chapter)
             ok = verify_chapter_persisted(conn, cid, export_path=args.export_path)
             print("True" if ok else "False")
+        elif args.cmd == "commit-paragraphs":
+            cid = _chapter_id(conn, args.chapter)
+            raw = sys.stdin.buffer.read().decode("utf-8")
+            payload = _commit_paragraphs(
+                conn, cid, raw, role=args.role)
+            print(json.dumps(payload, ensure_ascii=False))
+        elif args.cmd == "show-paragraphs":
+            cid = _chapter_id(conn, args.chapter)
+            rows = conn.execute(
+                "SELECT para_id, seq, beat_id, role, text FROM paragraph "
+                "WHERE chapter_id=? ORDER BY seq", (cid,)).fetchall()
+            out = [{"para_id": r["para_id"], "seq": r["seq"],
+                    "beat_id": r["beat_id"], "role": r["role"], "text": r["text"]}
+                   for r in rows]
+            print(json.dumps(out, ensure_ascii=False))
+        elif args.cmd == "edit-paragraphs":
+            cid = _chapter_id(conn, args.chapter)
+            try:
+                ops = json.loads(sys.stdin.buffer.read().decode("utf-8"))
+            except (json.JSONDecodeError, ValueError) as e:
+                sys.exit(f"invalid ops JSON on stdin: {e}")
+            payload = _apply_paragraph_ops(conn, cid, ops)
+            print(json.dumps(payload, ensure_ascii=False))
+        elif args.cmd == "export-chapter-json":
+            cid = _chapter_id(conn, args.chapter)
+            out = _export_chapter_json(conn, args.project, cid, args.chapter, args.stage)
+            print(json.dumps({"path": str(out), "stage": args.stage}, ensure_ascii=False))
+        elif args.cmd == "import-chapter-json":
+            cid = _chapter_id(conn, args.chapter)
+            payload = _import_chapter_json(conn, args.project, cid, args.chapter, args.stage)
+            print(json.dumps(payload, ensure_ascii=False))
         elif args.cmd == "mark-unresolved":
             cid = _chapter_id(conn, args.chapter)
             # 显式按 UTF-8 解 stdin（Windows OEM 码页如 cp936 会把 UTF-8 JSON 解成乱码，

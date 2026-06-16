@@ -44,6 +44,15 @@ def check_beat_fulfillment(conn, chapter_id):
 
         # 规则1: 角色出场
         beat_paras = paras_by_beat.get(beat["id"], [])
+
+        # 规则0b: 非 planned beat 须有 ≥1 段落（防外科删除掏空 / 整章重写时 beat 错位归属）
+        if len(beat_paras) == 0:
+            violations.append(BeatViolation(
+                beat_id=beat["id"], kind="empty_beat",
+                detail=f"beat {beat['id']} 状态={beat['status']} 但无任何段落（被删空或整章重写时错位）",
+                fix_hint=f"为 beat {beat['id']} 写回至少一段，或在多 beat 章用 @@beat:N@@ 标记重新归属"))
+            continue
+
         beat_text = "".join(p["text"] for p in beat_paras)
         for link in characters_in_beat(conn, beat["id"]):
             char = get_character(conn, link["character_id"])
