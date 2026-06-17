@@ -33,12 +33,13 @@ const FINDINGS_SCHEMA = {
       items: {
         type: 'object',
         properties: {
-          chapter: { type: 'number' },
+          chapters: { type: 'array', items: { type: 'number' },
+                      description: '该 finding 涉及的全部章号(跨章矛盾列多章;单章列一个)' },
           issue_type: { type: 'string' },
           detail: { type: 'string' },
           fix_instruction: { type: 'string' },
         },
-        required: ['chapter', 'fix_instruction'],
+        required: ['chapters', 'fix_instruction'],
       },
     },
     summary: { type: 'string' },
@@ -81,28 +82,36 @@ const findings = parseFindings(reviewRaw)
 const actionable = (findings && findings.actionable) || []
 log(`review: ${actionable.length} actionable findings (of ${chapters.length} chapters, ${flagged.length} flagged)`)
 
-// ===== 3. Fix：对 actionable findings 派 Edit(Opus) → edit-paragraphs ops 入库 =====
-// 用 ops（非整章 prose）：agent 返回 ops JSON；若吐叙述/正文→解析失败→escalate，章节不被碰。
+// ===== 3. Fix：对 actionable findings 派 Edit(Opus) → 跨章 ops(edit-paragraphs) =====
+// finding.chapters 可多章；agent 返 [{chapter, ops}] 分组。吐叙述→解析失败→escalate，章节不动。
 phase('Fix')
 const edited = []
 const fixFailed = []
 const fixList = VR_FIX_ROUNDS ? actionable : []
 for (const f of fixList) {
+  const targets = (Array.isArray(f.chapters) && f.chapters.length
+    ? f.chapters : (f.chapter != null ? [f.chapter] : [])).map(Number)
+  if (!targets.length) { continue }
   try {
     const opsRaw = stripFences(await agent(semanticFixPrompt(f, project),
-      { label: `Edit-fix-ch${f.chapter}`, phase: 'Fix', model: 'opus' }))
-    const ops = parseOps(opsRaw)
-    if (!Array.isArray(ops) || ops.length === 0) {
-      fixFailed.push(f.chapter)
-      log(`fix ch${f.chapter}: 未返回有效 ops（可能吐了叙述）→ escalate，章节不动`)
+      { label: `Edit-fix-ch${targets.join(',')}`, phase: 'Fix', model: 'opus' }))
+    const groups = parseMultiOps(opsRaw)
+    if (!groups || !groups.length) {
+      targets.forEach(c => fixFailed.push(c))
+      log(`fix ch${targets.join(',')}: 未返回有效分组 ops（可能吐了叙述）→ escalate，章节不动`)
       continue
     }
-    await applyOpsAndL2(project, f.chapter, ops, `volfix-ch${f.chapter}`)
-    edited.push(f.chapter)
-    log(`fixed ch${f.chapter}: ${f.issue_type || '?'} — ${ops.length} ops applied`)
+    const touched = []
+    for (const g of groups) {
+      await applyOpsAndL2(project, g.chapter, g.ops, `volfix-ch${g.chapter}`)
+      touched.push(g.chapter)
+    }
+    touched.forEach(c => edited.push(c))
+    const opCount = groups.reduce((s, g) => s + g.ops.length, 0)
+    log(`fix ch${targets.join(',')}: 改 ${[...new Set(touched)].join(',')} 章 / ${opCount} ops`)
   } catch (e) {
-    fixFailed.push(f.chapter)
-    log(`fix ch${f.chapter} FAILED: ${e.message} → escalate，章节不动`)
+    targets.forEach(c => fixFailed.push(c))
+    log(`fix ch${targets.join(',')} FAILED: ${e.message} → escalate，章节不动`)
   }
 }
 
@@ -286,27 +295,35 @@ function volumeReviewPrompt(project, volume, chapters, flagged, watchdog, debt) 
     'cross_volume_debt:', JSON.stringify(debt, null, 2),
     '',
     '## 输出',
-    '给出 actionable[]：每项含 chapter / issue_type / detail / fix_instruction（fix_instruction 要具体到可执行，如"删除 chN seqM 的某段"或"chN 开篇改为承接上章X"）。',
-    '只把"确实该改且能改"的列入 actionable；纯风格偏好、模棱两可的不要列（每项都会触发 1 轮修复 + 复验）。',
+    '给出 actionable[]：每项含 **chapters(数组:该问题涉及的全部章号)** / issue_type / detail / fix_instruction（具体到可执行，指明每章改哪段）。',
+    '**跨章问题(性别统一/人物身份/时间线正典/设定矛盾)必须把所有相关章都列进 chapters**——不要只标一个章。',
+    '只把"确实该改且能改"的列入；纯风格偏好、模棱两可的不要列（每项触发 1 轮修复 + 复验）。',
     '无问题则 actionable 为空数组。注意：作者旁白泄漏类（"我将/下面…撰写"）请列出，系统有 guard 但可能漏。',
     '',
     '**最终返回值必须严格是一个 JSON 对象**（不要分析文字、不要 markdown 围栏），形如：',
-    '{"actionable":[{"chapter":N,"issue_type":"...","detail":"...","fix_instruction":"..."}],"summary":"整卷连贯性简评"}',
+    '{"actionable":[{"chapters":[5,9],"issue_type":"...","detail":"...","fix_instruction":"ch5改X/ch9改Y..."}],"summary":"整卷连贯性简评"}',
   ].join('\n')
 }
 
 function semanticFixPrompt(f, project) {
+  const targets = (Array.isArray(f.chapters) && f.chapters.length ? f.chapters : [f.chapter]).join('/')
   return [
-    '# Edit 子代理 — 卷级语义修复（Opus）',
-    `先读该章当前段落（只读，含 para_id）：cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${f.chapter}`,
+    '# Edit 子代理 — 卷级语义修复（Opus，可跨章）',
+    `目标章节：ch${targets}。对每个目标章先读当前段落（只读，含 para_id）：`,
+    `cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter <N>`,
     '',
     `修复指令：${f.fix_instruction}`,
     `问题：${f.issue_type || '?'} — ${f.detail || ''}`,
     '',
-    '做最小改动，只动相关段落。',
-    '**最终返回值必须严格是一个 JSON ops 数组**（不要正文、不要解释、不要思考过程、不要 markdown 围栏）：',
-    '  [{"op":"update","para_id":N,"text":"新文本"}, {"op":"delete","para_id":N}, {"op":"insert","after_seq":N,"text":"..."}]',
-    'op 类型：update(改文本) / delete(删段) / insert(after_seq 后插)。需改多处用多个 op。只返回数组本身。',
+    '**做最小改动**（单章 ops 尽量 ≤8；优先 update，慎用 delete）。跨章问题按章分组给 ops。',
+    '**硬约束（违反会被 L2 拒，整章 escalate）：**',
+    '  · 不得删光某 beat 的全部段落；不得把某章 pov 角色名的所有出现删没（至少保留一处）。',
+    '  · 改完对每个目标章自检：主要角色名仍在、无 beat 被掏空。',
+    '',
+    '**最终返回值必须严格是一个 JSON 数组**（不要正文/解释/思考过程/围栏），按章分组：',
+    '  [{"chapter":5,"ops":[{"op":"update","para_id":N,"text":"…"},{"op":"delete","para_id":N}]},',
+    '   {"chapter":9,"ops":[…]}]',
+    'op 类型：update(改文本) / delete(删段) / insert(after_seq 后插)。只返回该数组本身。',
   ].join('\n')
 }
 
@@ -357,10 +374,17 @@ function parseRecheck(raw) {
   if (!arr) return []
   try { const v = JSON.parse(arr); return Array.isArray(v) ? v : [] } catch { return [] }
 }
-// 解析 Fix agent 的 ops JSON；非数组/解析失败 → null（→ escalate，章节不动）。
-function parseOps(raw) {
+// 解析 Fix agent 的跨章分组 ops：[{chapter, ops}]；非法/解析失败 → null（→ escalate，章节不动）。
+function parseMultiOps(raw) {
   const arr = _extractFirstJson(raw, '[', ']')
   if (!arr) return null
-  try { const v = JSON.parse(arr); return Array.isArray(v) ? v : null } catch { return null }
+  try {
+    const v = JSON.parse(arr)
+    if (!Array.isArray(v)) return null
+    const groups = v
+      .filter(g => g && Array.isArray(g.ops) && g.ops.length && g.chapter != null)
+      .map(g => ({ chapter: Number(g.chapter), ops: g.ops }))
+    return groups.length ? groups : null
+  } catch { return null }
 }
 

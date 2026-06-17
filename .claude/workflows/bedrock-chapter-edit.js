@@ -190,6 +190,9 @@ function rewritePrompt(ctx, project, chapter, instruction) {
   const prev = ctx.prev_chapter_tail
     ? [`【上一章收尾】（重写后本章开篇须自然承接，禁止复述）：${ctx.prev_chapter_tail}`, '']
     : []
+  const canon = (ctx.characters && ctx.characters.length)
+    ? [`【角色正典·严格遵守】代词/性别/称呼按下表不得擅改：` + JSON.stringify(ctx.characters.map(c => ({ name: c.name, pronoun: c.pronoun, gender: c.gender, role: c.role })))]
+    : []
   const multi = (ctx.beat_contracts && ctx.beat_contracts.length > 1)
     ? [`【多 beat 章，共 ${ctx.beat_contracts.length} beat】每个 beat 内容块前单独起一行 @@beat:<beat_id>@@（按契约顺序，标记行单独成段），让系统正确归属段落。`]
     : []
@@ -199,6 +202,7 @@ function rewritePrompt(ctx, project, chapter, instruction) {
     '把返回 JSON 里每段的 text 按原顺序拼成当前正文。',
     '',
     ...prev,
+    ...canon,
     ...multi,
     '按下面【重写指令】改写整章，保持 beat 契约与 pov，3000–5000 字，不自报字数。',
     `重写指令：${instruction || '（未给出具体指令，做一次整体打磨重写）'}`,

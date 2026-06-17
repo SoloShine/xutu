@@ -1,10 +1,11 @@
 # src/bedrock/orchestration/boot_context.py
-"""装配子代理启动上下文：beat 契约 + reader-disclosed secrets + StyleTemplate 指纹 + constants。
+"""装配子代理启动上下文：beat 契约 + reader-disclosed secrets + 角色正典 + StyleTemplate 指纹 + constants。
 
 visibility 边界：只注入 reader_disclosure/public（读者此刻已知）。**有意不注入
 character_epistemic 轴**——ChapterWriter 负责叙述，不该拿"某角色私下知道什么"的原始秘密，
 那属于未来 POV 接地检查的消费方。POV 感知注入（按本章 POV 角色过滤 character_epistemic）
 留待该检查落地时再加。"""
+import json
 from src.bedrock.repositories.plot_tree import list_beats_in_chapter, list_paragraphs_in_chapter
 from src.bedrock.repositories.outline import get_beat_contract
 from src.bedrock.style.template_repo import get_effective_fingerprint
@@ -20,6 +21,24 @@ def _reader_disclosed_secrets(conn):
         "SELECT character_id, key, value FROM character_secret "
         "WHERE vis_axis='reader_disclosure' AND vis_mode='public'").fetchall()
     return [dict(r) for r in rows]
+
+
+def _character_canon(conn):
+    """角色正典（name/aliases/pronoun/gender/role/personality）——ChapterWriter 据此写一致代词/性别/称呼。
+    修 drift：原 boot-context 不注入角色表，writer 无参照，秦禾性别当场飘。现接上库里的正典。"""
+    rows = conn.execute(
+        "SELECT name, aliases, pronoun, gender, role, personality FROM character "
+        "ORDER BY (role='protagonist') DESC, id").fetchall()
+    out = []
+    for r in rows:
+        try:
+            aliases = json.loads(r["aliases"]) if r["aliases"] else []
+        except (ValueError, TypeError):
+            aliases = []
+        out.append({"name": r["name"], "aliases": aliases,
+                    "pronoun": r["pronoun"], "gender": r["gender"],
+                    "role": r["role"], "personality": r["personality"]})
+    return out
 
 
 def _prev_chapter_tail(conn, chapter_id, target_chars=400, hard_max=600):
@@ -73,6 +92,7 @@ def get_chapter_boot_context(conn, chapter_id, volume_id):
     return {
         "beat_contracts": beat_contracts,
         "reader_disclosed_secrets": _reader_disclosed_secrets(conn),
+        "characters": _character_canon(conn),
         "fingerprint": fingerprint,
         "constants": constants,
         "prev_chapter_tail": _prev_chapter_tail(conn, chapter_id),

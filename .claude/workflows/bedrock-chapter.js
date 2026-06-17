@@ -1,11 +1,12 @@
 export const meta = {
   name: 'bedrock-chapter',
-  description: '磐石 V3 单章抗博弈管线（沙箱精简版）：Boot→Write→commit+L2→Repair(≤3轮)→Polish(指纹门控)→Finalize',
+  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Repair(≤3轮)→Polish(指纹门控)→Consistency(角色正典)→Finalize',
   phases: [
     { title: 'Boot' },
     { title: 'Write' },
     { title: 'L2+Repair' },
     { title: 'Polish' },
+    { title: 'Consistency' },
     { title: 'Persist+Telemetry' },
   ],
 }
@@ -74,6 +75,29 @@ if (report.passed_hard_gate && ctx.fingerprint) {
   log('polish skipped (no fingerprint or L2 not passed)')
 }
 
+// 4b. Consistency：角色正典一致性编辑（复刻 V1 EditAgent，每章跑）。
+// 对刚写章节查代词/性别/称呼/设定一致性 → surgical ops 修 → 重 L2。ops-based：吐叙述→解析失败→跳过，不毁章。
+phase('Consistency')
+if (report.passed_hard_gate && ctx.characters && ctx.characters.length) {
+  const opsRaw = stripFences(await agent(consistencyPrompt(ctx, project, chapter),
+    { label: 'Edit-consistency', phase: 'Consistency' }))
+  const ops = parseOpsList(opsRaw)
+  if (ops && ops.length) {
+    const after = await applyOpsAndL2(project, chapter, ops, 'consistency')
+    _trackDrift(after)
+    if (!after.passed_hard_gate) {
+      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Consistency' })
+      log(`consistency broke beat (${ops.length} ops) → flagged`)
+      report = after
+    } else {
+      log(`consistency: ${ops.length} ops applied (代词/设定一致)`)
+      report = after
+    }
+  } else {
+    log('consistency: 无需改动')
+  }
+}
+
 // 5. Finalize：verify-persisted + collect-runtime + mark-advisory-drift 一 relay 收尾
 phase('Persist+Telemetry')
 const persisted = await finalize(project, chapter, exportPath, round, worstDrift)
@@ -107,6 +131,59 @@ async function commitAndL2(project, chapter, prose, label) {
   const raw = stripFences(await agent(prompt, { label: `commit+l2:${label}`, phase: 'L2+Repair' }))
   if (raw.startsWith('ERROR:')) throw new Error(`commitAndL2(${label}) 失败: ${raw}`)
   try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [], _raw: raw } }
+}
+
+// 单 agent：edit-paragraphs(ops) + run-l2，回传 run-l2 原文（一致性编辑用；verdict 不经编辑 agent）。
+async function applyOpsAndL2(project, chapter, ops, label) {
+  const opsJson = JSON.stringify(ops)
+  const prompt = [
+    `你在项目根目录。按序执行两条命令，把【第二条 run-l2 的 stdout 原文】逐字返回（一段 JSON，无围栏/解释）。`,
+    `若非 0 退出返回 ERROR:<which>:<stderr 首行>。`,
+    ``,
+    `cd "${CWD}" && python -m src.bedrock edit-paragraphs --project ${project} --chapter ${chapter} <<'__STDIN__'`,
+    opsJson,
+    `__STDIN__`,
+    `cd "${CWD}" && python -m src.bedrock run-l2 --project ${project} --chapter ${chapter}`,
+  ].join('\n')
+  const raw = stripFences(await agent(prompt, { label: `editops+l2:${label}`, phase: 'Consistency' }))
+  if (raw.startsWith('ERROR:')) throw new Error(`applyOpsAndL2(${label}) 失败: ${raw}`)
+  try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [] } }
+}
+
+// 解析一致性 agent 的 ops JSON 数组；非数组/解析失败 → null（→ 跳过，章节不动）。
+function parseOpsList(raw) {
+  const t = raw.trim()
+  const i = t.indexOf('[')
+  if (i < 0) return null
+  let depth = 0, inStr = false, esc = false
+  for (let j = i; j < t.length; j++) {
+    const c = t[j]
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue }
+    if (c === '"') inStr = true
+    else if (c === '[') depth++
+    else if (c === ']') { depth--; if (depth === 0) { try { const v = JSON.parse(t.slice(i, j + 1)); return Array.isArray(v) ? v : null } catch { return null } } }
+  }
+  return null
+}
+
+// 一致性编辑 prompt：读当前章 + 角色正典，查代词/性别/称呼/设定一致性，返 ops 修。
+function consistencyPrompt(ctx, project, chapter) {
+  const canon = ctx.characters.map(c => `${c.name}(代词${c.pronoun}${c.gender ? '/' + c.gender : ''},${c.role})`).join('； ')
+  return [
+    '# Edit 子代理 — 角色正典一致性检查（每章跑，复刻 V1 EditAgent）',
+    `先读本章当前段落（只读，含 para_id）：cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${chapter}`,
+    '',
+    `【角色正典·判据】${canon}`,
+    '逐段检查并修正：',
+    '  · 代词/性别：每个角色的他/她必须匹配正典（注意代词消解——"他"靠近某角色未必指该角色，要判指代）。',
+    '  · 称呼/身份一致：角色头衔、职业、关系不得前后矛盾。',
+    '  · 设定矛盾：与角色 personality/role 冲突的描写。',
+    '**只改不一致处，不动其余。**代词消解要准（别把指代陆沉的"他"误改成"她"）。',
+    '',
+    '**返回一个 JSON ops 数组**（不要正文/解释/思考过程/围栏）：',
+    '  [{"op":"update","para_id":N,"text":"修正后整段"}, {"op":"delete","para_id":N}]',
+    '无不一致则返回 []。单段多处错用多个 update op。只返回数组本身。',
+  ].join('\n')
 }
 
 // 单 agent：verify-persisted(判决) + collect-runtime(遥测) + mark-advisory-drift(若有)。
@@ -156,6 +233,10 @@ function chapterWriterPrompt(ctx) {
     ? ['【上一章收尾】（本章开篇须自然承接其画面/语气/悬念，禁止复述原文）：',
        ctx.prev_chapter_tail, '']
     : ['（本章为开篇，无前章。）', '']
+  const canon = (ctx.characters && ctx.characters.length)
+    ? [`【角色正典·必须严格遵守】代词/性别/称呼/性格按下表，不得擅改（如 ${ctx.characters[0].name}=${ctx.characters[0].pronoun}）：`,
+       JSON.stringify(ctx.characters.map(c => ({ name: c.name, pronoun: c.pronoun, gender: c.gender, role: c.role, personality: c.personality })), null, 2), '']
+    : []
   const multi = (ctx.beat_contracts && ctx.beat_contracts.length > 1)
     ? [`【多 beat 章，共 ${ctx.beat_contracts.length} 个 beat】每个 beat 的内容块**前面**单独起一行写标记 @@beat:<beat_id>@@（beat_id 见各 beat 契约），按契约顺序。这样系统才能把段落正确归属到对应 beat。标记行单独成段（前后空行），不要混入正文。`,
        'beat 契约(注意每个的 beat_id)：' + JSON.stringify(ctx.beat_contracts, null, 2), '']
@@ -165,6 +246,7 @@ function chapterWriterPrompt(ctx) {
     'boot context:', JSON.stringify(ctx, null, 2),
     '',
     ...prev,
+    ...canon,
     ...multi,
     '按 beat_contracts 写整章正文：视角符合 pov，推进本章 beat 的叙事目的，3000–5000 字。',
     '不自报字数（系统重查）。不写标题行。不包裹 markdown 围栏。',

@@ -308,9 +308,13 @@ def _write_review_report(report_path, volume, payload):
     lines.append("## 旗章发现（actionable）")
     if isinstance(actionable, list) and actionable:
         for f in actionable:
-            ch = f.get("chapter") if isinstance(f, dict) else "?"
-            fi = f.get("fix_instruction", "") if isinstance(f, dict) else str(f)
-            ia = f.get("is_actionable", "") if isinstance(f, dict) else ""
+            if isinstance(f, dict):
+                chs = f.get("chapters")
+                ch = ",".join(str(c) for c in chs) if isinstance(chs, list) and chs else f.get("chapter", "?")
+                fi = f.get("fix_instruction", "")
+                ia = f.get("is_actionable", "")
+            else:
+                ch, fi, ia = "?", str(f), ""
             lines.append(f"- ch{ch} [is_actionable={ia}]: {fi}")
     elif isinstance(actionable, dict) and actionable:
         for ch, f in actionable.items():
