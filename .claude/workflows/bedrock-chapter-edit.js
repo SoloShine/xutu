@@ -148,24 +148,33 @@ async function l2Only(project, chapter) {
 
 async function finalize(project, chapter, exportPath, round, drift) {
   const exportArg = exportPath ? ` --export-path ${exportPath}` : ''
+  // verify 判决=独立单命令 relay（信任锚），不与遥测混跑（多命令序列 agent 偶发误判 forced_persist_failed）
+  const verifyOut = stripFences(await pythonCli(
+    `verify-persisted --project ${project} --chapter ${chapter}${exportArg}`,
+    { phase: 'Finalize' }))
+  await telemetryRelay(project, chapter, round, drift)
+  return verifyOut.trim() === 'True'
+}
+
+async function telemetryRelay(project, chapter, round, drift) {
   const runtimeStdin = JSON.stringify({ invocations: [], llm_calls: [] })
   const driftBlock = (drift && Object.keys(drift).length)
     ? `\ncd "${CWD}" && python -m src.bedrock mark-advisory-drift --project ${project} --chapter ${chapter} <<'__STDIN__'\n${JSON.stringify(drift)}\n__STDIN__`
     : ''
   const prompt = [
-    `你在项目根目录。按序执行命令序列，只把【第一条 verify-persisted 的 stdout（True/False）】返回。`,
-    `其余命令必须执行但输出忽略。无围栏/解释。非 0 退出返回 ERROR:<which>:<stderr 首行>。`,
+    `你在项目根目录。按顺序执行下面的命令（遥测 + first_review 备份，全部执行即可），最后返回单行 "done"。`,
+    `若某条非 0 退出仍继续其余，最后返回 ERROR:<which>:<stderr 首行>。`,
     ``,
-    `cd "${CWD}" && python -m src.bedrock verify-persisted --project ${project} --chapter ${chapter}${exportArg}`,
     `cd "${CWD}" && python -m src.bedrock collect-runtime --project ${project} --chapter ${chapter} --editing-rounds ${round} <<'__STDIN__'`,
     runtimeStdin,
     `__STDIN__`,
     `cd "${CWD}" && python -m src.bedrock export-chapter-json --project ${project} --chapter ${chapter} --stage first_review`,
     driftBlock.trim(),
   ].join('\n')
-  const raw = stripFences(await agent(prompt, { label: 'finalize', phase: 'Finalize' }))
-  if (raw.startsWith('ERROR:')) throw new Error(`finalize 失败: ${raw}`)
-  return raw.trim() === 'True'
+  try {
+    const raw = stripFences(await agent(prompt, { label: 'telemetry', phase: 'Finalize' }))
+    if (String(raw).startsWith('ERROR:')) log(`telemetry 部分失败（不阻塞）: ${raw}`)
+  } catch (e) { log(`telemetry relay 异常（不阻塞）: ${e.message}`) }
 }
 
 async function pythonCli(cmdStr, opts = {}) {

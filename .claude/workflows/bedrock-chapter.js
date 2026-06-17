@@ -186,28 +186,39 @@ function consistencyPrompt(ctx, project, chapter) {
   ].join('\n')
 }
 
-// 单 agent：verify-persisted(判决) + collect-runtime(遥测) + mark-advisory-drift(若有)。
-// 回传 verify-persisted 的 True/False。
+// finalize：verify 判决由【独立单命令 relay】跑（信任锚），遥测/备份另起 relay。
+// 旧版一条 relay 跑 4 命令序列却只回首条 stdout("True")——agent 不可靠地隔离首条输出，
+// 偶尔把 "True" 与遥测输出混在一起→误判 forced_persist_failed（voidwright ch1 中招，
+// 实际内容已落盘 L2 过）。单命令 relay 可靠回传 stdout；遥测失败不阻塞判决。
 async function finalize(project, chapter, exportPath, round, drift) {
   const exportArg = exportPath ? ` --export-path ${exportPath}` : ''
+  const verifyOut = stripFences(await pythonCli(
+    `verify-persisted --project ${project} --chapter ${chapter}${exportArg}`,
+    { phase: 'Persist+Telemetry' }))
+  await telemetryRelay(project, chapter, round, drift)
+  return verifyOut.trim() === 'True'
+}
+
+// 遥测 + 备份（collect-runtime / draft JSON / advisory drift）。返回值忽略，失败不阻塞 verify 判决。
+async function telemetryRelay(project, chapter, round, drift) {
   const runtimeStdin = JSON.stringify({ invocations: [], llm_calls: [] })
   const driftBlock = (drift && Object.keys(drift).length)
     ? `\ncd "${CWD}" && python -m src.bedrock mark-advisory-drift --project ${project} --chapter ${chapter} <<'__STDIN__'\n${JSON.stringify(drift)}\n__STDIN__`
     : ''
   const prompt = [
-    `你在项目根目录。按顺序执行下面的命令序列，只把【第一条命令 verify-persisted 的 stdout（True 或 False）】作为最终返回值。`,
-    `其余命令必须执行但输出忽略。不要解释、不要围栏。若非 0 退出返回 ERROR:<which>:<stderr 首行>。`,
+    `你在项目根目录。按顺序执行下面的命令（遥测采集 + 备份，全部执行即可），最后返回单行 "done"。`,
+    `若某条非 0 退出仍继续其余，最后返回 ERROR:<which>:<stderr 首行>。`,
     ``,
-    `cd "${CWD}" && python -m src.bedrock verify-persisted --project ${project} --chapter ${chapter}${exportArg}`,
     `cd "${CWD}" && python -m src.bedrock collect-runtime --project ${project} --chapter ${chapter} --editing-rounds ${round} <<'__STDIN__'`,
     runtimeStdin,
     `__STDIN__`,
     `cd "${CWD}" && python -m src.bedrock export-chapter-json --project ${project} --chapter ${chapter} --stage draft`,
     driftBlock.trim(),
   ].join('\n')
-  const raw = stripFences(await agent(prompt, { label: 'finalize', phase: 'Persist+Telemetry' }))
-  if (raw.startsWith('ERROR:')) throw new Error(`finalize 失败: ${raw}`)
-  return raw.trim() === 'True'
+  try {
+    const raw = stripFences(await agent(prompt, { label: 'telemetry', phase: 'Persist+Telemetry' }))
+    if (String(raw).startsWith('ERROR:')) log(`telemetry 部分失败（不阻塞）: ${raw}`)
+  } catch (e) { log(`telemetry relay 异常（不阻塞）: ${e.message}`) }
 }
 
 // 通用单命令 relay（仅 Boot 与失败路径 mark-* 用）

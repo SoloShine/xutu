@@ -57,11 +57,12 @@ _SEP_ONLY = re.compile(r"^[\s—–\-_=*~·•#※　]+$")
 
 
 def _is_lead_junk(text):
-    """开头应剥除的垃圾段：agent 自述前置语 / 纯分隔符段 / 管线术语回显。"""
+    """开头应剥除的垃圾段：agent 自述前置语 / 纯分隔符段 / 管线术语回显 / 修复过程叙述。"""
     t = text.strip()
     if not t:
         return True
-    return _is_meta_preamble(t) or bool(_SEP_ONLY.match(t)) or _is_pipeline_echo(t)
+    return (_is_meta_preamble(t) or bool(_SEP_ONLY.match(t))
+            or _is_pipeline_echo(t) or _is_repair_narration(t))
 
 
 # 管线术语（提示词/boot context/pov/节拍N/契约…）——agent 偶尔把 boot context 或 beat 摘要
@@ -74,6 +75,22 @@ def _is_pipeline_echo(text):
     """开头短段是否像管线术语回显（boot context / beat 摘要等），非小说正文。"""
     t = text.strip()
     return len(t) <= 90 and bool(_PIPELINE_ECHO.search(t))
+
+
+# agent 修复过程叙述（repair 轮的思考过程被当正文吐在开头）——
+# "我需要修复 beat2 的违规：…"/"我将在 beat 2 相关段落加入陆衡的出场,保持其余原文不变"。
+# 比 ChapterWriter 前置语更长(~100字)、词汇不同(修复/加入/保持原文),_META_PREAMBLE 漏判。
+# 单独识别,放宽长度(≤220);只剥开头连续段,不拒整章。
+_REPAIR_NARRATION = re.compile(
+    r"^\s*我(需要|要|将|会|来)[^。\n]{0,45}?"
+    r"(修复|加入|补上?|删[除去]?|改写?|重写|调整|判断(哪部分|属于)|保持(其余|原文)|出场|归属)"
+)
+
+
+def _is_repair_narration(text):
+    """开头段是否像 repair agent 的过程叙述（非小说正文）。"""
+    t = text.strip()
+    return len(t) <= 220 and bool(_REPAIR_NARRATION.search(t))
 
 
 # agent 工作日志特征词（修复汇报/操作记录/管线术语）——这类内容绝不该当正文入库。
