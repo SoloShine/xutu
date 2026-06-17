@@ -46,3 +46,7 @@ graphify-out/cache/
 frontend/node_modules/
 frontend/dist/
 src/bedrock/web/static/*
+
+# 工作流 stderr 捕获空文件
+err*.txt
+err_*.txt
