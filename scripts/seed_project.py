@@ -8,7 +8,8 @@ world_setup.json schema(由 novel-creation-wizard 生成):
   "title": str, "premise": str,
   "volumes": [{"number":1,"name":"卷名","chapter_start":1,"chapter_end":6,"volume_type":"opening"}],
   "chapters": [{"global_number":1,"volume":1,"title":"章标题","beats":[{"seq":1,"purpose":"...","pov":"角色名"}]}],
-  "characters": [{"name":"..","pronoun":"他/她","role":"protagonist|supporting|antagonist","personality":".."}],
+  "characters": [{"name":"..","pronoun":"他/她","role":"protagonist|supporting|antagonist","personality":"..",
+                  "secrets":[{"key":"true_identity","value":"..","reveal_at":11}]}],  # reveal_at=揭示章号(缺省=公开)
   "locations": [{"name":"..","loc_type":"..","description":".."}],
   "themes": [{"name":"..","description":"..","evolution":".."}],
   "motifs": [{"name":"..","meaning":"..","evolution":".."}],
@@ -29,7 +30,7 @@ from src.bedrock.db.connection import get_connection
 from src.bedrock.repositories.plot_tree import (
     create_volume, create_chapter, create_beat,
 )
-from src.bedrock.repositories.character import create_character
+from src.bedrock.repositories.character import create_character, add_secret
 from src.bedrock.repositories.worldbook import (
     add_constant, add_location, add_theme, add_motif, add_time_period,
 )
@@ -54,6 +55,19 @@ def main():
                                    role=c.get("role", "supporting"),
                                    personality=c.get("personality", ""))
             char_id[c["name"]] = cid
+            # 角色秘密/揭示弧（reader_disclosure 轴）：减少 writer 临场发挥。
+            # reveal_at=揭示章号 → secret_until（到该章才解封给 writer）；缺省/0 → public（恒知）。
+            for s in c.get("secrets", []):
+                reveal_at = s.get("reveal_at")
+                if reveal_at:
+                    add_secret(conn, cid, s["key"], s["value"],
+                               vis_mode="secret_until",
+                               vis_ref={"reveal_chapter": reveal_at},
+                               vis_axis="reader_disclosure")
+                else:
+                    add_secret(conn, cid, s["key"], s["value"],
+                               vis_mode="public", vis_ref={},
+                               vis_axis="reader_disclosure")
 
         # 卷
         vol_id = {}

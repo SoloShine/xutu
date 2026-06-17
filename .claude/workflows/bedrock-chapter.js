@@ -241,12 +241,17 @@ function chapterWriterPrompt(ctx) {
     ? [`【多 beat 章，共 ${ctx.beat_contracts.length} 个 beat】每个 beat 的内容块**前面**单独起一行写标记 @@beat:<beat_id>@@（beat_id 见各 beat 契约），按契约顺序。这样系统才能把段落正确归属到对应 beat。标记行单独成段（前后空行），不要混入正文。`,
        'beat 契约(注意每个的 beat_id)：' + JSON.stringify(ctx.beat_contracts, null, 2), '']
     : []
+  const secrets = (ctx.reader_disclosed_secrets && ctx.reader_disclosed_secrets.length)
+    ? [`【读者此刻(本章时点)已知的信息——只能用这些，不得越界】` + JSON.stringify(ctx.reader_disclosed_secrets, null, 2),
+       '上面含到本章才解封的揭示(若有)。揭示章可写明已解封的真相；但**未在列表里的角色隐藏身世/动机/来历——一律不得临场编造**(这是结构性防跨章矛盾的硬约束：种子没编码的揭示，writer 凭空编了必和他章冲突)。', '']
+    : []
   return [
     '# ChapterWriter 子代理（磐石 V3）',
     'boot context:', JSON.stringify(ctx, null, 2),
     '',
     ...prev,
     ...canon,
+    ...secrets,
     ...multi,
     '按 beat_contracts 写整章正文：视角符合 pov，推进本章 beat 的叙事目的，3000–5000 字。',
     '不自报字数（系统重查）。不写标题行。不包裹 markdown 围栏。',

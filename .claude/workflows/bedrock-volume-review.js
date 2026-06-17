@@ -82,43 +82,57 @@ const findings = parseFindings(reviewRaw)
 const actionable = (findings && findings.actionable) || []
 log(`review: ${actionable.length} actionable findings (of ${chapters.length} chapters, ${flagged.length} flagged)`)
 
-// ===== 3. Fix：对 actionable findings 派 Edit(Opus) → 跨章 ops(edit-paragraphs) =====
-// finding.chapters 可多章；agent 返 [{chapter, ops}] 分组。吐叙述→解析失败→escalate，章节不动。
+// ===== 3. Fix：逐章派独立 Edit(Opus) → 单章 ops(edit-paragraphs) =====
+// 抗"消极处理"：finding.chapters 多章时，【每章一个独立 Fix agent】，单章消极/解析失败
+// 不连累同 finding 的兄弟章（旧版一次调用全章，ch6 改了 ch8 被丢）。
+// 守铁律8——每章仍是 ≤1 轮实质修复；这是"完成 finding 的全部目标章"，非重试。
 phase('Fix')
 const edited = []
 const fixFailed = []
+const noChange = []          // 合法空 ops（本章经判定无需改）——非 escalate，与解析失败严格区分
+const chapterFindings = {}   // 章 → 当初被点名的问题上下文（供 Reverify 判据）
 const fixList = VR_FIX_ROUNDS ? actionable : []
 for (const f of fixList) {
   const targets = (Array.isArray(f.chapters) && f.chapters.length
     ? f.chapters : (f.chapter != null ? [f.chapter] : [])).map(Number)
   if (!targets.length) { continue }
-  try {
-    const opsRaw = stripFences(await agent(semanticFixPrompt(f, project),
-      { label: `Edit-fix-ch${targets.join(',')}`, phase: 'Fix', model: 'opus' }))
-    const groups = parseMultiOps(opsRaw)
-    if (!groups || !groups.length) {
-      targets.forEach(c => fixFailed.push(c))
-      log(`fix ch${targets.join(',')}: 未返回有效分组 ops（可能吐了叙述）→ escalate，章节不动`)
-      continue
-    }
-    const touched = []
-    for (const g of groups) {
-      await applyOpsAndL2(project, g.chapter, g.ops, `volfix-ch${g.chapter}`)
-      touched.push(g.chapter)
-    }
-    touched.forEach(c => edited.push(c))
-    const opCount = groups.reduce((s, g) => s + g.ops.length, 0)
-    log(`fix ch${targets.join(',')}: 改 ${[...new Set(touched)].join(',')} 章 / ${opCount} ops`)
-  } catch (e) {
-    targets.forEach(c => fixFailed.push(c))
-    log(`fix ch${targets.join(',')} FAILED: ${e.message} → escalate，章节不动`)
+  for (const ch of targets) {
+    if (!chapterFindings[ch]) chapterFindings[ch] = []
+    chapterFindings[ch].push({ issue_type: f.issue_type, detail: f.detail, fix_instruction: f.fix_instruction })
   }
+  for (const ch of targets) {
+    try {
+      const opsRaw = stripFences(await agent(fixSinglePrompt(f, ch, project),
+        { label: `Edit-fix-ch${ch}`, phase: 'Fix', model: 'opus' }))
+      const ops = parseOpsList(opsRaw)
+      if (ops === null) {                 // 解析失败/吐叙述 → 真 escalate，章节不动
+        fixFailed.push(ch)
+        log(`fix ch${ch}: 解析失败（吐叙述）→ escalate，章节不动`)
+        continue
+      }
+      if (!ops.length) {                  // 合法空数组 = 本章经判定无需改（如跨章 finding 的上下文章）
+        noChange.push(ch)
+        log(`fix ch${ch}: 判定无需改动（空 ops），不 escalate`)
+        continue
+      }
+      await applyOpsAndL2(project, ch, ops, `volfix-ch${ch}`)
+      edited.push(ch)
+      log(`fix ch${ch}: ${ops.length} ops applied`)
+    } catch (e) {
+      fixFailed.push(ch)
+      log(`fix ch${ch} FAILED: ${e.message} → escalate，章节不动`)
+    }
+  }
+  const done = targets.filter(c => edited.includes(c))
+  if (done.length < targets.length)
+    log(`finding ch${targets.join(',')}: 实改 ${done.length}/${targets.length}（余 escalate 或无需改）`)
 }
 
 // ===== 4. Reverify：L2 重跑（不得破坏 beat）+ Opus 二次复查 =====
 phase('Reverify')
 const outcomes = {}
 for (const ch of fixFailed) outcomes[ch] = 'escalate_human'
+for (const ch of noChange) outcomes[ch] = 'no_change_needed'
 
 let l2results = {}
 if (edited.length > 0) {
@@ -134,7 +148,7 @@ if (edited.length > 0) {
 }
 const toRecheck = edited.filter(ch => outcomes[ch] !== 'escalate_human')
 if (toRecheck.length > 0) {
-  const recheckRaw = stripFences(await agent(recheckPrompt(project, toRecheck),
+  const recheckRaw = stripFences(await agent(recheckPrompt(project, toRecheck, chapterFindings),
     { label: 'VolumeReview-recheck', phase: 'Reverify', model: 'opus' }))
   const verdicts = {}
   for (const r of parseRecheck(recheckRaw)) verdicts[r.chapter] = r.verdict
@@ -305,40 +319,51 @@ function volumeReviewPrompt(project, volume, chapters, flagged, watchdog, debt) 
   ].join('\n')
 }
 
-function semanticFixPrompt(f, project) {
-  const targets = (Array.isArray(f.chapters) && f.chapters.length ? f.chapters : [f.chapter]).join('/')
+function fixSinglePrompt(f, ch, project) {
   return [
-    '# Edit 子代理 — 卷级语义修复（Opus，可跨章）',
-    `目标章节：ch${targets}。对每个目标章先读当前段落（只读，含 para_id）：`,
-    `cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter <N>`,
+    '# Edit 子代理 — 卷级语义修复（单章，Opus）',
+    `目标章：ch${ch}。先读当前段落（只读，含 para_id）：`,
+    `cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${ch}`,
     '',
     `修复指令：${f.fix_instruction}`,
     `问题：${f.issue_type || '?'} — ${f.detail || ''}`,
     '',
-    '**做最小改动**（单章 ops 尽量 ≤8；优先 update，慎用 delete）。跨章问题按章分组给 ops。',
+    `**只针对 ch${ch} 做最小改动**（ops 尽量 ≤8；优先 update，慎用 delete）。`,
     '**硬约束（违反会被 L2 拒，整章 escalate）：**',
-    '  · 不得删光某 beat 的全部段落；不得把某章 pov 角色名的所有出现删没（至少保留一处）。',
-    '  · 改完对每个目标章自检：主要角色名仍在、无 beat 被掏空。',
+    '  · 不得删光某 beat 的全部段落；不得把 pov 角色名的所有出现删没（至少保留一处）。',
+    '  · 改完自检：主要角色名仍在、无 beat 被掏空。',
+    `  · 若该 finding 对 ch${ch} 确实无需改动（例如本章只是上下文章、或本就正确），返回 [] 并不改任何段。`,
     '',
-    '**最终返回值必须严格是一个 JSON 数组**（不要正文/解释/思考过程/围栏），按章分组：',
-    '  [{"chapter":5,"ops":[{"op":"update","para_id":N,"text":"…"},{"op":"delete","para_id":N}]},',
-    '   {"chapter":9,"ops":[…]}]',
-    'op 类型：update(改文本) / delete(删段) / insert(after_seq 后插)。只返回该数组本身。',
+    '**最终返回值必须严格是一个 JSON ops 数组**（不要正文/解释/思考过程/围栏）：',
+    '  [{"op":"update","para_id":N,"text":"…"},{"op":"delete","para_id":N},{"op":"insert","after_seq":N,"text":"…"}]',
+    'op：update(改文本) / delete(删段) / insert(after_seq 后插，0=章首)。只返回该数组本身。',
   ].join('\n')
 }
 
-function recheckPrompt(project, chapters) {
-  return [
+function recheckPrompt(project, chapters, chapterFindings) {
+  const lines = [
     '# VolumeReview 第二遍复查（Opus）',
-    `复查这些已修复的章是否真的解决了问题、且未引入新问题（L2 看不出语义回归，靠你判）。`,
+    `复查这些已修复的章是否真的解决了【当初指出的问题】、且未引入新问题（L2 看不出语义，靠你判）。`,
     `对每章执行只读：cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter <N>，通读。`,
-    `章列表：${JSON.stringify(chapters)}`,
     '',
-    '每章给一个 verdict：verified（问题已解决且无回归）/ regressed（引入新问题或更糟）/ unverified（无法判定）。',
+    '## 每章当初被点名的问题（这就是你的判据，逐条对照）',
+  ]
+  for (const ch of chapters) {
+    const fs = chapterFindings[ch] || []
+    const desc = fs.length
+      ? fs.map((f, i) => `(${i + 1})[${f.issue_type || '?'}] ${f.detail || ''} →修复指令:${f.fix_instruction || ''}`).join(' / ')
+      : '（无原始 finding 记录）'
+    lines.push(`- ch${ch}：${desc}`)
+  }
+  lines.push('',
+    '逐条对照上面判据判定。每章给一个 verdict：',
+    '  · verified：当初指出的问题确已解决，且无明显新问题',
+    '  · regressed：未解决，或引入新问题/更糟',
+    '  · unverified：信息不足（慎用，须在 reason 说明为何判不了）',
     '',
     '**最终返回值必须严格是一个 JSON 数组**（不要分析文字、不要围栏），形如：',
-    '[{"chapter":N,"verdict":"verified"}]',
-  ].join('\n')
+    '[{"chapter":N,"verdict":"verified","reason":"简述"}]')
+  return lines.join('\n')
 }
 
 function stripFences(s) {
@@ -374,17 +399,13 @@ function parseRecheck(raw) {
   if (!arr) return []
   try { const v = JSON.parse(arr); return Array.isArray(v) ? v : [] } catch { return [] }
 }
-// 解析 Fix agent 的跨章分组 ops：[{chapter, ops}]；非法/解析失败 → null（→ escalate，章节不动）。
-function parseMultiOps(raw) {
+// 解析 Fix agent 的单章 ops JSON 数组；非数组/解析失败 → null（→ escalate，章节不动）。
+function parseOpsList(raw) {
   const arr = _extractFirstJson(raw, '[', ']')
   if (!arr) return null
   try {
     const v = JSON.parse(arr)
-    if (!Array.isArray(v)) return null
-    const groups = v
-      .filter(g => g && Array.isArray(g.ops) && g.ops.length && g.chapter != null)
-      .map(g => ({ chapter: Number(g.chapter), ops: g.ops }))
-    return groups.length ? groups : null
+    return Array.isArray(v) ? v : null
   } catch { return null }
 }
 

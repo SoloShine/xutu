@@ -40,7 +40,11 @@ triggers:
      "beats": [{"seq": 1, "purpose": "本章核心场景与人物抉择", "pov": "主角名"}]}
   ],
   "characters": [
-    {"name": "人物名", "pronoun": "他", "role": "protagonist", "personality": "性格"}
+    {"name": "人物名", "pronoun": "他", "role": "protagonist", "personality": "性格",
+     "secrets": [
+       {"key": "public_face", "value": "读者早期所见的人设/身份", "reveal_at": null},
+       {"key": "true_identity", "value": "逐步揭示的真身/动机", "reveal_at": 9}
+     ]}
   ],
   "locations": [{"name": "地点", "loc_type": "city", "description": "描述"}],
   "themes": [{"name": "主题", "description": "描述", "evolution": "演变"}],
@@ -58,6 +62,7 @@ triggers:
 要求:
 - 每章至少 1 个 beat,带 `purpose`(本章叙事目的)与 `pov`(视角角色名,须在 characters 内)。
 - `volume_type` 取 `opening|development|climax|resolution`。
+- **角色揭示弧必须显式建模**(防 writer 临场发挥→跨章身世矛盾):凡有"公开身份≠真实身份"或动机/身世需逐步揭示的角色,写进该角色 `secrets[]`——`reveal_at` = 读者/作者得知真相的章号(揭示章前 writer 只见公开面,揭示章才解封真身)。`reveal_at` 缺省或 null = 一直公开。主角通常无 secrets(所见即所得);反派/神秘配角最常需要。**不要把揭示留给 writer 临场编——种子不编码,卷审就会把它当矛盾抓。**
 - 文风数值**不写进 setup**——由 V3 的 volume_type_matrix + style fingerprint 默认约束。
 
 ## Phase 3 — 种入 bedrock.db
