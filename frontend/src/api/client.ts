@@ -36,6 +36,7 @@ export const api = {
   styleActual: (w: string, v?: number) => req('GET', `/api/works/${w}/style/actual${v ? '?volume=' + v : ''}`),
   setStyle: (w: string, body: any) => req('POST', `/api/works/${w}/style`, body),
   importReference: (w: string, body: any) => req('POST', `/api/works/${w}/style/import-reference`, body),
+  previewReference: (w: string, text: string) => req('POST', `/api/works/${w}/style/preview-reference`, { text }),
   patch: (w: string, entity: string, id: number | string, body: any) =>
     req('PATCH', `/api/works/${w}/${entity}/${id}`, body),
   patchBeatContract: (w: string, vid: number, bid: number, body: any) =>

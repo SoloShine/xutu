@@ -24,6 +24,12 @@ const error = ref('')
 const importPath = ref('')
 const importing = ref(false)
 const rangeStart = ref<number|null>(null), rangeEnd = ref<number|null>(null)
+// 文件选择 + 预览
+const fileName = ref('')
+const fileText = ref('')
+const fileEnc = ref('UTF-8')
+const preview = ref<{chapter_count:number;chunked:boolean;sample_titles:string[];total_chars:number}|null>(null)
+const previewing = ref(false)
 
 // 编辑态
 const scope = ref<'work' | 'volume'>('work')
@@ -156,24 +162,48 @@ const DIMS = ['sentence_length', 'paragraph_length', 'period', 'dialogue', 'dial
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
 
 // 导入参考作品(本地 txt 路径,服务端纯程序提取)
+// 文件选择 → 读正文(按编码)→ 预览切章信息(总章数/切片/样章),不存
+function pickFile() { document.getElementById('style-file-input')?.click() }
+function onFilePick(ev: Event) {
+  const f = (ev.target as HTMLInputElement).files?.[0]
+  if (!f) return
+  fileName.value = f.name; fileText.value = ''; preview.value = null
+  const reader = new FileReader()
+  reader.onload = async () => {
+    fileText.value = String(reader.result || '')
+    previewing.value = true
+    try {
+      preview.value = await api.previewReference(props.wid, fileText.value) as any
+      const n = preview.value?.chapter_count || 0
+      if (n) { rangeStart.value = null; rangeEnd.value = null }
+    } catch (e:any) { msg.error('预览失败: '+(e.message||e)) }
+    finally { previewing.value = false }
+  }
+  reader.readAsText(f, fileEnc.value)
+}
+
+// 从已选文件提取(用 fileText;range 可选)
 async function importRef() {
-  if (!importPath.value.trim()) { msg.warning('填参考作品 txt 本地路径'); return }
+  const text = fileText.value
+  if (!text) { msg.warning('先选择参考作品 txt 文件'); return }
   importing.value = true
   try {
     const range = (rangeStart.value != null && rangeEnd.value != null)
       ? [rangeStart.value, rangeEnd.value] : undefined
     const r: any = await api.importReference(props.wid, {
-      path: importPath.value.trim(), scope: scope.value,
+      text, scope: scope.value, source_work: fileName.value,
       volume_id: scope.value === 'volume' ? volumeId.value : undefined,
       chapter_range: range,
     })
     if (r && r.ok !== false) {
       const it = r.item || r
-      msg.success(`已提取: ${it.chapter_count || '?'}章/抽样${it.sampled_chapters || '?'}${it.directive_seeded ? '(+派生指令)' : ''}`)
-      importPath.value = ''; rangeStart.value = null; rangeEnd.value = null
+      msg.success(`已提取: ${it.chapter_count||'?'}章/抽样${it.sampled_chapters||'?'}${it.directive_seeded?'+指令':''}`)
+      fileName.value=''; fileText.value=''; preview.value=null; rangeStart.value=null; rangeEnd.value=null
+      const inp = document.getElementById('style-file-input') as HTMLInputElement
+      if (inp) inp.value = ''
       await load()
-    } else { msg.error('导入失败: ' + ((r && r.error) || '未知')) }
-  } catch (e: any) { msg.error('导入失败: ' + (e.message || e)) }
+    } else { msg.error('导入失败: '+((r&&r.error)||'未知')) }
+  } catch (e:any) { msg.error('导入失败: '+(e.message||e)) }
   finally { importing.value = false }
 }
 function entries(fp: Fingerprint, key: string): [string, number][] {
@@ -223,17 +253,27 @@ function defOf(key: string) { return dimDefs.value[key] }
           </NAlert>
 
           <!-- 导入参考作品(纯程序提取,零LLM) -->
-          <div class="field-label">导入参考作品 → 提取指纹+派生指令(本地 txt 路径,瞬时)</div>
-          <NSpace :size="6" align="center" wrap style="margin-bottom:10px">
-            <NInput v-model:value="importPath" size="small" placeholder="D:/tmp/某作品.txt"
-              style="flex:1;min-width:280px" />
-            <span class="knob-label">章范围</span>
-            <NInputNumber v-model:value="rangeStart" :min="1" size="small" placeholder="起" style="width:80px" />
-            <span>~</span>
-            <NInputNumber v-model:value="rangeEnd" :min="1" size="small" placeholder="止" style="width:80px" />
-            <NButton size="small" :loading="importing" @click="importRef">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
+          <div class="field-label">导入参考作品 → 提取指纹+派生指令</div>
+          <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
+            <input id="style-file-input" type="file" accept=".txt,.text" style="display:none" @change="onFilePick" />
+            <NButton size="small" @click="pickFile">选择 txt 文件</NButton>
+            <NTag v-if="fileName" size="small" type="info" round>{{ fileName }}</NTag>
+            <span class="knob-label">编码</span>
+            <NSelect v-model:value="fileEnc" size="small" :options="[{label:'UTF-8',value:'UTF-8'},{label:'GBK',value:'GBK'},{label:'GB18030',value:'GB18030'}]" style="width:110px" />
           </NSpace>
-          <div class="field-label" style="opacity:.5;margin-top:-4px">章范围留空=中段动态抽样(跳首尾);前后文风不同时填范围只取代表段。非标准章名自动按字数切块。</div>
+          <!-- 预览:总章数/是否切片/样章 -->
+          <NAlert v-if="preview" :type="preview.chunked ? 'warning' : 'info'" :bordered="false" style="margin-bottom:8px">
+            <b>{{ preview.chapter_count }}</b> 章 · {{ preview.total_chars }} 字
+            <NTag v-if="preview.chunked" size="tiny" type="warning" round>非标准章名→按字数切片</NTag>
+            <div style="opacity:.7;font-size:12px;margin-top:2px">样章: {{ preview.sample_titles.join(' / ') }}</div>
+          </NAlert>
+          <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
+            <span class="knob-label">章范围(留空=中段动态抽样)</span>
+            <NInputNumber v-model:value="rangeStart" :min="1" :max="preview?.chapter_count" size="small" :placeholder="preview?`1`:'起'" style="width:80px" />
+            <span>~</span>
+            <NInputNumber v-model:value="rangeEnd" :min="1" :max="preview?.chapter_count" size="small" :placeholder="preview?`${preview.chapter_count}`:'止'" style="width:80px" />
+            <NButton size="small" type="primary" :loading="importing || previewing" :disabled="!fileText" @click="importRef">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
+          </NSpace>
 
           <!-- 文风指令 -->
           <div class="field-label">文风指令(定性,注入 writer)</div>

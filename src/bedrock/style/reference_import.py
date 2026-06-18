@@ -99,6 +99,35 @@ def import_and_extract(text, sample=None, chapter_range=None):
     }
 
 
+def preview_chapters(text):
+    """预览:切章信息(总章数、是否切片兜底、样章标题、总字数),不提取不存。
+    供文件选择后"先看再设范围"。"""
+    chapters = split_chapters(text)
+    # 切片兜底判别:标题形如"块N"或"全篇"
+    chunked = bool(chapters) and chapters[0][0].startswith(("块", "全篇"))
+    titles = [c[0][:30] for c in chapters[:6]]
+    return {
+        "chapter_count": len(chapters),
+        "chunked": chunked,   # True=非标准章名,按字数切片
+        "sample_titles": titles,
+        "total_chars": len(text),
+    }
+
+
+# 编码探测:utf-8 → gb18030(兼容 gbk),取替换符最少的。
+def decode_bytes(raw):
+    best, best_repl = None, 1e9
+    for enc in ("utf-8", "gb18030", "utf-16"):
+        try:
+            t = raw.decode(enc)
+            repl = t.count("�")
+            if repl < best_repl:
+                best, best_repl = t, repl
+        except Exception:
+            continue
+    return best or raw.decode("utf-8", errors="replace")
+
+
 # ── 从指纹派生定性文风指令草稿(纯程序:数字→文字)──
 def derive_directive(fp):
     """把 9 维指纹翻译成一段定性文风指令(节奏/段式/对白/破折号/修辞/感官)。

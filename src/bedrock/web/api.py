@@ -238,36 +238,50 @@ def api_style_actual(work_id):
         conn.close()
 
 
+@bp.post("/works/<work_id>/style/preview-reference")
+def api_style_preview_ref(work_id):
+    """预览参考作品:切章信息(总章数/是否切片/样章标题/字数),不存。body: {text}。"""
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    text = body.get("text")
+    if not text:
+        return _err("需 text(参考作品正文)")
+    from src.bedrock.style.reference_import import preview_chapters
+    return jsonify(preview_chapters(text))
+
+
 @bp.post("/works/<work_id>/style/import-reference")
 def api_style_import(work_id):
-    """导入外部参考作品 txt → 提取文风指纹(纯程序,零LLM)。body: {path, scope, volume_id?, sample?}。
-    服务端按本地路径读文件(参考书常数 MB,走浏览器上传不现实)。"""
+    """导入参考作品 → 提取文风指纹+派生指令。body: {path 或 text, scope, volume_id?, sample?, chapter_range?}。
+    path=服务端读本地文件(自带编码探测);text=已读好的正文(浏览器 FileReader)。纯程序零LLM。"""
     _require_json()
     wd = _resolve_work(work_id)
     body = request.get_json(silent=True) or {}
-    path = body.get("path")
-    if not path:
-        return _err("需 path(参考作品 txt 本地路径)")
     scope = body.get("scope", "work")
     if scope not in ("work", "volume"):
         return _err("scope 必须 work|volume")
-    from pathlib import Path
-    p = Path(path)
-    if not p.is_file():
-        return _err(f"文件不存在: {path}")
-    try:
-        text = p.read_text(encoding="utf-8", errors="replace")
-    except Exception as e:
-        return _err(f"读取失败: {e}")
+    if body.get("text"):
+        text = body["text"]
+        source_work = body.get("source_work") or "外部参考"
+    elif body.get("path"):
+        from pathlib import Path
+        p = Path(body["path"])
+        if not p.is_file():
+            return _err(f"文件不存在: {body['path']}")
+        from src.bedrock.style.reference_import import decode_bytes
+        text = decode_bytes(p.read_bytes())
+        source_work = p.stem
+    else:
+        return _err("需 path 或 text")
     conn = get_connection(wd)
     try:
-        cr = body.get("chapter_range")  # [start,end] 1-based, 可选
+        cr = body.get("chapter_range")
         rid, meta, seeded = save_fingerprint_from_text(
             conn, scope=scope, text=text,
             volume_id=body.get("volume_id") if scope == "volume" else None,
-            source_work=p.stem, sample=body.get("sample"),
+            source_work=source_work, sample=body.get("sample"),
             chapter_range=cr)
-        return _ok({"id": rid, "source_work": p.stem, "directive_seeded": seeded, **meta})
+        return _ok({"id": rid, "source_work": source_work, "directive_seeded": seeded, **meta})
     except Exception as e:
         return _err(e)
     finally:
