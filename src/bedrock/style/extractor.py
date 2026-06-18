@@ -38,9 +38,14 @@ DIM_DEFINITIONS = {
         "interpret": "高=对白驱动;低=叙述驱动。比 dialogue 类型更精确",
     },
     "dash": {
-        "label": "破折号", "unit": "——个数/段",
-        "formula": "每段 —— 出现次数",
-        "interpret": "参考好作品 96% 段落为 0;高频=滥用(语气补丁)",
+        "label": "破折号(按段)", "unit": "——个数/段",
+        "formula": "每段 —— 出现次数(直方图;长度耦合,仅展示)",
+        "interpret": "长段天然含更多——跨作品不可靠。看 dash_density",
+    },
+    "dash_density": {
+        "label": "破折号密度", "unit": "——/千字",
+        "formula": "全文 —— 数 / 中文字数 × 1000(长度归一)",
+        "interpret": "style-check 实际用这个;长度无关,跨作品可比。低=克制",
     },
     "structure": {
         "label": "句式", "unit": "句子分类",
@@ -189,8 +194,12 @@ def extract_fingerprint(paragraphs):
     dialogue_ratios = [_dialogue_char_ratio(p) for p in paragraphs]
     rhetoric_densities = [_rhetoric_density(p) for p in paragraphs]
     full_text = "".join(paragraphs)
+    total_chars = _cn_len(full_text) or 1
     overall_dialogue_ratio = round(_dialogue_char_ratio(full_text), 4)
     overall_rhetoric = round(_rhetoric_density(full_text), 2)
+    # dash/period 按【每千字】归一(长度无关),非按段——按段会与段落长度耦合(长段天然含更多)。
+    overall_dash_per_k = round(full_text.count("——") / total_chars * 1000, 2)
+    overall_period_per_k = round(full_text.count("。") / total_chars * 1000, 2)
 
     return {
         "sentence_length": _continuous_histogram(
@@ -199,8 +208,10 @@ def extract_fingerprint(paragraphs):
             para_lengths, [50, 120, 200], ["1-50", "51-120", "121-200", "200+"]),
         "dash": _continuous_histogram(
             dash_counts, [0, 1, 2], ["0", "1", "2", "3+"]),
+        "dash_density": {"value": overall_dash_per_k},   # /千字,长度归一(style-check 用这个,非 dash 直方图)
         "period": _continuous_histogram(
             period_counts, [2, 4, 6], ["1-2", "3-4", "5-6", "7+"]),
+        "period_density": {"value": overall_period_per_k},  # /千字,长度归一
         "dialogue": _categorical_histogram(
             [_paragraph_dialogue_type(p) for p in paragraphs], ["纯对话", "混合", "纯叙述"]),
         # dialogue_ratio/rhetoric 给整体单一值(跨段汇总),非分段直方图

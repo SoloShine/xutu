@@ -48,7 +48,7 @@ const curCfg = computed(() => scope.value === 'volume'
 const derived = computed(() => {
   const fp = workCfg.value || {}
   return {
-    dash: fp.dash ? Math.round((1 - (fp.dash['0'] || 0)) * 1000) / 10 : null,
+    dash: fp.dash_density ? fp.dash_density.value : null,   // /千字(长度归一),非按段
     notx: fp.structure ? Math.round((fp.structure.notXisY || 0) * 1000) / 10 : null,
     dlg: fp.dialogue_ratio ? Math.round((fp.dialogue_ratio.value || 0) * 1000) / 10 : null,
     rhet: fp.rhetoric ? fp.rhetoric.value : null,
@@ -60,7 +60,7 @@ const targetScalars = computed(() => {
   const st = workCfg.value?._scalar_targets || {}
   const d = derived.value
   return {
-    dash: st.dash_rate != null ? st.dash_rate * 100 : d.dash,
+    dash: st.dash_density != null ? st.dash_density : d.dash,
     notx: st.notXisY_rate != null ? st.notXisY_rate * 100 : d.notx,
     dlg: st.dialogue_ratio != null ? st.dialogue_ratio * 100 : d.dlg,
     rhet: st.rhetoric_per_k != null ? st.rhetoric_per_k : d.rhet,
@@ -87,7 +87,7 @@ const scalarCompare = computed(() => {
 function populateFrom(c: Fingerprint | null) {
   directive.value = c?._directive || ''
   const st = c?._scalar_targets || {}
-  tDash.value = st.dash_rate != null ? Math.round(st.dash_rate * 1000) / 10 : null
+  tDash.value = st.dash_density != null ? st.dash_density : null
   tNotx.value = st.notXisY_rate != null ? Math.round(st.notXisY_rate * 1000) / 10 : null
   tDlg.value = st.dialogue_ratio != null ? Math.round(st.dialogue_ratio * 1000) / 10 : null
   tRhet.value = st.rhetoric_per_k != null ? st.rhetoric_per_k : null
@@ -118,25 +118,25 @@ const dirty = computed(() => {
   if (!c) return true
   const st = c._scalar_targets || {}
   return directive.value !== (c._directive || '')
-    || scalarsPayload().dash_rate !== st.dash_rate
+    || scalarsPayload().dash_density !== st.dash_density
     || scalarsPayload().notXisY_rate !== st.notXisY_rate
     || scalarsPayload().dialogue_ratio !== st.dialogue_ratio
     || scalarsPayload().rhetoric_per_k !== st.rhetoric_per_k
 })
 function scalarsPayload() {
   const o: Record<string, number> = {}
-  if (tDash.value != null) o.dash_rate = tDash.value / 100
+  if (tDash.value != null) o.dash_density = tDash.value          // /千字(长度归一)
   if (tNotx.value != null) o.notXisY_rate = tNotx.value / 100
   if (tDlg.value != null) o.dialogue_ratio = tDlg.value / 100
   if (tRhet.value != null) o.rhetoric_per_k = tRhet.value
   return o
 }
 
-// 预设:一组标量目标快捷设定
+// 预设:一组标量目标快捷设定(dash/rhet 为 /千字;notx/dlg 为 %)
 function applyPreset(name: string) {
-  if (name === '冷硬快节奏') { tDash.value = 2; tNotx.value = 0.2; tDlg.value = 25; tRhet.value = 2 }
-  else if (name === '平稳叙事') { tDash.value = 4; tNotx.value = 0.5; tDlg.value = 15; tRhet.value = 3 }
-  else if (name === '浓修辞') { tDash.value = 5; tNotx.value = 0.5; tDlg.value = 20; tRhet.value = 8 }
+  if (name === '冷硬快节奏') { tDash.value = 1; tNotx.value = 0.2; tDlg.value = 25; tRhet.value = 2 }
+  else if (name === '平稳叙事') { tDash.value = 3; tNotx.value = 0.5; tDlg.value = 15; tRhet.value = 3 }
+  else if (name === '浓修辞') { tDash.value = 4; tNotx.value = 0.5; tDlg.value = 20; tRhet.value = 8 }
   msg.info(`已套用预设「${name}」,点保存生效`)
 }
 
@@ -158,7 +158,7 @@ async function save() {
 }
 
 const DIMS = ['sentence_length', 'paragraph_length', 'period', 'dialogue', 'dialogue_ratio',
-  'dash', 'rhetoric', 'structure', 'sensory']
+  'dash', 'dash_density', 'rhetoric', 'structure', 'sensory']
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
 
 // 导入参考作品(本地 txt 路径,服务端纯程序提取)
@@ -289,7 +289,7 @@ function defOf(key: string) { return dimDefs.value[key] }
             标量目标(style-check 比对;留空=用指纹派生值)
           </div>
           <div class="scalar-grid">
-            <div class="scalar"><span>破折号率(%)</span><NInputNumber v-model:value="tDash" :min="0" :max="100" :step="1" size="small" :placeholder="derived.dash != null ? String(derived.dash) : ''" /></div>
+            <div class="scalar"><span>破折号(/千字,长度归一)</span><NInputNumber v-model:value="tDash" :min="0" :step="0.5" size="small" :placeholder="derived.dash != null ? String(derived.dash) : ''" /></div>
             <div class="scalar"><span>「不是A是B」率(%)</span><NInputNumber v-model:value="tNotx" :min="0" :max="100" :step="0.1" size="small" :placeholder="derived.notx != null ? String(derived.notx) : ''" /></div>
             <div class="scalar"><span>对白占比(%)</span><NInputNumber v-model:value="tDlg" :min="0" :max="100" :step="1" size="small" :placeholder="derived.dlg != null ? String(derived.dlg) : ''" /></div>
             <div class="scalar"><span>修辞(/千字)</span><NInputNumber v-model:value="tRhet" :min="0" :step="0.5" size="small" :placeholder="derived.rhet != null ? String(derived.rhet) : ''" /></div>

@@ -23,7 +23,7 @@ def _chapter_scalar_metrics(paragraphs):
     """段落列表 → 标量文风指标(单章稳健,非整分布)。"""
     if not paragraphs:
         return {}
-    fp = extract_fingerprint(paragraphs)  # 复用提取器(含 dialogue_ratio/rhetoric value)
+    fp = extract_fingerprint(paragraphs)  # 复用提取器(含 dash_density/rhetoric value)
     n_paras = len(paragraphs)
     sentences = []
     for p in paragraphs:
@@ -32,8 +32,8 @@ def _chapter_scalar_metrics(paragraphs):
     sent_lens = [_cn_len(s) for s in sentences]
     para_lens = [_cn_len(p) for p in paragraphs]
     return {
-        # 越低越好(气味)
-        "dash_rate": 1.0 - fp["dash"].get("0", 1.0),       # 有≥1破折号的段占比
+        # 越低越好(气味)——用 per-k 归一,非按段(按段会与段落长度耦合)
+        "dash_density": fp.get("dash_density", {}).get("value", 0),  # ——/千字
         "notXisY_rate": fp["structure"].get("notXisY", 0),  # notXisY 句占比
         # 比率
         "dialogue_ratio": fp["dialogue_ratio"].get("value", 0),
@@ -50,8 +50,11 @@ def _target_scalars(target_fp):
     if not target_fp:
         return None
     out = {}
-    if "dash" in target_fp:
-        out["dash_rate"] = 1.0 - target_fp["dash"].get("0", 1.0)
+    out = {}
+    if "dash_density" in target_fp and isinstance(target_fp["dash_density"], dict):
+        out["dash_density"] = target_fp["dash_density"].get("value", 0)
+    elif "dash" in target_fp:
+        out["dash_density"] = None  # 旧指纹无 per-k,无法可比(按段会与长度耦合)
     if "structure" in target_fp:
         out["notXisY_rate"] = target_fp["structure"].get("notXisY", 0)
         out["short_sent_rate"] = target_fp["structure"].get("短句", 0)
@@ -87,12 +90,17 @@ def _judge(metric, actual, target):
     if target is None or actual is None:
         return False, 0, ""
     t = target
-    if metric in ("dash_rate", "notXisY_rate"):  # 越低越好:超 target*2 且有绝对量才报
-        floor = 0.03  # 3% 以下不算飘(单章噪声)
+    if metric in ("dash_density", "notXisY_rate"):  # 越低越好:超 target*2 且有绝对量才报
+        floor = 0.5 if metric == "dash_density" else 0.03   # dash /k 门槛;notXisY 3%
+        if metric == "dash_density":
+            if actual > max(t * 2, t + 1.5) and actual > floor:
+                sev = round(actual / (t + 1e-9), 1)
+                return True, sev, f"破折号密度 {actual:.1f}/千字 远高于目标 {t:.1f}(参考≈{t:.1f}),删非必要项"
+            return False, 0, ""
+        # notXisY_rate
         if actual > max(t * 2, t + 0.03) and actual > floor:
             sev = round(actual / (t + 1e-9), 1)
-            name = "破折号率" if metric == "dash_rate" else "「不是A是B」句率"
-            return True, sev, f"{name} {pct(actual)} 远高于目标 {pct(t)}(参考作品≈{pct(t)}),删非必要项"
+            return True, sev, f"「不是A是B」句率 {pct(actual)} 高于目标 {pct(t)},改写该句式"
         return False, 0, ""
     if metric == "rhetoric_per_k":
         if actual > max(t * 2.5, t + 3) and actual > 5:
@@ -163,7 +171,7 @@ def measure_style_drift(conn, chapter_id, volume_id):
                 "note": "无目标指纹且无已写章节可比,跳过"}
 
     drifted = []
-    for metric in ("dash_rate", "notXisY_rate", "rhetoric_per_k", "dialogue_ratio"):
+    for metric in ("dash_density", "notXisY_rate", "rhetoric_per_k", "dialogue_ratio"):
         d, sev, hint = _judge(metric, actual.get(metric), target.get(metric))
         if d:
             drifted.append({"metric": metric, "actual": actual.get(metric),
