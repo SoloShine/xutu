@@ -25,7 +25,7 @@ from src.bedrock.repositories.plot_tree import (
     update_chapter_meta, update_volume_meta, update_beat_meta, update_beat_status,
 )
 from src.bedrock.repositories.worldbook import update_location, update_theme, update_motif
-from src.bedrock.style.template_repo import list_fingerprints
+from src.bedrock.style.template_repo import list_fingerprints, set_style_config, dim_definitions
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -211,11 +211,41 @@ def api_factions(work_id):
 
 @bp.get("/works/<work_id>/style")
 def api_style(work_id):
-    """文风指纹(作品级 + 卷级)。Polish 据此把正文往对标文风微调。"""
+    """文风指纹 + 配置(作品级 + 卷级) + 维度定义。Polish 据指纹微调;directive 注入 writer。"""
     wd = _resolve_work(work_id)
     conn = get_connection(wd)
     try:
-        return jsonify(list_fingerprints(conn))
+        return jsonify({
+            "configs": list_fingerprints(conn),
+            "dim_definitions": dim_definitions(),
+        })
+    finally:
+        conn.close()
+
+
+@bp.post("/works/<work_id>/style")
+def api_set_style(work_id):
+    """改文风配置(directive/word_count_target/max_edit_rounds/hygiene/enabled_dims)。
+    body: {scope:'work'|'volume', volume_id?, directive?, ...}。只更新给出的字段。"""
+    _require_json()
+    wd = _resolve_work(work_id)
+    body = request.get_json(silent=True) or {}
+    scope = body.get("scope", "work")
+    if scope not in ("work", "volume"):
+        return _err("scope 必须 work|volume")
+    conn = get_connection(wd)
+    try:
+        rid = set_style_config(
+            conn, scope, volume_id=body.get("volume_id"),
+            directive=body.get("directive"),
+            word_count_target=body.get("word_count_target"),
+            max_edit_rounds=body.get("max_edit_rounds"),
+            hygiene=body.get("hygiene"),
+            enabled_dims=body.get("enabled_dims"),
+        )
+        return _ok({"id": rid, "scope": scope})
+    except Exception as e:
+        return _err(e)
     finally:
         conn.close()
 

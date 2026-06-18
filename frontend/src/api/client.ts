@@ -33,6 +33,7 @@ export const api = {
   characters: (w: string) => req('GET', `/api/works/${w}/characters`),
   factions: (w: string) => req('GET', `/api/works/${w}/factions`),
   style: (w: string) => req('GET', `/api/works/${w}/style`),
+  setStyle: (w: string, body: any) => req('POST', `/api/works/${w}/style`, body),
   patch: (w: string, entity: string, id: number | string, body: any) =>
     req('PATCH', `/api/works/${w}/${entity}/${id}`, body),
   patchBeatContract: (w: string, vid: number, bid: number, body: any) =>

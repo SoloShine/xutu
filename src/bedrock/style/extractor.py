@@ -1,11 +1,63 @@
 # src/bedrock/style/extractor.py
 import re
-from src.bedrock.style.lexicon import SENSORY_LEXICON, SENSORY_PRIORITY, SENTENCE_STRUCTURE_PATTERNS
+from src.bedrock.style.lexicon import (
+    SENSORY_LEXICON, SENSORY_PRIORITY, SENTENCE_STRUCTURE_PATTERNS, RHETORIC_LEXICON,
+)
 
 _SENTENCE_SPLIT = re.compile(r"[。！？]")
 _CN_CHAR = re.compile(r"[一-鿿]")
-_QUOTE_CHARS = set("「」“”\"'")
+_QUOTE_CHARS = set("「」「」“”\"‘’''")
 _NOTXISY = re.compile(SENTENCE_STRUCTURE_PATTERNS["notXisY"])
+_RHETORIC_RE = re.compile("|".join(RHETORIC_LEXICON))
+
+# 维度定义(公式/含义/解读)。供 API/前端可解释化展示,也作开发者文档。
+DIM_DEFINITIONS = {
+    "sentence_length": {
+        "label": "句子长度", "unit": "中文字数/句",
+        "formula": "按 [。！？] 切句,统计每句中文字数分布",
+        "interpret": "1-8字占比高=节奏快、短促;40+多=长句铺陈",
+    },
+    "paragraph_length": {
+        "label": "段落长度", "unit": "中文字数/段",
+        "formula": "每段中文字数分布",
+        "interpret": "1-50字占比高=网文式一句一段;200+多=稠密长段",
+    },
+    "period": {
+        "label": "句号密度", "unit": "句号数/段",
+        "formula": "每段 。 个数",
+        "interpret": "1-2=段落短(一句一段);7+=长复述段",
+    },
+    "dialogue": {
+        "label": "对白类型", "unit": "段落分类",
+        "formula": "按引号字符占比: >15%=纯对话, >3%=混合, else 纯叙述",
+        "interpret": "纯对话/混合/纯叙述 三类段占比",
+    },
+    "dialogue_ratio": {
+        "label": "对白字数占比", "unit": "%",
+        "formula": "引号内中文字数 / 全文中文字数",
+        "interpret": "高=对白驱动;低=叙述驱动。比 dialogue 类型更精确",
+    },
+    "dash": {
+        "label": "破折号", "unit": "——个数/段",
+        "formula": "每段 —— 出现次数",
+        "interpret": "参考好作品 96% 段落为 0;高频=滥用(语气补丁)",
+    },
+    "structure": {
+        "label": "句式", "unit": "句子分类",
+        "formula": "notXisY=匹配'不是…是'句式;短句<8字;长句>25字;其余=其他",
+        "interpret": "notXisY 应≈0(参考0.15%),偏高=偷懒句式",
+    },
+    "rhetoric": {
+        "label": "修辞密度", "unit": "明喻词/千字",
+        "formula": "明喻标记词(像/仿佛/宛如…)命中数 ÷ 千字",
+        "interpret": "高=比喻密集(文气重);低=白描克制",
+    },
+    "sensory": {
+        "label": "感官", "unit": "段落主导感官",
+        "formula": "段内感官词表命中最多者(视/听/触/嗅/味),平局取优先级;无=无",
+        "interpret": "无占比高=感官克制;视觉为主=画面感",
+    },
+}
 
 
 def _cn_len(text):
@@ -86,10 +138,41 @@ def _paragraph_sensory(text):
     return "无"
 
 
+def _dialogue_char_ratio(text):
+    """引号内中文字数 / 全文中文字数(0-1)。无引号或无中文→0。"""
+    total = _cn_len(text)
+    if total == 0:
+        return 0.0
+    # 抓引号对内的文本(「」/“”/‘’/'')
+    inner = []
+    for op, cl in (("「", "」"), ("“", "”"), ("‘", "’"), ("'", "'"), ('"', '"')):
+        i = 0
+        while True:
+            a = text.find(op, i)
+            if a < 0:
+                break
+            b = text.find(cl, a + 1)
+            if b < 0:
+                break
+            inner.append(text[a + 1:b])
+            i = b + 1
+    if not inner:
+        return 0.0
+    return _cn_len("".join(inner)) / total
+
+
+def _rhetoric_density(text):
+    """明喻标记词命中数 / 千字(浮点)。"""
+    total = _cn_len(text)
+    if total == 0:
+        return 0.0
+    return len(_RHETORIC_RE.findall(text)) / total * 1000
+
+
 def extract_fingerprint(paragraphs):
-    """paragraphs: 段落文本列表（跨章节所有 paragraph.text）。返回 7 维度直方图指纹。"""
+    """paragraphs: 段落文本列表（跨章节所有 paragraph.text）。返回 9 维度直方图指纹。"""
     dims = ["sentence_length", "paragraph_length", "dash", "period",
-            "dialogue", "structure", "sensory"]
+            "dialogue", "dialogue_ratio", "rhetoric", "structure", "sensory"]
     if not paragraphs:
         return {d: {} for d in dims}
 
@@ -103,6 +186,11 @@ def extract_fingerprint(paragraphs):
     para_lengths = [_cn_len(p) for p in paragraphs]
     dash_counts = [p.count("——") for p in paragraphs]
     period_counts = [p.count("。") for p in paragraphs]
+    dialogue_ratios = [_dialogue_char_ratio(p) for p in paragraphs]
+    rhetoric_densities = [_rhetoric_density(p) for p in paragraphs]
+    full_text = "".join(paragraphs)
+    overall_dialogue_ratio = round(_dialogue_char_ratio(full_text), 4)
+    overall_rhetoric = round(_rhetoric_density(full_text), 2)
 
     return {
         "sentence_length": _continuous_histogram(
@@ -115,6 +203,9 @@ def extract_fingerprint(paragraphs):
             period_counts, [2, 4, 6], ["1-2", "3-4", "5-6", "7+"]),
         "dialogue": _categorical_histogram(
             [_paragraph_dialogue_type(p) for p in paragraphs], ["纯对话", "混合", "纯叙述"]),
+        # dialogue_ratio/rhetoric 给整体单一值(跨段汇总),非分段直方图
+        "dialogue_ratio": {"value": overall_dialogue_ratio},
+        "rhetoric": {"value": overall_rhetoric},
         "structure": _categorical_histogram(
             [_sentence_structure(s) for s in all_sentences],
             ["notXisY", "短句", "长句", "其他"]),

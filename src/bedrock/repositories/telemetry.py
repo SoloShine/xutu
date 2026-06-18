@@ -62,11 +62,14 @@ def get_chapter_runtime(conn, chapter_id):
         (chapter_id,)).fetchone()
 
 
-def save_style_template(conn, fingerprint, source_works=None, sample_chapters=None):
+def save_style_template(conn, fingerprint, source_works=None, sample_chapters=None,
+                        scope="work", volume_id=None):
     cur = conn.execute(
-        "INSERT INTO style_template(source_works,sample_chapters,fingerprint) VALUES(?,?,?)",
+        "INSERT INTO style_template(source_works,sample_chapters,fingerprint,scope,volume_id) "
+        "VALUES(?,?,?,?,?)",
         (json.dumps(source_works or [], ensure_ascii=False),
          json.dumps(sample_chapters or [], ensure_ascii=False),
-         json.dumps(fingerprint, ensure_ascii=False)))
+         json.dumps(fingerprint, ensure_ascii=False),
+         scope, volume_id))
     conn.commit()
     return cur.lastrowid

@@ -378,7 +378,14 @@ CREATE TABLE IF NOT EXISTS style_template (
     source_works TEXT NOT NULL DEFAULT '[]',
     sample_chapters TEXT NOT NULL DEFAULT '[]',
     extracted_at TEXT NOT NULL DEFAULT (datetime('now')),
-    fingerprint TEXT NOT NULL DEFAULT '{}'
+    fingerprint TEXT NOT NULL DEFAULT '{}',
+    scope TEXT NOT NULL DEFAULT 'work',
+    volume_id INTEGER,
+    directive TEXT NOT NULL DEFAULT '',
+    word_count_target TEXT NOT NULL DEFAULT '[3000,5000]',
+    max_edit_rounds INTEGER NOT NULL DEFAULT 3,
+    hygiene TEXT NOT NULL DEFAULT '{}',
+    enabled_dims TEXT NOT NULL DEFAULT '[]'
 );
 
 

@@ -15,3 +15,7 @@ SENSORY_PRIORITY = ["视觉", "听觉", "触觉", "嗅觉", "味觉"]
 SENTENCE_STRUCTURE_PATTERNS = {
     "notXisY": r"不是.{1,15}[，。].{0,5}是",
 }
+
+# 修辞(明喻/暗喻)标记词。命中密度高=修辞浓。用于 rhetoric 维度。
+RHETORIC_LEXICON = ["像", "仿佛", "宛如", "犹如", "好似", "好比", "恰似", "一如", "似乎", "如同"]
+

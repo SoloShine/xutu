@@ -9,7 +9,8 @@ import json
 from src.bedrock.repositories.plot_tree import list_beats_in_chapter, list_paragraphs_in_chapter
 from src.bedrock.repositories.outline import get_beat_contract
 from src.bedrock.repositories.character import visible_secrets_for_context
-from src.bedrock.style.template_repo import get_effective_fingerprint
+from src.bedrock.style.template_repo import get_style_config
+from src.bedrock.style.template_repo import get_effective_fingerprint  # 兼容旧引用
 from src.bedrock.db.chapter_lookup import chapter_id_by_global
 from src.bedrock.orchestration.l2_pipeline import DRIFT_THRESHOLD  # 单一真相源，防与 L2 门禁漂移
 
@@ -82,21 +83,23 @@ def _prev_chapter_tail(conn, chapter_id, target_chars=400, hard_max=600):
 
 
 def get_chapter_boot_context(conn, chapter_id, volume_id):
-    """返回 {beat_contracts, reader_disclosed_secrets, fingerprint, constants, prev_chapter_tail}。"""
+    """返回 {beat_contracts, reader_disclosed_secrets, characters, fingerprint, style_directive,
+    constants, prev_chapter_tail}。文风(指纹+指令+旋钮)从 style_template 读,可配,覆盖旧硬编码。"""
     beat_contracts = []
     for beat in list_beats_in_chapter(conn, chapter_id):
         c = get_beat_contract(conn, volume_id, beat["id"])
         if c:
             beat_contracts.append(c)
 
-    fingerprint = get_effective_fingerprint(conn, volume_id)  # 两级 fallback，None 时不抛
+    # 文风配置(DB 可配,卷级覆盖作品级→代码默认)。指纹/指令/字数/编辑轮全从这出。
+    style = get_style_config(conn, volume_id)
+    fingerprint = style["fingerprint"] or get_effective_fingerprint(conn, volume_id)
 
-    # drift_threshold 与 L2 门禁共享 l2_pipeline.DRIFT_THRESHOLD（防双真相源漂移）。
-    # max_edit_rounds/word_count_target 起步值；volume_type_matrix 尚未承载这些键，SP5 可考虑上提。
     constants = {
-        "drift_threshold": DRIFT_THRESHOLD,
-        "max_edit_rounds": 3,
-        "word_count_target": (3000, 5000),
+        "drift_threshold": DRIFT_THRESHOLD,  # 与 L2 门禁共享,不可配(防双真相源)
+        "max_edit_rounds": style["max_edit_rounds"],       # DB 可配
+        "word_count_target": tuple(style["word_count_target"]),  # DB 可配
+        "hygiene": style["hygiene"],                       # DB 可配(notXisY_max/dash_max_per_k)
     }
 
     return {
@@ -104,6 +107,7 @@ def get_chapter_boot_context(conn, chapter_id, volume_id):
         "reader_disclosed_secrets": _reader_disclosed_secrets(conn, chapter_id),
         "characters": _character_canon(conn),
         "fingerprint": fingerprint,
+        "style_directive": style["directive"],   # 定性文风指令(自由文本,注入 writer)
         "constants": constants,
         "prev_chapter_tail": _prev_chapter_tail(conn, chapter_id),
     }
