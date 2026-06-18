@@ -7,6 +7,7 @@ export const VIEWS = {
   overview:     { label: '总览',        component: defineAsyncComponent(() => import('./Overview.vue')) },
   characters:   { label: '角色',        component: defineAsyncComponent(() => import('./Characters.vue')) },
   matrix:       { label: 'POV 矩阵',    component: defineAsyncComponent(() => import('./Matrix.vue')) },
+  style:        { label: '文风指纹',    component: defineAsyncComponent(() => import('./Style.vue')) },
   inspirations: { label: '灵感池',      component: defineAsyncComponent(() => import('./Inspirations.vue')) },
   report:       { label: 'Review 报告', component: defineAsyncComponent(() => import('./Report.vue')) },
   read:         { label: '正文·阅读',   component: defineAsyncComponent(() => import('./Reader.vue')) },

@@ -22,6 +22,16 @@ export const meta = {
 
 const CWD = 'D:/novel_test'
 
+// 文风硬约束(基线 floor + 标点/句式 hygiene)。即便无 style 指纹也施加;有指纹时 Polish 再叠加对准。
+// 来源:对标参考作品统计(notXisY≈0.15%、96%段无破折号)+ 用户反馈(标点半角混用、不是A是B滥用)。
+const HYGIENE_RULES = [
+  '【文风硬约束·必须遵守】(统计自对标参考作品)',
+  '- 标点全角:中文正文一律 。,:;!? 已由系统归一,但你也要自觉,不要吐半角 , . : ; ! ?',
+  '- 禁"不是A是B"句式及一切变体("不是x。是x,"/"并非…而是"/"不在于…在于"等)——一句都不许出现,这是偷懒句式,参考好作品仅 0.15%。',
+  '- 慎用破折号(——):参考作品 96% 段落不用,非必要坚决不写;要转折用句号断句。',
+  '- 段落短促、视角克制、不堆砌感官形容词;少用"地"字副词尾。',
+].join('\n')
+
 // drift 最差轮累积器（须在主流程调用前初始化，避 TDZ）
 let worstDrift = {}
 
@@ -263,6 +273,7 @@ function chapterWriterPrompt(ctx) {
     ...prev,
     ...canon,
     ...secrets,
+    HYGIENE_RULES,
     ...multi,
     '按 beat_contracts 写整章正文：视角符合 pov，推进本章 beat 的叙事目的，3000–5000 字。',
     '不自报字数（系统重查）。不写标题行。不包裹 markdown 围栏。',
@@ -285,7 +296,9 @@ function editPolishPrompt(ctx, prevProse) {
     '目标分布:', JSON.stringify(ctx.fingerprint || {}, null, 2),
     '本章 beat 契约:', JSON.stringify(ctx.beat_contracts, null, 2),
     '',
-    '下面是当前正文。对准分布做文风微调，保持剧情与字数，不增删段落。',
+    HYGIENE_RULES,
+    '把当前正文往目标分布微调的同时,严格执行上面的文风硬约束(标点全角/清掉"不是A是B"句式/删非必要破折号)。',
+    '保持剧情与字数,不增删段落。',
     '返回润色后的【整章正文】纯文本，不裹围栏。', '', '---当前版---', prevProse,
   ].join('\n')
 }

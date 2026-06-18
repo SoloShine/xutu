@@ -32,6 +32,7 @@ export const api = {
   outline: (w: string, v?: number) => req('GET', `/api/works/${w}/outline${v ? '?volume=' + v : ''}`),
   characters: (w: string) => req('GET', `/api/works/${w}/characters`),
   factions: (w: string) => req('GET', `/api/works/${w}/factions`),
+  style: (w: string) => req('GET', `/api/works/${w}/style`),
   patch: (w: string, entity: string, id: number | string, body: any) =>
     req('PATCH', `/api/works/${w}/${entity}/${id}`, body),
   patchBeatContract: (w: string, vid: number, bid: number, body: any) =>

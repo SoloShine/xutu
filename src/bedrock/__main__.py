@@ -109,6 +109,38 @@ def _looks_like_worklog(raw):
     return sum(1 for t in _WORKLOG_TOKENS if t in low) >= 2
 
 
+# 中文正文标点归一化：半角 , . : ; ! ? → 全角（仅 CJK 上下文，代码/数字不动）。
+# writer 常吐半角 ":,"（句号碰巧全角），中文阅读体验差。落盘前确定性归一，零 LLM。
+_CJK_CHAR = re.compile(r'[一-鿿、-〃〈-〿＀-￯」』）】》”“’]')
+_HALF_TO_FULL = {',': '，', ':': '：', ';': '；', '!': '！', '?': '？'}
+
+
+def _normalize_cjk_punctuation(text):
+    """半角标点在 CJK 字之后 → 全角。句号 . 仅 CJK 后且后非数字时转 。"""
+    out = []
+    for i, ch in enumerate(text):
+        prev = text[i - 1] if i > 0 else ''
+        if ch in _HALF_TO_FULL and _CJK_CHAR.match(prev):
+            out.append(_HALF_TO_FULL[ch])
+        elif ch == '.' and _CJK_CHAR.match(prev) and not (i + 1 < len(text) and text[i + 1].isdigit()):
+            out.append('。')
+        else:
+            out.append(ch)
+    return ''.join(out)
+
+
+# 文风气味计数："不是A(而)是B" 句式 + 破折号。参考好作品 notXisY≈0.15%、96%段无破折号，
+# 故这俩超量即气味异常（writer 偷懒路径）。落盘后只计数告警，不拒（硬禁靠 prompt）。
+_NOTXISY = re.compile(r'不是[^，。！？\n…—]{1,20}?(?:是|而是)')
+
+
+def _style_smells(text):
+    """返回 (notXisY数, 破折号段标记数)。"""
+    notx = len(_NOTXISY.findall(text))
+    dash = text.count('——') + text.count('—')  # 破折号(双/单 em-dash)
+    return notx, dash
+
+
 def _split_paragraphs(raw):
     """正文 → [(beat_seq_or_None, text), ...]。
     - 空行分段；丢弃空白段。
@@ -183,17 +215,29 @@ def _commit_paragraphs(conn, chapter_id, raw, role="narration"):
                     beat_ids_for_para[i] = beat_ids[min(i * len(beats) // n, len(beats) - 1)]
 
     clear_chapter_paragraphs(conn, chapter_id)
+    smell_notx = smell_dash = 0
     for seq_i, ((_bseq, text), bid) in enumerate(zip(paras, beat_ids_for_para), start=1):
-        chash = hashlib.sha256(text.encode("utf-8")).hexdigest()
-        create_paragraph(conn, chapter_id, seq_i, text, chash, bid, role)
+        ntext = _normalize_cjk_punctuation(text)   # 半角标点 → 全角（落盘前归一）
+        nx, nd = _style_smells(ntext)
+        smell_notx += nx
+        smell_dash += nd
+        chash = hashlib.sha256(ntext.encode("utf-8")).hexdigest()
+        create_paragraph(conn, chapter_id, seq_i, ntext, chash, bid, role)
     mark_beats_written(conn, sorted(set(beat_ids_for_para)))
     # schema CHECK: status ∈ {planned, writing, completed}；正文落盘 → writing。
     set_chapter_status(conn, chapter_id, "writing")
+    # 文风气味精查（不阻塞）：notXisY / 破折号超参考阈值(0.15%/4%)则告警，prompt 已硬禁。
+    if smell_notx or smell_dash:
+        n_paras = len(paras) or 1
+        print(f"commit-paragraphs: 文风气味 notXisY={smell_notx}({smell_notx*100//n_paras}%段) "
+              f"破折号={smell_dash}({smell_dash*100//n_paras}%段)——参考好作品均≈0，prompt 已禁，复查",
+              file=sys.stderr)
     return {
         "chapter_id": chapter_id,
         "paragraph_count": len(paras),
         "beats_used": sorted(set(beat_ids_for_para)),
         "status": "writing",
+        "style_smells": {"notXisY": smell_notx, "dash": smell_dash},
     }
 
 

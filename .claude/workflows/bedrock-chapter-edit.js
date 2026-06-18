@@ -21,6 +21,15 @@ export const meta = {
 const CWD = 'D:/novel_test'
 let worstDrift = {}
 
+// 文风硬约束(与 bedrock-chapter.js 同源):标点全角 / 禁"不是A是B" / 慎破折号。
+const HYGIENE_RULES = [
+  '【文风硬约束·必须遵守】(统计自对标参考作品)',
+  '- 标点全角:中文正文一律 。,:;!? 禁半角 , . : ; ! ?',
+  '- 禁"不是A是B"句式及一切变体("不是x。是x,"/"并非…而是"等)——一句都不许出现。',
+  '- 慎用破折号(——):参考作品 96% 段落不用,非必要不写。',
+  '- 段落短促、视角克制、不堆砌感官形容词。',
+].join('\n')
+
 const _args = typeof args === 'string' ? JSON.parse(args) : (args || {})
 const { project, chapter, volume, mode, instruction } = _args
 const VALID = new Set(['rewrite', 'polish', 'surgical', 'recheck'])
@@ -213,6 +222,7 @@ function rewritePrompt(ctx, project, chapter, instruction) {
     ...prev,
     ...canon,
     ...multi,
+    HYGIENE_RULES,
     '按下面【重写指令】改写整章，保持 beat 契约与 pov，3000–5000 字，不自报字数。',
     `重写指令：${instruction || '（未给出具体指令，做一次整体打磨重写）'}`,
     'beat 契约：' + JSON.stringify(ctx.beat_contracts, null, 2),
@@ -229,7 +239,8 @@ function polishOnDemandPrompt(ctx, project, chapter, instruction) {
     '',
     '目标文风分布：' + JSON.stringify(ctx.fingerprint || {}, null, 2),
     `附加要求：${instruction || '（无，仅对准分布微调）'}`,
-    '保持剧情与字数，不增删段落，不破坏 beat。',
+    HYGIENE_RULES,
+    '保持剧情与字数，不增删段落，不破坏 beat；同时严格执行文风硬约束。',
     '返回润色后的【整章正文】纯文本，不裹围栏。',
   ].join('\n')
 }

@@ -25,6 +25,7 @@ from src.bedrock.repositories.plot_tree import (
     update_chapter_meta, update_volume_meta, update_beat_meta, update_beat_status,
 )
 from src.bedrock.repositories.worldbook import update_location, update_theme, update_motif
+from src.bedrock.style.template_repo import list_fingerprints
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -204,6 +205,17 @@ def api_factions(work_id):
     conn = get_connection(wd)
     try:
         return jsonify(list_factions(conn))
+    finally:
+        conn.close()
+
+
+@bp.get("/works/<work_id>/style")
+def api_style(work_id):
+    """文风指纹(作品级 + 卷级)。Polish 据此把正文往对标文风微调。"""
+    wd = _resolve_work(work_id)
+    conn = get_connection(wd)
+    try:
+        return jsonify(list_fingerprints(conn))
     finally:
         conn.close()
 
