@@ -59,9 +59,14 @@ DIM_DEFINITIONS = {
         "interpret": "style-check 实际用这个;长度无关,跨作品可比。低=克制",
     },
     "structure": {
-        "label": "句式", "unit": "句子分类",
-        "formula": "notXisY=匹配'不是…是'句式;短句<8字;长句>25字;其余=其他",
-        "interpret": "notXisY 应≈0(参考0.15%),偏高=偷懒句式",
+        "label": "句长分类", "unit": "句子分类",
+        "formula": "逐句(按 [。！？] 切):短句<8字;长句>25字;其余=其他",
+        "interpret": "纯长度分布,作节奏诊断。notXisY 另见独立维度(段落级,不在此)",
+    },
+    "notXisY": {
+        "label": "「不是A是B」句式", "unit": "处/千字",
+        "formula": "段落级四变体统一正则(无标点/而是/，是/。是)命中数;value=密度/千字,count=总命中,rate=命中/句数",
+        "interpret": "应≈0(参考0.15%)。段落级统计——句号切句不影响,跨句的'不是x。是x'也抓",
     },
     "rhetoric": {
         "label": "修辞密度", "unit": "明喻词/千字",
@@ -129,9 +134,13 @@ def _paragraph_dialogue_type(text):
 
 
 def _sentence_structure(sentence):
-    """句子句式：notXisY/短句/长句/其他。"""
-    if _NOTXISY.search(sentence):
-        return "notXisY"
+    """句子句式(纯长度分类):短句/长句/其他。
+
+    注意:notXisY **不在此判**。它本质是段落级、可跨句号边界的模式("不是x。是x"),
+    而本函数的输入是 `_split_sentences` 按 [。！？] 切出的**单句**——逐句判会把句号变体
+    漏掉(句号切开后"不是x"和"是x"分属两句,谁都不命中)。notXisY 统一由 `count_notxisy`
+    在整段上跑(四变体统一正则),结果进独立的 `notXisY` 维度,与句长分类解耦。
+    """
     length = _cn_len(sentence)
     if length < 8:
         return "短句"
@@ -188,7 +197,7 @@ def _rhetoric_density(text):
 def extract_fingerprint(paragraphs):
     """paragraphs: 段落文本列表（跨章节所有 paragraph.text）。返回 9 维度直方图指纹。"""
     dims = ["sentence_length", "paragraph_length", "dash", "period",
-            "dialogue", "dialogue_ratio", "rhetoric", "structure", "sensory"]
+            "dialogue", "dialogue_ratio", "rhetoric", "structure", "notXisY", "sensory"]
     if not paragraphs:
         return {d: {} for d in dims}
 
@@ -211,6 +220,10 @@ def extract_fingerprint(paragraphs):
     # dash/period 按【每千字】归一(长度无关),非按段——按段会与段落长度耦合(长段天然含更多)。
     overall_dash_per_k = round(full_text.count("——") / total_chars * 1000, 2)
     overall_period_per_k = round(full_text.count("。") / total_chars * 1000, 2)
+    # notXisY:段落级四变体统一正则,逐段 findall 后求和(段间不拼接,免跨段假邻)。
+    # 与句长分类解耦——句号切句不影响它("不是x。是x"在整段上命中)。
+    notx_count = sum(count_notxisy(p) for p in paragraphs)
+    n_sent = len(all_sentences) or 1
 
     return {
         "sentence_length": _continuous_histogram(
@@ -230,7 +243,13 @@ def extract_fingerprint(paragraphs):
         "rhetoric": {"value": overall_rhetoric},
         "structure": _categorical_histogram(
             [_sentence_structure(s) for s in all_sentences],
-            ["notXisY", "短句", "长句", "其他"]),
+            ["短句", "长句", "其他"]),
+        # notXisY 独立维度:段落级统计(value=密度/千字 作 dimSingle 展示;rate=命中/句数 作 style-check 比对口径)
+        "notXisY": {
+            "value": round(notx_count / total_chars * 1000, 2),   # /千字(长度归一,跨作品可比)
+            "count": notx_count,
+            "rate": round(notx_count / n_sent, 4),                # 命中数/句数(style_drift 实测同口径)
+        },
         "sensory": _categorical_histogram(
             [_paragraph_sensory(p) for p in paragraphs],
             SENSORY_PRIORITY + ["无"]),

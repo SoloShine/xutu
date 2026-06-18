@@ -68,12 +68,14 @@ const NEUTRAL = {
     border: '#2c313c', borderSoft: '#232831',
     text1: '#e6e9ef', text2: '#b8bdc9', text3: '#7c8494', textDisabled: '#5a6270',
     sider: '#18181c', header: '#18181c',
+    warning: '#e5a338',
   },
   light: {
     page: '#f4f5f7', card: '#ffffff', modal: '#ffffff', elevated: '#eef0f4',
     border: '#e2e5ea', borderSoft: '#edeff2',
     text1: '#1f2329', text2: '#4e5969', text3: '#86909c', textDisabled: '#c9cdd4',
     sider: '#ffffff', header: '#ffffff',
+    warning: '#b97008',
   },
 }
 
@@ -126,7 +128,7 @@ export function buildOverrides(p: ThemeParams): GlobalThemeOverrides {
 // （Naive 组件走 themeOverrides；scoped style 里的字面 hex 不受 themeOverrides 影响，必须用 CSS 变量。）
 export const CSS_VARS = [
   'page', 'sider', 'card', 'elevated', 'modal', 'border', 'border-soft',
-  'text1', 'text2', 'text3', 'text-disabled', 'primary',
+  'text1', 'text2', 'text3', 'text-disabled', 'primary', 'warning',
 ] as const
 export type CssVarName = (typeof CSS_VARS)[number]
 
@@ -145,6 +147,7 @@ export function cssVars(p: ThemeParams): Record<string, string> {
     '--br-text3': n.text3,
     '--br-text-disabled': n.textDisabled,
     '--br-primary': p.primary,
+    '--br-warning': n.warning,
   }
 }
 

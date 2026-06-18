@@ -10,6 +10,22 @@ _DEFAULT_MAX_EDIT_ROUNDS = 3
 _DEFAULT_HYGIENE = {"notXisY_max": 0, "dash_max_per_k": 5}  # notXisY 目标 0;破折号每千字上限
 
 
+def _norm_source(s):
+    """归一化参考来源名用于 stale 比对:去首尾空白 + 剥常见后缀(.txt/.json/.md)。
+    不同写入路径命名不一致(路径导入用 p.stem 剥 .txt,/analyze-style 可能带 .txt),
+    严格相等会误报 stale。比对的是'参考作品换没换',不是文件名字符串漂移。"""
+    if not s:
+        return s
+    s = s.strip()
+    low = s.lower()
+    for ext in (".txt", ".json", ".md"):
+        if low.endswith(ext):
+            s = s[:-len(ext)]
+            break
+    return s
+
+
+
 def _gather_paragraphs(conn, chapter_ids):
     """收集这些章节的所有 paragraph.text。"""
     paragraphs = []
@@ -157,8 +173,10 @@ def get_style_config(conn, volume_id):
     fp_str = pick_str("fingerprint", "{}")
     fp = json.loads(fp_str) if fp_str else None
     current_source = fp.get("_source_work") if fp else None
-    # 指令过时:有指令且记了来源,但来源 ≠ 当前指纹来源(换参考后未重分析)
-    directive_stale = bool(directive) and bool(directive_source) and current_source is not None and directive_source != current_source
+    # 指令过时:有指令且记了来源,但来源 ≠ 当前指纹来源(换参考后未重分析)。
+    # 后缀归一比对(.txt 等),免路径导入 stem 与 /analyze-style 带后缀的命名漂移误报。
+    directive_stale = (bool(directive) and bool(directive_source) and current_source is not None
+                       and _norm_source(directive_source) != _norm_source(current_source))
     src_rows = vol if (vol and vol["source_works"] and vol["source_works"] != "[]") else work
     src = json.loads(src_rows["source_works"]) if src_rows and src_rows["source_works"] else []
     # 旋钮:卷级行存在则用其值,否则作品级;都无→默认
@@ -240,8 +258,8 @@ def list_fingerprints(conn, scope=None):
             fp["_directive"] = r["directive"]
         if r["directive_source"]:
             fp["_directive_source"] = r["directive_source"]
-            # stale: 指令来源 ≠ 当前指纹来源(换参考后未重分析)
-            fp["_directive_stale"] = bool(fp.get("_source_work")) and fp["_source_work"] != r["directive_source"]
+            # stale: 指令来源 ≠ 当前指纹来源(换参考后未重分析);后缀归一比对
+            fp["_directive_stale"] = bool(fp.get("_source_work")) and _norm_source(fp["_source_work"]) != _norm_source(r["directive_source"])
         if r["scalar_targets"] and r["scalar_targets"] != "{}":
             fp["_scalar_targets"] = json.loads(r["scalar_targets"])
         if r["volume_id"] is not None:

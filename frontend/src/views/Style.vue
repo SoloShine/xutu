@@ -8,9 +8,14 @@ import {
   NInputNumber, NButton, NTooltip, NRadioGroup, NRadioButton, NSelect, useMessage,
 } from 'naive-ui'
 import { api } from '../api/client'
+import { useThemeStore } from '../stores/theme'
 
 const props = defineProps<{ wid: string }>()
 const msg = useMessage()
+const theme = useThemeStore()
+// 直方图配色随主题:实测=主色,目标=中性灰(按 mode 取,浅/深都可见)
+const actualBarColor = computed(() => theme.primary)
+const targetBarColor = computed(() => theme.mode === 'dark' ? '#4a505c' : '#c8ced8')
 
 interface DimDef { label: string; unit: string; formula: string; interpret: string }
 interface Fingerprint { _scope?: string; _volume_id?: number; _source_work?: string; _directive?: string; _directive_source?: string; _directive_stale?: boolean; _sample_info?: { stat_range?: [number, number]; stat_count?: number; stat_titles?: string[]; llm_sample_titles?: string[] }; _scalar_targets?: Record<string, number>; [k: string]: any }
@@ -50,7 +55,7 @@ const derived = computed(() => {
   const fp = workCfg.value || {}
   return {
     dash: fp.dash_density ? fp.dash_density.value : null,   // /千字(长度归一),非按段
-    notx: fp.structure ? Math.round((fp.structure.notXisY || 0) * 1000) / 10 : null,
+    notx: fp.notXisY ? Math.round((fp.notXisY.rate || 0) * 1000) / 10 : null,
     dlg: fp.dialogue_ratio ? Math.round((fp.dialogue_ratio.value || 0) * 1000) / 10 : null,
     rhet: fp.rhetoric ? fp.rhetoric.value : null,
   }
@@ -158,8 +163,30 @@ async function save() {
   finally { saving.value = false }
 }
 
-const DIMS = ['sentence_length', 'paragraph_length', 'period', 'period_density', 'dialogue', 'dialogue_ratio',
-  'dash', 'dash_density', 'rhetoric', 'structure', 'sensory']
+// 维度分组(替代原 12 卡平铺)。隐藏 dash/period(按段,长度耦合,DIM_DEFINITIONS 自标"仅展示不可靠")
+// 与 structure(与 sentence_length 重复)——数据仍在指纹,只是不渲染。
+const HIST_GROUPS = [
+  { title: '节奏分布', hint: '句长/段长 直方图', dims: ['sentence_length', 'paragraph_length'] },
+  { title: '质感分布', hint: '对白类型/感官 直方图', dims: ['dialogue', 'sensory'] },
+]
+// 核心气味与密度(style-check 实际比对的标量)——合并成一张表,不再各自一张卡
+const SCALAR_ROWS = [
+  { dim: 'dash_density', better: 'low' },
+  { dim: 'notXisY', better: 'low' },
+  { dim: 'rhetoric', better: 'low' },
+  { dim: 'period_density', better: 'low' },
+  { dim: 'dialogue_ratio', better: 'target' },
+]
+function fmtVal(dim: string, v: number | null): string | null {
+  if (v == null) return null
+  return dim === 'dialogue_ratio' ? pct(v) + '%' : (Math.round(v * 100) / 100) + '/k'
+}
+// 该标量是否明显偏离(低越好型:超 target×1.5;对白比:差>25pp)
+function scalarOver(dim: string, actual: number | null, target: number | null): boolean {
+  if (actual == null || target == null) return false
+  if (dim === 'dialogue_ratio') return Math.abs(actual - target) > 0.25
+  return actual > target * 1.5 + 0.01
+}
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
 
 // 导入参考作品(本地 txt 路径,服务端纯程序提取)
@@ -239,7 +266,7 @@ function defOf(key: string) { return dimDefs.value[key] }
 <template>
   <div class="style-view">
     <NSpin :show="loading">
-      <div v-if="error" style="color: var(--n-error-color)">{{ error }}</div>
+      <div v-if="error" style="color: var(--br-warning)">{{ error }}</div>
 
       <NEmpty v-else-if="!configs.length && !volumes.length" description="该作品无文风配置">
         <template #extra>
@@ -262,7 +289,7 @@ function defOf(key: string) { return dimDefs.value[key] }
             <NSelect v-if="scope === 'volume'" v-model:value="volumeId" size="small"
               :options="volumes.map(v => ({ label: v.name, value: v.id }))" style="width:160px" />
             <NTag v-if="scope === 'volume'" size="small" type="warning" round>空字段=继承作品级</NTag>
-            <NTag v-else size="small" type="info" round>全作品生效</NTag>
+            <NTag v-else size="small" type="primary" round>全作品生效</NTag>
           </NSpace>
 
           <NAlert v-if="scope === 'volume' && !curCfg" type="default" :bordered="false" style="margin-bottom:8px">
@@ -274,7 +301,7 @@ function defOf(key: string) { return dimDefs.value[key] }
           <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
             <input id="style-file-input" type="file" accept=".txt,.text" style="display:none" @change="onFilePick" />
             <NButton size="small" @click="pickFile">选择 txt 文件</NButton>
-            <NTag v-if="fileName" size="small" type="info" round>{{ fileName }}</NTag>
+            <NTag v-if="fileName" size="small" type="primary" round>{{ fileName }}</NTag>
             <span class="knob-label">编码</span>
             <NSelect v-model:value="fileEnc" size="small" :options="[{label:'UTF-8',value:'UTF-8'},{label:'GBK',value:'GBK'},{label:'GB18030',value:'GB18030'}]" style="width:110px" />
           </NSpace>
@@ -341,7 +368,7 @@ function defOf(key: string) { return dimDefs.value[key] }
             <NSpace :size="6">
               <NTooltip v-if="workCfg?._source_work" trigger="hover" placement="bottom">
                 <template #trigger>
-                  <NTag size="small" type="info" round style="cursor:help">目标:{{ workCfg._source_work }}</NTag>
+                  <NTag size="small" type="primary" round style="cursor:help">目标:{{ workCfg._source_work }}</NTag>
                 </template>
                 <div style="max-width:320px">
                   <div><b>统计抽样</b>(指纹来源):{{ (workCfg._sample_info?.stat_count) || '?' }}章,范围
@@ -360,38 +387,52 @@ function defOf(key: string) { return dimDefs.value[key] }
           </template>
           <NAlert v-if="!actual?.fingerprint" type="default" :bordered="false">尚无已写章节可实测;先写章或导入参考作品设目标。</NAlert>
           <template v-else>
-            <div class="dim-grid">
-              <div v-for="dim in DIMS" :key="dim" class="dim">
-                <div class="dim-head">
-                  <NTooltip trigger="hover" placement="top">
-                    <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }}<svg class="dim-info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.2a.9.9 0 110 1.8.9.9 0 010-1.8zm1.1 8.2H6.9c0-.5.4-.7.4-1.2V8.6c0-.4-.2-.5-.6-.6v-.5h2.4v3.4c0 .6.3.8.3 1.1z"/></svg></span></template>
-                    <div style="max-width:280px">
-                      <div><b>{{ defOf(dim)?.label }}</b> ({{ defOf(dim)?.unit }})</div>
-                      <div style="opacity:.8">{{ defOf(dim)?.formula }}</div>
-                      <div style="opacity:.65;margin-top:4px">{{ defOf(dim)?.interpret }}</div>
-                    </div>
-                  </NTooltip>
-                </div>
-                <!-- 单值维度:实测/目标并列(实测恒显,目标无则 —) -->
-                <div v-if="dimSingle(dim,'actual') != null || dimSingle(dim,'target') != null" class="dual-single">
-                  <span class="cmp-tag actual">实测 {{ dim === 'dialogue_ratio' ? pct(dimSingle(dim,'actual')!) + '%' : (dimSingle(dim,'actual') != null ? dimSingle(dim,'actual') + '/k' : '—') }}</span>
-                  <span class="cmp-tag target" v-if="dimSingle(dim,'target') != null">目标 {{ dim === 'dialogue_ratio' ? pct(dimSingle(dim,'target')!) + '%' : dimSingle(dim,'target') + '/k' }}</span>
-                </div>
-                <!-- 直方图维度:每桶双条(上灰=目标,下彩=实测) -->
-                <div v-else>
+            <!-- 核心气味与密度:一张表(style-check 实际比对的标量,合并原 5 张单值卡) -->
+            <div class="style-section">
+              <div class="section-title">气味与密度 <span class="section-hint">style-check 比对核心;橙=明显偏离</span></div>
+              <table class="scalar-table">
+                <thead><tr><th>指标</th><th class="num">实测</th><th class="num">目标</th></tr></thead>
+                <tbody>
+                  <tr v-for="r in SCALAR_ROWS" :key="r.dim">
+                    <td class="lbl">
+                      <NTooltip trigger="hover" placement="top">
+                        <template #trigger><span class="lbl-inner">{{ defOf(r.dim)?.label || r.dim }}<svg class="dim-info-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.2a.9.9 0 110 1.8.9.9 0 010-1.8zm1.1 8.2H6.9c0-.5.4-.7.4-1.2V8.6c0-.4-.2-.5-.6-.6v-.5h2.4v3.4c0 .6.3.8.3 1.1z"/></svg></span></template>
+                        <div style="max-width:260px"><div><b>{{ defOf(r.dim)?.label }}</b> ({{ defOf(r.dim)?.unit }})</div><div style="opacity:.8">{{ defOf(r.dim)?.formula }}</div><div style="opacity:.65;margin-top:4px">{{ defOf(r.dim)?.interpret }}</div></div>
+                      </NTooltip>
+                    </td>
+                    <td class="num" :class="{ over: scalarOver(r.dim, dimSingle(r.dim,'actual'), dimSingle(r.dim,'target')) }">{{ fmtVal(r.dim, dimSingle(r.dim,'actual')) || '—' }}</td>
+                    <td class="num tgt">{{ fmtVal(r.dim, dimSingle(r.dim,'target')) || '—' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- 分布直方图:按主题分组,每组若干维度卡(双条 灰目标/彩实测) -->
+            <div v-for="g in HIST_GROUPS" :key="g.title" class="style-section">
+              <div class="section-title">{{ g.title }} <span class="section-hint">{{ g.hint }}</span></div>
+              <div class="dim-grid">
+                <div v-for="dim in g.dims" :key="dim" class="dim">
+                  <div class="dim-head">
+                    <NTooltip trigger="hover" placement="top">
+                      <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }}<svg class="dim-info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.2a.9.9 0 110 1.8.9.9 0 010-1.8zm1.1 8.2H6.9c0-.5.4-.7.4-1.2V8.6c0-.4-.2-.5-.6-.6v-.5h2.4v3.4c0 .6.3.8.3 1.1z"/></svg></span></template>
+                      <div style="max-width:280px">
+                        <div><b>{{ defOf(dim)?.label }}</b> ({{ defOf(dim)?.unit }})</div>
+                        <div style="opacity:.8">{{ defOf(dim)?.formula }}</div>
+                        <div style="opacity:.65;margin-top:4px">{{ defOf(dim)?.interpret }}</div>
+                      </div>
+                    </NTooltip>
+                  </div>
                   <div v-for="row in dimRows(dim)" :key="row.k" class="bar-row">
-                    <span class="bar-k" :class="{ hi: dim === 'structure' && row.k === 'notXisY' }">{{ row.k }}</span>
+                    <span class="bar-k">{{ row.k }}</span>
                     <div class="dual-bars">
-                      <NProgress type="line" :percentage="pct(row.target)" :height="6" :show-indicator="false" color="#aaa" />
-                      <NProgress type="line" :percentage="pct(row.actual)" :height="6" :show-indicator="false"
-                        :status="(dim === 'structure' && row.k === 'notXisY' && pct(row.actual) > 2) ? 'warning' : 'success'" />
+                      <NProgress type="line" :percentage="pct(row.target)" :height="6" :show-indicator="false" :color="targetBarColor" />
+                      <NProgress type="line" :percentage="pct(row.actual)" :height="6" :show-indicator="false" :color="actualBarColor" />
                     </div>
-                    <span class="bar-v">{{ pct(row.actual) }}<span class="dim">/{{ pct(row.target) }}</span></span>
+                    <span class="bar-v">{{ pct(row.actual) }}<span class="tgt-val">/{{ pct(row.target) }}</span></span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="legend"><span class="cmp-tag target">灰=目标</span><span class="cmp-tag actual">彩=实测</span><span style="opacity:.5">右上 实测/目标</span></div>
+            <div class="legend"><span class="cmp-tag target">灰=目标</span><span class="cmp-tag actual">彩=实测</span><span style="opacity:.5">分布卡右上 实测/目标</span></div>
           </template>
         </NCard>
       </NSpace>
@@ -407,29 +448,45 @@ function defOf(key: string) { return dimDefs.value[key] }
 .scalar { display: flex; flex-direction: column; gap: 2px; }
 .scalar span { font-size: 11px; opacity: 0.7; }
 .dim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
-.dim { background: var(--n-color); border: 1px solid var(--n-border-color); border-radius: 8px; padding: 10px; }
+.style-section { margin-top: 14px; }
+.style-section:first-of-type { margin-top: 4px; }
+.section-title { font-size: 13px; font-weight: 600; opacity: 0.85; margin-bottom: 8px; display: flex; align-items: baseline; gap: 8px; }
+.section-hint { font-size: 11px; font-weight: 400; opacity: 0.55; }
+.scalar-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.scalar-table th { text-align: left; font-size: 11px; opacity: 0.55; font-weight: 500; padding: 4px 8px; border-bottom: 1px solid var(--br-border); }
+/* 数值列:收窄到内容宽(width:1%+nowrap 让标签列吃剩余空间)+ 表头右对齐齐于数值,
+   大屏下表头与数值紧贴右侧,不再隔很远 */
+.scalar-table th.num, .scalar-table td.num { text-align: right; white-space: nowrap; width: 1%; }
+/* 行分隔线用 --br-border-soft(随 mode);旧 fallback rgba(255,255,255,.06) 在浅色下不可见 */
+.scalar-table td { padding: 6px 8px; border-bottom: 1px solid var(--br-border-soft); }
+.scalar-table td.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+.scalar-table td.num.over { color: var(--br-warning); }
+.scalar-table td.tgt { opacity: 0.6; font-weight: 400; }
+.scalar-table td.lbl { font-weight: 500; }
+.lbl-inner { display: inline-flex; align-items: center; gap: 3px; cursor: help; }
+.dim { background: var(--br-card); border: 1px solid var(--br-border); border-radius: 8px; padding: 10px; }
 .dim-label { font-weight: 600; cursor: help; display: inline-flex; align-items: center; gap: 3px; }
 .dim-info-icon { fill: currentColor; opacity: 0.5; transition: opacity .15s; }
 .dim-label:hover .dim-info-icon { opacity: 0.9; }
-.single-val { font-size: 20px; font-weight: 700; color: var(--n-primary-color); padding: 4px 0; }
+.single-val { font-size: 20px; font-weight: 700; color: var(--br-primary); padding: 4px 0; }
 .bar-row { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 12px; }
 .bar-k { min-width: 56px; opacity: 0.8; }
-.bar-k.hi { color: var(--n-warning-color); font-weight: 700; }
+.bar-k.hi { color: var(--br-warning); font-weight: 700; }
 .bar-v { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; }
 .cmp-table { display: flex; flex-direction: column; gap: 8px; }
 .cmp-row { display: flex; align-items: center; gap: 10px; }
-.cmp-row.over .cmp-label { color: var(--n-warning-color); font-weight: 700; }
+.cmp-row.over .cmp-label { color: var(--br-warning); font-weight: 700; }
 .cmp-label { min-width: 110px; font-size: 13px; }
 .cmp-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
 .cmp-line { display: flex; align-items: center; gap: 6px; }
 .cmp-tag { font-size: 10px; min-width: 28px; opacity: 0.6; }
-.cmp-tag.actual { color: var(--n-primary-color); opacity: 1; }
+.cmp-tag.actual { color: var(--br-primary); opacity: 1; }
 .bar-v { min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; }
-.bar-v .dim { opacity: 0.45; }
+.bar-v .tgt-val { opacity: 0.45; }
 .dual-bars { flex: 1; display: flex; flex-direction: column; gap: 1px; }
 .dual-single { display: flex; gap: 10px; padding: 4px 0; font-size: 13px; }
 .legend { margin-top: 8px; display: flex; gap: 12px; font-size: 11px; opacity: 0.7; }
 .cmp-tag { font-size: 11px; }
-.cmp-tag.target { color: #888; }
-.cmp-tag.actual { color: var(--n-primary-color); font-weight: 600; }
+.cmp-tag.target { color: var(--br-text3); }
+.cmp-tag.actual { color: var(--br-primary); font-weight: 600; }
 </style>

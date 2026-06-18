@@ -50,13 +50,17 @@ def _target_scalars(target_fp):
     if not target_fp:
         return None
     out = {}
-    out = {}
     if "dash_density" in target_fp and isinstance(target_fp["dash_density"], dict):
         out["dash_density"] = target_fp["dash_density"].get("value", 0)
     elif "dash" in target_fp:
         out["dash_density"] = None  # 旧指纹无 per-k,无法可比(按段会与长度耦合)
-    if "structure" in target_fp:
+    # notXisY 目标:优先读独立 notXisY 维度(rate,与实测 count_notxisy/n_sent 同口径);
+    # 旧指纹(重构前)只有 structure.notXisY 桶(逐句、漏句号变体)→ 向后兼容 fallback。
+    if "notXisY" in target_fp and isinstance(target_fp["notXisY"], dict):
+        out["notXisY_rate"] = target_fp["notXisY"].get("rate", 0)
+    elif "structure" in target_fp:
         out["notXisY_rate"] = target_fp["structure"].get("notXisY", 0)
+    if "structure" in target_fp:
         out["short_sent_rate"] = target_fp["structure"].get("短句", 0)
     if "dialogue_ratio" in target_fp and isinstance(target_fp["dialogue_ratio"], dict):
         out["dialogue_ratio"] = target_fp["dialogue_ratio"].get("value", 0)
@@ -144,15 +148,21 @@ def refresh_actual_cache(conn, volume_id=None):
     """重算实测并写缓存(章写完/手动刷新调)。返回实测 dict。"""
     scope = "volume" if volume_id else "work"
     data = _compute_actual(conn, volume_id)
+    # 先删该 scope+volume 的旧行再插。关键:SQLite PK 对 NULL 不去重(volume_id IS NULL 的行
+    # 可堆多行),不显式删的话每次 refresh 都新增一行,而读取(WHERE ... IS NULL)只回最早那行
+    # → 表现为"刷新瞬间对、再读回退旧值"的缓存泄漏(曾误导成重启问题)。
+    if volume_id:
+        conn.execute("DELETE FROM style_actual_cache WHERE scope=? AND volume_id=?",
+                     (scope, volume_id))
+    else:
+        conn.execute("DELETE FROM style_actual_cache WHERE scope=? AND volume_id IS NULL",
+                     (scope,))
     if not data:
-        if volume_id:
-            conn.execute("DELETE FROM style_actual_cache WHERE scope=? AND volume_id=?", (scope, volume_id))
-        else:
-            conn.execute("DELETE FROM style_actual_cache WHERE scope=? AND volume_id IS NULL", (scope,))
         conn.commit()
-        return {"fingerprint": None, "scalars": None, "chapter_count": 0, "paragraph_count": 0, "cached": False}
+        return {"fingerprint": None, "scalars": None, "chapter_count": 0,
+                "paragraph_count": 0, "cached": False}
     conn.execute(
-        "INSERT OR REPLACE INTO style_actual_cache(scope,volume_id,fingerprint,scalars,"
+        "INSERT INTO style_actual_cache(scope,volume_id,fingerprint,scalars,"
         "chapter_count,paragraph_count,computed_at) VALUES(?,?,?,?,?,?,datetime('now'))",
         (scope, volume_id,
          json.dumps(data["fingerprint"], ensure_ascii=False),

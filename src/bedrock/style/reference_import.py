@@ -193,7 +193,7 @@ def derive_directive(fp):
         bits.append("感官克制")
     elif sens.get("视觉", 0) > 0.3:
         bits.append("画面感强")
-    notx = st.get("notXisY", 0)
+    notx = fp.get("notXisY", {}).get("rate", 0)
     if notx > 0.01:
         bits.append('注意:少量「不是A是B」句式')
     return "；".join(bits) + "。"

@@ -35,9 +35,19 @@ def test_dialogue_detection():
     assert fp["dialogue"]["纯叙述"] > 0
 
 
-def test_notXisY_structure():
+def test_notXisY_counted():
+    # 独立 notXisY 维度:段落级四变体统计。
     fp = extract_fingerprint(["不是因为他累，是因为他想家。普通的句子。"])
-    assert fp["structure"]["notXisY"] > 0
+    assert fp["notXisY"]["count"] > 0
+    assert fp["notXisY"]["rate"] > 0
+
+
+def test_notXisY_period_split_variant():
+    # 关键回归:句号切句后逐句判会漏此变体;notXisY 段落级必须抓到。
+    fp = extract_fingerprint(["不是天才。是疯子。"])
+    assert fp["notXisY"]["count"] >= 1
+    # 且句长分类(structure)不再混入 notXisY 桶
+    assert "notXisY" not in fp["structure"]
 
 
 def test_sensory_dominance():
