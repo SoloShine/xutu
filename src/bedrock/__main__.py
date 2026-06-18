@@ -442,6 +442,10 @@ def main():
     p_srstyle.add_argument("--project", type=Path, required=True)
     p_srstyle.add_argument("--volume", type=int, default=None)
 
+    p_rsa = sub.add_parser("refresh-style-actual", help="重算实测指纹并写缓存(章写完调)")
+    p_rsa.add_argument("--project", type=Path, required=True)
+    p_rsa.add_argument("--volume", type=int, default=None)
+
     p_sdir = sub.add_parser("set-style-directive", help="写文风指令+来源(/analyze-style 落库)")
     p_sdir.add_argument("--project", type=Path, required=True)
     p_sdir.add_argument("--directive", required=True)
@@ -621,6 +625,10 @@ def main():
             rid = set_style_config(conn, args.scope, volume_id=args.volume,
                                    directive=args.directive, directive_source=args.source)
             print(f"directive 已写入 row={rid} scope={args.scope} source={args.source or '(无)'}")
+        elif args.cmd == "refresh-style-actual":
+            from src.bedrock.checks.style_drift import refresh_actual_cache
+            r = refresh_actual_cache(conn, args.volume)
+            print(f"实测缓存已刷新: {r.get('chapter_count',0)}章/{r.get('paragraph_count',0)}段 cached={r.get('cached')}")
         elif args.cmd == "boot-context":
             cid = _chapter_id(conn, args.chapter)
             ctx = get_chapter_boot_context(conn, cid, volume_id=args.volume)

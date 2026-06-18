@@ -33,7 +33,10 @@ export const api = {
   characters: (w: string) => req('GET', `/api/works/${w}/characters`),
   factions: (w: string) => req('GET', `/api/works/${w}/factions`),
   style: (w: string) => req('GET', `/api/works/${w}/style`),
-  styleActual: (w: string, v?: number) => req('GET', `/api/works/${w}/style/actual${v ? '?volume=' + v : ''}`),
+  styleActual: (w: string, v?: number, refresh = false) => {
+    const q = [['volume', v], ['refresh', refresh ? 1 : null]].filter(([, x]) => x != null).map(([k, x]) => `${k}=${x}`).join('&')
+    return req('GET', `/api/works/${w}/style/actual${q ? '?' + q : ''}`)
+  },
   setStyle: (w: string, body: any) => req('POST', `/api/works/${w}/style`, body),
   importReference: (w: string, body: any) => req('POST', `/api/works/${w}/style/import-reference`, body),
   previewReference: (w: string, text: string) => req('POST', `/api/works/${w}/style/preview-reference`, { text }),

@@ -118,9 +118,8 @@ def pct(x):
     return f"{round((x or 0) * 100)}%"
 
 
-def measure_work_actual(conn, volume_id=None):
-    """实测:从已写章节(status=writing)live extract 当前 9维指纹 + 标量指标。
-    与存储的目标指纹(陈二懒等)对照——目标是靶,实测是弹着点。volume_id 限定单卷。"""
+def _compute_actual(conn, volume_id=None):
+    """全量计算已写章节的指纹+标量(不读缓存)。"""
     if volume_id:
         rows = conn.execute(
             "SELECT id FROM chapter WHERE volume_id=? AND status='writing' ORDER BY global_number",
@@ -132,13 +131,56 @@ def measure_work_actual(conn, volume_id=None):
     for r in rows:
         paras.extend(p["text"] for p in list_paragraphs_in_chapter(conn, r["id"]))
     if not paras:
-        return {"fingerprint": None, "scalars": None, "chapter_count": 0, "paragraph_count": 0}
+        return None
     return {
         "fingerprint": extract_fingerprint(paras),
         "scalars": _chapter_scalar_metrics(paras),
         "chapter_count": len(rows),
         "paragraph_count": len(paras),
     }
+
+
+def refresh_actual_cache(conn, volume_id=None):
+    """重算实测并写缓存(章写完/手动刷新调)。返回实测 dict。"""
+    scope = "volume" if volume_id else "work"
+    data = _compute_actual(conn, volume_id)
+    if not data:
+        if volume_id:
+            conn.execute("DELETE FROM style_actual_cache WHERE scope=? AND volume_id=?", (scope, volume_id))
+        else:
+            conn.execute("DELETE FROM style_actual_cache WHERE scope=? AND volume_id IS NULL", (scope,))
+        conn.commit()
+        return {"fingerprint": None, "scalars": None, "chapter_count": 0, "paragraph_count": 0, "cached": False}
+    conn.execute(
+        "INSERT OR REPLACE INTO style_actual_cache(scope,volume_id,fingerprint,scalars,"
+        "chapter_count,paragraph_count,computed_at) VALUES(?,?,?,?,?,?,datetime('now'))",
+        (scope, volume_id,
+         json.dumps(data["fingerprint"], ensure_ascii=False),
+         json.dumps(data["scalars"], ensure_ascii=False),
+         data["chapter_count"], data["paragraph_count"]))
+    conn.commit()
+    return {**data, "cached": True}
+
+
+def measure_work_actual(conn, volume_id=None, refresh=False):
+    """实测:cache-first(大作品免每次全量重算);refresh=True 或无缓存→重算并写缓存。
+    返回 {fingerprint, scalars, chapter_count, paragraph_count, cached, computed_at}。"""
+    if not refresh:
+        scope = "volume" if volume_id else "work"
+        row = conn.execute(
+            ("SELECT * FROM style_actual_cache WHERE scope=? AND volume_id=?"
+             if volume_id else "SELECT * FROM style_actual_cache WHERE scope=? AND volume_id IS NULL"),
+            (scope, volume_id) if volume_id else (scope,)).fetchone()
+        if row and row["chapter_count"]:
+            return {
+                "fingerprint": json.loads(row["fingerprint"]),
+                "scalars": json.loads(row["scalars"]),
+                "chapter_count": row["chapter_count"],
+                "paragraph_count": row["paragraph_count"],
+                "cached": True, "computed_at": row["computed_at"],
+            }
+    return refresh_actual_cache(conn, volume_id)
+
 
 
 def measure_style_drift(conn, chapter_id, volume_id):

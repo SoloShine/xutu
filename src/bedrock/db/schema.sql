@@ -392,6 +392,19 @@ CREATE TABLE IF NOT EXISTS style_template (
 );
 
 
+-- ===== 文风实测缓存(章写完刷新,工作台读缓存,免每次全量重算) =====
+CREATE TABLE IF NOT EXISTS style_actual_cache (
+    scope TEXT NOT NULL DEFAULT 'work',
+    volume_id INTEGER,
+    fingerprint TEXT NOT NULL DEFAULT '{}',
+    scalars TEXT NOT NULL DEFAULT '{}',
+    chapter_count INTEGER NOT NULL DEFAULT 0,
+    paragraph_count INTEGER NOT NULL DEFAULT 0,
+    computed_at TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (scope, volume_id)
+);
+
+
 -- ===== Beat <-> Character junction (Task 13 / SP1 gap) =====
 
 CREATE TABLE IF NOT EXISTS beat_character (

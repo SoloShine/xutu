@@ -17,7 +17,7 @@ interface Fingerprint { _scope?: string; _volume_id?: number; _source_work?: str
 const configs = ref<Fingerprint[]>([])
 const dimDefs = ref<Record<string, DimDef>>({})
 const volumes = ref<{ id: number; name: string }[]>([])
-const actual = ref<{ fingerprint: Fingerprint | null; scalars: Record<string, number> | null; chapter_count: number; paragraph_count: number } | null>(null)
+const actual = ref<{ fingerprint: Fingerprint | null; scalars: Record<string, number> | null; chapter_count: number; paragraph_count: number; cached?: boolean; computed_at?: string } | null>(null)
 const loading = ref(true)
 const saving = ref(false)
 const error = ref('')
@@ -30,6 +30,7 @@ const fileText = ref('')
 const fileEnc = ref('UTF-8')
 const preview = ref<{chapter_count:number;chunked:boolean;sample_titles:string[];total_chars:number}|null>(null)
 const previewing = ref(false)
+const refreshing = ref(false)
 
 // 编辑态
 const scope = ref<'work' | 'volume'>('work')
@@ -162,6 +163,16 @@ const DIMS = ['sentence_length', 'paragraph_length', 'period', 'period_density',
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
 
 // 导入参考作品(本地 txt 路径,服务端纯程序提取)
+// 导入参考作品(本地 txt 路径,服务端纯程序提取)
+async function refreshActual() {
+  refreshing.value = true
+  try {
+    actual.value = await api.styleActual(props.wid, undefined, true) as any
+    msg.success(actual.value?.cached ? '实测已重算并刷新缓存' : '已重算')
+  } catch (e:any) { msg.error('刷新失败: '+(e.message||e)) }
+  finally { refreshing.value = false }
+}
+
 // 文件选择 → 读正文(按编码)→ 预览切章信息(总章数/切片/样章),不存
 function pickFile() { document.getElementById('style-file-input')?.click() }
 function onFilePick(ev: Event) {
@@ -210,11 +221,17 @@ function entries(fp: Fingerprint, key: string): [string, number][] {
   const d = fp[key]; if (!d || typeof d !== 'object') return []
   return Object.entries(d).filter(([k]) => !k.startsWith('_')) as [string, number][]
 }
-// 某 dim 各桶的目标+实测值(同 bucket 配对)
+// 某 dim 各桶的目标+实测值(实测优先作桶源——没参考也显示实测)
 function dimRows(dim: string) {
   const t = (workCfg.value as any)?.[dim] || {}
   const a = (actual.value?.fingerprint as any)?.[dim] || {}
-  return Object.keys(t).filter(k => !k.startsWith('_')).map(k => ({ k, target: t[k] || 0, actual: a[k] || 0 }))
+  const src = Object.keys(a).length ? a : t
+  return Object.keys(src).filter(k => !k.startsWith('_') && k !== 'value').map(k => ({ k, target: t[k] || 0, actual: a[k] || 0 }))
+}
+// 单值维度的值(实测/目标),无则 null
+function dimSingle(dim: string, side: 'actual' | 'target'): number | null {
+  const src = side === 'actual' ? (actual.value?.fingerprint as any)?.[dim] : (workCfg.value as any)?.[dim]
+  return src && src.value !== undefined ? src.value : null
 }
 function defOf(key: string) { return dimDefs.value[key] }
 </script>
@@ -335,7 +352,10 @@ function defOf(key: string) { return dimDefs.value[key] }
                   <div style="opacity:.7;font-size:12px;margin:2px 0">{{ (workCfg._sample_info?.llm_sample_titles || []).join(' / ') }}</div>
                 </div>
               </NTooltip>
-              <NTag v-if="actual?.fingerprint" size="small" round>实测:{{ actual.chapter_count }}章/{{ actual.paragraph_count }}段</NTag>
+              <NTag v-if="actual?.fingerprint" size="small" round :title="actual.cached ? ('缓存于 '+actual.computed_at) : '实时'">
+                实测:{{ actual.chapter_count }}章/{{ actual.paragraph_count }}段{{ actual.cached ? '·缓存' : '' }}
+              </NTag>
+              <NButton v-if="actual?.fingerprint" size="tiny" quaternary :loading="refreshing" @click="refreshActual">刷新实测</NButton>
             </NSpace>
           </template>
           <NAlert v-if="!actual?.fingerprint" type="default" :bordered="false">尚无已写章节可实测;先写章或导入参考作品设目标。</NAlert>
@@ -352,10 +372,10 @@ function defOf(key: string) { return dimDefs.value[key] }
                     </div>
                   </NTooltip>
                 </div>
-                <!-- 单值维度:目标/实测并列 -->
-                <div v-if="(workCfg as any)?.[dim]?.value !== undefined" class="dual-single">
-                  <span class="cmp-tag target">目标 {{ dim === 'dialogue_ratio' ? pct((workCfg as any)[dim].value) + '%' : (workCfg as any)[dim].value + '/k' }}</span>
-                  <span class="cmp-tag actual">实测 {{ actual.fingerprint[dim] ? (dim === 'dialogue_ratio' ? pct(actual.fingerprint[dim].value) + '%' : actual.fingerprint[dim].value + '/k') : '—' }}</span>
+                <!-- 单值维度:实测/目标并列(实测恒显,目标无则 —) -->
+                <div v-if="dimSingle(dim,'actual') != null || dimSingle(dim,'target') != null" class="dual-single">
+                  <span class="cmp-tag actual">实测 {{ dim === 'dialogue_ratio' ? pct(dimSingle(dim,'actual')!) + '%' : (dimSingle(dim,'actual') != null ? dimSingle(dim,'actual') + '/k' : '—') }}</span>
+                  <span class="cmp-tag target" v-if="dimSingle(dim,'target') != null">目标 {{ dim === 'dialogue_ratio' ? pct(dimSingle(dim,'target')!) + '%' : dimSingle(dim,'target') + '/k' }}</span>
                 </div>
                 <!-- 直方图维度:每桶双条(上灰=目标,下彩=实测) -->
                 <div v-else>

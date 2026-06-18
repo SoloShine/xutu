@@ -228,12 +228,13 @@ def api_style(work_id):
 
 @bp.get("/works/<work_id>/style/actual")
 def api_style_actual(work_id):
-    """当前实测指纹(live extract 已写章节 9维 + 标量)。与目标指纹对照。?volume=N 限单卷。"""
+    """当前实测指纹(cache-first;?refresh=1 强制重算并刷新缓存;?volume=N 限单卷)。"""
     wd = _resolve_work(work_id)
     vid = request.args.get("volume", type=int)
+    refresh = request.args.get("refresh", type=int) == 1
     conn = get_connection(wd)
     try:
-        return jsonify(measure_work_actual(conn, vid))
+        return jsonify(measure_work_actual(conn, vid, refresh=refresh))
     finally:
         conn.close()
 

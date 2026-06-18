@@ -276,6 +276,7 @@ async function telemetryRelay(project, chapter, round, drift) {
     runtimeStdin,
     `__STDIN__`,
     `cd "${CWD}" && python -m src.bedrock export-chapter-json --project ${project} --chapter ${chapter} --stage draft`,
+    `cd "${CWD}" && python -m src.bedrock refresh-style-actual --project ${project}`,
     driftBlock.trim(),
   ].join('\n')
   try {
