@@ -385,7 +385,8 @@ CREATE TABLE IF NOT EXISTS style_template (
     word_count_target TEXT NOT NULL DEFAULT '[3000,5000]',
     max_edit_rounds INTEGER NOT NULL DEFAULT 3,
     hygiene TEXT NOT NULL DEFAULT '{}',
-    enabled_dims TEXT NOT NULL DEFAULT '[]'
+    enabled_dims TEXT NOT NULL DEFAULT '[]',
+    scalar_targets TEXT NOT NULL DEFAULT '{}'
 );
 
 

@@ -434,6 +434,10 @@ def main():
     p_style.add_argument("--chapter", type=int, required=True)
     p_style.add_argument("--volume", type=int, required=True)
 
+    p_evstyle = sub.add_parser("extract-volume-style", help="从本卷已写章节 extract 卷级指纹")
+    p_evstyle.add_argument("--project", type=Path, required=True)
+    p_evstyle.add_argument("--volume", type=int, required=True)
+
     p_boot = sub.add_parser("boot-context", help="装配子代理启动上下文")
     p_boot.add_argument("--project", type=Path, required=True)
     p_boot.add_argument("--chapter", type=int, required=True)
@@ -580,6 +584,16 @@ def main():
             from src.bedrock.checks.style_drift import measure_style_drift
             cid = _chapter_id(conn, args.chapter)
             print(json.dumps(measure_style_drift(conn, cid, args.volume), ensure_ascii=False))
+        elif args.cmd == "extract-volume-style":
+            from src.bedrock.style.template_repo import save_fingerprint
+            rows = conn.execute(
+                "SELECT c.id FROM chapter c WHERE c.volume_id=? AND c.status='writing' "
+                "ORDER BY c.global_number", (args.volume,)).fetchall()
+            if not rows:
+                sys.exit(f"extract-volume-style: 卷 {args.volume} 无已写章节(status=writing)")
+            cids = [r["id"] for r in rows]
+            save_fingerprint(conn, scope="volume", chapter_ids=cids, volume_id=args.volume)
+            print(f"卷 {args.volume} 指纹已提取自 {len(cids)} 章(status=writing)")
         elif args.cmd == "boot-context":
             cid = _chapter_id(conn, args.chapter)
             ctx = get_chapter_boot_context(conn, cid, volume_id=args.volume)

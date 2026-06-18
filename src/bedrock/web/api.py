@@ -242,6 +242,7 @@ def api_set_style(work_id):
             max_edit_rounds=body.get("max_edit_rounds"),
             hygiene=body.get("hygiene"),
             enabled_dims=body.get("enabled_dims"),
+            scalar_targets=body.get("scalar_targets"),
         )
         return _ok({"id": rid, "scope": scope})
     except Exception as e:

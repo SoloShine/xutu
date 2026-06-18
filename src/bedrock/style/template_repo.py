@@ -70,35 +70,61 @@ def get_effective_fingerprint(conn, volume_id):
 
 
 def get_style_config(conn, volume_id):
-    """合并后的 style 配置(卷级覆盖 → 作品级 → 代码默认)。
+    """合并后的 style 配置。**字段级 merge**:卷级字段的非空值覆盖作品级,空值回退作品级
+    (卷级=diff/patch 语义,不是整行替换)。无任何行→代码默认。
     返回 {scope, source_work, fingerprint, directive, word_count_target,
-          max_edit_rounds, hygiene, enabled_dims, has_row}。"""
-    r = _row_by_scope(conn, "volume", volume_id) or _row_by_scope(conn, "work", None)
-    if not r:
+          max_edit_rounds, hygiene, scalar_targets, enabled_dims, has_row}。"""
+    work = _row_by_scope(conn, "work", None)
+    vol = _row_by_scope(conn, "volume", volume_id) if volume_id else None
+    if not work and not vol:
         return {"has_row": False, "scope": None, "fingerprint": None,
                 "directive": "", "word_count_target": _DEFAULT_WORD_COUNT,
                 "max_edit_rounds": _DEFAULT_MAX_EDIT_ROUNDS, "hygiene": _DEFAULT_HYGIENE,
-                "enabled_dims": [], "source_work": None}
-    fp = json.loads(r["fingerprint"]) if r["fingerprint"] and r["fingerprint"] != "{}" else None
-    src = json.loads(r["source_works"]) if r["source_works"] else []
+                "scalar_targets": {}, "enabled_dims": [], "source_work": None}
+
+    def pick_json(field):
+        """vol 非空({}外)→vol, else work。"""
+        for r in (vol, work):
+            if r and r[field] and r[field] != "{}":
+                return json.loads(r[field])
+        return {}
+
+    def pick_str(field, empty=""):
+        for r in (vol, work):
+            if r and r[field] and r[field] != empty:
+                return r[field]
+        return empty
+
+    directive = pick_str("directive")
+    # fingerprint: 卷级空→作品级
+    fp_str = pick_str("fingerprint", "{}")
+    fp = json.loads(fp_str) if fp_str else None
+    src_rows = vol if (vol and vol["source_works"] and vol["source_works"] != "[]") else work
+    src = json.loads(src_rows["source_works"]) if src_rows and src_rows["source_works"] else []
+    # 旋钮:卷级行存在则用其值,否则作品级;都无→默认
+    wc = json.loads(vol["word_count_target"]) if vol and vol["word_count_target"] else \
+         (json.loads(work["word_count_target"]) if work and work["word_count_target"] else _DEFAULT_WORD_COUNT)
+    mer = vol["max_edit_rounds"] if (vol and vol["max_edit_rounds"]) else \
+          (work["max_edit_rounds"] if (work and work["max_edit_rounds"]) else _DEFAULT_MAX_EDIT_ROUNDS)
+    scope = "volume" if vol else ("work" if work else None)
     return {
         "has_row": True,
-        "scope": r["scope"],
-        "volume_id": r["volume_id"],
-        "source_work": src[0] if src else (fp.get("_source_work") if fp else None),
+        "scope": scope,
+        "volume_id": volume_id if vol else None,
+        "source_work": (src[0] if src else (fp.get("_source_work") if fp else None)),
         "fingerprint": fp,
-        "directive": r["directive"] or "",
-        "word_count_target": json.loads(r["word_count_target"]) if r["word_count_target"] else _DEFAULT_WORD_COUNT,
-        "max_edit_rounds": r["max_edit_rounds"] if r["max_edit_rounds"] else _DEFAULT_MAX_EDIT_ROUNDS,
-        "hygiene": json.loads(r["hygiene"]) if r["hygiene"] else _DEFAULT_HYGIENE,
-        "enabled_dims": json.loads(r["enabled_dims"]) if r["enabled_dims"] else [],
+        "directive": directive,
+        "word_count_target": wc,
+        "max_edit_rounds": mer,
+        "hygiene": pick_json("hygiene") or _DEFAULT_HYGIENE,
+        "scalar_targets": pick_json("scalar_targets"),   # 用户显式标量目标,覆盖指纹派生
+        "enabled_dims": pick_json("enabled_dims"),
     }
 
 
 def set_style_config(conn, scope, volume_id=None, *, directive=None, word_count_target=None,
-                     max_edit_rounds=None, hygiene=None, enabled_dims=None):
+                     max_edit_rounds=None, hygiene=None, enabled_dims=None, scalar_targets=None):
     """upsert 文风配置(只更新非 None 字段)。行不存在则建(scope/volume_id 匹配)。"""
-    # 找既有行
     if scope == "volume":
         row = conn.execute(
             "SELECT id FROM style_template WHERE scope='volume' AND volume_id=? "
@@ -117,6 +143,8 @@ def set_style_config(conn, scope, volume_id=None, *, directive=None, word_count_
         fields.append("hygiene=?"); vals.append(json.dumps(hygiene, ensure_ascii=False))
     if enabled_dims is not None:
         fields.append("enabled_dims=?"); vals.append(json.dumps(enabled_dims, ensure_ascii=False))
+    if scalar_targets is not None:
+        fields.append("scalar_targets=?"); vals.append(json.dumps(scalar_targets, ensure_ascii=False))
     if row:
         if fields:
             vals.append(row["id"])
@@ -145,6 +173,10 @@ def list_fingerprints(conn, scope=None):
             fp["_volume_id"] = r["volume_id"]
         if r["directive"]:
             fp["_directive"] = r["directive"]
+        if r["scalar_targets"] and r["scalar_targets"] != "{}":
+            fp["_scalar_targets"] = json.loads(r["scalar_targets"])
+        if r["volume_id"] is not None:
+            fp["_volume_id"] = r["volume_id"]
         if scope is None or fp.get("_scope") == scope:
             out.append(fp)
     return out

@@ -119,12 +119,18 @@ def measure_style_drift(conn, chapter_id, volume_id):
     paragraphs = [p["text"] for p in list_paragraphs_in_chapter(conn, chapter_id)]
     actual = _chapter_scalar_metrics(paragraphs)
 
-    # 目标回退:卷级 → 作品级 → 自洽
+    # 目标回退:卷级字段merge→作品级指纹派生标量,再被用户显式 scalar_targets 覆盖→自洽
     cfg = get_style_config(conn, volume_id)
     target, source = None, None
     if cfg.get("fingerprint"):
         target, source = _target_scalars(cfg["fingerprint"]), f"作品级指纹({cfg.get('source_work', 'work')})"
-    if target is None and gnum:
+    # 用户显式标量目标覆盖指纹派生(最高优先)
+    st = cfg.get("scalar_targets") or {}
+    if st:
+        target = dict(target or {})
+        target.update({k: v for k, v in st.items() if v is not None})
+        source = f"显式标量目标(覆盖{source or '默认'})"
+    if not target and gnum:
         sc = _self_consistency_target(conn, volume_id, gnum)
         if sc:
             target, source = sc, "自洽(本卷已写章节均值)"

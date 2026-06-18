@@ -1,11 +1,11 @@
 <!-- src/views/Style.vue -->
-<!-- 文风配置视图:统计指纹(9维) + 定性文风指令(可编辑,注入 writer) + 旋钮(字数/编辑轮/hygiene)。
-     指纹管"分布",指令管"气质"。维度定义 tooltip 可解释化。 -->
+<!-- 文风配置:统计指纹(9维,只读参考) + 定性指令 + 4可编辑标量目标 + 预设 + 旋钮。
+     scope:作品级(基线) / 卷级(覆盖,空字段继承作品级)。章级不存配置。 -->
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import {
   NSpin, NEmpty, NCard, NTag, NProgress, NSpace, NAlert, NInput,
-  NInputNumber, NButton, NTooltip, useMessage,
+  NInputNumber, NButton, NTooltip, NRadioGroup, NRadioButton, NSelect, useMessage,
 } from 'naive-ui'
 import { api } from '../api/client'
 
@@ -13,60 +13,102 @@ const props = defineProps<{ wid: string }>()
 const msg = useMessage()
 
 interface DimDef { label: string; unit: string; formula: string; interpret: string }
-interface Fingerprint {
-  _scope?: string; _volume_id?: number; _source_work?: string; _directive?: string
-  [k: string]: any
-}
+interface Fingerprint { _scope?: string; _volume_id?: number; _source_work?: string; _directive?: string; _scalar_targets?: Record<string, number>; [k: string]: any }
 const configs = ref<Fingerprint[]>([])
 const dimDefs = ref<Record<string, DimDef>>({})
+const volumes = ref<{ id: number; name: string }[]>([])
 const loading = ref(true)
 const saving = ref(false)
 const error = ref('')
 
-// 可编辑旋钮(作品级;存本地编辑态,保存时 POST)
+// 编辑态
+const scope = ref<'work' | 'volume'>('work')
+const volumeId = ref<number | null>(null)
 const directive = ref('')
-const wcMin = ref<number>(3000)
-const wcMax = ref<number>(5000)
-const maxRounds = ref<number>(3)
-const dirty = computed(() => {
-  const c = workCfg.value
-  if (!c) return false
-  return directive.value !== (c._directive || '')
-    || wcMin.value !== (parseWC(c).min) || wcMax.value !== (parseWC(c).max)
-    || maxRounds.value !== 3
+const wcMin = ref(3000), wcMax = ref(5000), maxRounds = ref(3)
+// 4 标量目标(% 或 /千字);空=继承指纹派生
+const tDash = ref<number|null>(null), tNotx = ref<number|null>(null), tDlg = ref<number|null>(null), tRhet = ref<number|null>(null)
+
+const workCfg = computed(() => configs.value.find(c => c._scope === 'work') || null)
+const curCfg = computed(() => scope.value === 'volume'
+  ? configs.value.find(c => c._scope === 'volume' && c._volume_id === volumeId.value) || null
+  : workCfg.value)
+
+// 指纹派生的标量(作 placeholder/默认)
+const derived = computed(() => {
+  const fp = workCfg.value || {}
+  return {
+    dash: fp.dash ? Math.round((1 - (fp.dash['0'] || 0)) * 1000) / 10 : null,
+    notx: fp.structure ? Math.round((fp.structure.notXisY || 0) * 1000) / 10 : null,
+    dlg: fp.dialogue_ratio ? Math.round((fp.dialogue_ratio.value || 0) * 1000) / 10 : null,
+    rhet: fp.rhetoric ? fp.rhetoric.value : null,
+  }
 })
 
-const workCfg = computed(() => configs.value.find(c => c._scope === 'work') || configs.value[0] || null)
-function parseWC(c: Fingerprint | null) {
-  // word_count_target 不在 fingerprint 里,单独存——这里仅占位,实际从 configs 拓展字段读
-  return { min: 3000, max: 5000 }
+function populateFrom(c: Fingerprint | null) {
+  directive.value = c?._directive || ''
+  const st = c?._scalar_targets || {}
+  tDash.value = st.dash_rate != null ? Math.round(st.dash_rate * 1000) / 10 : null
+  tNotx.value = st.notXisY_rate != null ? Math.round(st.notXisY_rate * 1000) / 10 : null
+  tDlg.value = st.dialogue_ratio != null ? Math.round(st.dialogue_ratio * 1000) / 10 : null
+  tRhet.value = st.rhetoric_per_k != null ? st.rhetoric_per_k : null
 }
 
 async function load() {
   if (!props.wid) return
   loading.value = true; error.value = ''
   try {
-    const r = (await api.style(props.wid)) as any
-    configs.value = r.configs || []
-    dimDefs.value = r.dim_definitions || {}
-    if (workCfg.value) {
-      directive.value = workCfg.value._directive || ''
-    }
+    const [sr, ov] = await Promise.all([api.style(props.wid), api.overview(props.wid) as any])
+    configs.value = sr.configs || []
+    dimDefs.value = sr.dim_definitions || {}
+    volumes.value = (ov.volume_list || []).map((v: any) => ({ id: v.id, name: v.name }))
+    if (volumes.value.length && volumeId.value == null) volumeId.value = volumes.value[0].id
+    populateFrom(curCfg.value)
   } catch (e: any) { error.value = e.message || String(e) }
   finally { loading.value = false }
 }
 watch(() => props.wid, load, { immediate: true })
+watch([scope, volumeId], () => populateFrom(curCfg.value))
+
+const dirty = computed(() => {
+  const c = curCfg.value
+  if (!c) return true
+  const st = c._scalar_targets || {}
+  return directive.value !== (c._directive || '')
+    || scalarsPayload().dash_rate !== st.dash_rate
+    || scalarsPayload().notXisY_rate !== st.notXisY_rate
+    || scalarsPayload().dialogue_ratio !== st.dialogue_ratio
+    || scalarsPayload().rhetoric_per_k !== st.rhetoric_per_k
+})
+function scalarsPayload() {
+  const o: Record<string, number> = {}
+  if (tDash.value != null) o.dash_rate = tDash.value / 100
+  if (tNotx.value != null) o.notXisY_rate = tNotx.value / 100
+  if (tDlg.value != null) o.dialogue_ratio = tDlg.value / 100
+  if (tRhet.value != null) o.rhetoric_per_k = tRhet.value
+  return o
+}
+
+// 预设:一组标量目标快捷设定
+function applyPreset(name: string) {
+  if (name === '冷硬快节奏') { tDash.value = 2; tNotx.value = 0.2; tDlg.value = 25; tRhet.value = 2 }
+  else if (name === '平稳叙事') { tDash.value = 4; tNotx.value = 0.5; tDlg.value = 15; tRhet.value = 3 }
+  else if (name === '浓修辞') { tDash.value = 5; tNotx.value = 0.5; tDlg.value = 20; tRhet.value = 8 }
+  msg.info(`已套用预设「${name}」,点保存生效`)
+}
 
 async function save() {
   saving.value = true
   try {
     await api.setStyle(props.wid, {
-      scope: 'work',
+      scope: scope.value,
+      volume_id: scope.value === 'volume' ? volumeId.value : undefined,
       directive: directive.value,
-      word_count_target: [wcMin.value, wcMax.value],
-      max_edit_rounds: maxRounds.value,
+      word_count_target: scope.value === 'work' ? [wcMin.value, wcMax.value] : undefined,
+      max_edit_rounds: scope.value === 'work' ? maxRounds.value : undefined,
+      scalar_targets: scalarsPayload(),
     })
-    msg.success('文风配置已保存(后续写/润色生效)')
+    msg.success(`${scope.value === 'volume' ? '卷级' : '作品级'}文风配置已保存`)
     await load()
   } catch (e: any) { msg.error('保存失败: ' + (e.message || e)) }
   finally { saving.value = false }
@@ -76,15 +118,10 @@ const DIMS = ['sentence_length', 'paragraph_length', 'period', 'dialogue', 'dial
   'dash', 'rhetoric', 'structure', 'sensory']
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
 function entries(fp: Fingerprint, key: string): [string, number][] {
-  const d = fp[key]
-  if (!d || typeof d !== 'object') return []
+  const d = fp[key]; if (!d || typeof d !== 'object') return []
   return Object.entries(d).filter(([k]) => !k.startsWith('_')) as [string, number][]
 }
-function defOf(key: string): DimDef | undefined { return dimDefs.value[key] }
-const notXisY = computed(() => workCfg.value?.structure?.notXisY)
-const dash0 = computed(() => workCfg.value?.dash?.['0'])
-const dlgRatio = computed(() => workCfg.value?.dialogue_ratio?.value)
-const rhetoric = computed(() => workCfg.value?.rhetoric?.value)
+function defOf(key: string) { return dimDefs.value[key] }
 </script>
 
 <template>
@@ -92,76 +129,98 @@ const rhetoric = computed(() => workCfg.value?.rhetoric?.value)
     <NSpin :show="loading">
       <div v-if="error" style="color: var(--n-error-color)">{{ error }}</div>
 
-      <NEmpty v-else-if="!configs.length" description="该作品尚无文风指纹/配置">
+      <NEmpty v-else-if="!configs.length && !volumes.length" description="该作品无文风配置">
         <template #extra>
-          <NAlert type="info" :bordered="false" style="text-align: left; max-width: 540px">
-            无指纹时 Polish 跳过、旋钮走代码默认。<br>
-            注入对标指纹:<pre style="margin:6px 0 0;font-size:12px">python scripts/extract_reference_style.py \
+          <NAlert type="info" :bordered="false" style="text-align:left;max-width:540px">
+            可先填"文风指令"定性描述(无需指纹即生效),或灌对标指纹:
+            <pre style="margin:6px 0 0;font-size:12px">python scripts/extract_reference_style.py \
   --txt "参考作品.txt" --project projects/{{ props.wid }} --scope work</pre>
-            下方仍可填"文风指令"定性描述(无需指纹即可生效)。
           </NAlert>
         </template>
       </NEmpty>
 
       <NSpace v-else vertical :size="12">
-        <NAlert v-if="notXisY !== undefined" type="success" :bordered="false">
-          对标基准:notXisY ≈ {{ pct(notXisY!) }}%、无破折号段落 {{ pct(dash0!) }}%、
-          对白占比 {{ Math.round((dlgRatio||0)*100) }}%、修辞 {{ rhetoric||0 }}/千字
-        </NAlert>
-
-        <!-- 定性文风指令(可编辑,核心新增) -->
-        <NCard size="small" title="文风指令 · 定性要求(注入 writer,高于统计指纹)">
-          <NInput
-            v-model:value="directive"
-            type="textarea"
-            :autosize="{ minRows: 3, maxRows: 8 }"
-            placeholder="用自然语言描述想要的文风气质,如:短促冷硬、镜头式白描、不用心理独白、对白简省、环境留白、克制感官。这段会作为系统级指令注入每章 ChapterWriter。"
-          />
-          <NSpace :size="10" align="center" style="margin-top: 8px">
-            <span class="knob-label">字数目标</span>
-            <NInputNumber v-model:value="wcMin" :min="500" :step="500" size="small" style="width:110px" />
-            <span>~</span>
-            <NInputNumber v-model:value="wcMax" :min="500" :step="500" size="small" style="width:110px" />
-            <span class="knob-label" style="margin-left:12px">最大编辑轮</span>
-            <NInputNumber v-model:value="maxRounds" :min="0" :max="6" size="small" style="width:80px" />
-            <NButton type="primary" size="small" :loading="saving" :disabled="!dirty" @click="save">保存</NButton>
+        <!-- scope 选择 + 编辑区 -->
+        <NCard size="small" title="文风配置(可编辑)">
+          <NSpace align="center" :size="10" style="margin-bottom:10px">
+            <NRadioGroup v-model:value="scope" size="small">
+              <NRadioButton value="work">作品级(基线)</NRadioButton>
+              <NRadioButton value="volume">卷级(覆盖)</NRadioButton>
+            </NRadioGroup>
+            <NSelect v-if="scope === 'volume'" v-model:value="volumeId" size="small"
+              :options="volumes.map(v => ({ label: v.name, value: v.id }))" style="width:160px" />
+            <NTag v-if="scope === 'volume'" size="small" type="warning" round>空字段=继承作品级</NTag>
+            <NTag v-else size="small" type="info" round>全作品生效</NTag>
           </NSpace>
+
+          <NAlert v-if="scope === 'volume' && !curCfg" type="default" :bordered="false" style="margin-bottom:8px">
+            该卷尚未设覆盖,保存后将创建卷级配置(只存你填的字段,其余继承作品级)。
+          </NAlert>
+
+          <!-- 文风指令 -->
+          <div class="field-label">文风指令(定性,注入 writer)</div>
+          <NInput v-model:value="directive" type="textarea" :autosize="{ minRows: 2, maxRows: 5 }"
+            :placeholder="scope === 'volume' ? '留空=继承作品级指令' : '短促冷硬、镜头式白描、不用心理独白...'" />
+
+          <!-- 4 标量目标(可编辑,空=指纹派生) -->
+          <div class="field-label" style="margin-top:10px">
+            标量目标(style-check 比对;留空=用指纹派生值)
+          </div>
+          <div class="scalar-grid">
+            <div class="scalar"><span>破折号率(%)</span><NInputNumber v-model:value="tDash" :min="0" :max="100" :step="1" size="small" :placeholder="derived.dash != null ? String(derived.dash) : ''" /></div>
+            <div class="scalar"><span>「不是A是B」率(%)</span><NInputNumber v-model:value="tNotx" :min="0" :max="100" :step="0.1" size="small" :placeholder="derived.notx != null ? String(derived.notx) : ''" /></div>
+            <div class="scalar"><span>对白占比(%)</span><NInputNumber v-model:value="tDlg" :min="0" :max="100" :step="1" size="small" :placeholder="derived.dlg != null ? String(derived.dlg) : ''" /></div>
+            <div class="scalar"><span>修辞(/千字)</span><NInputNumber v-model:value="tRhet" :min="0" :step="0.5" size="small" :placeholder="derived.rhet != null ? String(derived.rhet) : ''" /></div>
+          </div>
+          <NSpace :size="6" style="margin-top:6px">
+            <NButton size="tiny" quaternary @click="applyPreset('冷硬快节奏')">冷硬快节奏</NButton>
+            <NButton size="tiny" quaternary @click="applyPreset('平稳叙事')">平稳叙事</NButton>
+            <NButton size="tiny" quaternary @click="applyPreset('浓修辞')">浓修辞</NButton>
+          </NSpace>
+
+          <!-- 旋钮(仅作品级;卷级继承) -->
+          <template v-if="scope === 'work'">
+            <div class="field-label" style="margin-top:10px">旋钮</div>
+            <NSpace :size="10" align="center">
+              <span class="knob-label">字数</span>
+              <NInputNumber v-model:value="wcMin" :min="500" :step="500" size="small" style="width:110px" />
+              <span>~</span>
+              <NInputNumber v-model:value="wcMax" :min="500" :step="500" size="small" style="width:110px" />
+              <span class="knob-label" style="margin-left:12px">编辑轮</span>
+              <NInputNumber v-model:value="maxRounds" :min="0" :max="6" size="small" style="width:80px" />
+            </NSpace>
+          </template>
+
+          <div style="margin-top:12px">
+            <NButton type="primary" size="small" :loading="saving" :disabled="!dirty" @click="save">保存</NButton>
+          </div>
         </NCard>
 
-        <!-- 统计指纹 9 维(带定义 tooltip) -->
-        <NCard v-for="(fp, i) in configs" :key="i" size="small"
-               :title="`统计指纹 · ${fp._scope === 'volume' ? '卷级' : '作品级'}`">
+        <!-- 统计指纹(只读参考) -->
+        <NCard v-if="workCfg" size="small" title="统计指纹 · 只读参考(来自 extract)">
           <template #header-extra>
-            <NSpace :size="6">
-              <NTag size="small" round>{{ fp._scope }}</NTag>
-              <NTag v-if="fp._source_work" size="small" type="info" round>{{ fp._source_work }}</NTag>
-            </NSpace>
+            <NTag v-if="workCfg._source_work" size="small" type="info" round>{{ workCfg._source_work }}</NTag>
           </template>
           <div class="dim-grid">
             <div v-for="dim in DIMS" :key="dim" class="dim">
               <div class="dim-head">
                 <NTooltip trigger="hover" placement="top">
-                  <template #trigger>
-                    <span class="dim-label">{{ defOf(dim)?.label || dim }} ℹ</span>
-                  </template>
-                  <div style="max-width: 280px">
+                  <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }} ℹ</span></template>
+                  <div style="max-width:280px">
                     <div><b>{{ defOf(dim)?.label }}</b> ({{ defOf(dim)?.unit }})</div>
                     <div style="opacity:.8">{{ defOf(dim)?.formula }}</div>
                     <div style="opacity:.65;margin-top:4px">{{ defOf(dim)?.interpret }}</div>
                   </div>
                 </NTooltip>
               </div>
-              <!-- 单值维度(dialogue_ratio/rhetoric) -->
-              <div v-if="fp[dim]?.value !== undefined" class="single-val">
-                {{ dim === 'dialogue_ratio' ? Math.round(fp[dim].value*1000)/10 + '%' : fp[dim].value + ' /千字' }}
+              <div v-if="workCfg[dim]?.value !== undefined" class="single-val">
+                {{ dim === 'dialogue_ratio' ? Math.round(workCfg[dim].value*1000)/10 + '%' : workCfg[dim].value + ' /千字' }}
               </div>
-              <!-- 直方图维度 -->
               <div v-else>
-                <div v-for="[k, v] in entries(fp, dim)" :key="k" class="bar-row">
+                <div v-for="[k, v] in entries(workCfg, dim)" :key="k" class="bar-row">
                   <span class="bar-k" :class="{ hi: dim === 'structure' && k === 'notXisY' }">{{ k }}</span>
                   <NProgress type="line" :percentage="pct(v)" :height="10" :show-indicator="false"
-                    :status="(dim === 'structure' && k === 'notXisY' && pct(v) > 2) ? 'warning' : 'success'"
-                    style="flex: 1" />
+                    :status="(dim === 'structure' && k === 'notXisY' && pct(v) > 2) ? 'warning' : 'success'" style="flex:1" />
                   <span class="bar-v">{{ pct(v) }}%</span>
                 </div>
               </div>
@@ -175,14 +234,17 @@ const rhetoric = computed(() => workCfg.value?.rhetoric?.value)
 
 <style scoped>
 .style-view { padding: 12px; }
+.field-label { font-size: 12px; opacity: 0.65; margin-bottom: 4px; }
 .knob-label { font-size: 13px; opacity: 0.7; }
+.scalar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+.scalar { display: flex; flex-direction: column; gap: 2px; }
+.scalar span { font-size: 11px; opacity: 0.7; }
 .dim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
 .dim { background: var(--n-color); border: 1px solid var(--n-border-color); border-radius: 8px; padding: 10px; }
-.dim-head { margin-bottom: 6px; }
 .dim-label { font-weight: 600; cursor: help; border-bottom: 1px dotted; }
 .single-val { font-size: 20px; font-weight: 700; color: var(--n-primary-color); padding: 4px 0; }
 .bar-row { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 12px; }
 .bar-k { min-width: 56px; opacity: 0.8; }
-.bar-k.hi { color: var(--n-warning-color); font-weight: 700; opacity: 1; }
+.bar-k.hi { color: var(--n-warning-color); font-weight: 700; }
 .bar-v { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; }
 </style>
