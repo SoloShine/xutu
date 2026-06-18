@@ -48,6 +48,33 @@ def save_fingerprint(conn, scope, chapter_ids, volume_id=None):
         scope=scope, volume_id=volume_id if scope == "volume" else None)
 
 
+def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=None, sample=25):
+    """从外部参考全文提取指纹并 upsert(同 scope 行→UPDATE fingerprint,保留指令/旋钮)。
+    纯程序提取(reference_import),零 LLM。返回 (row_id, meta)。"""
+    from src.bedrock.style.reference_import import import_and_extract
+    fp, meta = import_and_extract(text, sample=sample)
+    fp["_scope"] = scope
+    fp["_source_work"] = source_work or "外部参考"
+    if scope == "volume" and volume_id is not None:
+        fp["_volume_id"] = volume_id
+    if scope == "volume":
+        row = conn.execute(
+            "SELECT id FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",
+            (volume_id,)).fetchone()
+    else:
+        row = conn.execute(
+            "SELECT id FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
+    fp_json = json.dumps(fp, ensure_ascii=False)
+    if row:
+        conn.execute("UPDATE style_template SET fingerprint=?, source_works=? WHERE id=?",
+                     (fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), row["id"]))
+        conn.commit()
+        return row["id"], meta
+    rid = save_style_template(conn, fingerprint=fp, source_works=[fp["_source_work"]],
+                              scope=scope, volume_id=volume_id if scope == "volume" else None)
+    return rid, meta
+
+
 def _row_by_scope(conn, scope, volume_id):
     """按真列 scope/volume_id 取行(卷级优先)。"""
     if scope == "volume" and volume_id is not None:

@@ -21,6 +21,8 @@ const actual = ref<{ fingerprint: Fingerprint | null; scalars: Record<string, nu
 const loading = ref(true)
 const saving = ref(false)
 const error = ref('')
+const importPath = ref('')
+const importing = ref(false)
 
 // 编辑态
 const scope = ref<'work' | 'volume'>('work')
@@ -151,9 +153,33 @@ async function save() {
 const DIMS = ['sentence_length', 'paragraph_length', 'period', 'dialogue', 'dialogue_ratio',
   'dash', 'rhetoric', 'structure', 'sensory']
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
+
+// 导入参考作品(本地 txt 路径,服务端纯程序提取)
+async function importRef() {
+  if (!importPath.value.trim()) { msg.warning('填参考作品 txt 本地路径'); return }
+  importing.value = true
+  try {
+    const r: any = await api.importReference(props.wid, {
+      path: importPath.value.trim(), scope: scope.value,
+      volume_id: scope.value === 'volume' ? volumeId.value : undefined,
+    })
+    if (r && r.ok !== false) {
+      msg.success(`已提取: ${(r.item || r).chapter_count || '?'}章/抽样${(r.item || r).sampled_chapters || '?'} → ${scope.value === 'volume' ? '卷级' : '作品级'}指纹`)
+      importPath.value = ''
+      await load()
+    } else { msg.error('导入失败: ' + ((r && r.error) || '未知')) }
+  } catch (e: any) { msg.error('导入失败: ' + (e.message || e)) }
+  finally { importing.value = false }
+}
 function entries(fp: Fingerprint, key: string): [string, number][] {
   const d = fp[key]; if (!d || typeof d !== 'object') return []
   return Object.entries(d).filter(([k]) => !k.startsWith('_')) as [string, number][]
+}
+// 某 dim 各桶的目标+实测值(同 bucket 配对)
+function dimRows(dim: string) {
+  const t = (workCfg.value as any)?.[dim] || {}
+  const a = (actual.value?.fingerprint as any)?.[dim] || {}
+  return Object.keys(t).filter(k => !k.startsWith('_')).map(k => ({ k, target: t[k] || 0, actual: a[k] || 0 }))
 }
 function defOf(key: string) { return dimDefs.value[key] }
 </script>
@@ -190,6 +216,14 @@ function defOf(key: string) { return dimDefs.value[key] }
           <NAlert v-if="scope === 'volume' && !curCfg" type="default" :bordered="false" style="margin-bottom:8px">
             该卷尚未设覆盖,保存后将创建卷级配置(只存你填的字段,其余继承作品级)。
           </NAlert>
+
+          <!-- 导入参考作品(纯程序提取,零LLM) -->
+          <div class="field-label">导入参考作品 → 提取指纹(本地 txt 路径,瞬时)</div>
+          <NSpace :size="6" align="center" style="margin-bottom:10px">
+            <NInput v-model:value="importPath" size="small" placeholder="D:/tmp/某作品.txt"
+              style="flex:1;min-width:300px" />
+            <NButton size="small" :loading="importing" @click="importRef">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
+          </NSpace>
 
           <!-- 文风指令 -->
           <div class="field-label">文风指令(定性,注入 writer)</div>
@@ -230,76 +264,49 @@ function defOf(key: string) { return dimDefs.value[key] }
           </div>
         </NCard>
 
-        <!-- 当前实测 vs 目标(live extract 已写章节) -->
-        <NCard v-if="actual" size="small" title="当前实测 vs 目标(live)">
+        <!-- 文风对比:目标 vs 实测,每维每桶双条并排(合并原两张卡,去重) -->
+        <NCard size="small" title="文风对比(目标 vs 实测)">
           <template #header-extra>
-            <NTag size="small" round>{{ actual.chapter_count }}章 / {{ actual.paragraph_count }}段(已写)</NTag>
+            <NSpace :size="6">
+              <NTag v-if="workCfg?._source_work" size="small" type="info" round>目标:{{ workCfg._source_work }}</NTag>
+              <NTag v-if="actual?.fingerprint" size="small" round>实测:{{ actual.chapter_count }}章/{{ actual.paragraph_count }}段</NTag>
+            </NSpace>
           </template>
-          <NAlert v-if="!actual.fingerprint" type="default" :bordered="false">尚无已写章节,无法实测。</NAlert>
+          <NAlert v-if="!actual?.fingerprint" type="default" :bordered="false">尚无已写章节可实测;先写章或导入参考作品设目标。</NAlert>
           <template v-else>
-            <div class="field-label">标量对比(实测 = 弹着点 / 目标 = 靶)</div>
-            <div class="cmp-table">
-              <div v-for="r in scalarCompare" :key="r.label" class="cmp-row" :class="{ over: r.over }">
-                <span class="cmp-label">{{ r.label }}</span>
-                <div class="cmp-bars">
-                  <div class="cmp-line"><span class="cmp-tag actual">实测</span>
-                    <NProgress type="line" :percentage="Math.min(r.unit==='%'?r.actual:r.actual*5,100)" :height="10" :show-indicator="false" :status="r.over?'warning':'success'" style="flex:1" />
-                    <span class="cmp-val">{{ r.actual }}{{ r.unit }}</span></div>
-                  <div class="cmp-line"><span class="cmp-tag target">目标</span>
-                    <NProgress type="line" :percentage="r.target!=null?Math.min(r.unit==='%'?r.target:r.target*5,100):0" :height="10" :show-indicator="false" color="#999" style="flex:1" />
-                    <span class="cmp-val">{{ r.target!=null?r.target:'—' }}{{ r.unit }}</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="field-label" style="margin-top:10px">实测 9 维分布</div>
             <div class="dim-grid">
               <div v-for="dim in DIMS" :key="dim" class="dim">
-                <div class="dim-head"><span class="dim-label">{{ defOf(dim)?.label || dim }}</span></div>
-                <div v-if="actual.fingerprint[dim]?.value !== undefined" class="single-val">
-                  {{ dim === 'dialogue_ratio' ? Math.round(actual.fingerprint[dim].value*1000)/10 + '%' : actual.fingerprint[dim].value + ' /千字' }}
+                <div class="dim-head">
+                  <NTooltip trigger="hover" placement="top">
+                    <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }} ℹ</span></template>
+                    <div style="max-width:280px">
+                      <div><b>{{ defOf(dim)?.label }}</b> ({{ defOf(dim)?.unit }})</div>
+                      <div style="opacity:.8">{{ defOf(dim)?.formula }}</div>
+                      <div style="opacity:.65;margin-top:4px">{{ defOf(dim)?.interpret }}</div>
+                    </div>
+                  </NTooltip>
                 </div>
+                <!-- 单值维度:目标/实测并列 -->
+                <div v-if="(workCfg as any)?.[dim]?.value !== undefined" class="dual-single">
+                  <span class="cmp-tag target">目标 {{ dim === 'dialogue_ratio' ? pct((workCfg as any)[dim].value) + '%' : (workCfg as any)[dim].value + '/k' }}</span>
+                  <span class="cmp-tag actual">实测 {{ actual.fingerprint[dim] ? (dim === 'dialogue_ratio' ? pct(actual.fingerprint[dim].value) + '%' : actual.fingerprint[dim].value + '/k') : '—' }}</span>
+                </div>
+                <!-- 直方图维度:每桶双条(上灰=目标,下彩=实测) -->
                 <div v-else>
-                  <div v-for="[k, v] in entries(actual.fingerprint, dim)" :key="k" class="bar-row">
-                    <span class="bar-k">{{ k }}</span>
-                    <NProgress type="line" :percentage="pct(v)" :height="9" :show-indicator="false" style="flex:1" />
-                    <span class="bar-v">{{ pct(v) }}%</span>
+                  <div v-for="row in dimRows(dim)" :key="row.k" class="bar-row">
+                    <span class="bar-k" :class="{ hi: dim === 'structure' && row.k === 'notXisY' }">{{ row.k }}</span>
+                    <div class="dual-bars">
+                      <NProgress type="line" :percentage="pct(row.target)" :height="6" :show-indicator="false" color="#aaa" />
+                      <NProgress type="line" :percentage="pct(row.actual)" :height="6" :show-indicator="false"
+                        :status="(dim === 'structure' && row.k === 'notXisY' && pct(row.actual) > 2) ? 'warning' : 'success'" />
+                    </div>
+                    <span class="bar-v">{{ pct(row.actual) }}<span class="dim">/{{ pct(row.target) }}</span></span>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="legend"><span class="cmp-tag target">灰=目标</span><span class="cmp-tag actual">彩=实测</span><span style="opacity:.5">右上 实测/目标</span></div>
           </template>
-        </NCard>
-
-        <!-- 统计指纹(只读参考) -->
-        <NCard v-if="workCfg" size="small" title="统计指纹 · 只读参考(来自 extract)">
-          <template #header-extra>
-            <NTag v-if="workCfg._source_work" size="small" type="info" round>{{ workCfg._source_work }}</NTag>
-          </template>
-          <div class="dim-grid">
-            <div v-for="dim in DIMS" :key="dim" class="dim">
-              <div class="dim-head">
-                <NTooltip trigger="hover" placement="top">
-                  <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }} ℹ</span></template>
-                  <div style="max-width:280px">
-                    <div><b>{{ defOf(dim)?.label }}</b> ({{ defOf(dim)?.unit }})</div>
-                    <div style="opacity:.8">{{ defOf(dim)?.formula }}</div>
-                    <div style="opacity:.65;margin-top:4px">{{ defOf(dim)?.interpret }}</div>
-                  </div>
-                </NTooltip>
-              </div>
-              <div v-if="workCfg[dim]?.value !== undefined" class="single-val">
-                {{ dim === 'dialogue_ratio' ? Math.round(workCfg[dim].value*1000)/10 + '%' : workCfg[dim].value + ' /千字' }}
-              </div>
-              <div v-else>
-                <div v-for="[k, v] in entries(workCfg, dim)" :key="k" class="bar-row">
-                  <span class="bar-k" :class="{ hi: dim === 'structure' && k === 'notXisY' }">{{ k }}</span>
-                  <NProgress type="line" :percentage="pct(v)" :height="10" :show-indicator="false"
-                    :status="(dim === 'structure' && k === 'notXisY' && pct(v) > 2) ? 'warning' : 'success'" style="flex:1" />
-                  <span class="bar-v">{{ pct(v) }}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </NCard>
       </NSpace>
     </NSpin>
@@ -329,5 +336,12 @@ function defOf(key: string) { return dimDefs.value[key] }
 .cmp-line { display: flex; align-items: center; gap: 6px; }
 .cmp-tag { font-size: 10px; min-width: 28px; opacity: 0.6; }
 .cmp-tag.actual { color: var(--n-primary-color); opacity: 1; }
-.cmp-val { min-width: 64px; text-align: right; font-size: 12px; font-variant-numeric: tabular-nums; }
+.bar-v { min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; }
+.bar-v .dim { opacity: 0.45; }
+.dual-bars { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.dual-single { display: flex; gap: 10px; padding: 4px 0; font-size: 13px; }
+.legend { margin-top: 8px; display: flex; gap: 12px; font-size: 11px; opacity: 0.7; }
+.cmp-tag { font-size: 11px; }
+.cmp-tag.target { color: #888; }
+.cmp-tag.actual { color: var(--n-primary-color); font-weight: 600; }
 </style>

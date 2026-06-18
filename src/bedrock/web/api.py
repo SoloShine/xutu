@@ -25,7 +25,9 @@ from src.bedrock.repositories.plot_tree import (
     update_chapter_meta, update_volume_meta, update_beat_meta, update_beat_status,
 )
 from src.bedrock.repositories.worldbook import update_location, update_theme, update_motif
-from src.bedrock.style.template_repo import list_fingerprints, set_style_config, dim_definitions
+from src.bedrock.style.template_repo import (
+    list_fingerprints, set_style_config, dim_definitions, save_fingerprint_from_text,
+)
 from src.bedrock.checks.style_drift import measure_work_actual
 
 bp = Blueprint("api", __name__, url_prefix="/api")
@@ -232,6 +234,40 @@ def api_style_actual(work_id):
     conn = get_connection(wd)
     try:
         return jsonify(measure_work_actual(conn, vid))
+    finally:
+        conn.close()
+
+
+@bp.post("/works/<work_id>/style/import-reference")
+def api_style_import(work_id):
+    """导入外部参考作品 txt → 提取文风指纹(纯程序,零LLM)。body: {path, scope, volume_id?, sample?}。
+    服务端按本地路径读文件(参考书常数 MB,走浏览器上传不现实)。"""
+    _require_json()
+    wd = _resolve_work(work_id)
+    body = request.get_json(silent=True) or {}
+    path = body.get("path")
+    if not path:
+        return _err("需 path(参考作品 txt 本地路径)")
+    scope = body.get("scope", "work")
+    if scope not in ("work", "volume"):
+        return _err("scope 必须 work|volume")
+    from pathlib import Path
+    p = Path(path)
+    if not p.is_file():
+        return _err(f"文件不存在: {path}")
+    try:
+        text = p.read_text(encoding="utf-8", errors="replace")
+    except Exception as e:
+        return _err(f"读取失败: {e}")
+    conn = get_connection(wd)
+    try:
+        rid, meta = save_fingerprint_from_text(
+            conn, scope=scope, text=text,
+            volume_id=body.get("volume_id") if scope == "volume" else None,
+            source_work=p.stem, sample=int(body.get("sample", 25)))
+        return _ok({"id": rid, "source_work": p.stem, **meta})
+    except Exception as e:
+        return _err(e)
     finally:
         conn.close()
 
