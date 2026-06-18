@@ -23,9 +23,14 @@ DIM_DEFINITIONS = {
         "interpret": "1-50字占比高=网文式一句一段;200+多=稠密长段",
     },
     "period": {
-        "label": "句号密度", "unit": "句号数/段",
-        "formula": "每段 。 个数",
-        "interpret": "1-2=段落短(一句一段);7+=长复述段",
+        "label": "句号(按段)", "unit": "。/段",
+        "formula": "每段 。 个数(直方图;长度耦合,仅展示)",
+        "interpret": "长段天然含更多。;跨作品不可靠。看 period_density 或 sentence_length",
+    },
+    "period_density": {
+        "label": "句号密度", "unit": "。/千字",
+        "formula": "全文 。 数 / 中文字数 × 1000(长度归一)",
+        "interpret": "高=短句多(一句一段);与 sentence_length 互补(句号密度≈1/平均句长)",
     },
     "dialogue": {
         "label": "对白类型", "unit": "段落分类",

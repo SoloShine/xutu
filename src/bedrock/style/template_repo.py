@@ -56,11 +56,18 @@ def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=No
     返回 (row_id, meta, directive_seeded)。"""
     from src.bedrock.style.reference_import import import_and_extract, derive_directive, pick_reference_sample
     fp, meta = import_and_extract(text, sample=sample, chapter_range=chapter_range)
+    reference_sample, llm_sample_titles = pick_reference_sample(text)   # 持久化样本+章名,/analyze-style 用
+    # 抽样透明化:统计抽样的范围/章名 + LLM 样本的章名,存进指纹供工作台 tooltip 展示
+    fp["_sample_info"] = {
+        "stat_range": meta.get("sample_range"),
+        "stat_count": meta.get("sampled_chapters"),
+        "stat_titles": meta.get("sampled_titles", [])[:6],
+        "llm_sample_titles": llm_sample_titles,
+    }
     fp["_scope"] = scope
     fp["_source_work"] = source_work or "外部参考"
     if scope == "volume" and volume_id is not None:
         fp["_volume_id"] = volume_id
-    reference_sample = pick_reference_sample(text)   # 持久化样本,/analyze-style 用
     if scope == "volume":
         row = conn.execute(
             "SELECT id, directive, directive_source FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",

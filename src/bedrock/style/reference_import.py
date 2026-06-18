@@ -83,7 +83,8 @@ def sample_chapter_indices(n_chapters, sample, chapter_range=None, edge_skip=10)
 
 
 def import_and_extract(text, sample=None, chapter_range=None):
-    """全文 → (fingerprint, meta)。纯程序。chapter_range=[start,end] 1-based。"""
+    """全文 → (fingerprint, meta)。纯程序。chapter_range=[start,end] 1-based。
+    meta 含 sampled_titles(抽样章名,供工作台透明展示)。"""
     from src.bedrock.style.extractor import extract_fingerprint
     chapters = split_chapters(text)
     idxs = sample_chapter_indices(len(chapters), sample, chapter_range)
@@ -96,28 +97,28 @@ def import_and_extract(text, sample=None, chapter_range=None):
         "sampled_chapters": len(idxs),
         "paragraph_count": len(paragraphs),
         "sample_range": [idxs[0] + 1, idxs[-1] + 1] if idxs else None,
+        "sampled_titles": [chapters[i][0][:30] for i in idxs[:8]],  # 抽样章名(前8)
     }
 
 
 def pick_reference_sample(text, points=(0.15, 0.4, 0.65, 0.9), per_chapter=1500, max_chars=6000):
-    """取代表性正文样本供 LLM 文风分析(持久化)。
-    多点分散(默认 15/40/65/90% 四点,跳极首尾的非典型段)+ 每章截 per_chapter,
-    共 ~max_chars。实证:分散取样比"连续3中章"更接近全量分布(连续易命中单一弧致偏)。
-    """
+    """取代表性正文样本供 LLM 文风分析(持久化)+ 抽样章名。
+    返回 (sample_text, chapter_titles)。多点分散,每章截 per_chapter,共 ~max_chars。"""
     chapters = split_chapters(text)
     if not chapters:
-        return text[:max_chars]
+        return text[:max_chars], []
     n = len(chapters)
     idxs = [min(int(p * n), n - 1) for p in points]
-    parts, total = [], 0
+    parts, total, titles = [], 0, []
     for i in idxs:
-        seg = [chapter_paragraphs(chapters[i][1])[:30]]
-        chunk = ("【" + chapters[i][0] + "】\n" + "\n".join(seg[0]))[:per_chapter]
+        titles.append(chapters[i][0][:30])
+        seg = chapter_paragraphs(chapters[i][1])[:30]
+        chunk = ("【" + chapters[i][0] + "】\n" + "\n".join(seg))[:per_chapter]
         parts.append(chunk)
         total += len(chunk)
         if total >= max_chars:
             break
-    return "\n\n".join(parts)[:max_chars]
+    return "\n\n".join(parts)[:max_chars], titles
 
 
 def preview_chapters(text):

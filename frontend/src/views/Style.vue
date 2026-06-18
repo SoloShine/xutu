@@ -13,7 +13,7 @@ const props = defineProps<{ wid: string }>()
 const msg = useMessage()
 
 interface DimDef { label: string; unit: string; formula: string; interpret: string }
-interface Fingerprint { _scope?: string; _volume_id?: number; _source_work?: string; _directive?: string; _scalar_targets?: Record<string, number>; [k: string]: any }
+interface Fingerprint { _scope?: string; _volume_id?: number; _source_work?: string; _directive?: string; _directive_source?: string; _directive_stale?: boolean; _sample_info?: { stat_range?: [number, number]; stat_count?: number; stat_titles?: string[]; llm_sample_titles?: string[] }; _scalar_targets?: Record<string, number>; [k: string]: any }
 const configs = ref<Fingerprint[]>([])
 const dimDefs = ref<Record<string, DimDef>>({})
 const volumes = ref<{ id: number; name: string }[]>([])
@@ -157,7 +157,7 @@ async function save() {
   finally { saving.value = false }
 }
 
-const DIMS = ['sentence_length', 'paragraph_length', 'period', 'dialogue', 'dialogue_ratio',
+const DIMS = ['sentence_length', 'paragraph_length', 'period', 'period_density', 'dialogue', 'dialogue_ratio',
   'dash', 'dash_density', 'rhetoric', 'structure', 'sensory']
 function pct(n: number) { return Math.round((n || 0) * 1000) / 10 }
 
@@ -322,7 +322,19 @@ function defOf(key: string) { return dimDefs.value[key] }
         <NCard size="small" title="文风对比(目标 vs 实测)">
           <template #header-extra>
             <NSpace :size="6">
-              <NTag v-if="workCfg?._source_work" size="small" type="info" round>目标:{{ workCfg._source_work }}</NTag>
+              <NTooltip v-if="workCfg?._source_work" trigger="hover" placement="bottom">
+                <template #trigger>
+                  <NTag size="small" type="info" round style="cursor:help">目标:{{ workCfg._source_work }}</NTag>
+                </template>
+                <div style="max-width:320px">
+                  <div><b>统计抽样</b>(指纹来源):{{ (workCfg._sample_info?.stat_count) || '?' }}章,范围
+                    {{ workCfg._sample_info?.stat_range?.[0] }}-{{ workCfg._sample_info?.stat_range?.[1] }}</div>
+                  <div style="opacity:.7;font-size:12px;margin:2px 0">{{ (workCfg._sample_info?.stat_titles || []).join(' / ') }}</div>
+                  <div v-if="workCfg._sample_info?.llm_sample_titles?.length" style="margin-top:4px">
+                    <b>文风指令抽样</b>:/analyze-style 读这 {{ workCfg._sample_info.llm_sample_titles.length }} 章</div>
+                  <div style="opacity:.7;font-size:12px;margin:2px 0">{{ (workCfg._sample_info?.llm_sample_titles || []).join(' / ') }}</div>
+                </div>
+              </NTooltip>
               <NTag v-if="actual?.fingerprint" size="small" round>实测:{{ actual.chapter_count }}章/{{ actual.paragraph_count }}段</NTag>
             </NSpace>
           </template>
@@ -332,7 +344,7 @@ function defOf(key: string) { return dimDefs.value[key] }
               <div v-for="dim in DIMS" :key="dim" class="dim">
                 <div class="dim-head">
                   <NTooltip trigger="hover" placement="top">
-                    <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }} ℹ</span></template>
+                    <template #trigger><span class="dim-label">{{ defOf(dim)?.label || dim }}<svg class="dim-info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.2a.9.9 0 110 1.8.9.9 0 010-1.8zm1.1 8.2H6.9c0-.5.4-.7.4-1.2V8.6c0-.4-.2-.5-.6-.6v-.5h2.4v3.4c0 .6.3.8.3 1.1z"/></svg></span></template>
                     <div style="max-width:280px">
                       <div><b>{{ defOf(dim)?.label }}</b> ({{ defOf(dim)?.unit }})</div>
                       <div style="opacity:.8">{{ defOf(dim)?.formula }}</div>
@@ -376,7 +388,9 @@ function defOf(key: string) { return dimDefs.value[key] }
 .scalar span { font-size: 11px; opacity: 0.7; }
 .dim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
 .dim { background: var(--n-color); border: 1px solid var(--n-border-color); border-radius: 8px; padding: 10px; }
-.dim-label { font-weight: 600; cursor: help; border-bottom: 1px dotted; }
+.dim-label { font-weight: 600; cursor: help; display: inline-flex; align-items: center; gap: 3px; }
+.dim-info-icon { fill: currentColor; opacity: 0.5; transition: opacity .15s; }
+.dim-label:hover .dim-info-icon { opacity: 0.9; }
 .single-val { font-size: 20px; font-weight: 700; color: var(--n-primary-color); padding: 4px 0; }
 .bar-row { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 12px; }
 .bar-k { min-width: 56px; opacity: 0.8; }
