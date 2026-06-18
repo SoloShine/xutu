@@ -167,10 +167,13 @@ def measure_work_actual(conn, volume_id=None, refresh=False):
     返回 {fingerprint, scalars, chapter_count, paragraph_count, cached, computed_at}。"""
     if not refresh:
         scope = "volume" if volume_id else "work"
-        row = conn.execute(
-            ("SELECT * FROM style_actual_cache WHERE scope=? AND volume_id=?"
-             if volume_id else "SELECT * FROM style_actual_cache WHERE scope=? AND volume_id IS NULL"),
-            (scope, volume_id) if volume_id else (scope,)).fetchone()
+        try:
+            row = conn.execute(
+                ("SELECT * FROM style_actual_cache WHERE scope=? AND volume_id=?"
+                 if volume_id else "SELECT * FROM style_actual_cache WHERE scope=? AND volume_id IS NULL"),
+                (scope, volume_id) if volume_id else (scope,)).fetchone()
+        except Exception:
+            row = None   # 表缺失(未迁移)→ 回退 live 算
         if row and row["chapter_count"]:
             return {
                 "fingerprint": json.loads(row["fingerprint"]),
