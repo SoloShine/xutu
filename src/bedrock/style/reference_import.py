@@ -99,20 +99,25 @@ def import_and_extract(text, sample=None, chapter_range=None):
     }
 
 
-def pick_reference_sample(text, n_chapters=3, max_chars=5000):
-    """取代表性正文样本(中段 n 章,截断到 max_chars),供 LLM 文风分析持久化用。
-    存库后 /analyze-style 无需原文件即可分析。"""
+def pick_reference_sample(text, points=(0.15, 0.4, 0.65, 0.9), per_chapter=1500, max_chars=6000):
+    """取代表性正文样本供 LLM 文风分析(持久化)。
+    多点分散(默认 15/40/65/90% 四点,跳极首尾的非典型段)+ 每章截 per_chapter,
+    共 ~max_chars。实证:分散取样比"连续3中章"更接近全量分布(连续易命中单一弧致偏)。
+    """
     chapters = split_chapters(text)
     if not chapters:
         return text[:max_chars]
-    mid = len(chapters) // 2
-    idxs = [min(max(mid - n_chapters // 2 + i, 0), len(chapters) - 1) for i in range(n_chapters)]
-    parts = []
+    n = len(chapters)
+    idxs = [min(int(p * n), n - 1) for p in points]
+    parts, total = [], 0
     for i in idxs:
-        parts.append("【" + chapters[i][0] + "】")
-        parts.extend(chapter_paragraphs(chapters[i][1])[:50])
-    out = "\n\n".join(parts)
-    return out[:max_chars]
+        seg = [chapter_paragraphs(chapters[i][1])[:30]]
+        chunk = ("【" + chapters[i][0] + "】\n" + "\n".join(seg[0]))[:per_chapter]
+        parts.append(chunk)
+        total += len(chunk)
+        if total >= max_chars:
+            break
+    return "\n\n".join(parts)[:max_chars]
 
 
 def preview_chapters(text):
