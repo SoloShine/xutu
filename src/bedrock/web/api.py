@@ -27,6 +27,7 @@ from src.bedrock.repositories.plot_tree import (
 from src.bedrock.repositories.worldbook import update_location, update_theme, update_motif
 from src.bedrock.style.template_repo import (
     list_fingerprints, set_style_config, dim_definitions, save_fingerprint_from_text,
+    save_fingerprint_from_written,
 )
 from src.bedrock.checks.style_drift import measure_work_actual
 
@@ -277,12 +278,78 @@ def api_style_import(work_id):
     conn = get_connection(wd)
     try:
         cr = body.get("chapter_range")
+        strategy = body.get("strategy", "spread")
         rid, meta, seeded = save_fingerprint_from_text(
             conn, scope=scope, text=text,
             volume_id=body.get("volume_id") if scope == "volume" else None,
             source_work=source_work, sample=body.get("sample"),
-            chapter_range=cr)
+            chapter_range=cr, strategy=strategy)
         return _ok({"id": rid, "source_work": source_work, "directive_seeded": seeded, **meta})
+    except Exception as e:
+        return _err(e)
+    finally:
+        conn.close()
+
+
+@bp.post("/works/<work_id>/style/preview-extract")
+def api_style_preview_extract(work_id):
+    """预览提取:给 text/path + 抽样参数(range/count/strategy)→返回结果指纹+抽样章名,**不落库**。
+    供工作台调参 A/B(不同范围/策略→不同指纹,提交前对比挑最贴合的)。纯程序零LLM。"""
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    if body.get("text"):
+        text = body["text"]
+    elif body.get("path"):
+        from pathlib import Path
+        p = Path(body["path"])
+        if not p.is_file():
+            return _err(f"文件不存在: {body['path']}")
+        from src.bedrock.style.reference_import import decode_bytes
+        text = decode_bytes(p.read_bytes())
+    else:
+        return _err("需 path 或 text")
+    from src.bedrock.style.reference_import import import_and_extract
+    try:
+        fp, meta = import_and_extract(
+            text, sample=body.get("sample"),
+            chapter_range=body.get("chapter_range"),
+            strategy=body.get("strategy", "spread"))
+        # 只回传关键标量 + 抽样元信息(不回整个指纹,省带宽;前端预览面板用)
+        scalars = {
+            "dash_density": fp.get("dash_density", {}).get("value"),
+            "notXisY": fp.get("notXisY", {}),
+            "period_density": fp.get("period_density", {}).get("value"),
+            "dialogue_ratio": fp.get("dialogue_ratio", {}).get("value"),
+            "rhetoric": fp.get("rhetoric", {}).get("value"),
+            "sentence_length": fp.get("sentence_length", {}),
+        }
+        return _ok({"scalars": scalars, **meta})
+    except Exception as e:
+        return _err(e)
+
+
+@bp.post("/works/<work_id>/style/extract-written")
+def api_style_extract_written(work_id):
+    """从本作【已写】章节提取指纹作 base(自洽提升为显式来源)。
+    body: {scope, volume_id?, chapter_range?[global_number 起,止], strategy?, sample?}。
+    upsert 保留 scalar_targets/directive;_base_kind='self'。纯程序零LLM。"""
+    _require_json()
+    wd = _resolve_work(work_id)
+    body = request.get_json(silent=True) or {}
+    scope = body.get("scope", "work")
+    if scope not in ("work", "volume"):
+        return _err("scope 必须 work|volume")
+    conn = get_connection(wd)
+    try:
+        rid, meta = save_fingerprint_from_written(
+            conn, scope=scope,
+            volume_id=body.get("volume_id") if scope == "volume" else None,
+            chapter_range=body.get("chapter_range"),
+            strategy=body.get("strategy", "spread"),
+            sample=body.get("sample"))
+        if meta["sampled_chapters"] == 0:
+            return _err("无已写章节(status=writing/completed)可提取")
+        return _ok({"id": rid, "base_kind": "self", **meta})
     except Exception as e:
         return _err(e)
     finally:

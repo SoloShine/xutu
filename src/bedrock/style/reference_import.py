@@ -64,9 +64,14 @@ def chapter_paragraphs(body):
     return out
 
 
-def sample_chapter_indices(n_chapters, sample, chapter_range=None, edge_skip=10):
-    """抽章节下标。chapter_range=[start,end](1-based 闭区间)→只在范围内均匀抽 sample 章;
-    无 range→跳首尾 edge_skip 取中段。sample=None→动态(约 sqrt(n)*2,封 [10,40])。"""
+def sample_chapter_indices(n_chapters, sample, chapter_range=None, edge_skip=10, strategy="spread"):
+    """抽章节下标。chapter_range=[start,end](1-based 闭区间)→只在范围内抽;无 range→跳首尾 edge_skip 取中段。
+    sample=None→动态(约 sqrt(n)*2,封 [10,40])。strategy:
+      - spread(默认):范围内均匀分散(多点,覆盖广,稳)
+      - consecutive:从范围起点取连续 sample 章(取一段弧,适合"只仿这一段")
+      - random:范围内随机 sample 章(固定种子,可复现)
+      - all:范围内全部章(不抽样)
+    """
     if chapter_range:
         lo = max(0, min(chapter_range[0] - 1, n_chapters - 1))
         hi = max(lo + 1, min(chapter_range[1], n_chapters))
@@ -76,28 +81,38 @@ def sample_chapter_indices(n_chapters, sample, chapter_range=None, edge_skip=10)
     span = hi - lo
     if sample is None:
         sample = max(10, min(40, int(span ** 0.5) * 2))
-    if span <= sample:
+    if span <= sample or strategy == "all":
         return list(range(lo, hi))
+    if strategy == "consecutive":
+        # 从范围起点取连续 sample 章(代表"这一段弧")
+        return list(range(lo, lo + sample))
+    if strategy == "random":
+        import random as _r
+        rng = _r.Random((lo * 100003 + hi) & 0xFFFFFFFF)  # 固定种子,可复现
+        return sorted(rng.sample(range(lo, hi), sample))
+    # spread(默认):均匀分散
     step = span / sample
     return [lo + int(i * step) for i in range(sample)]
 
 
-def import_and_extract(text, sample=None, chapter_range=None):
-    """全文 → (fingerprint, meta)。纯程序。chapter_range=[start,end] 1-based。
+def import_and_extract(text, sample=None, chapter_range=None, strategy="spread"):
+    """全文 → (fingerprint, meta)。纯程序。chapter_range=[start,end] 1-based;strategy 见 sample_chapter_indices。
     meta 含 sampled_titles(抽样章名,供工作台透明展示)。"""
     from src.bedrock.style.extractor import extract_fingerprint
     chapters = split_chapters(text)
-    idxs = sample_chapter_indices(len(chapters), sample, chapter_range)
+    idxs = sample_chapter_indices(len(chapters), sample, chapter_range, strategy=strategy)
     paragraphs = []
     for i in idxs:
         paragraphs.extend(chapter_paragraphs(chapters[i][1]))
     fp = extract_fingerprint(paragraphs)
+    fp["_sample_strategy"] = strategy
     return fp, {
         "chapter_count": len(chapters),
         "sampled_chapters": len(idxs),
         "paragraph_count": len(paragraphs),
         "sample_range": [idxs[0] + 1, idxs[-1] + 1] if idxs else None,
         "sampled_titles": [chapters[i][0][:30] for i in idxs[:8]],  # 抽样章名(前8)
+        "sample_strategy": strategy,
     }
 
 

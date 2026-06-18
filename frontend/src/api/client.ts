@@ -40,6 +40,8 @@ export const api = {
   setStyle: (w: string, body: any) => req('POST', `/api/works/${w}/style`, body),
   importReference: (w: string, body: any) => req('POST', `/api/works/${w}/style/import-reference`, body),
   previewReference: (w: string, text: string) => req('POST', `/api/works/${w}/style/preview-reference`, { text }),
+  previewExtract: (w: string, body: any) => req('POST', `/api/works/${w}/style/preview-extract`, body),
+  extractWritten: (w: string, body: any) => req('POST', `/api/works/${w}/style/extract-written`, body),
   patch: (w: string, entity: string, id: number | string, body: any) =>
     req('PATCH', `/api/works/${w}/${entity}/${id}`, body),
   patchBeatContract: (w: string, vid: number, bid: number, body: any) =>

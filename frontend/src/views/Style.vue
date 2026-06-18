@@ -29,6 +29,19 @@ const error = ref('')
 const importPath = ref('')
 const importing = ref(false)
 const rangeStart = ref<number|null>(null), rangeEnd = ref<number|null>(null)
+// 抽样控制 + base 来源
+const baseSource = ref<'reference'|'self'>('reference')
+const sampleStrategy = ref('spread')
+const sampleCount = ref<number|null>(null)   // null=自动(sqrt 公式)
+const wrStart = ref<number|null>(null), wrEnd = ref<number|null>(null)  // 本作已写章 global_number 范围
+const previewExtract = ref<any>(null)        // 预览提取结果(不落库)
+const previewingExtract = ref(false)
+const STRATEGY_OPTS = [
+  { label: '分散(多点,稳)', value: 'spread' },
+  { label: '连续(取一段弧)', value: 'consecutive' },
+  { label: '随机(可复现)', value: 'random' },
+  { label: '全部', value: 'all' },
+]
 // 文件选择 + 预览
 const fileName = ref('')
 const fileText = ref('')
@@ -244,6 +257,38 @@ async function importRef() {
   } catch (e:any) { msg.error('导入失败: '+(e.message||e)) }
   finally { importing.value = false }
 }
+
+// 预览提取结果(不落库):给抽样参数→返回关键标量+抽样章名,供 A/B 对比不同范围/策略
+async function doPreviewExtract() {
+  if (!fileText.value) { msg.warning('先选择参考作品 txt'); return }
+  previewingExtract.value = true
+  try {
+    const body: any = { strategy: sampleStrategy.value, sample: sampleCount.value ?? undefined, text: fileText.value }
+    if (rangeStart.value != null && rangeEnd.value != null) body.chapter_range = [rangeStart.value, rangeEnd.value]
+    const r: any = await api.previewExtract(props.wid, body)
+    if (r && r.ok !== false) { previewExtract.value = r.item; msg.success(`预览:${r.item.sampled_chapters}章/${r.item.sample_range?.[0]}-${r.item.sample_range?.[1]}`) }
+    else msg.error('预览失败: '+((r&&r.error)||''))
+  } catch (e:any) { msg.error('预览失败: '+(e.message||e)) }
+  finally { previewingExtract.value = false }
+}
+
+// 从本作已写章节提取作 base(自洽提升为显式来源)
+async function importWritten() {
+  importing.value = true
+  try {
+    const body: any = { scope: scope.value, strategy: sampleStrategy.value, sample: sampleCount.value ?? undefined,
+      volume_id: scope.value === 'volume' ? volumeId.value : undefined }
+    if (wrStart.value != null && wrEnd.value != null) body.chapter_range = [wrStart.value, wrEnd.value]
+    const r: any = await api.extractWritten(props.wid, body)
+    if (r && r.ok !== false) {
+      const it = r.item || {}
+      msg.success(`已提取本作已写:${it.sampled_chapters||'?'}章(共${it.chapter_count||'?'}章)`)
+      await load()
+    } else msg.error('提取失败: '+((r&&r.error)||'无已写章节'))
+  } catch (e:any) { msg.error('提取失败: '+(e.message||e)) }
+  finally { importing.value = false }
+}
+function peVal(k: string) { return previewExtract.value?.scalars?.[k] }  // 预览标量取值
 function entries(fp: Fingerprint, key: string): [string, number][] {
   const d = fp[key]; if (!d || typeof d !== 'object') return []
   return Object.entries(d).filter(([k]) => !k.startsWith('_')) as [string, number][]
@@ -296,28 +341,66 @@ function defOf(key: string) { return dimDefs.value[key] }
             该卷尚未设覆盖,保存后将创建卷级配置(只存你填的字段,其余继承作品级)。
           </NAlert>
 
-          <!-- 导入参考作品(纯程序提取,零LLM) -->
-          <div class="field-label">导入参考作品 → 提取指纹+派生指令</div>
+          <!-- 提取文风目标 base:来源(参考作品/本作已写)+ 抽样控制 + 预览 A/B。纯程序零LLM。 -->
+          <div class="field-label">提取文风目标(base) → 指纹 + 派生指令</div>
+          <NRadioGroup v-model:value="baseSource" size="small" style="margin-bottom:8px">
+            <NRadioButton value="reference">参考作品</NRadioButton>
+            <NRadioButton value="self">本作已写章节</NRadioButton>
+          </NRadioGroup>
+
+          <!-- 共享抽样控制:策略 + 数量 -->
           <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
-            <input id="style-file-input" type="file" accept=".txt,.text" style="display:none" @change="onFilePick" />
-            <NButton size="small" @click="pickFile">选择 txt 文件</NButton>
-            <NTag v-if="fileName" size="small" type="primary" round>{{ fileName }}</NTag>
-            <span class="knob-label">编码</span>
-            <NSelect v-model:value="fileEnc" size="small" :options="[{label:'UTF-8',value:'UTF-8'},{label:'GBK',value:'GBK'},{label:'GB18030',value:'GB18030'}]" style="width:110px" />
+            <span class="knob-label">抽样</span>
+            <NSelect v-model:value="sampleStrategy" size="small" :options="STRATEGY_OPTS" style="width:150px" />
+            <span class="knob-label">数量(留空=自动)</span>
+            <NInputNumber v-model:value="sampleCount" :min="1" size="small" placeholder="自动" style="width:90px" />
           </NSpace>
-          <!-- 预览:总章数/是否切片/样章 -->
-          <NAlert v-if="preview" :type="preview.chunked ? 'warning' : 'info'" :bordered="false" style="margin-bottom:8px">
-            <b>{{ preview.chapter_count }}</b> 章 · {{ preview.total_chars }} 字
-            <NTag v-if="preview.chunked" size="tiny" type="warning" round>非标准章名→按字数切片</NTag>
-            <div style="opacity:.7;font-size:12px;margin-top:2px">样章: {{ preview.sample_titles.join(' / ') }}</div>
-          </NAlert>
-          <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
-            <span class="knob-label">章范围(留空=中段动态抽样)</span>
-            <NInputNumber v-model:value="rangeStart" :min="1" :max="preview?.chapter_count" size="small" :placeholder="preview?`1`:'起'" style="width:80px" />
-            <span>~</span>
-            <NInputNumber v-model:value="rangeEnd" :min="1" :max="preview?.chapter_count" size="small" :placeholder="preview?`${preview.chapter_count}`:'止'" style="width:80px" />
-            <NButton size="small" type="primary" :loading="importing || previewing" :disabled="!fileText" @click="importRef">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
-          </NSpace>
+
+          <!-- 参考作品分支 -->
+          <template v-if="baseSource === 'reference'">
+            <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
+              <input id="style-file-input" type="file" accept=".txt,.text" style="display:none" @change="onFilePick" />
+              <NButton size="small" @click="pickFile">选择 txt 文件</NButton>
+              <NTag v-if="fileName" size="small" type="primary" round>{{ fileName }}</NTag>
+              <span class="knob-label">编码</span>
+              <NSelect v-model:value="fileEnc" size="small" :options="[{label:'UTF-8',value:'UTF-8'},{label:'GBK',value:'GBK'},{label:'GB18030',value:'GB18030'}]" style="width:110px" />
+            </NSpace>
+            <NAlert v-if="preview" :type="preview.chunked ? 'warning' : 'info'" :bordered="false" style="margin-bottom:8px">
+              <b>{{ preview.chapter_count }}</b> 章 · {{ preview.total_chars }} 字
+              <NTag v-if="preview.chunked" size="tiny" type="warning" round>非标准章名→按字数切片</NTag>
+              <div style="opacity:.7;font-size:12px;margin-top:2px">样章: {{ preview.sample_titles.join(' / ') }}</div>
+            </NAlert>
+            <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
+              <span class="knob-label">章范围(留空=中段)</span>
+              <NInputNumber v-model:value="rangeStart" :min="1" :max="preview?.chapter_count" size="small" :placeholder="preview?`1`:'起'" style="width:80px" />
+              <span>~</span>
+              <NInputNumber v-model:value="rangeEnd" :min="1" :max="preview?.chapter_count" size="small" :placeholder="preview?`${preview.chapter_count}`:'止'" style="width:80px" />
+              <NButton size="small" :loading="previewingExtract" :disabled="!fileText" @click="doPreviewExtract">预览结果</NButton>
+              <NButton size="small" type="primary" :loading="importing" :disabled="!fileText" @click="importRef">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
+            </NSpace>
+            <!-- 预览结果(不落库):不同范围/策略→不同指纹,提交前 A/B -->
+            <NAlert v-if="previewExtract" type="success" :bordered="false" style="margin-bottom:8px">
+              <b>预览</b>:抽 {{ previewExtract.sampled_chapters }} 章 / {{ previewExtract.sample_range?.[0] }}-{{ previewExtract.sample_range?.[1] }}
+              <span style="margin-left:8px;opacity:.8">破折号 {{ peVal('dash_density') }}/k · 不是A是B {{ peVal('notXisY')?.value }}/k · 句号 {{ peVal('period_density') }}/k · 对白 {{ Math.round((peVal('dialogue_ratio')||0)*1000)/10 }}% · 修辞 {{ peVal('rhetoric') }}/k</span>
+              <div style="opacity:.6;font-size:11px;margin-top:2px">改范围/策略/数量再「预览结果」对比,挑最贴合的再「提取」</div>
+            </NAlert>
+          </template>
+
+          <!-- 本作已写分支:把自洽提升为显式 base 来源 -->
+          <template v-else>
+            <NAlert type="info" :bordered="false" style="margin-bottom:8px">
+              用作品【已写】章节(status=writing/completed)的文风作目标——适合"向自己已建立的风格看齐",无需外部参考。
+              <span style="opacity:.7">。range 按 global_number 过滤(留空=全部已写)。</span>
+            </NAlert>
+            <NSpace :size="6" align="center" wrap style="margin-bottom:8px">
+              <span class="knob-label">章范围(global_number,留空=全部已写)</span>
+              <NInputNumber v-model:value="wrStart" :min="1" size="small" placeholder="起" style="width:80px" />
+              <span>~</span>
+              <NInputNumber v-model:value="wrEnd" :min="1" size="small" placeholder="止" style="width:80px" />
+              <NButton size="small" type="primary" :loading="importing" @click="importWritten">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
+            </NSpace>
+          </template>
+
 
           <!-- 文风指令 -->
           <div class="field-label">文风指令(定性,注入 writer)</div>

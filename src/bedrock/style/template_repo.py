@@ -64,60 +64,122 @@ def save_fingerprint(conn, scope, chapter_ids, volume_id=None):
         scope=scope, volume_id=volume_id if scope == "volume" else None)
 
 
-def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=None,
-                               sample=None, chapter_range=None, derive_directive_flag=True):
-    """从外部参考全文提取指纹并 upsert(同 scope 行→UPDATE fingerprint,保留指令/旋钮)。
-    纯程序提取(reference_import),零 LLM。chapter_range=[start,end] 1-based 闭区间。
-    derive_directive_flag:目标行无 directive 时,自动从指纹派生指令草稿(数字→文字)。
-    返回 (row_id, meta, directive_seeded)。"""
-    from src.bedrock.style.reference_import import import_and_extract, derive_directive, pick_reference_sample
-    fp, meta = import_and_extract(text, sample=sample, chapter_range=chapter_range)
-    reference_sample, llm_sample_titles = pick_reference_sample(text)   # 持久化样本+章名,/analyze-style 用
-    # 抽样透明化:统计抽样的范围/章名 + LLM 样本的章名,存进指纹供工作台 tooltip 展示
-    fp["_sample_info"] = {
-        "stat_range": meta.get("sample_range"),
-        "stat_count": meta.get("sampled_chapters"),
-        "stat_titles": meta.get("sampled_titles", [])[:6],
-        "llm_sample_titles": llm_sample_titles,
-    }
+def _upsert_base(conn, scope, volume_id, fp, source_work, reference_sample=None,
+                 directive_to_set=None):
+    """指纹 base 的共享 upsert(参考导入 / 本作已写 复用)。
+    UPDATE 仅 fingerprint/source_works/reference_sample(可选 directive),**不动 scalar_targets/旋钮**——
+    这正是"base + 覆盖层"分离:re-extract/换 base 只更底,手动标量覆盖(scalar_targets)保留。
+    无行→建行。返回 row_id。"""
     fp["_scope"] = scope
-    fp["_source_work"] = source_work or "外部参考"
+    fp["_source_work"] = source_work
     if scope == "volume" and volume_id is not None:
         fp["_volume_id"] = volume_id
-    if scope == "volume":
-        row = conn.execute(
-            "SELECT id, directive, directive_source FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",
-            (volume_id,)).fetchone()
-    else:
-        row = conn.execute(
-            "SELECT id, directive, directive_source FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
+    row = _row_by_scope(conn, scope, volume_id)
     fp_json = json.dumps(fp, ensure_ascii=False)
-    seeded = False
-    existing_directive = row["directive"] if row else ""
-    directive_to_set = None
-    if derive_directive_flag and not existing_directive:
-        directive_to_set = derive_directive(fp)
-        seeded = bool(directive_to_set)
     if row:
-        sets = ["fingerprint=?", "source_works=?", "reference_sample=?"]
-        vals = [fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), reference_sample]
+        sets = ["fingerprint=?", "source_works=?"]
+        vals = [fp_json, json.dumps([source_work], ensure_ascii=False)]
+        if reference_sample is not None:
+            sets.append("reference_sample=?"); vals.append(reference_sample)
         if directive_to_set:
-            sets += ["directive=?", "directive_source=?"]
-            vals += [directive_to_set, fp["_source_work"]]
+            sets += ["directive=?", "directive_source=?"]; vals += [directive_to_set, source_work]
         vals.append(row["id"])
         conn.execute(f"UPDATE style_template SET {', '.join(sets)} WHERE id=?", vals)
         conn.commit()
-        return row["id"], meta, seeded
-    rid = save_style_template(conn, fingerprint=fp, source_works=[fp["_source_work"]],
+        return row["id"]
+    rid = save_style_template(conn, fingerprint=fp, source_works=[source_work],
                               scope=scope, volume_id=volume_id if scope == "volume" else None)
     extra_sets, extra_vals = "", []
+    if reference_sample is not None:
+        extra_sets += ", reference_sample=?"; extra_vals.append(reference_sample)
     if directive_to_set:
-        extra_sets = ", directive=?, directive_source=?"
-        extra_vals = [directive_to_set, fp["_source_work"]]
-    conn.execute(f"UPDATE style_template SET reference_sample=?{extra_sets} WHERE id=?",
-                 [reference_sample, *extra_vals, rid])
-    conn.commit()
+        extra_sets += ", directive=?, directive_source=?"; extra_vals += [directive_to_set, source_work]
+    if extra_sets:
+        conn.execute(f"UPDATE style_template SET {extra_sets[2:]} WHERE id=?", [*extra_vals, rid])
+        conn.commit()
+    return rid
+
+
+def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=None,
+                               sample=None, chapter_range=None, strategy="spread",
+                               derive_directive_flag=True):
+    """从外部参考全文提取指纹并 upsert(保留 scalar_targets/旋钮)。纯程序,零 LLM。
+    chapter_range=[start,end] 1-based;strategy=spread|consecutive|random|all。
+    返回 (row_id, meta, directive_seeded)。"""
+    from src.bedrock.style.reference_import import import_and_extract, derive_directive, pick_reference_sample
+    fp, meta = import_and_extract(text, sample=sample, chapter_range=chapter_range, strategy=strategy)
+    reference_sample, llm_sample_titles = pick_reference_sample(text)
+    fp["_base_kind"] = "reference"
+    fp["_sample_info"] = {
+        "kind": "reference",
+        "strategy": strategy,
+        "stat_range": meta.get("sample_range"),
+        "stat_count": meta.get("sampled_chapters"),
+        "stat_titles": meta.get("sampled_titles", [])[:6],
+        "total_chapters": meta.get("chapter_count"),
+        "llm_sample_titles": llm_sample_titles,
+    }
+    existing_directive = _existing_directive(conn, scope, volume_id)
+    directive_to_set = None
+    seeded = False
+    if derive_directive_flag and not existing_directive:
+        directive_to_set = derive_directive(fp)
+        seeded = bool(directive_to_set)
+    rid = _upsert_base(conn, scope, volume_id, fp, source_work or "外部参考",
+                       reference_sample=reference_sample, directive_to_set=directive_to_set)
     return rid, meta, seeded
+
+
+def save_fingerprint_from_written(conn, scope, volume_id=None, chapter_range=None,
+                                  strategy="spread", sample=None):
+    """从本作【已写】章节提取指纹作 base(把自洽从 fallback 提升为显式来源)。
+    chapter_range=[global_number_start, global_number_end] 1-based 闭区间(按 global_number 过滤);
+    无 range→全部 status='writing'/'completed' 章。strategy 同参考导入。
+    upsert 保留 scalar_targets/directive;_base_kind='self' 让工作台区分来源。
+    返回 (row_id, meta)。meta 含 sampled 的 global_number 列表 + 章名。"""
+    from src.bedrock.style.extractor import extract_fingerprint
+    rows = conn.execute(
+        "SELECT c.id, c.global_number, c.title FROM chapter c "
+        "WHERE c.status IN ('writing','completed') ORDER BY c.global_number").fetchall()
+    if chapter_range:
+        lo, hi = chapter_range
+        rows = [r for r in rows if lo <= r["global_number"] <= hi]
+    total = len(rows)
+    # 复用抽样策略:在已写章集合上抽样。注意传 chapter_range=[1,total]——本作已写章本就是
+    # 有意义集合(无需像参考书那样 edge_skip 首尾),传 None 会触发 edge_skip 把少章集吃光。
+    from src.bedrock.style.reference_import import sample_chapter_indices
+    idxs = sample_chapter_indices(total, sample, [1, total] if total else None, strategy=strategy) if total else []
+    picked = [rows[i] for i in idxs]
+    paragraphs = []
+    for r in picked:
+        paragraphs.extend(p["text"] for p in list_paragraphs_in_chapter(conn, r["id"]))
+    fp = extract_fingerprint(paragraphs)
+    fp["_base_kind"] = "self"
+    fp["_sample_info"] = {
+        "kind": "self",
+        "strategy": strategy,
+        "stat_range": [picked[0]["global_number"], picked[-1]["global_number"]] if picked else None,
+        "stat_count": len(picked),
+        "stat_titles": [r["title"][:30] for r in picked[:8]],
+        "total_written": total,
+    }
+    rid = _upsert_base(conn, scope, volume_id, fp, f"本作已写({total}章)",
+                       reference_sample=None, directive_to_set=None)
+    meta = {
+        "chapter_count": total,
+        "sampled_chapters": len(picked),
+        "paragraph_count": len(paragraphs),
+        "sample_range": fp["_sample_info"]["stat_range"],
+        "sampled_titles": fp["_sample_info"]["stat_titles"],
+        "sampled_global_numbers": [r["global_number"] for r in picked],
+        "sample_strategy": strategy,
+    }
+    return rid, meta
+
+
+def _existing_directive(conn, scope, volume_id):
+    row = _row_by_scope(conn, scope, volume_id)
+    return row["directive"] if row else ""
 
 
 def _row_by_scope(conn, scope, volume_id):
