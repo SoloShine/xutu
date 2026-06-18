@@ -429,6 +429,11 @@ def main():
     p_runl2.add_argument("--project", type=Path, required=True)
     p_runl2.add_argument("--chapter", type=int, required=True)
 
+    p_style = sub.add_parser("style-check", help="单章文风漂移测量（标量指标 vs 目标,方向性诊断）")
+    p_style.add_argument("--project", type=Path, required=True)
+    p_style.add_argument("--chapter", type=int, required=True)
+    p_style.add_argument("--volume", type=int, required=True)
+
     p_boot = sub.add_parser("boot-context", help="装配子代理启动上下文")
     p_boot.add_argument("--project", type=Path, required=True)
     p_boot.add_argument("--chapter", type=int, required=True)
@@ -571,6 +576,10 @@ def main():
             # asdict 递归转 BeatViolation dataclass；cross_volume 已在 l2_pipeline 转 dict。
             from dataclasses import asdict
             print(json.dumps(asdict(report), ensure_ascii=False))
+        elif args.cmd == "style-check":
+            from src.bedrock.checks.style_drift import measure_style_drift
+            cid = _chapter_id(conn, args.chapter)
+            print(json.dumps(measure_style_drift(conn, cid, args.volume), ensure_ascii=False))
         elif args.cmd == "boot-context":
             cid = _chapter_id(conn, args.chapter)
             ctx = get_chapter_boot_context(conn, cid, volume_id=args.volume)

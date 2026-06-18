@@ -1,12 +1,13 @@
 export const meta = {
   name: 'bedrock-chapter',
-  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Repair(≤3轮)→Polish(指纹门控)→Consistency(角色正典)→Finalize',
+  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Repair(≤3轮)→Polish(指纹门控)→Consistency(角色正典)→Style(漂移测量+收敛)→Finalize',
   phases: [
     { title: 'Boot' },
     { title: 'Write' },
     { title: 'L2+Repair' },
     { title: 'Polish' },
     { title: 'Consistency' },
+    { title: 'Style' },
     { title: 'Persist+Telemetry' },
   ],
 }
@@ -108,6 +109,33 @@ if (report.passed_hard_gate && ctx.characters && ctx.characters.length) {
   }
 }
 
+// 4c. Style：章级文风漂移测量 + 定向收敛闭环。
+// 写后测本章标量指标 vs 目标(卷级→作品级→自洽滚动均值),明显飘→定向 style-polish 回喂具体
+// 漂移维度→重 L2→复测。单章噪声大,只对明显偏离(dash/notXisY/修辞/对白比)动手,句长不硬卡。
+phase('Style')
+if (report.passed_hard_gate) {
+  const drift = await styleCheck(project, chapter, volume)
+  if (drift && drift.drifted && drift.drifted.length) {
+    const hints = drift.drifted.map(d => `${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`).join('；')
+    log(`style drift: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
+    const prose = stripFences(await agent(stylePolishPrompt(ctx, hints, project, chapter),
+      { label: 'Edit-style', phase: 'Style' }))
+    const after = await commitAndL2(project, chapter, prose, 'style')
+    _trackDrift(after)
+    if (after.passed_hard_gate) {
+      report = after
+      const recheck = await styleCheck(project, chapter, volume)
+      log(`style 收敛后复测: ${recheck.drifted ? recheck.drifted.length : 0}/${drift.drifted.length}项仍飘`)
+    } else {
+      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Style' })
+      log('style-polish broke beat → flagged')
+      report = after
+    }
+  } else {
+    log(`style: 无明显漂移 [${(drift && drift.target_source) || '无目标'}]`)
+  }
+}
+
 // 5. Finalize：verify-persisted + collect-runtime + mark-advisory-drift 一 relay 收尾
 phase('Persist+Telemetry')
 const persisted = await finalize(project, chapter, exportPath, round, worstDrift)
@@ -143,9 +171,34 @@ async function commitAndL2(project, chapter, prose, label) {
   try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [], _raw: raw } }
 }
 
+// 文风漂移测量 relay：style-check 单命令,回 JSON {drifted, target_source, metrics}。
+async function styleCheck(project, chapter, volume) {
+  const raw = stripFences(await pythonCli(
+    `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Style' }))
+  try { return JSON.parse(raw) } catch { return { drifted: [], ok: true } }
+}
+
+function pct(x) { return Math.round((x || 0) * 100) + '%' }
+
+// 文风定向收敛 prompt：agent 读当前正文,针对测量出的漂移项做最小改动(删破折号/改句式/减比喻)。
+function stylePolishPrompt(ctx, hints, project, chapter) {
+  return [
+    '# Edit 子代理 — 文风定向收敛（按测量出的漂移修）',
+    `先读本章当前正文(只读): cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${chapter}`,
+    '把返回 JSON 每段 text 按原顺序拼成当前正文。',
+    '',
+    HYGIENE_RULES,
+    ctx.style_directive ? `【文风指令】${ctx.style_directive}` : '',
+    '【本章测量出的文风漂移——必须定向修正这些项】',
+    hints,
+    '',
+    '针对上面漂移做最小改动收敛(如删非必要破折号→换句号断句、改"不是A是B"句式、减过密比喻),',
+    '保持剧情/字数/beat/pov 不变,不引入新问题。返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。',
+  ].join('\n')
+}
+
 // 单 agent：edit-paragraphs(ops) + run-l2，回传 run-l2 原文（一致性编辑用；verdict 不经编辑 agent）。
-async function applyOpsAndL2(project, chapter, ops, label) {
-  const opsJson = JSON.stringify(ops)
+async function applyOpsAndL2(project, chapter, ops, label) {  const opsJson = JSON.stringify(ops)
   const prompt = [
     `你在项目根目录。按序执行两条命令，把【第二条 run-l2 的 stdout 原文】逐字返回（一段 JSON，无围栏/解释）。`,
     `若非 0 退出返回 ERROR:<which>:<stderr 首行>。`,
@@ -266,12 +319,16 @@ function chapterWriterPrompt(ctx) {
     ? [`【读者此刻(本章时点)已知的信息——只能用这些，不得越界】` + JSON.stringify(ctx.reader_disclosed_secrets, null, 2),
        '上面含到本章才解封的揭示(若有)。揭示章可写明已解封的真相；但**未在列表里的角色隐藏身世/动机/来历——一律不得临场编造**(这是结构性防跨章矛盾的硬约束：种子没编码的揭示，writer 凭空编了必和他章冲突)。', '']
     : []
+  const directive = ctx.style_directive
+    ? [`【文风指令·定性要求(高于统计指纹,必须贯彻)】`, ctx.style_directive, '']
+    : []
   return [
     '# ChapterWriter 子代理（磐石 V3）',
     'boot context:', JSON.stringify(ctx, null, 2),
     '',
     ...prev,
     ...canon,
+    ...directive,
     ...secrets,
     HYGIENE_RULES,
     ...multi,
