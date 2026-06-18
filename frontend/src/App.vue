@@ -38,6 +38,7 @@ const menuOptions = computed(() => {
     { label: '总览', key: 'overview' },
     { label: '角色', key: 'characters' },
     { label: 'POV 矩阵', key: 'matrix' },
+    { label: '文风指纹', key: 'style' },
     { label: '灵感池', key: 'inspirations' },
     { label: 'Review 报告', key: 'report' },
     { label: '正文·阅读', key: 'read' },
