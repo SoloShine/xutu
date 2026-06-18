@@ -57,6 +57,8 @@ const directive = ref('')
 const wcMin = ref(3000), wcMax = ref(5000), maxRounds = ref(3)
 // 4 标量目标(% 或 /千字);空=继承指纹派生
 const tDash = ref<number|null>(null), tNotx = ref<number|null>(null), tDlg = ref<number|null>(null), tRhet = ref<number|null>(null)
+// 风格范例(正反例):textarea 每行一条。注入 writer【风格示范】,对照不复述
+const goodText = ref(''), badText = ref('')
 
 const workCfg = computed(() => configs.value.find(c => c._scope === 'work') || null)
 const curCfg = computed(() => scope.value === 'volume'
@@ -110,6 +112,13 @@ function populateFrom(c: Fingerprint | null) {
   tNotx.value = st.notXisY_rate != null ? Math.round(st.notXisY_rate * 1000) / 10 : null
   tDlg.value = st.dialogue_ratio != null ? Math.round(st.dialogue_ratio * 1000) / 10 : null
   tRhet.value = st.rhetoric_per_k != null ? st.rhetoric_per_k : null
+  const ex = c?._style_examples || {}
+  goodText.value = (ex.good || []).join('\n')
+  badText.value = (ex.bad || []).join('\n')
+}
+function examplesPayload() {
+  const split = (s: string) => s.split('\n').map(x => x.trim()).filter(Boolean)
+  return { good: split(goodText.value), bad: split(badText.value) }
 }
 
 async function load() {
@@ -136,11 +145,15 @@ const dirty = computed(() => {
   const c = curCfg.value
   if (!c) return true
   const st = c._scalar_targets || {}
+  const ex = c._style_examples || {}
+  const exCur = examplesPayload()
   return directive.value !== (c._directive || '')
     || scalarsPayload().dash_density !== st.dash_density
     || scalarsPayload().notXisY_rate !== st.notXisY_rate
     || scalarsPayload().dialogue_ratio !== st.dialogue_ratio
     || scalarsPayload().rhetoric_per_k !== st.rhetoric_per_k
+    || JSON.stringify((ex.good||[])) !== JSON.stringify(exCur.good)
+    || JSON.stringify((ex.bad||[])) !== JSON.stringify(exCur.bad)
 })
 function scalarsPayload() {
   const o: Record<string, number> = {}
@@ -169,6 +182,7 @@ async function save() {
       word_count_target: scope.value === 'work' ? [wcMin.value, wcMax.value] : undefined,
       max_edit_rounds: scope.value === 'work' ? maxRounds.value : undefined,
       scalar_targets: scalarsPayload(),
+      style_examples: examplesPayload(),
     })
     msg.success(`${scope.value === 'volume' ? '卷级' : '作品级'}文风配置已保存`)
     await load()
@@ -411,6 +425,25 @@ function defOf(key: string) { return dimDefs.value[key] }
           <NInput v-model:value="directive" type="textarea" :autosize="{ minRows: 2, maxRows: 5 }"
             :placeholder="scope === 'volume' ? '留空=继承作品级指令' : '短促冷硬、镜头式白描、不用心理独白...'" />
 
+          <!-- 风格范例(正反例):具体段落,注入 writer【风格示范】。每行一条,限 5 条 -->
+          <div class="field-label" style="margin-top:10px">
+            风格范例(正/反例,注入 writer【风格示范】;每行一条,≤5)
+            <NTooltip trigger="hover" placement="top">
+              <template #trigger><span class="dim-info-icon-wrap"><svg class="dim-info-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.2a.9.9 0 110 1.8.9.9 0 010-1.8zm1.1 8.2H6.9c0-.5.4-.7.4-1.2V8.6c0-.4-.2-.5-.6-.6v-.5h2.4v3.4c0 .6.3.8.3 1.1z"/></svg></span></template>
+              <div style="max-width:260px">具体段落比描述更能传达文风(show don't tell)。writer 对照范例的节奏/密度/句式写作,<b>不复述范例原文</b>。留空=不注入。</div>
+            </NTooltip>
+          </div>
+          <div class="ex-grid">
+            <div class="ex-col">
+              <span class="ex-head good">✓ 正例(学这种)</span>
+              <NInput v-model:value="goodText" type="textarea" :autosize="{ minRows: 3, maxRows: 6 }" placeholder="每行一段代表性的好段落" />
+            </div>
+            <div class="ex-col">
+              <span class="ex-head bad">✗ 反例(避免这种)</span>
+              <NInput v-model:value="badText" type="textarea" :autosize="{ minRows: 3, maxRows: 6 }" placeholder="每行一段要避免的坏段落" />
+            </div>
+          </div>
+
           <!-- 4 标量目标(可编辑,空=指纹派生) -->
           <div class="field-label" style="margin-top:10px">
             标量目标(style-check 比对;留空=用指纹派生值)
@@ -528,6 +561,12 @@ function defOf(key: string) { return dimDefs.value[key] }
 .field-label { font-size: 12px; opacity: 0.65; margin-bottom: 4px; }
 .knob-label { font-size: 13px; opacity: 0.7; }
 .scalar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+.ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ex-col { display: flex; flex-direction: column; gap: 4px; }
+.ex-head { font-size: 11px; font-weight: 600; }
+.ex-head.good { color: var(--br-primary); }
+.ex-head.bad { color: var(--br-warning); }
+.dim-info-icon-wrap { display: inline-flex; align-items: center; cursor: help; }
 .scalar { display: flex; flex-direction: column; gap: 2px; }
 .scalar span { font-size: 11px; opacity: 0.7; }
 .dim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }

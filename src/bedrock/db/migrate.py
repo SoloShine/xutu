@@ -36,6 +36,7 @@ _STYLE_TEMPLATE_NEW_COLUMNS = {
     "scalar_targets": "TEXT NOT NULL DEFAULT '{}'",
     "reference_sample": "TEXT NOT NULL DEFAULT ''",
     "directive_source": "TEXT NOT NULL DEFAULT ''",
+    "style_examples": "TEXT NOT NULL DEFAULT '{}'",
 }
 
 

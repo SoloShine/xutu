@@ -388,7 +388,8 @@ CREATE TABLE IF NOT EXISTS style_template (
     enabled_dims TEXT NOT NULL DEFAULT '[]',
     scalar_targets TEXT NOT NULL DEFAULT '{}',
     reference_sample TEXT NOT NULL DEFAULT '',
-    directive_source TEXT NOT NULL DEFAULT ''
+    directive_source TEXT NOT NULL DEFAULT '',
+    style_examples TEXT NOT NULL DEFAULT '{}'   -- {good:[str], bad:[str]} 作者策划的正反例,注入 writer【风格示范】
 );
 
 

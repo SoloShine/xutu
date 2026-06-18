@@ -323,6 +323,14 @@ function chapterWriterPrompt(ctx) {
   const directive = ctx.style_directive
     ? [`【文风指令·定性要求(高于统计指纹,必须贯彻)】`, ctx.style_directive, '']
     : []
+  // 风格范例(正反例):具体段落,show don't tell。硬约束"对照节奏/密度/句式,禁止复述范例原文"。
+  const ex = ctx.style_examples || {}
+  const demo = (ex.good && ex.good.length) || (ex.bad && ex.bad.length)
+    ? [`【风格示范】(对照以下范例的节奏/密度/句式/语气写作。**严禁复述范例原文**,只学其风格)`,
+       ...(ex.good || []).map(s => `  ✓ ${s}`),
+       ...(ex.bad || []).map(s => `  ✗ ${s}（避免）`),
+       '']
+    : []
   return [
     '# ChapterWriter 子代理（磐石 V3）',
     'boot context:', JSON.stringify(ctx, null, 2),
@@ -330,6 +338,7 @@ function chapterWriterPrompt(ctx) {
     ...prev,
     ...canon,
     ...directive,
+    ...demo,
     ...secrets,
     HYGIENE_RULES,
     ...multi,

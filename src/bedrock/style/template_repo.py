@@ -214,7 +214,8 @@ def get_style_config(conn, volume_id):
         return {"has_row": False, "scope": None, "fingerprint": None,
                 "directive": "", "word_count_target": _DEFAULT_WORD_COUNT,
                 "max_edit_rounds": _DEFAULT_MAX_EDIT_ROUNDS, "hygiene": _DEFAULT_HYGIENE,
-                "scalar_targets": {}, "enabled_dims": [], "source_work": None}
+                "scalar_targets": {}, "enabled_dims": [], "source_work": None,
+                "style_examples": {}}
 
     def pick_json(field):
         """vol 非空({}外)→vol, else work。"""
@@ -261,12 +262,13 @@ def get_style_config(conn, volume_id):
         "hygiene": pick_json("hygiene") or _DEFAULT_HYGIENE,
         "scalar_targets": pick_json("scalar_targets"),   # 用户显式标量目标,覆盖指纹派生
         "enabled_dims": pick_json("enabled_dims"),
+        "style_examples": pick_json("style_examples"),   # {good:[], bad:[]} 正反例,注入 writer
     }
 
 
 def set_style_config(conn, scope, volume_id=None, *, directive=None, word_count_target=None,
                      max_edit_rounds=None, hygiene=None, enabled_dims=None, scalar_targets=None,
-                     directive_source=None):
+                     directive_source=None, style_examples=None):
     """upsert 文风配置(只更新非 None 字段)。行不存在则建(scope/volume_id 匹配)。"""
     if scope == "volume":
         row = conn.execute(
@@ -290,6 +292,8 @@ def set_style_config(conn, scope, volume_id=None, *, directive=None, word_count_
         fields.append("scalar_targets=?"); vals.append(json.dumps(scalar_targets, ensure_ascii=False))
     if directive_source is not None:
         fields.append("directive_source=?"); vals.append(directive_source)
+    if style_examples is not None:
+        fields.append("style_examples=?"); vals.append(json.dumps(style_examples, ensure_ascii=False))
     if row:
         if fields:
             vals.append(row["id"])
@@ -324,6 +328,8 @@ def list_fingerprints(conn, scope=None):
             fp["_directive_stale"] = bool(fp.get("_source_work")) and _norm_source(fp["_source_work"]) != _norm_source(r["directive_source"])
         if r["scalar_targets"] and r["scalar_targets"] != "{}":
             fp["_scalar_targets"] = json.loads(r["scalar_targets"])
+        if r["style_examples"] and r["style_examples"] != "{}":
+            fp["_style_examples"] = json.loads(r["style_examples"])
         if r["volume_id"] is not None:
             fp["_volume_id"] = r["volume_id"]
         if scope is None or fp.get("_scope") == scope:

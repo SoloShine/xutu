@@ -376,6 +376,7 @@ def api_set_style(work_id):
             hygiene=body.get("hygiene"),
             enabled_dims=body.get("enabled_dims"),
             scalar_targets=body.get("scalar_targets"),
+            style_examples=body.get("style_examples"),
         )
         return _ok({"id": rid, "scope": scope})
     except Exception as e:

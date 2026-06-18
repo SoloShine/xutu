@@ -84,7 +84,7 @@ def _prev_chapter_tail(conn, chapter_id, target_chars=400, hard_max=600):
 
 def get_chapter_boot_context(conn, chapter_id, volume_id):
     """返回 {beat_contracts, reader_disclosed_secrets, characters, fingerprint, style_directive,
-    constants, prev_chapter_tail}。文风(指纹+指令+旋钮)从 style_template 读,可配,覆盖旧硬编码。"""
+    style_examples, constants, prev_chapter_tail}。文风(指纹+指令+范例+旋钮)从 style_template 读,可配。"""
     beat_contracts = []
     for beat in list_beats_in_chapter(conn, chapter_id):
         c = get_beat_contract(conn, volume_id, beat["id"])
@@ -94,6 +94,9 @@ def get_chapter_boot_context(conn, chapter_id, volume_id):
     # 文风配置(DB 可配,卷级覆盖作品级→代码默认)。指纹/指令/字数/编辑轮全从这出。
     style = get_style_config(conn, volume_id)
     fingerprint = style["fingerprint"] or get_effective_fingerprint(conn, volume_id)
+    # 风格范例(正反例):作者策划的具体段落,注入 writer【风格示范】。{good:[], bad:[]},限 5 条控 token
+    ex = style.get("style_examples") or {}
+    style_examples = {"good": list(ex.get("good") or [])[:5], "bad": list(ex.get("bad") or [])[:5]}
 
     constants = {
         "drift_threshold": DRIFT_THRESHOLD,  # 与 L2 门禁共享,不可配(防双真相源)
@@ -108,6 +111,7 @@ def get_chapter_boot_context(conn, chapter_id, volume_id):
         "characters": _character_canon(conn),
         "fingerprint": fingerprint,
         "style_directive": style["directive"],   # 定性文风指令(自由文本,注入 writer)
+        "style_examples": style_examples,        # 正反例段落,注入 writer【风格示范】(对照不复述)
         "constants": constants,
         "prev_chapter_tail": _prev_chapter_tail(conn, chapter_id),
     }
