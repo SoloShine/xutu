@@ -15,7 +15,7 @@
 import json
 from src.bedrock.db.chapter_lookup import chapter_id_by_global
 from src.bedrock.repositories.plot_tree import list_paragraphs_in_chapter, list_beats_in_chapter
-from src.bedrock.style.extractor import extract_fingerprint, _cn_len, _split_sentences
+from src.bedrock.style.extractor import extract_fingerprint, _cn_len, _split_sentences, count_notxisy
 from src.bedrock.style.template_repo import get_style_config
 
 
@@ -34,7 +34,7 @@ def _chapter_scalar_metrics(paragraphs):
     return {
         # 越低越好(气味)——用 per-k 归一,非按段(按段会与段落长度耦合)
         "dash_density": fp.get("dash_density", {}).get("value", 0),  # ——/千字
-        "notXisY_rate": fp["structure"].get("notXisY", 0),  # notXisY 句占比
+        "notXisY_rate": (sum(count_notxisy(p) for p in paragraphs) / n_sent),  # 段落级四变体/句数
         # 比率
         "dialogue_ratio": fp["dialogue_ratio"].get("value", 0),
         "rhetoric_per_k": fp["rhetoric"].get("value", 0),

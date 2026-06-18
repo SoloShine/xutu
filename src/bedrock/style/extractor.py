@@ -10,6 +10,12 @@ _QUOTE_CHARS = set("「」「」“”\"‘’''")
 _NOTXISY = re.compile(SENTENCE_STRUCTURE_PATTERNS["notXisY"])
 _RHETORIC_RE = re.compile("|".join(RHETORIC_LEXICON))
 
+
+def count_notxisy(text):
+    """段落级数 notXisY 命中(四变体:无标点/而是/逗号/句号分割)。
+    须在整段上跑(非逐句),否则句号切句后"不是X。是Y"看不到。"""
+    return len(_NOTXISY.findall(text))
+
 # 维度定义(公式/含义/解读)。供 API/前端可解释化展示,也作开发者文档。
 DIM_DEFINITIONS = {
     "sentence_length": {

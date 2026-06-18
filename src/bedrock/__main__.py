@@ -131,7 +131,9 @@ def _normalize_cjk_punctuation(text):
 
 # 文风气味计数："不是A(而)是B" 句式 + 破折号。参考好作品 notXisY≈0.15%、96%段无破折号，
 # 故这俩超量即气味异常（writer 偷懒路径）。落盘后只计数告警，不拒（硬禁靠 prompt）。
-_NOTXISY = re.compile(r'不是[^，。！？\n…—]{1,20}?(?:是|而是)')
+# 用 lexicon 统一正则(四变体:无标点/而是/逗号/句号分割),段落级——与 extractor/style_drift 一致。
+from src.bedrock.style.lexicon import NOTXISY_PATTERN
+_NOTXISY = re.compile(NOTXISY_PATTERN)
 
 
 def _style_smells(text):
