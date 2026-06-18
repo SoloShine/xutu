@@ -22,7 +22,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--txt", type=Path, required=True)
     ap.add_argument("--project", type=Path, required=True)
-    ap.add_argument("--sample", type=int, default=25)
+    ap.add_argument("--sample", type=int, default=None, help="抽样章数(缺省=动态)")
+    ap.add_argument("--range", dest="chapter_range", type=int, nargs=2, metavar=("START", "END"),
+                    default=None, help="章节范围 1-based 闭区间(前后文风不同时只取代表性段)")
     ap.add_argument("--scope", choices=["work", "volume"], default="work")
     ap.add_argument("--volume-id", type=int, default=None)
     ap.add_argument("--encoding", default="utf-8")
@@ -41,14 +43,16 @@ def main():
         return
 
     conn = get_connection(args.project)
-    rid, meta = save_fingerprint_from_text(
+    rid, meta, seeded = save_fingerprint_from_text(
         conn, scope=args.scope, text=text,
         volume_id=args.volume_id if args.scope == "volume" else None,
-        source_work=args.txt.stem, sample=args.sample)
+        source_work=args.txt.stem, sample=args.sample, chapter_range=args.chapter_range)
     conn.commit()
     conn.close()
-    print(f"参考《{args.txt.name}》: {meta['chapter_count']} 章, 抽样 {meta['sampled_chapters']} 章 → {meta['paragraph_count']} 段")
+    print(f"参考《{args.txt.name}》: {meta['chapter_count']} 章, 抽样 {meta['sampled_chapters']} 章[{meta.get('sample_range')}], {meta['paragraph_count']} 段")
     print(f"已写入 {args.project}/style_template (scope={args.scope}, row={rid})")
+    if seeded:
+        print("并自动派生文风指令草稿(可润色)。")
 
 
 if __name__ == "__main__":

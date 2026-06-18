@@ -261,11 +261,13 @@ def api_style_import(work_id):
         return _err(f"读取失败: {e}")
     conn = get_connection(wd)
     try:
-        rid, meta = save_fingerprint_from_text(
+        cr = body.get("chapter_range")  # [start,end] 1-based, 可选
+        rid, meta, seeded = save_fingerprint_from_text(
             conn, scope=scope, text=text,
             volume_id=body.get("volume_id") if scope == "volume" else None,
-            source_work=p.stem, sample=int(body.get("sample", 25)))
-        return _ok({"id": rid, "source_work": p.stem, **meta})
+            source_work=p.stem, sample=body.get("sample"),
+            chapter_range=cr)
+        return _ok({"id": rid, "source_work": p.stem, "directive_seeded": seeded, **meta})
     except Exception as e:
         return _err(e)
     finally:

@@ -48,31 +48,48 @@ def save_fingerprint(conn, scope, chapter_ids, volume_id=None):
         scope=scope, volume_id=volume_id if scope == "volume" else None)
 
 
-def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=None, sample=25):
+def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=None,
+                               sample=None, chapter_range=None, derive_directive_flag=True):
     """从外部参考全文提取指纹并 upsert(同 scope 行→UPDATE fingerprint,保留指令/旋钮)。
-    纯程序提取(reference_import),零 LLM。返回 (row_id, meta)。"""
-    from src.bedrock.style.reference_import import import_and_extract
-    fp, meta = import_and_extract(text, sample=sample)
+    纯程序提取(reference_import),零 LLM。chapter_range=[start,end] 1-based 闭区间。
+    derive_directive_flag:目标行无 directive 时,自动从指纹派生指令草稿(数字→文字)。
+    返回 (row_id, meta, directive_seeded)。"""
+    from src.bedrock.style.reference_import import import_and_extract, derive_directive
+    fp, meta = import_and_extract(text, sample=sample, chapter_range=chapter_range)
     fp["_scope"] = scope
     fp["_source_work"] = source_work or "外部参考"
     if scope == "volume" and volume_id is not None:
         fp["_volume_id"] = volume_id
     if scope == "volume":
         row = conn.execute(
-            "SELECT id FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",
+            "SELECT id, directive FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",
             (volume_id,)).fetchone()
     else:
         row = conn.execute(
-            "SELECT id FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
+            "SELECT id, directive FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
     fp_json = json.dumps(fp, ensure_ascii=False)
+    seeded = False
+    # 无既有 directive → 从指纹派生草稿 seed
+    existing_directive = row["directive"] if row else ""
+    directive_to_set = None
+    if derive_directive_flag and not existing_directive:
+        directive_to_set = derive_directive(fp)
+        seeded = bool(directive_to_set)
     if row:
-        conn.execute("UPDATE style_template SET fingerprint=?, source_works=? WHERE id=?",
-                     (fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), row["id"]))
+        if directive_to_set:
+            conn.execute("UPDATE style_template SET fingerprint=?, source_works=?, directive=? WHERE id=?",
+                         (fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), directive_to_set, row["id"]))
+        else:
+            conn.execute("UPDATE style_template SET fingerprint=?, source_works=? WHERE id=?",
+                         (fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), row["id"]))
         conn.commit()
-        return row["id"], meta
+        return row["id"], meta, seeded
     rid = save_style_template(conn, fingerprint=fp, source_works=[fp["_source_work"]],
                               scope=scope, volume_id=volume_id if scope == "volume" else None)
-    return rid, meta
+    if directive_to_set:
+        conn.execute("UPDATE style_template SET directive=? WHERE id=?", (directive_to_set, rid))
+        conn.commit()
+    return rid, meta, seeded
 
 
 def _row_by_scope(conn, scope, volume_id):

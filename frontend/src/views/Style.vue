@@ -23,6 +23,7 @@ const saving = ref(false)
 const error = ref('')
 const importPath = ref('')
 const importing = ref(false)
+const rangeStart = ref<number|null>(null), rangeEnd = ref<number|null>(null)
 
 // 编辑态
 const scope = ref<'work' | 'volume'>('work')
@@ -159,13 +160,17 @@ async function importRef() {
   if (!importPath.value.trim()) { msg.warning('填参考作品 txt 本地路径'); return }
   importing.value = true
   try {
+    const range = (rangeStart.value != null && rangeEnd.value != null)
+      ? [rangeStart.value, rangeEnd.value] : undefined
     const r: any = await api.importReference(props.wid, {
       path: importPath.value.trim(), scope: scope.value,
       volume_id: scope.value === 'volume' ? volumeId.value : undefined,
+      chapter_range: range,
     })
     if (r && r.ok !== false) {
-      msg.success(`已提取: ${(r.item || r).chapter_count || '?'}章/抽样${(r.item || r).sampled_chapters || '?'} → ${scope.value === 'volume' ? '卷级' : '作品级'}指纹`)
-      importPath.value = ''
+      const it = r.item || r
+      msg.success(`已提取: ${it.chapter_count || '?'}章/抽样${it.sampled_chapters || '?'}${it.directive_seeded ? '(+派生指令)' : ''}`)
+      importPath.value = ''; rangeStart.value = null; rangeEnd.value = null
       await load()
     } else { msg.error('导入失败: ' + ((r && r.error) || '未知')) }
   } catch (e: any) { msg.error('导入失败: ' + (e.message || e)) }
@@ -218,12 +223,17 @@ function defOf(key: string) { return dimDefs.value[key] }
           </NAlert>
 
           <!-- 导入参考作品(纯程序提取,零LLM) -->
-          <div class="field-label">导入参考作品 → 提取指纹(本地 txt 路径,瞬时)</div>
-          <NSpace :size="6" align="center" style="margin-bottom:10px">
+          <div class="field-label">导入参考作品 → 提取指纹+派生指令(本地 txt 路径,瞬时)</div>
+          <NSpace :size="6" align="center" wrap style="margin-bottom:10px">
             <NInput v-model:value="importPath" size="small" placeholder="D:/tmp/某作品.txt"
-              style="flex:1;min-width:300px" />
+              style="flex:1;min-width:280px" />
+            <span class="knob-label">章范围</span>
+            <NInputNumber v-model:value="rangeStart" :min="1" size="small" placeholder="起" style="width:80px" />
+            <span>~</span>
+            <NInputNumber v-model:value="rangeEnd" :min="1" size="small" placeholder="止" style="width:80px" />
             <NButton size="small" :loading="importing" @click="importRef">提取→{{ scope === 'volume' ? '卷级' : '作品级' }}</NButton>
           </NSpace>
+          <div class="field-label" style="opacity:.5;margin-top:-4px">章范围留空=中段动态抽样(跳首尾);前后文风不同时填范围只取代表段。非标准章名自动按字数切块。</div>
 
           <!-- 文风指令 -->
           <div class="field-label">文风指令(定性,注入 writer)</div>
