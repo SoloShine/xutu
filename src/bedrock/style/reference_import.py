@@ -99,9 +99,24 @@ def import_and_extract(text, sample=None, chapter_range=None):
     }
 
 
+def pick_reference_sample(text, n_chapters=3, max_chars=5000):
+    """取代表性正文样本(中段 n 章,截断到 max_chars),供 LLM 文风分析持久化用。
+    存库后 /analyze-style 无需原文件即可分析。"""
+    chapters = split_chapters(text)
+    if not chapters:
+        return text[:max_chars]
+    mid = len(chapters) // 2
+    idxs = [min(max(mid - n_chapters // 2 + i, 0), len(chapters) - 1) for i in range(n_chapters)]
+    parts = []
+    for i in idxs:
+        parts.append("【" + chapters[i][0] + "】")
+        parts.extend(chapter_paragraphs(chapters[i][1])[:50])
+    out = "\n\n".join(parts)
+    return out[:max_chars]
+
+
 def preview_chapters(text):
-    """预览:切章信息(总章数、是否切片兜底、样章标题、总字数),不提取不存。
-    供文件选择后"先看再设范围"。"""
+    """预览:切章信息(总章数、是否切片兜底、样章标题、总字数),不提取不存。"""
     chapters = split_chapters(text)
     # 切片兜底判别:标题形如"块N"或"全篇"
     chunked = bool(chapters) and chapters[0][0].startswith(("块", "全篇"))

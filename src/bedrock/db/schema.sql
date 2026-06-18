@@ -386,7 +386,9 @@ CREATE TABLE IF NOT EXISTS style_template (
     max_edit_rounds INTEGER NOT NULL DEFAULT 3,
     hygiene TEXT NOT NULL DEFAULT '{}',
     enabled_dims TEXT NOT NULL DEFAULT '[]',
-    scalar_targets TEXT NOT NULL DEFAULT '{}'
+    scalar_targets TEXT NOT NULL DEFAULT '{}',
+    reference_sample TEXT NOT NULL DEFAULT '',
+    directive_source TEXT NOT NULL DEFAULT ''
 );
 
 

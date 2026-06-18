@@ -277,6 +277,10 @@ function defOf(key: string) { return dimDefs.value[key] }
 
           <!-- 文风指令 -->
           <div class="field-label">文风指令(定性,注入 writer)</div>
+          <NAlert v-if="workCfg?._directive_stale" type="warning" :bordered="false" style="margin-bottom:6px">
+            指令来自旧参考「{{ workCfg._directive_source }}」,与当前指纹「{{ workCfg._source_work }}」不匹配。
+            运行 <code>/analyze-style {{ props.wid }}</code> 重新分析。
+          </NAlert>
           <NInput v-model:value="directive" type="textarea" :autosize="{ minRows: 2, maxRows: 5 }"
             :placeholder="scope === 'volume' ? '留空=继承作品级指令' : '短促冷硬、镜头式白描、不用心理独白...'" />
 

@@ -438,6 +438,17 @@ def main():
     p_evstyle.add_argument("--project", type=Path, required=True)
     p_evstyle.add_argument("--volume", type=int, required=True)
 
+    p_srstyle = sub.add_parser("show-reference-sample", help="读持久化的参考样本+来源(供 /analyze-style)")
+    p_srstyle.add_argument("--project", type=Path, required=True)
+    p_srstyle.add_argument("--volume", type=int, default=None)
+
+    p_sdir = sub.add_parser("set-style-directive", help="写文风指令+来源(/analyze-style 落库)")
+    p_sdir.add_argument("--project", type=Path, required=True)
+    p_sdir.add_argument("--directive", required=True)
+    p_sdir.add_argument("--source", default="")
+    p_sdir.add_argument("--scope", choices=["work", "volume"], default="work")
+    p_sdir.add_argument("--volume", type=int, default=None)
+
     p_boot = sub.add_parser("boot-context", help="装配子代理启动上下文")
     p_boot.add_argument("--project", type=Path, required=True)
     p_boot.add_argument("--chapter", type=int, required=True)
@@ -594,6 +605,22 @@ def main():
             cids = [r["id"] for r in rows]
             save_fingerprint(conn, scope="volume", chapter_ids=cids, volume_id=args.volume)
             print(f"卷 {args.volume} 指纹已提取自 {len(cids)} 章(status=writing)")
+        elif args.cmd == "show-reference-sample":
+            from src.bedrock.style.template_repo import get_style_config
+            cfg = get_style_config(conn, args.volume) if args.volume else \
+                  __import__("src.bedrock.style.template_repo", fromlist=["get_style_config"]).get_style_config(conn, None)
+            import json as _json
+            out = {"source": cfg.get("source_work"), "directive": cfg.get("directive"),
+                   "directive_source": cfg.get("directive_source"),
+                   "directive_stale": cfg.get("directive_stale")}
+            row = conn.execute("SELECT reference_sample FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
+            out["sample"] = row["reference_sample"] if row else ""
+            print(_json.dumps(out, ensure_ascii=False))
+        elif args.cmd == "set-style-directive":
+            from src.bedrock.style.template_repo import set_style_config
+            rid = set_style_config(conn, args.scope, volume_id=args.volume,
+                                   directive=args.directive, directive_source=args.source)
+            print(f"directive 已写入 row={rid} scope={args.scope} source={args.source or '(无)'}")
         elif args.cmd == "boot-context":
             cid = _chapter_id(conn, args.chapter)
             ctx = get_chapter_boot_context(conn, cid, volume_id=args.volume)

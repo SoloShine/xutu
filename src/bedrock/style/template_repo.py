@@ -54,41 +54,46 @@ def save_fingerprint_from_text(conn, scope, text, volume_id=None, source_work=No
     纯程序提取(reference_import),零 LLM。chapter_range=[start,end] 1-based 闭区间。
     derive_directive_flag:目标行无 directive 时,自动从指纹派生指令草稿(数字→文字)。
     返回 (row_id, meta, directive_seeded)。"""
-    from src.bedrock.style.reference_import import import_and_extract, derive_directive
+    from src.bedrock.style.reference_import import import_and_extract, derive_directive, pick_reference_sample
     fp, meta = import_and_extract(text, sample=sample, chapter_range=chapter_range)
     fp["_scope"] = scope
     fp["_source_work"] = source_work or "外部参考"
     if scope == "volume" and volume_id is not None:
         fp["_volume_id"] = volume_id
+    reference_sample = pick_reference_sample(text)   # 持久化样本,/analyze-style 用
     if scope == "volume":
         row = conn.execute(
-            "SELECT id, directive FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",
+            "SELECT id, directive, directive_source FROM style_template WHERE scope='volume' AND volume_id=? ORDER BY id DESC LIMIT 1",
             (volume_id,)).fetchone()
     else:
         row = conn.execute(
-            "SELECT id, directive FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
+            "SELECT id, directive, directive_source FROM style_template WHERE scope='work' ORDER BY id DESC LIMIT 1").fetchone()
     fp_json = json.dumps(fp, ensure_ascii=False)
     seeded = False
-    # 无既有 directive → 从指纹派生草稿 seed
     existing_directive = row["directive"] if row else ""
     directive_to_set = None
     if derive_directive_flag and not existing_directive:
         directive_to_set = derive_directive(fp)
         seeded = bool(directive_to_set)
     if row:
+        sets = ["fingerprint=?", "source_works=?", "reference_sample=?"]
+        vals = [fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), reference_sample]
         if directive_to_set:
-            conn.execute("UPDATE style_template SET fingerprint=?, source_works=?, directive=? WHERE id=?",
-                         (fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), directive_to_set, row["id"]))
-        else:
-            conn.execute("UPDATE style_template SET fingerprint=?, source_works=? WHERE id=?",
-                         (fp_json, json.dumps([fp["_source_work"]], ensure_ascii=False), row["id"]))
+            sets += ["directive=?", "directive_source=?"]
+            vals += [directive_to_set, fp["_source_work"]]
+        vals.append(row["id"])
+        conn.execute(f"UPDATE style_template SET {', '.join(sets)} WHERE id=?", vals)
         conn.commit()
         return row["id"], meta, seeded
     rid = save_style_template(conn, fingerprint=fp, source_works=[fp["_source_work"]],
                               scope=scope, volume_id=volume_id if scope == "volume" else None)
+    extra_sets, extra_vals = "", []
     if directive_to_set:
-        conn.execute("UPDATE style_template SET directive=? WHERE id=?", (directive_to_set, rid))
-        conn.commit()
+        extra_sets = ", directive=?, directive_source=?"
+        extra_vals = [directive_to_set, fp["_source_work"]]
+    conn.execute(f"UPDATE style_template SET reference_sample=?{extra_sets} WHERE id=?",
+                 [reference_sample, *extra_vals, rid])
+    conn.commit()
     return rid, meta, seeded
 
 
@@ -140,9 +145,13 @@ def get_style_config(conn, volume_id):
         return empty
 
     directive = pick_str("directive")
+    directive_source = pick_str("directive_source")
     # fingerprint: 卷级空→作品级
     fp_str = pick_str("fingerprint", "{}")
     fp = json.loads(fp_str) if fp_str else None
+    current_source = fp.get("_source_work") if fp else None
+    # 指令过时:有指令且记了来源,但来源 ≠ 当前指纹来源(换参考后未重分析)
+    directive_stale = bool(directive) and bool(directive_source) and current_source is not None and directive_source != current_source
     src_rows = vol if (vol and vol["source_works"] and vol["source_works"] != "[]") else work
     src = json.loads(src_rows["source_works"]) if src_rows and src_rows["source_works"] else []
     # 旋钮:卷级行存在则用其值,否则作品级;都无→默认
@@ -158,6 +167,8 @@ def get_style_config(conn, volume_id):
         "source_work": (src[0] if src else (fp.get("_source_work") if fp else None)),
         "fingerprint": fp,
         "directive": directive,
+        "directive_source": directive_source,
+        "directive_stale": directive_stale,
         "word_count_target": wc,
         "max_edit_rounds": mer,
         "hygiene": pick_json("hygiene") or _DEFAULT_HYGIENE,
@@ -167,7 +178,8 @@ def get_style_config(conn, volume_id):
 
 
 def set_style_config(conn, scope, volume_id=None, *, directive=None, word_count_target=None,
-                     max_edit_rounds=None, hygiene=None, enabled_dims=None, scalar_targets=None):
+                     max_edit_rounds=None, hygiene=None, enabled_dims=None, scalar_targets=None,
+                     directive_source=None):
     """upsert 文风配置(只更新非 None 字段)。行不存在则建(scope/volume_id 匹配)。"""
     if scope == "volume":
         row = conn.execute(
@@ -189,6 +201,8 @@ def set_style_config(conn, scope, volume_id=None, *, directive=None, word_count_
         fields.append("enabled_dims=?"); vals.append(json.dumps(enabled_dims, ensure_ascii=False))
     if scalar_targets is not None:
         fields.append("scalar_targets=?"); vals.append(json.dumps(scalar_targets, ensure_ascii=False))
+    if directive_source is not None:
+        fields.append("directive_source=?"); vals.append(directive_source)
     if row:
         if fields:
             vals.append(row["id"])
@@ -217,6 +231,10 @@ def list_fingerprints(conn, scope=None):
             fp["_volume_id"] = r["volume_id"]
         if r["directive"]:
             fp["_directive"] = r["directive"]
+        if r["directive_source"]:
+            fp["_directive_source"] = r["directive_source"]
+            # stale: 指令来源 ≠ 当前指纹来源(换参考后未重分析)
+            fp["_directive_stale"] = bool(fp.get("_source_work")) and fp["_source_work"] != r["directive_source"]
         if r["scalar_targets"] and r["scalar_targets"] != "{}":
             fp["_scalar_targets"] = json.loads(r["scalar_targets"])
         if r["volume_id"] is not None:
