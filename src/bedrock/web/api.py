@@ -26,6 +26,7 @@ from src.bedrock.repositories.plot_tree import (
 )
 from src.bedrock.repositories.worldbook import update_location, update_theme, update_motif
 from src.bedrock.style.template_repo import list_fingerprints, set_style_config, dim_definitions
+from src.bedrock.checks.style_drift import measure_work_actual
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -219,6 +220,18 @@ def api_style(work_id):
             "configs": list_fingerprints(conn),
             "dim_definitions": dim_definitions(),
         })
+    finally:
+        conn.close()
+
+
+@bp.get("/works/<work_id>/style/actual")
+def api_style_actual(work_id):
+    """当前实测指纹(live extract 已写章节 9维 + 标量)。与目标指纹对照。?volume=N 限单卷。"""
+    wd = _resolve_work(work_id)
+    vid = request.args.get("volume", type=int)
+    conn = get_connection(wd)
+    try:
+        return jsonify(measure_work_actual(conn, vid))
     finally:
         conn.close()
 

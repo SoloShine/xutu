@@ -17,6 +17,7 @@ interface Fingerprint { _scope?: string; _volume_id?: number; _source_work?: str
 const configs = ref<Fingerprint[]>([])
 const dimDefs = ref<Record<string, DimDef>>({})
 const volumes = ref<{ id: number; name: string }[]>([])
+const actual = ref<{ fingerprint: Fingerprint | null; scalars: Record<string, number> | null; chapter_count: number; paragraph_count: number } | null>(null)
 const loading = ref(true)
 const saving = ref(false)
 const error = ref('')
@@ -45,6 +46,35 @@ const derived = computed(() => {
   }
 })
 
+// 当前有效目标标量(显式 scalar_targets 覆盖指纹派生)
+const targetScalars = computed(() => {
+  const st = workCfg.value?._scalar_targets || {}
+  const d = derived.value
+  return {
+    dash: st.dash_rate != null ? st.dash_rate * 100 : d.dash,
+    notx: st.notXisY_rate != null ? st.notXisY_rate * 100 : d.notx,
+    dlg: st.dialogue_ratio != null ? st.dialogue_ratio * 100 : d.dlg,
+    rhet: st.rhetoric_per_k != null ? st.rhetoric_per_k : d.rhet,
+  }
+})
+
+// 实测 vs 目标(4 标量),用于对比卡
+const scalarCompare = computed(() => {
+  const sc = actual.value?.scalars
+  if (!sc) return null
+  const tg = targetScalars.value
+  const row = (label: string, unit: string, a: number, t: number | null) => ({
+    label, unit, actual: Math.round(a * 10) / 10, target: t != null ? Math.round(t * 10) / 10 : null,
+    over: t != null && a > t * 1.5 + 0.01,  // 明显超标
+  })
+  return [
+    row('破折号率', '%', (sc.dash_rate || 0) * 100, tg.dash),
+    row('「不是A是B」率', '%', (sc.notXisY_rate || 0) * 100, tg.notx),
+    row('对白占比', '%', (sc.dialogue_ratio || 0) * 100, tg.dlg),
+    row('修辞密度', '/千字', sc.rhetoric_per_k || 0, tg.rhet),
+  ]
+})
+
 function populateFrom(c: Fingerprint | null) {
   directive.value = c?._directive || ''
   const st = c?._scalar_targets || {}
@@ -58,9 +88,13 @@ async function load() {
   if (!props.wid) return
   loading.value = true; error.value = ''
   try {
-    const [sr, ov] = await Promise.all([api.style(props.wid), api.overview(props.wid) as any])
+    const [sr, ov, ac] = await Promise.all([
+      api.style(props.wid), api.overview(props.wid) as any,
+      api.styleActual(props.wid) as any,
+    ])
     configs.value = sr.configs || []
     dimDefs.value = sr.dim_definitions || {}
+    actual.value = ac
     volumes.value = (ov.volume_list || []).map((v: any) => ({ id: v.id, name: v.name }))
     if (volumes.value.length && volumeId.value == null) volumeId.value = volumes.value[0].id
     populateFrom(curCfg.value)
@@ -196,6 +230,46 @@ function defOf(key: string) { return dimDefs.value[key] }
           </div>
         </NCard>
 
+        <!-- 当前实测 vs 目标(live extract 已写章节) -->
+        <NCard v-if="actual" size="small" title="当前实测 vs 目标(live)">
+          <template #header-extra>
+            <NTag size="small" round>{{ actual.chapter_count }}章 / {{ actual.paragraph_count }}段(已写)</NTag>
+          </template>
+          <NAlert v-if="!actual.fingerprint" type="default" :bordered="false">尚无已写章节,无法实测。</NAlert>
+          <template v-else>
+            <div class="field-label">标量对比(实测 = 弹着点 / 目标 = 靶)</div>
+            <div class="cmp-table">
+              <div v-for="r in scalarCompare" :key="r.label" class="cmp-row" :class="{ over: r.over }">
+                <span class="cmp-label">{{ r.label }}</span>
+                <div class="cmp-bars">
+                  <div class="cmp-line"><span class="cmp-tag actual">实测</span>
+                    <NProgress type="line" :percentage="Math.min(r.unit==='%'?r.actual:r.actual*5,100)" :height="10" :show-indicator="false" :status="r.over?'warning':'success'" style="flex:1" />
+                    <span class="cmp-val">{{ r.actual }}{{ r.unit }}</span></div>
+                  <div class="cmp-line"><span class="cmp-tag target">目标</span>
+                    <NProgress type="line" :percentage="r.target!=null?Math.min(r.unit==='%'?r.target:r.target*5,100):0" :height="10" :show-indicator="false" color="#999" style="flex:1" />
+                    <span class="cmp-val">{{ r.target!=null?r.target:'—' }}{{ r.unit }}</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="field-label" style="margin-top:10px">实测 9 维分布</div>
+            <div class="dim-grid">
+              <div v-for="dim in DIMS" :key="dim" class="dim">
+                <div class="dim-head"><span class="dim-label">{{ defOf(dim)?.label || dim }}</span></div>
+                <div v-if="actual.fingerprint[dim]?.value !== undefined" class="single-val">
+                  {{ dim === 'dialogue_ratio' ? Math.round(actual.fingerprint[dim].value*1000)/10 + '%' : actual.fingerprint[dim].value + ' /千字' }}
+                </div>
+                <div v-else>
+                  <div v-for="[k, v] in entries(actual.fingerprint, dim)" :key="k" class="bar-row">
+                    <span class="bar-k">{{ k }}</span>
+                    <NProgress type="line" :percentage="pct(v)" :height="9" :show-indicator="false" style="flex:1" />
+                    <span class="bar-v">{{ pct(v) }}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </NCard>
+
         <!-- 统计指纹(只读参考) -->
         <NCard v-if="workCfg" size="small" title="统计指纹 · 只读参考(来自 extract)">
           <template #header-extra>
@@ -247,4 +321,13 @@ function defOf(key: string) { return dimDefs.value[key] }
 .bar-k { min-width: 56px; opacity: 0.8; }
 .bar-k.hi { color: var(--n-warning-color); font-weight: 700; }
 .bar-v { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; }
+.cmp-table { display: flex; flex-direction: column; gap: 8px; }
+.cmp-row { display: flex; align-items: center; gap: 10px; }
+.cmp-row.over .cmp-label { color: var(--n-warning-color); font-weight: 700; }
+.cmp-label { min-width: 110px; font-size: 13px; }
+.cmp-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.cmp-line { display: flex; align-items: center; gap: 6px; }
+.cmp-tag { font-size: 10px; min-width: 28px; opacity: 0.6; }
+.cmp-tag.actual { color: var(--n-primary-color); opacity: 1; }
+.cmp-val { min-width: 64px; text-align: right; font-size: 12px; font-variant-numeric: tabular-nums; }
 </style>

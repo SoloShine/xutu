@@ -110,6 +110,29 @@ def pct(x):
     return f"{round((x or 0) * 100)}%"
 
 
+def measure_work_actual(conn, volume_id=None):
+    """实测:从已写章节(status=writing)live extract 当前 9维指纹 + 标量指标。
+    与存储的目标指纹(陈二懒等)对照——目标是靶,实测是弹着点。volume_id 限定单卷。"""
+    if volume_id:
+        rows = conn.execute(
+            "SELECT id FROM chapter WHERE volume_id=? AND status='writing' ORDER BY global_number",
+            (volume_id,)).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT id FROM chapter WHERE status='writing' ORDER BY global_number").fetchall()
+    paras = []
+    for r in rows:
+        paras.extend(p["text"] for p in list_paragraphs_in_chapter(conn, r["id"]))
+    if not paras:
+        return {"fingerprint": None, "scalars": None, "chapter_count": 0, "paragraph_count": 0}
+    return {
+        "fingerprint": extract_fingerprint(paras),
+        "scalars": _chapter_scalar_metrics(paras),
+        "chapter_count": len(rows),
+        "paragraph_count": len(paras),
+    }
+
+
 def measure_style_drift(conn, chapter_id, volume_id):
     """测本章文风漂移。返回 {target_source, metrics, drifted[], ok}。
     drifted = [{metric, actual, target, severity, hint}] 仅明显偏离项。"""
