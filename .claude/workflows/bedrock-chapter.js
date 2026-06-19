@@ -1,13 +1,11 @@
 export const meta = {
   name: 'bedrock-chapter',
-  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Repair(≤3轮)→Polish(指纹门控)→Consistency(角色正典)→Style(漂移测量+收敛)→Finalize',
+  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Revise(manifest 驱动定向修订,复测重喂≤2)→Consistency(角色正典 ops)→专名(ops)→Finalize',
   phases: [
     { title: 'Boot' },
     { title: 'Write' },
-    { title: 'L2+Repair' },
-    { title: 'Polish' },
+    { title: 'Revise' },
     { title: 'Consistency' },
-    { title: 'Style' },
     { title: 'Persist+Telemetry' },
   ],
 }
@@ -35,6 +33,9 @@ const HYGIENE_RULES = [
 
 // drift 最差轮累积器（须在主流程调用前初始化，避 TDZ）
 let worstDrift = {}
+
+// Revise 复测重喂上限(收束原 repair≤3 + style≤2,合并取严的 2)。
+const REVISE_MAX_ROUNDS = 2
 
 const _args = typeof args === 'string' ? JSON.parse(args) : (args || {})
 const { project, chapter, volume, exportPath } = _args
