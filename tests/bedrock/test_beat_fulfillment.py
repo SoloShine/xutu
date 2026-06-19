@@ -73,3 +73,19 @@ def test_all_good_no_violations(tmp_project):
     vs = check_beat_fulfillment(conn, cid2)
     assert vs == []
     conn.close()
+
+
+def test_non_prose_violation_for_meta_paragraph(tmp_project):
+    conn = get_connection(tmp_project)
+    vid, cid, bid = _seed_chapter_with_beat(conn)
+    cid2 = create_chapter(conn, volume_id=vid, global_number=2, title="t2")
+    bid2 = create_beat(conn, chapter_id=cid2, sequence=1, purpose="林深在书摊翻书的场景目的")
+    update_beat_status(conn, bid2, "written")
+    c1 = create_character(conn, name="林深", pronoun="他", role="protagonist", gender="男")
+    link_beat_character(conn, bid2, c1)
+    create_paragraph(conn, chapter_id=cid2, seq=1,
+                     text="润色版本已完成，剔除了所有破折号。",
+                     content_hash="h", beat_id=bid2, role="narrative")
+    vs = check_beat_fulfillment(conn, cid2)
+    assert any(v.kind == "non_prose" for v in vs)
+    conn.close()
