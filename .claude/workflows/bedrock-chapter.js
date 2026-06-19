@@ -60,24 +60,26 @@ let drift = (report.passed_hard_gate && ctx.fingerprint)
   ? await styleCheck(project, chapter, volume) : null
 _trackDrift(drift)
 let manifest = buildManifest(report, drift, ctx)
-const preReviseProse = prose, preReviseReport = report   // Write 后 L2-pass 快照(回退锚)
 let round = 0
 while (!manifest.empty && round < REVISE_MAX_ROUNDS) {
+  // 回退锚 = 本轮尝试前的已知状态(首轮=Write;后续轮=上一成功轮)。多轮下"回退到 last-good",非回原点——
+  // 否则 r1 扩到≥3000 过 L2、r2(仅 style)削回<3000 破 L2 时,会回退到 Write 的短版,丢掉 r1 的成功扩写。
+  const anchorProse = prose, anchorReport = report
   const revised = extractProse(await agent(revisePrompt(ctx, manifest, prose),
     { label: `Edit-revise-r${round + 1}`, phase: 'Revise' }))
   let after
   try {
     after = await commitAndL2(project, chapter, revised, `revise-r${round + 1}`)
   } catch (e) {
-    log(`revise r${round + 1} 提交被拒(返回非正文?),保 preRevise: ${String(e.message || e).slice(0, 80)}`)
+    log(`revise r${round + 1} 提交被拒(返回非正文?),保 anchor(上轮 good): ${String(e.message || e).slice(0, 80)}`)
     break
   }
   if (!after.passed_hard_gate) {
-    // revise 破 L2(beat/word_count)→ 回退 preRevise(已过 L2)。+1 relay;0 新 agent。
-    await commitAndL2(project, chapter, preReviseProse, 'revise-revert')
-    prose = preReviseProse; report = preReviseReport
+    // revise 破 L2 → 回退到本轮前状态(anchor)。若此前有成功轮,anchor=该 good 版(保 ≥3000/L2-clean);0 新 agent。
+    await commitAndL2(project, chapter, anchorProse, 'revise-revert')
+    prose = anchorProse; report = anchorReport
     await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Revise' })
-    log('revise 破坏 L2 → 回退 preRevise 版(正确性优先,该轮未应用)')
+    log('revise 破坏 L2 → 回退 last-good 版(正确性优先,该轮未应用)')
     break
   }
   prose = revised; report = after
