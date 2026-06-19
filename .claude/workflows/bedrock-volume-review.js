@@ -217,8 +217,11 @@ async function batchL2(project, edited) {
   ].join('\n')
   const raw = stripFences(await agent(prompt, { label: 'batch-l2', phase: 'Reverify' }))
   if (raw.startsWith('ERROR:')) throw new Error(`batchL2 失败: ${raw}`)
+  // relay 偶在 JSON 前加"全部 N 条命令..."之类前言;容错:从首个 { 起解析。
+  const start = raw.indexOf('{')
+  const jsonStr = start > 0 ? raw.slice(start) : raw
   let obj
-  try { obj = JSON.parse(raw) } catch { throw new Error(`batchL2 未返回合法 JSON: ${raw.slice(0, 200)}`) }
+  try { obj = JSON.parse(jsonStr) } catch { throw new Error(`batchL2 未返回合法 JSON: ${raw.slice(0, 200)}`) }
   const out = {}
   for (const ch of edited) {
     const v = obj['l2_' + ch]
