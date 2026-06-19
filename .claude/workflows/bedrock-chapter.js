@@ -55,8 +55,9 @@ log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violation
 phase('Revise')
 const editorRaw = extractProse(await agent(editorPrompt(ctx, project, chapter, volume),
   { label: 'Editor', phase: 'Revise' }))
-let editor
-try { editor = JSON.parse(editorRaw) } catch { editor = { converged: false, final_passed: false, iterations: 0, style_drift_remaining: 0 } }
+// editor 常在 JSON 行前后带叙述/正文,逐行找最后一个能解析的 {...} 对象;找不到才 fallback。
+// 注:仅取遥测(iterations/style_drift_remaining);收敛判定一律用下面独立 l2Report,不信此处自报。
+let editor = extractEditorJson(editorRaw) || { converged: false, final_passed: false, iterations: 0, style_drift_remaining: 0 }
 const round = editor.iterations || 0   // finalize 遥测 --editing-rounds 用(原 Revise round 的替代)
 report = await l2Report(project, chapter, 'Revise')   // 独立 relay 复核 L2(信任锚,不信 editor 自报)
 prose = await readCurrentProse(project, chapter)      // editor 改了 DB,刷新 JS 侧 prose(供下游 Consistency 回退快照,防丢 editor 成果)
@@ -355,6 +356,22 @@ function extractProse(s) {
   const blocks = [...s.matchAll(/```prose[ \t]*\n([\s\S]*?)\n```/g)].map(m => m[1].trim())
   if (blocks.length) return blocks.sort((a, b) => b.length - a.length)[0]
   return s.trim()
+}
+
+// 从 editor 输出提取最后一个可解析的 {...} JSON 对象行。editor 常在 JSON 前后带叙述/正文,
+// 逐行(从末尾)找首个(即最后一个)以 { 开头且能 JSON.parse 成对象的行。仅用于遥测;收敛判定走独立 l2Report。
+function extractEditorJson(raw) {
+  if (typeof raw !== 'string') return null
+  const lines = raw.split(/\r?\n/)
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const ln = lines[i].trim()
+    if (!ln.startsWith('{')) continue
+    try {
+      const o = JSON.parse(ln)
+      if (o && typeof o === 'object' && !Array.isArray(o)) return o
+    } catch {}
+  }
+  return null
 }
 
 // 跟踪最差轮文风漂移(取 styleCheck 结果,drifted 数最多者)。fed into finalize→mark-advisory-drift。
