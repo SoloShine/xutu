@@ -6,6 +6,7 @@ export const meta = {
     { title: 'Edit' },
     { title: 'Apply+L2' },
     { title: 'Repair' },
+    { title: 'Style' },
     { title: 'Finalize' },
   ],
 }
@@ -30,6 +31,22 @@ const HYGIENE_RULES = [
   '- 段落短促、视角克制、不堆砌感官形容词。',
 ].join('\n')
 
+// 文风注入块(与 bedrock-chapter.js ChapterWriter 同源):定性指令 + 正反例范例。
+// 编辑智能体(rewrite/polish)此前只塞 HYGIENE_RULES,丢了 directive/examples —— 补齐到写作智能体同等。
+function pct(n) { return Math.round((n || 0) * 1000) / 10 }
+function styleBlock(ctx) {
+  const out = []
+  if (ctx.style_directive) out.push(`【文风指令·定性要求(高于统计指纹,必须贯彻)】`, ctx.style_directive, '')
+  const ex = ctx.style_examples || {}
+  if ((ex.good && ex.good.length) || (ex.bad && ex.bad.length)) {
+    out.push('【风格示范】(对照以下范例的节奏/密度/句式/语气写作。**严禁复述范例原文**,只学其风格)')
+    for (const s of (ex.good || [])) out.push(`  ✓ ${s}`)
+    for (const s of (ex.bad || [])) out.push(`  ✗ ${s}（避免）`)
+    out.push('')
+  }
+  return out
+}
+
 const _args = typeof args === 'string' ? JSON.parse(args) : (args || {})
 const { project, chapter, volume, mode, instruction } = _args
 const VALID = new Set(['rewrite', 'polish', 'surgical', 'recheck'])
@@ -49,7 +66,6 @@ if (mode === 'rewrite') {
   const prose = stripFences(await agent(rewritePrompt(ctx, project, chapter, instruction),
     { label: 'Edit-rewrite', phase: 'Edit' }))
   report = await commitAndL2(project, chapter, prose, 'rewrite')
-  _trackDrift(report)
   log(`rewrite L2 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
 }
 
@@ -58,7 +74,6 @@ else if (mode === 'polish') {
   const prose = stripFences(await agent(polishOnDemandPrompt(ctx, project, chapter, instruction),
     { label: 'Edit-polish', phase: 'Edit' }))
   report = await commitAndL2(project, chapter, prose, 'polish')
-  _trackDrift(report)
   log(`polish L2 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
 }
 
@@ -69,14 +84,12 @@ else if (mode === 'surgical') {
   let ops
   try { ops = JSON.parse(opsRaw) } catch { throw new Error(`surgical agent 未返回合法 ops JSON: ${opsRaw.slice(0, 200)}`) }
   report = await applyOpsAndL2(project, chapter, ops, 'surgical')
-  _trackDrift(report)
   log(`surgical applied ${ops.length} ops, L2 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
 }
 
 else {  // recheck
   phase('Apply+L2')
   report = await l2Only(project, chapter)
-  _trackDrift(report)
   log(`recheck L2 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
 }
 
@@ -89,7 +102,6 @@ while (!report.passed_hard_gate && round < 3) {
   const prose = stripFences(await agent(repairPrompt(report, project, chapter),
     { label: `Edit-repair-r${round + 1}`, phase: 'Repair' }))
   report = await commitAndL2(project, chapter, prose, `repair-r${round + 1}`)
-  _trackDrift(report)
   round++
   log(`repair r${round} passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
 }
@@ -100,6 +112,30 @@ if (!report.passed_hard_gate) {
     `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model ${likelyRuleOrModel ? 1 : 0}`,
     { phase: 'Repair', stdin: JSON.stringify(report.beat_violations || []) })
   log(`l2 unresolved after 3 rounds, likely_rule_or_model=${likelyRuleOrModel}`)
+}
+
+// Style 阶段:编辑/重写引入的文风漂移此前从不测;现 L2 过后测一次,飘则定向 style-polish 收敛回喂。
+// rewrite/polish 改了整章 prose 才收敛;surgical/recheck 仅测+记 drift(段落外科/重检不大改文风)。
+phase('Style')
+if (report.passed_hard_gate) {
+  const drift = await styleCheck(project, chapter, volume)
+  _trackDrift(drift)
+  if (drift && drift.drifted && drift.drifted.length && (mode === 'rewrite' || mode === 'polish')) {
+    const hints = drift.drifted.map(d => `${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`).join('；')
+    log(`style drift after ${mode}: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
+    const prose = stripFences(await agent(stylePolishPrompt(ctx, hints, project, chapter),
+      { label: 'Edit-style', phase: 'Style' }))
+    const after = await commitAndL2(project, chapter, prose, 'style')
+    const recheck = await styleCheck(project, chapter, volume)
+    _trackDrift(recheck)
+    log(`style 收敛后复测: ${recheck.drifted ? recheck.drifted.length : 0}/${drift.drifted.length}项仍飘, L2=${after.passed_hard_gate}`)
+    if (!after.passed_hard_gate) {
+      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Style' })
+      log('style-polish broke beat → flagged')
+    }
+  } else {
+    log(`style: ${drift && drift.drifted ? drift.drifted.length : 0}项漂移 [${(drift && drift.target_source) || '无目标'}]`)
+  }
 }
 
 phase('Finalize')
@@ -153,6 +189,28 @@ async function applyOpsAndL2(project, chapter, ops, label) {
 async function l2Only(project, chapter) {
   const raw = stripFences(await pythonCli(`run-l2 --project ${project} --chapter ${chapter}`, { phase: 'Apply+L2' }))
   try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [], _raw: raw } }
+}
+
+// 文风漂移测量 relay(与 bedrock-chapter.js 同源):style-check 单命令,回 {drifted, target_source, metrics}。
+// 编辑工作流此前完全不测文风漂移(_trackDrift 读 run-l2 的 drift 字段,但 L2 不吐 drift→死代码)。
+async function styleCheck(project, chapter, volume) {
+  const raw = stripFences(await pythonCli(
+    `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Style' }))
+  try { return JSON.parse(raw) } catch { return { drifted: [], ok: true } }
+}
+
+// 编辑后定向 style-polish:读当前正文 + 漂移 hints + 指令/范例/hygiene,收敛回喂。
+function stylePolishPrompt(ctx, hints, project, chapter) {
+  return [
+    '# Edit 子代理 — 文风漂移定向收敛',
+    `先执行只读命令拿当前正文：cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${chapter}`,
+    '把每段 text 按序拼成当前正文。',
+    '',
+    ...styleBlock(ctx),
+    HYGIENE_RULES,
+    `本章文风漂移(需定向收敛,保持剧情/字数/beat 不变):${hints}`,
+    '只改与漂移相关的句式/标点/密度,不增删段落,不改剧情。返回收敛后的【整章正文】纯文本,不裹围栏。',
+  ].join('\n')
 }
 
 async function finalize(project, chapter, exportPath, round, drift) {
@@ -223,6 +281,7 @@ function rewritePrompt(ctx, project, chapter, instruction) {
     ...prev,
     ...canon,
     ...multi,
+    ...styleBlock(ctx),
     HYGIENE_RULES,
     '按下面【重写指令】改写整章，保持 beat 契约与 pov，3000–5000 字，不自报字数。',
     `重写指令：${instruction || '（未给出具体指令，做一次整体打磨重写）'}`,
@@ -239,6 +298,7 @@ function polishOnDemandPrompt(ctx, project, chapter, instruction) {
     '把返回 JSON 里每段 text 按序拼成当前正文。',
     '',
     '目标文风分布：' + JSON.stringify(ctx.fingerprint || {}, null, 2),
+    ...styleBlock(ctx),
     `附加要求：${instruction || '（无，仅对准分布微调）'}`,
     HYGIENE_RULES,
     '保持剧情与字数，不增删段落，不破坏 beat；同时严格执行文风硬约束。',
@@ -287,9 +347,10 @@ function stripFences(s) {
   return t.trim()
 }
 
-function _trackDrift(report) {
-  if (!report || !report.drift || Object.keys(report.drift).length === 0) return
-  const driftedCount = Object.values(report.drift).filter(d => d && d.drifted).length
-  const worstCount = Object.values(worstDrift).filter(d => d && d.drifted).length
-  if (driftedCount >= worstCount) worstDrift = report.drift
+// 跟踪最差轮文风漂移(取 styleCheck 结果,drifted 数最多者)。fed into finalize→mark-advisory-drift。
+// 旧版读 report.drift(run-l2 输出)是死代码——L2 不吐 drift;现改吃真实 styleCheck 结果。
+function _trackDrift(drift) {
+  if (!drift || !drift.drifted) return
+  if (drift.drifted.length >= driftCount(worstDrift)) worstDrift = drift
 }
+function driftCount(d) { return (d && d.drifted) ? d.drifted.length : 0 }
