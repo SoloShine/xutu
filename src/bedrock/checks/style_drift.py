@@ -126,6 +126,34 @@ def pct(x):
     return f"{round((x or 0) * 100)}%"
 
 
+# Unit C:维度 bound。upper=仅 actual>target 才算 drift(低于目标不是问题,例如 0 破折号很健康);
+# bidirectional=双向,但带宽容带(对白比)。形态维度默认不进 _judge,故无需列。
+_DIM_BOUNDS = {
+    "dash_density": "upper",
+    "notXisY_rate": "upper",
+    "rhetoric_per_k": "upper",
+    "short_sent_rate": "upper",
+    "dialogue_ratio": "bidirectional",
+}
+
+
+def _should_drift(metric, actual, target):
+    """bound 感知的 drift 前置闸。返回 False 表示该(实际,目标)组合不应产生 drift 记录。
+
+    upper 指标:actual <= target 时一律不算(低于上限本就是达标);
+    bidirectional(对白比):仅在 actual < 0.5*target 或 actual > 1.5*target 时才算(宽容忍)。
+    _judge 内的相对/绝对阈值仍叠加生效;此处只挡掉方向不对的样本。
+    """
+    if target is None or actual is None:
+        return True   # 交给 _judge 的 None 分支处理
+    bound = _DIM_BOUNDS.get(metric)
+    if bound == "upper":
+        return actual > target
+    if bound == "bidirectional":
+        return actual < 0.5 * target or actual > 1.5 * target
+    return True
+
+
 def _compute_actual(conn, volume_id=None):
     """全量计算已写章节的指纹+标量(不读缓存)。"""
     if volume_id:
@@ -232,11 +260,14 @@ def measure_style_drift(conn, chapter_id, volume_id):
     drifted = []
     explicit_keys = set(st.keys()) if st else set()   # 显式 scalar_targets 的 metric→判 rhetoric 时去绝对地板
     for metric in ("dash_density", "notXisY_rate", "rhetoric_per_k", "dialogue_ratio"):
-        d, sev, hint = _judge(metric, actual.get(metric), target.get(metric),
+        a, t = actual.get(metric), target.get(metric)
+        if not _should_drift(metric, a, t):
+            continue   # Unit C:方向不对(如 upper 指标实际低于目标)→ 不算 drift
+        d, sev, hint = _judge(metric, a, t,
                               explicit=(metric in explicit_keys))
         if d:
-            drifted.append({"metric": metric, "actual": actual.get(metric),
-                            "target": target.get(metric), "severity": sev, "hint": hint})
+            drifted.append({"metric": metric, "actual": a,
+                            "target": t, "severity": sev, "hint": hint})
 
     return {
         "target_source": source,

@@ -54,7 +54,9 @@ def test_no_hug_when_below_ratio(tmp_project):
 
 
 def test_drift_aggregation(tmp_project):
-    """6/10 章 advisory_drift 非空（>50%）→ drift_flagged → blocking。"""
+    """Unit C:drift_ratio 计真实 drift(drifted[] 非空,非快照)。这里只写快照无真实 drift → ratio=0。
+
+    blocking 的连续同向门控见 test_watchdog_drift.py。"""
     from src.bedrock.orchestration.review_flag import mark_advisory_drift
     conn = get_connection(tmp_project)
     vid, cids = _seed_volume_with_chapters(conn, 10)
@@ -62,11 +64,13 @@ def test_drift_aggregation(tmp_project):
         write_chapter_metrics(conn, cid,
                               grep_metrics={"notXisY_per_kchar": 0.0, "dash_per_kchar": 0.5, "period_density": 0.2})
         if i < 6:
+            # mark_advisory_drift 写 L2 report.drift 形态({metric:{...}}),无顶层 drifted[] 列表
+            # → 新逻辑视为"无真实 style-metric drift",drift_ratio=0。
             mark_advisory_drift(conn, cid, {"word_count": {"declared": 1, "recomputed": 2, "drifted": True}})
     report = run_watchdog(conn, vid)
-    assert report.drift_ratio >= 0.50
-    assert report.drift_flagged is True
-    assert report.blocking is True
+    assert report.drift_ratio == 0.0          # 修后:快照无 drifted[] → 0
+    assert report.drift_flagged is False
+    assert report.blocking is False
     conn.close()
 
 
