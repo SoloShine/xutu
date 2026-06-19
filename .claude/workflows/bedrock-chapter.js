@@ -75,12 +75,19 @@ if (!report.passed_hard_gate) {
 // 4. Polish：仅当有 style fingerprint 才跑（无指纹时是空过，省 2 agent）
 phase('Polish')
 if (report.passed_hard_gate && ctx.fingerprint) {
-  prose = extractProse(await agent(editPolishPrompt(ctx, prose), { label: 'Edit-polish', phase: 'Polish' }))
-  report = await commitAndL2(project, chapter, prose, 'polish')
-  _trackDrift(report)
-  if (!report.passed_hard_gate) {
+  const preProse = prose, preReport = report   // 阶段前 L2-pass 快照(含 Repair 扩写的 ≥3000 字)
+  const polished = extractProse(await agent(editPolishPrompt(ctx, preProse), { label: 'Edit-polish', phase: 'Polish' }))
+  const after = await commitAndL2(project, chapter, polished, 'polish')
+  _trackDrift(after)
+  if (after.passed_hard_gate) {
+    prose = polished; report = after
+    log('polish ok')
+  } else {
+    // Polish 破坏 L2(beat/word_count)→ 回退 pre-Polish(已过 L2)。+1 relay 重 commit;0 新 agent。
+    await commitAndL2(project, chapter, preProse, 'polish-revert')
+    prose = preProse; report = preReport
     await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Polish' })
-    log('polish introduced beat violation, flagged')
+    log('polish 破坏 L2 → 回退 pre-Polish 版(风格该轮未应用,正确性优先)')
   }
 } else {
   log('polish skipped (no fingerprint or L2 not passed)')
@@ -94,15 +101,18 @@ if (report.passed_hard_gate && ctx.characters && ctx.characters.length) {
     { label: 'Edit-consistency', phase: 'Consistency' }))
   const ops = parseOpsList(opsRaw)
   if (ops && ops.length) {
+    const preConsistencyProse = prose   // post-Polish 全文;Consistency ops 只动 DB 不动此串
     const after = await applyOpsAndL2(project, chapter, ops, 'consistency')
     _trackDrift(after)
-    if (!after.passed_hard_gate) {
-      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Consistency' })
-      log(`consistency broke beat (${ops.length} ops) → flagged`)
-      report = after
-    } else {
+    if (after.passed_hard_gate) {
       log(`consistency: ${ops.length} ops applied (代词/设定一致)`)
       report = after
+    } else {
+      // ops 破 L2 → 回退 pre-Consistency(重 commit prose)。+1 relay;0 新 agent。
+      await commitAndL2(project, chapter, preConsistencyProse, 'consistency-revert')
+      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Consistency' })
+      log(`consistency ops 破坏 L2 → 回退 pre-Consistency 版(${ops.length} ops 丢弃)`)
+      // report 保持 pre-Consistency(仍 passed),不取 after
     }
   } else {
     log('consistency: 无需改动')
@@ -385,7 +395,7 @@ function editPolishPrompt(ctx, prevProse) {
     '',
     HYGIENE_RULES,
     '把当前正文往目标分布微调的同时,严格执行上面的文风硬约束(标点全角/清掉"不是A是B"句式/删非必要破折号)。',
-    '保持剧情与字数,不增删段落。',
+    '保持剧情、beat 结构完整、汉字数不低于下限;不删段、不合并/拆分 beat、不降字数。仅做风格微调(句式/对白/破折号/修辞密度对准目标分布)。',
     '返回润色后的【整章正文】纯文本，不裹围栏。', '', '---当前版---', prevProse,
   ].join('\n')
 }

@@ -2,16 +2,24 @@ from src.bedrock.db.connection import get_connection
 from src.bedrock.orchestration.persist_gate import verify_chapter_persisted
 from src.bedrock.repositories.plot_tree import (
     create_volume, create_chapter, create_beat, create_paragraph,
+    mark_beats_written,
 )
 
 
 def _seed(conn, write_paragraph=True):
+    import json
     vid = create_volume(conn, 1, "v", 1, 3, "opening")
     cid = create_chapter(conn, volume_id=vid, global_number=1, title="t")
     if write_paragraph:
         bid = create_beat(conn, chapter_id=cid, sequence=1, purpose="林深推门走进房间里面")  # >=10 chars
-        create_paragraph(conn, chapter_id=cid, seq=1, text="x.",
+        # verify 现要求 L2 过:字数下限(默认 3000 汉字)+ beat 兑现(需 volume_outline 契约)。
+        create_paragraph(conn, chapter_id=cid, seq=1, text="正文内容在此。" * 500,  # 3000 汉字
                          content_hash="h", beat_id=bid, role="narration")
+        mark_beats_written(conn, [bid])
+        conn.execute(
+            "INSERT OR REPLACE INTO volume_outline(volume_id,status,beat_contracts) VALUES(?,'drafted',?)",
+            (vid, json.dumps([{"beat_id": bid, "purpose": "林深推门走进房间里面"}])))
+        conn.commit()
     return vid, cid
 
 
