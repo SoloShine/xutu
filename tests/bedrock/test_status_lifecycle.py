@@ -15,6 +15,7 @@ from src.bedrock.repositories.plot_tree import create_volume, create_chapter, cr
 
 def _make_project(tmp_path: Path) -> Path:
     """最小 bedrock 项目:1 卷 + 1 章(global 1)+ 1 beat(written)。"""
+    import json
     proj = tmp_path / "proj"
     r = subprocess.run(
         [sys.executable, "-m", "src.bedrock", "init", str(proj),
@@ -24,8 +25,12 @@ def _make_project(tmp_path: Path) -> Path:
     conn = get_connection(proj)
     vid = create_volume(conn, 1, "v1", 1, 1, "opening")
     cid = create_chapter(conn, volume_id=vid, global_number=1, title="t1")
-    create_beat(conn, chapter_id=cid, sequence=1,
+    bid = create_beat(conn, chapter_id=cid, sequence=1,
                 purpose="林昭清晨醒来望向窗外远山轮廓陷入沉思")
+    # verify 现要求 L2 过:check_beat_fulfillment 需 volume_outline 存 beat 契约。
+    conn.execute(
+        "INSERT OR REPLACE INTO volume_outline(volume_id,status,beat_contracts) VALUES(?,'drafted',?)",
+        (vid, json.dumps([{"beat_id": bid, "purpose": "林昭清晨醒来望向窗外远山轮廓陷入沉思"}])))
     conn.commit()
     conn.close()
     return proj
@@ -33,8 +38,8 @@ def _make_project(tmp_path: Path) -> Path:
 
 def _commit_prose(proj: Path):
     """提交一段正文,使章成为真正 written 章(verify-persisted 能过)。"""
-    raw = ("天没亮，林昭就醒了。" + "窗外的远山轮廓在薄雾中若隐若现。" * 80 + "\n\n"
-           "他叹了口气，起身披衣。")
+    raw = ("天没亮，林昭就醒了。" + "窗外的远山轮廓在薄雾中若隐若现。" * 280 + "\n\n"
+           "他叹了口气，起身披衣。")  # >=3000 汉字:verify 现要求 L2 过(字数下限)
     r = subprocess.run(
         [sys.executable, "-m", "src.bedrock", "commit-paragraphs",
          "--project", str(proj), "--chapter", "1"],
