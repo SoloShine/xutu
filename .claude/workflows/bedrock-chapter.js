@@ -64,6 +64,7 @@ prose = await readCurrentProse(project, chapter)      // editor 改了 DB,刷新
 if (editor.style_drift_remaining > 0)
   _trackDrift({ drifted: Array.from({ length: editor.style_drift_remaining }, () => ({ hint: 'editor 自报文风漂移项(详情见 editor 运行)' })), target_source: ctx.fingerprint ? 'editor' : null })
 if (!report.passed_hard_gate) {
+  // mark-unresolved 仅设 review 旗(l2_unresolved=1),不阻流;终审 verify-persisted 独立再跑 L2 兜底,破损章不会 completed。
   await pythonCli(
     `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
     { phase: 'Revise', stdin: JSON.stringify(report.beat_violations || []) })
@@ -374,8 +375,9 @@ function extractEditorJson(raw) {
   return null
 }
 
-// 跟踪最差轮文风漂移(取 styleCheck 结果,drifted 数最多者)。fed into finalize→mark-advisory-drift。
-// 旧版读 report.drift(run-l2 输出)是死代码——L2 不吐 drift;改吃真实 styleCheck 结果。
+// 跟踪文风漂移(供 finalize→mark-advisory-drift→卷审/watchdog advisory)。
+// stateful editor 接管后:editor 内部 style-check 自测,经返回字段 style_drift_remaining 流回此处(advisory,
+// 仅计数+stub hint,非确定性逐项测量)。advisory 路径降级可接受——收敛/gating 一律走独立 l2Report,不依赖此。
 function _trackDrift(drift) {
   if (!drift || !drift.drifted) return
   const worst = (worstDrift && worstDrift.drifted) ? worstDrift.drifted.length : 0
