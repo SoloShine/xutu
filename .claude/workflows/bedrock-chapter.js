@@ -374,7 +374,7 @@ function editorPrompt(ctx, project, chapter, volume) {
     `- 文风自测(确定性,advisory):style-check --project ${project} --chapter ${chapter} --volume ${volume}`,
     `- 整章落盘(扩写/beat 重构用):commit-paragraphs --project ${project} --chapter ${chapter}  (stdin=整章正文,段间空行,不裹围栏)`,
     `- 定点改(局部用,更安全):edit-paragraphs --project ${project} --chapter ${chapter}  (stdin=ops JSON)`,
-    'commit-paragraphs/edit-paragraphs 的 stdin 用带引号 heredoc(分隔符 __STDIN__,禁止展开)传入。',
+    'commit-paragraphs/edit-paragraphs 的 stdin 用管道传入(commit-paragraphs=整章正文;edit-paragraphs=ops JSON)——先写临时文件再 cat 管道,或 printf 管道。**不要用 heredoc**(本环境易失败,deliver 空/garbage)。例:cat /tmp/prose.txt | python -m src.bedrock commit-paragraphs --project ${project} --chapter ${chapter}',
     '',
     HYGIENE_RULES,
     ctx.style_directive ? `【文风指令·定性】${ctx.style_directive}` : '',
