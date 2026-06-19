@@ -172,28 +172,11 @@ async function commitAndL2(project, chapter, prose, label) {
 // 文风漂移测量 relay：style-check 单命令,回 JSON {drifted, target_source, metrics}。
 async function styleCheck(project, chapter, volume) {
   const raw = extractProse(await pythonCli(
-    `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Style' }))
+    `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Revise' }))
   try { return JSON.parse(raw) } catch { return { drifted: [], ok: true } }
 }
 
 function pct(x) { return Math.round((x || 0) * 100) + '%' }
-
-// 文风定向收敛 prompt：agent 读当前正文,针对测量出的漂移项做最小改动(删破折号/改句式/减比喻)。
-function stylePolishPrompt(ctx, hints, project, chapter) {
-  return [
-    '# Edit 子代理 — 文风定向收敛（按测量出的漂移修）',
-    `先读本章当前正文(只读): cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${chapter}`,
-    '把返回 JSON 每段 text 按原顺序拼成当前正文。',
-    '',
-    HYGIENE_RULES,
-    ctx.style_directive ? `【文风指令】${ctx.style_directive}` : '',
-    '【本章测量出的文风漂移——必须定向修正这些项】',
-    hints,
-    '',
-    '针对上面漂移做最小改动收敛(如删非必要破折号→换句号断句、改"不是A是B"句式、减过密比喻),',
-    '保持剧情/字数/beat/pov 不变,不引入新问题。返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。',
-  ].join('\n')
-}
 
 // edit-paragraphs(ops,stdin) → run-l2,各单命令(一致性编辑用;verdict 独立跑)。
 async function applyOpsAndL2(project, chapter, ops, label) {
@@ -389,35 +372,6 @@ function revisePrompt(ctx, manifest, prevProse) {
   lines.push('', '保持剧情/字数下限/beat 结构/pov 不变,不引入新问题。返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。')
   lines.push('', '---上一版---', prevProse)
   return lines.join('\n')
-}
-
-function editRepairPrompt(report, prevProse) {
-  const lines = ['# Edit 子代理 — 定向修复', '违规清单（beat_id / kind / detail / fix_hint）：']
-  for (const v of (report.beat_violations || [])) {
-    lines.push(`  - beat${v.beat_id} [${v.kind}]: ${v.detail} → ${v.fix_hint}`)
-  }
-  const needExpand = (report.beat_violations || []).some(v => v.kind === 'word_count_below_floor')
-  const rule = needExpand
-    ? '本章字数不足(见 word_count_below_floor)。须【扩写】至下限以上:在现有剧情骨架上增场景细节/感官/心理/对白展开,丰富而非重复。不引入新违规,不压缩剧情。'
-    : '下面是上一版整章正文。只改与违规相关段落,不引入新违规,不压缩剧情,保持其余原文。'
-  lines.push('', rule)
-  if (needExpand) {
-    lines.push('【禁灌水】不得无信息扩写、不得重复同一意思、不得堆砌形容词、不得注水对话。扩写须服务于人物/氛围/情节推进;扩写后仍须过文风门禁(修辞密度/对白比/破折号)。')
-  }
-  lines.push('返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。', '', '---上一版---', prevProse)
-  return lines.join('\n')
-}
-function editPolishPrompt(ctx, prevProse) {
-  return [
-    '# Edit 子代理 — 正向润色',
-    '目标分布:', JSON.stringify(ctx.fingerprint || {}, null, 2),
-    '本章 beat 契约:', JSON.stringify(ctx.beat_contracts, null, 2),
-    '',
-    HYGIENE_RULES,
-    '把当前正文往目标分布微调的同时,严格执行上面的文风硬约束(标点全角/清掉"不是A是B"句式/删非必要破折号)。',
-    '保持剧情、beat 结构完整、汉字数不低于下限;不删段、不合并/拆分 beat、不降字数。仅做风格微调(句式/对白/破折号/修辞密度对准目标分布)。',
-    '返回润色后的【整章正文】纯文本，不裹围栏。', '', '---当前版---', prevProse,
-  ].join('\n')
 }
 
 // Unit A0:正文定界提取。只认 ```prose 标签区;无则原样返回(交 commit 段 sanitize 防线 + L2 non_prose 兜底)。
