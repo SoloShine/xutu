@@ -62,18 +62,35 @@ def run_watchdog(conn, volume_id):
                 "flagged": ratio >= WATCHDOG_HUG_RATIO,
             }
 
-    drift_ratio = 0.0
-    if n > 0:
-        drift_nonempty = 0
-        for cid in cids:
-            row = conn.execute("SELECT advisory_drift FROM chapter_review_flag WHERE chapter_id=?",
-                               (cid,)).fetchone()
-            if row is not None and row["advisory_drift"] and row["advisory_drift"] != "{}":
-                drift_nonempty += 1
-        # drift 分母用 len(cids)（全章）非 len(valid)：无 chapter_review_flag 行 = 无 drift 信号
-        # 本身有意义（章未跑过 L2），与 hug 的"有 metrics 才算"语义不同。
-        drift_ratio = drift_nonempty / n
-    drift_flagged = drift_ratio > WATCHDOG_DRIFT_RATIO
+    # Unit C:计"真实 drift"(drifted 非空)而非"有快照";卷级连续同向门控。
+    CONSEC_MIN = 3
+    _DRIFT_METRICS = {"rhetoric_per_k", "dialogue_ratio", "dash_density",
+                      "notXisY_rate", "short_sent_rate"}
+
+    per_chapter_drifts = []  # [[metric, ...]] 按 chapter 顺序
+    for cid in cids:
+        row = conn.execute("SELECT advisory_drift FROM chapter_review_flag WHERE chapter_id=?",
+                           (cid,)).fetchone()
+        if row is None or not row["advisory_drift"] or row["advisory_drift"] == "{}":
+            per_chapter_drifts.append([])
+            continue
+        d = json.loads(row["advisory_drift"])
+        per_chapter_drifts.append([dv["metric"] for dv in d.get("drifted", [])])
+
+    drift_ratio = sum(1 for items in per_chapter_drifts if items) / n if n else 0.0
+
+    # 连续同指标同向 ≥ CONSEC_MIN 章才算系统性信号(drift_ratio 仅作诊断,不再单独驱动 blocking)。
+    consecutive_hits = []
+    for metric in _DRIFT_METRICS:
+        run = 0
+        for items in per_chapter_drifts:
+            if metric in items:
+                run += 1
+                if run >= CONSEC_MIN:
+                    consecutive_hits.append(metric); break
+            else:
+                run = 0
+    drift_flagged = len(consecutive_hits) > 0
 
     blocking = any(f["flagged"] for f in hug_findings.values()) or drift_flagged
 
@@ -89,6 +106,7 @@ def run_watchdog(conn, volume_id):
         "hug_findings": hug_findings,
         "drift_ratio": drift_ratio,
         "drift_flagged": drift_flagged,
+        "consecutive_drift_metrics": consecutive_hits,
     }, ensure_ascii=False)
     conn.execute(
         "INSERT INTO volume_review(volume_id, watchdog_findings, blocking) VALUES(?,?,?) "

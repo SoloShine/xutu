@@ -21,14 +21,15 @@ from src.bedrock.orchestration.review_flag import (
 from src.bedrock.orchestration.runtime_collect import write_runtime
 from src.bedrock.orchestration.watchdog import run_watchdog
 from src.bedrock.orchestration.cross_volume_gate import check_cross_volume_debt
-from src.bedrock.orchestration.review_flag import get_review_flag, compute_has_flag
+from src.bedrock.orchestration.review_flag import get_review_flag, compute_has_flag, ensure_flag, _upsert
 from src.bedrock.repositories.governance import add_amendment
 from src.bedrock.repositories.plot_tree import (
-    create_paragraph, list_beats_in_chapter,
+    create_paragraph, list_beats_in_chapter, list_paragraphs_in_chapter,
     set_chapter_status, clear_chapter_paragraphs, mark_beats_written,
     update_paragraph_text, insert_paragraph_at, delete_paragraph, reorder_paragraphs,
 )
 from src.bedrock.checks.beat_fulfillment import BeatViolation
+from src.bedrock.checks.proper_nouns import find_proper_noun_variants
 
 
 def _chapter_id(conn, global_number):
@@ -178,7 +179,16 @@ def _commit_paragraphs(conn, chapter_id, raw, role="narration"):
     if _looks_like_worklog(raw):
         sys.exit("commit-paragraphs: 拒绝入库——输入像是 agent 工作日志/操作记录，而非小说正文。"
                  "（Fix agent 应返回整章正文，不是修复汇报）")
-    paras = _split_paragraphs(raw)
+    # A1:剥离残留元文本(指标自评/路径/分隔符等,逃脱 workflow extractProse 层的兜底)。
+    # 重度污染(清洗后 <MIN_PROSE_CHARS)→ 拒绝,force re-submit,防垃圾入库。
+    from src.bedrock.checks.prose_hygiene import sanitize_prose, MIN_PROSE_CHARS
+    cleaned, removed, preview = sanitize_prose(raw)
+    if removed:
+        print(f"commit-paragraphs: 剥离 {removed} 段元文本 {preview}", file=sys.stderr)
+    if len(cleaned) < MIN_PROSE_CHARS:
+        sys.exit(f"commit-paragraphs: 拒绝入库——清洗后正文仅 {len(cleaned)} 字 "
+                 f"(下限 {MIN_PROSE_CHARS})，疑似重度污染，请重交纯正文。")
+    paras = _split_paragraphs(cleaned)
     if not paras:
         sys.exit("commit-paragraphs: stdin 无有效段落（空正文？）")
 
@@ -312,10 +322,65 @@ def _resolve_beat_for_insert(conn, chapter_id, after_seq):
     return beats[0]["id"] if beats else None
 
 
+def _check_proper_nouns(conn, chapter_id):
+    """专名硬校验(零 LLM,Unit D)。扫该章段落,白名单=character.name+location.name。
+
+    canonical_seen = 全部白名单名(单章 CLI 视所有规范名为已确立;workflow 可后续细化到本章+前序)。
+    Tier-1(单候选+已确立+非歧义词)→ 产出 update ops(段落文本内 variant→canonical 全替换),不自行落盘。
+    Tier-2(歧义/未确立/歧义常用词)→ escalate 列表。
+    写 flag:确保 flag 行存在;若 tier1 自动改则把 autoedit 痕迹存入 advisory_drift(现有自由 JSON 列,
+    chapter_review_flag 表无 proper_noun_autoedit 列,不擅改 schema)。amendment 痕迹由 edit-paragraphs 落。
+    返回 {"ops":[...],"escalate":[...],"autoedit_count":N}。"""
+    whitelist = {"chars": [], "places": []}
+    for r in conn.execute("SELECT name FROM character").fetchall():
+        whitelist["chars"].append(r["name"])
+    for r in conn.execute("SELECT name FROM location").fetchall():
+        whitelist["places"].append(r["name"])
+    canon_all = whitelist["chars"] + whitelist["places"]
+    canonical_seen = set(canon_all)
+
+    paras = list_paragraphs_in_chapter(conn, chapter_id)
+    ops, escalate, autoedit = [], [], []
+    for p in paras:
+        text = p["text"] or ""
+        findings = find_proper_noun_variants(text, whitelist, canonical_seen)
+        if not findings:
+            continue
+        new_text = text
+        para_touched = False
+        for f in findings:
+            if f["tier"] == "tier1":
+                new_text = new_text.replace(f["variant"], f["canonical"])
+                para_touched = True
+                autoedit.append({"para_id": p["para_id"], "variant": f["variant"],
+                                 "canonical": f["canonical"]})
+            else:
+                escalate.append({"para_id": p["para_id"], "variant": f["variant"],
+                                 "candidates": f["canonical"]})
+        if para_touched and new_text != text:
+            ops.append({"op": "update", "para_id": p["para_id"], "text": new_text})
+
+    ensure_flag(conn, chapter_id)
+    if autoedit:
+        # 读改合并 advisory_drift,保留 style-drift 快照(若有);专名校验在工作流里可能
+        # 先于 finalize 的 mark-advisory-drift 跑,整体替换会丢任一方审计痕迹。
+        cur = conn.execute(
+            "SELECT advisory_drift FROM chapter_review_flag WHERE chapter_id=?",
+            (chapter_id,)).fetchone()
+        drift = {}
+        if cur and cur["advisory_drift"] and cur["advisory_drift"] != "{}":
+            try:
+                drift = json.loads(cur["advisory_drift"])
+            except (ValueError, TypeError):
+                drift = {}
+        drift["proper_noun_autoedit"] = autoedit
+        _upsert(conn, chapter_id, {
+            "advisory_drift": json.dumps(drift, ensure_ascii=False)})
+    return {"ops": ops, "escalate": escalate, "autoedit_count": len(autoedit)}
+
+
 def _apply_paragraph_ops(conn, chapter_id, ops):
     """段落级编辑写面：按序应用 update/insert/delete/reorder（事务化）。
-
-    op schema:
       {"op":"update","para_id":N,"text":"..."}
       {"op":"insert","after_seq":N,"text":"..."}        # after_seq=0 → 章首
       {"op":"delete","para_id":N}
@@ -483,6 +548,12 @@ def main():
     p_editp.add_argument("--project", type=Path, required=True)
     p_editp.add_argument("--chapter", type=int, required=True)
 
+    p_pn = sub.add_parser(
+        "check-proper-nouns",
+        help="专名硬校验(零 LLM):Tier1 自动 update ops / Tier2 escalate。不自行落盘,ops 交 edit-paragraphs")
+    p_pn.add_argument("--project", type=Path, required=True)
+    p_pn.add_argument("--chapter", type=int, required=True)
+
     p_expjson = sub.add_parser(
         "export-chapter-json",
         help="章节结构化 JSON 备份（初稿/一审/二审核稿，冗余备份用）")
@@ -508,6 +579,11 @@ def main():
     p_mark_pbb = sub.add_parser("mark-polish-broke-beat")
     p_mark_pbb.add_argument("--project", type=Path, required=True)
     p_mark_pbb.add_argument("--chapter", type=int, required=True)
+
+    p_mc = sub.add_parser("mark-completed",
+                          help="人工/卷审后置章为 completed(导出门禁前置状态)")
+    p_mc.add_argument("--project", type=Path, required=True)
+    p_mc.add_argument("--chapter", type=int, required=True)
 
     p_mark_fpf = sub.add_parser("mark-forced-persist-failed")
     p_mark_fpf.add_argument("--project", type=Path, required=True)
@@ -638,6 +714,12 @@ def main():
         elif args.cmd == "verify-persisted":
             cid = _chapter_id(conn, args.chapter)
             ok = verify_chapter_persisted(conn, cid, export_path=args.export_path)
+            # A3:无条件保证 flag 行存在(无论 pass/fail),治"过 L2 修复轮的章无 flag 行"漏判。
+            from src.bedrock.orchestration.review_flag import ensure_flag
+            ensure_flag(conn, cid)
+            # Unit B:verify 通过 → completed(可导出)。verify_chapter_persisted 返回 bool。
+            if ok:
+                set_chapter_status(conn, cid, "completed")
             print("True" if ok else "False")
         elif args.cmd == "commit-paragraphs":
             cid = _chapter_id(conn, args.chapter)
@@ -654,6 +736,10 @@ def main():
                     "beat_id": r["beat_id"], "role": r["role"], "text": r["text"]}
                    for r in rows]
             print(json.dumps(out, ensure_ascii=False))
+        elif args.cmd == "check-proper-nouns":
+            cid = _chapter_id(conn, args.chapter)
+            payload = _check_proper_nouns(conn, cid)
+            print(json.dumps(payload, ensure_ascii=False))
         elif args.cmd == "edit-paragraphs":
             cid = _chapter_id(conn, args.chapter)
             try:
@@ -662,6 +748,10 @@ def main():
                 sys.exit(f"invalid ops JSON on stdin: {e}")
             payload = _apply_paragraph_ops(conn, cid, ops)
             print(json.dumps(payload, ensure_ascii=False))
+        elif args.cmd == "mark-completed":
+            cid = _chapter_id(conn, args.chapter)
+            set_chapter_status(conn, cid, "completed")
+            print(f"ch{args.chapter} → completed")
         elif args.cmd == "export-chapter-json":
             cid = _chapter_id(conn, args.chapter)
             out = _export_chapter_json(conn, args.project, cid, args.chapter, args.stage)

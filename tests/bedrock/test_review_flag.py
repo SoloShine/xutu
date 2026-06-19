@@ -97,9 +97,16 @@ def test_compute_has_flag_advisory_empty():
 
 
 def test_compute_has_flag_advisory_nonempty():
+    """有真实 drifted 内容的 advisory_drift → has_flag True。
+    语义判空:仅 drifted/proper_noun_autoedit 非空才算 flag,
+    纯指标快照(如 {"dash_count":99})不再触发(原字符串比对的 bug 修复)。"""
     assert compute_has_flag({"l2_unresolved": 0, "polish_broke_beat": 0,
                              "forced_persist_failed": 0,
-                             "advisory_drift": '{"dash_count": 99}'}) is True
+                             "advisory_drift": '{"drifted":[{"metric":"m","delta":0.9}],"ok":false}'}) is True
+    # 无 drifted/proper_noun_autoedit 的指标快照 → False
+    assert compute_has_flag({"l2_unresolved": 0, "polish_broke_beat": 0,
+                             "forced_persist_failed": 0,
+                             "advisory_drift": '{"dash_count": 99}'}) is False
 
 
 def test_compute_has_flag_likely_rule_or_model_not_counted():

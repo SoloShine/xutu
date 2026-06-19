@@ -6,6 +6,7 @@ from src.bedrock.repositories.character import get_character
 from src.bedrock.repositories.beat_link import characters_in_beat
 from src.bedrock.repositories.suspense import threads_advanced_at_beat
 from src.bedrock.repositories.outline import get_beat_contract
+from src.bedrock.checks.prose_hygiene import is_meta_paragraph
 
 
 @dataclass
@@ -77,5 +78,14 @@ def check_beat_fulfillment(conn, chapter_id):
                             beat_id=beat["id"], kind="thread_not_advanced",
                             detail=f"悬链 {tid} 声明推进但 thread_consumption 无记录",
                             fix_hint=f"在 beat {beat['id']} 推进悬链 {tid}（record_consumption）"))
+
+    # 规则 non_prose:任何已入库段命中元文本 → 违规(A2 第三层兜底)
+    for p in paragraphs:
+        if is_meta_paragraph(p["text"]):
+            violations.append(BeatViolation(
+                beat_id=p["beat_id"] if p["beat_id"] is not None else (beats[0]["id"] if beats else 0),
+                kind="non_prose",
+                detail=f"段落 seq={p['seq']} 疑似 agent 元文本/工作日志：{p['text'][:30]}",
+                fix_hint="删除该 meta 段，仅保留正文"))
 
     return violations
