@@ -109,6 +109,20 @@ if (report.passed_hard_gate && ctx.characters && ctx.characters.length) {
   }
 }
 
+// 4b2. Unit D:专名硬校验(确定性 relay,零 LLM)。Tier1 ops 经 edit-paragraphs 落(留 amendment+flag),Tier2 进 flag 供卷审。
+if (report.passed_hard_gate) {
+  const pnRaw = extractProse(await pythonCli(
+    `check-proper-nouns --project ${project} --chapter ${chapter}`, { phase: 'Consistency' }))
+  let pn
+  try { pn = JSON.parse(pnRaw) } catch { pn = { ops: [], escalate: [] } }
+  if (pn.ops && pn.ops.length) {
+    await pythonCli(`edit-paragraphs --project ${project} --chapter ${chapter}`,
+      { phase: 'Consistency', stdin: JSON.stringify(pn.ops) })
+    log(`proper-nouns: ${pn.autoedit_count} 处自动改(已留 amendment+flag)`)
+  }
+  if (pn.escalate && pn.escalate.length) log(`proper-nouns: ${pn.escalate.length} 处歧义 escalate 供卷审`)
+}
+
 // 4c. Style：章级文风漂移测量 + 定向收敛闭环(循环≤2 轮,回喂剩余 hint)。
 // 写后测标量 vs 目标(卷级→作品级→自洽),飘→style-polish→重 L2→复测;仍有飘则再喂剩余项,
 // 直到不飘或达上限。破 beat 立即停+flag。单章噪声大,只对明显偏离(dash/notXisY/修辞/对白比)动手。
