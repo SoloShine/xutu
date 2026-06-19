@@ -114,28 +114,43 @@ if (!report.passed_hard_gate) {
   log(`l2 unresolved after 3 rounds, likely_rule_or_model=${likelyRuleOrModel}`)
 }
 
-// Style 阶段:编辑/重写引入的文风漂移此前从不测;现 L2 过后测一次,飘则定向 style-polish 收敛回喂。
+// Style 阶段:编辑/重写引入的文风漂移测量 + 定向收敛循环(≤2 轮,回喂剩余 hint)。
 // rewrite/polish 改了整章 prose 才收敛;surgical/recheck 仅测+记 drift(段落外科/重检不大改文风)。
+const STYLE_MAX_ROUNDS = 2
 phase('Style')
 if (report.passed_hard_gate) {
-  const drift = await styleCheck(project, chapter, volume)
+  let drift = await styleCheck(project, chapter, volume)
   _trackDrift(drift)
-  if (drift && drift.drifted && drift.drifted.length && (mode === 'rewrite' || mode === 'polish')) {
+  let sr = 0
+  const canConverge = (mode === 'rewrite' || mode === 'polish')
+  while (drift && drift.drifted && drift.drifted.length && canConverge && sr < STYLE_MAX_ROUNDS) {
     const hints = drift.drifted.map(d => `${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`).join('；')
-    log(`style drift after ${mode}: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
+    log(`style drift r${sr + 1} after ${mode}: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
     const prose = stripFences(await agent(stylePolishPrompt(ctx, hints, project, chapter),
-      { label: 'Edit-style', phase: 'Style' }))
-    const after = await commitAndL2(project, chapter, prose, 'style')
-    const recheck = await styleCheck(project, chapter, volume)
-    _trackDrift(recheck)
-    log(`style 收敛后复测: ${recheck.drifted ? recheck.drifted.length : 0}/${drift.drifted.length}项仍飘, L2=${after.passed_hard_gate}`)
+      { label: `Edit-style-r${sr + 1}`, phase: 'Style' }))
+    let after
+    try {
+      after = await commitAndL2(project, chapter, prose, `style-r${sr + 1}`)
+    } catch (e) {
+      // commit-paragraphs 拒绝(style-polish 返回工作日志/非正文)→ 不崩,跳过本轮,保留已过 L2 的版本
+      log(`style-polish r${sr + 1} 提交被拒(返回非正文?),跳过: ${String(e.message || e).slice(0, 80)}`)
+      break
+    }
     if (!after.passed_hard_gate) {
       await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Style' })
-      log('style-polish broke beat → flagged')
+      log('style-polish broke beat → flagged,停收敛')
+      break
     }
-  } else {
-    log(`style: ${drift && drift.drifted ? drift.drifted.length : 0}项漂移 [${(drift && drift.target_source) || '无目标'}]`)
+    report = after
+    drift = await styleCheck(project, chapter, volume)   // 复测,下轮只喂仍飘的项
+    _trackDrift(drift)
+    sr++
+    log(`style r${sr} 收敛后复测: ${drift.drifted ? drift.drifted.length : 0}项仍飘`)
   }
+  const left = drift && drift.drifted ? drift.drifted.length : 0
+  if (left === 0) log(`style: 收敛完成(0 项飘) [${(drift && drift.target_source) || '无目标'}]`)
+  else if (canConverge && sr >= STYLE_MAX_ROUNDS) log(`style: 仍 ${left} 项飘,达 ${STYLE_MAX_ROUNDS} 轮上限`)
+  else if (!canConverge) log(`style: ${left}项漂移(${mode}模式仅测不收敛) [${(drift && drift.target_source) || '无目标'}]`)
 }
 
 phase('Finalize')
@@ -155,35 +170,18 @@ async function bootContext(project, chapter, volume) {
   try { return JSON.parse(raw) } catch { return { beat_contracts: [], fingerprint: null, _raw: raw } }
 }
 
+// commit/edit 各单命令 → run-l2 单命令(l2Only)。verdict 独立跑,不与 commit 混——
+// 免 agent 捏坏多命令 stdout 假阴性(曾致 style-polish 误判破 beat + mark 命令调坏)。
 async function commitAndL2(project, chapter, prose, label) {
-  const prompt = [
-    `你在项目根目录。按序执行两条命令，把【第二条 run-l2 的 stdout 原文】逐字返回（一段 JSON，无围栏/解释）。`,
-    `若非 0 退出返回 ERROR:<which>:<stderr 首行>。`,
-    ``,
-    `cd "${CWD}" && python -m src.bedrock commit-paragraphs --project ${project} --chapter ${chapter} <<'__STDIN__'`,
-    prose,
-    `__STDIN__`,
-    `cd "${CWD}" && python -m src.bedrock run-l2 --project ${project} --chapter ${chapter}`,
-  ].join('\n')
-  const raw = stripFences(await agent(prompt, { label: `commit+l2:${label}`, phase: 'Apply+L2' }))
-  if (raw.startsWith('ERROR:')) throw new Error(`commitAndL2(${label}) 失败: ${raw}`)
-  try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [], _raw: raw } }
+  await pythonCli(`commit-paragraphs --project ${project} --chapter ${chapter}`,
+    { phase: 'Apply+L2', stdin: prose })
+  return await l2Only(project, chapter)
 }
 
 async function applyOpsAndL2(project, chapter, ops, label) {
-  const opsJson = JSON.stringify(ops)
-  const prompt = [
-    `你在项目根目录。按序执行两条命令，把【第二条 run-l2 的 stdout 原文】逐字返回（一段 JSON，无围栏/解释）。`,
-    `若非 0 退出返回 ERROR:<which>:<stderr 首行>。`,
-    ``,
-    `cd "${CWD}" && python -m src.bedrock edit-paragraphs --project ${project} --chapter ${chapter} <<'__STDIN__'`,
-    opsJson,
-    `__STDIN__`,
-    `cd "${CWD}" && python -m src.bedrock run-l2 --project ${project} --chapter ${chapter}`,
-  ].join('\n')
-  const raw = stripFences(await agent(prompt, { label: `editops+l2:${label}`, phase: 'Apply+L2' }))
-  if (raw.startsWith('ERROR:')) throw new Error(`applyOpsAndL2(${label}) 失败: ${raw}`)
-  try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [], _raw: raw } }
+  await pythonCli(`edit-paragraphs --project ${project} --chapter ${chapter}`,
+    { phase: 'Apply+L2', stdin: JSON.stringify(ops) })
+  return await l2Only(project, chapter)
 }
 
 async function l2Only(project, chapter) {
