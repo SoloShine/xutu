@@ -90,7 +90,8 @@ def _self_consistency_target(conn, volume_id, current_global_number, window=5):
 
 
 # 各标量的漂移判定(宽容差,单章噪声)。返回 (drifted, severity, hint)。
-def _judge(metric, actual, target):
+# explicit=该 metric 的目标来自用户显式 scalar_targets(非指纹派生/自洽)。
+def _judge(metric, actual, target, explicit=False):
     if target is None or actual is None:
         return False, 0, ""
     t = target
@@ -107,7 +108,10 @@ def _judge(metric, actual, target):
             return True, sev, f"「不是A是B」句率 {pct(actual)} 高于目标 {pct(t)},改写该句式"
         return False, 0, ""
     if metric == "rhetoric_per_k":
-        if actual > max(t * 2.5, t + 3) and actual > 5:
+        # 绝对地板 actual>5 只对非显式目标保留(防低修辞文本误报);
+        # 用户显式设了 rhetoric 目标时只按相对阈值判——否则 actual<5 时目标形同虚设(实测 4.x 不触发)。
+        rel = max(t * 2.5, t + 3)
+        if actual > rel and (explicit or actual > 5):
             return True, round(actual / (t + 1e-9), 1), f"修辞密度 {actual:.1f}/千字 高于目标 {t:.1f},比喻过密"
         return False, 0, ""
     if metric == "dialogue_ratio":
@@ -226,8 +230,10 @@ def measure_style_drift(conn, chapter_id, volume_id):
                 "note": "无目标指纹且无已写章节可比,跳过"}
 
     drifted = []
+    explicit_keys = set(st.keys()) if st else set()   # 显式 scalar_targets 的 metric→判 rhetoric 时去绝对地板
     for metric in ("dash_density", "notXisY_rate", "rhetoric_per_k", "dialogue_ratio"):
-        d, sev, hint = _judge(metric, actual.get(metric), target.get(metric))
+        d, sev, hint = _judge(metric, actual.get(metric), target.get(metric),
+                              explicit=(metric in explicit_keys))
         if d:
             drifted.append({"metric": metric, "actual": actual.get(metric),
                             "target": target.get(metric), "severity": sev, "hint": hint})
