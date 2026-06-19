@@ -64,7 +64,7 @@ const round = editor.iterations || 0   // finalize 遥测 --editing-rounds 用(�
 report = await l2Report(project, chapter, 'Revise')   // 独立 relay 复核 L2(信任锚,不信 editor 自报)
 prose = await readCurrentProse(project, chapter)      // editor 改了 DB,刷新 JS 侧 prose(供下游 Consistency 回退快照,防丢 editor 成果)
 if (editor.style_drift_remaining > 0)
-  _trackDrift({ drifted: new Array(editor.style_drift_remaining), target_source: ctx.fingerprint ? 'editor' : null })
+  _trackDrift({ drifted: Array.from({ length: editor.style_drift_remaining }, () => ({ hint: 'editor 自报文风漂移项(详情见 editor 运行)' })), target_source: ctx.fingerprint ? 'editor' : null })
 if (!report.passed_hard_gate) {
   await pythonCli(
     `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
@@ -89,10 +89,14 @@ if (report.passed_hard_gate && ctx.characters && ctx.characters.length) {
       log(`consistency: ${ops.length} ops applied (代词/设定一致)`)
       report = after
     } else {
-      // ops 破 L2 → 回退 pre-Consistency(重 commit prose)。+1 relay;0 新 agent。
-      await commitAndL2(project, chapter, preConsistencyProse, 'consistency-revert')
+      // ops 破 L2 → 回退 pre-Consistency。但若 prose 快照空(readCurrentProse 刷新失败),不回退(免清空章)——保 editor 终态。
+      if (preConsistencyProse) {
+        await commitAndL2(project, chapter, preConsistencyProse, 'consistency-revert')
+        log(`consistency ops 破坏 L2 → 回退 pre-Consistency 版(${ops.length} ops 丢弃)`)
+      } else {
+        log(`consistency ops 破坏 L2,但 prose 快照空(刷新失败)→ 不回退,保 editor 终态`)
+      }
       await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Consistency' })
-      log(`consistency ops 破坏 L2 → 回退 pre-Consistency 版(${ops.length} ops 丢弃)`)
       // report 保持 pre-Consistency(仍 passed),不取 after
     }
   } else {
