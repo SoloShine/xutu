@@ -61,6 +61,14 @@ def mark_advisory_drift(conn, chapter_id, drift):
     _upsert(conn, chapter_id, {"advisory_drift": json.dumps(drift, ensure_ascii=False)})
 
 
+def ensure_flag(conn, chapter_id):
+    """A3:无条件保证 flag 行存在(零违规/零 drift 也建)。幂等。
+
+    verify-persisted 末尾调用,治"过 L2 修复轮的章无 flag 行"漏判
+    (has_flag 取不到 flag=None 而漏标)。_upsert({}) 走 INSERT OR IGNORE + 空 UPDATE。"""
+    _upsert(conn, chapter_id, {})
+
+
 def get_review_flag(conn, chapter_id):
     row = conn.execute(
         "SELECT * FROM chapter_review_flag WHERE chapter_id=?", (chapter_id,)).fetchone()

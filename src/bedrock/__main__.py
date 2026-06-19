@@ -178,7 +178,16 @@ def _commit_paragraphs(conn, chapter_id, raw, role="narration"):
     if _looks_like_worklog(raw):
         sys.exit("commit-paragraphs: 拒绝入库——输入像是 agent 工作日志/操作记录，而非小说正文。"
                  "（Fix agent 应返回整章正文，不是修复汇报）")
-    paras = _split_paragraphs(raw)
+    # A1:剥离残留元文本(指标自评/路径/分隔符等,逃脱 workflow extractProse 层的兜底)。
+    # 重度污染(清洗后 <MIN_PROSE_CHARS)→ 拒绝,force re-submit,防垃圾入库。
+    from src.bedrock.checks.prose_hygiene import sanitize_prose, MIN_PROSE_CHARS
+    cleaned, removed, preview = sanitize_prose(raw)
+    if removed:
+        print(f"commit-paragraphs: 剥离 {removed} 段元文本 {preview}", file=sys.stderr)
+    if len(cleaned) < MIN_PROSE_CHARS:
+        sys.exit(f"commit-paragraphs: 拒绝入库——清洗后正文仅 {len(cleaned)} 字 "
+                 f"(下限 {MIN_PROSE_CHARS})，疑似重度污染，请重交纯正文。")
+    paras = _split_paragraphs(cleaned)
     if not paras:
         sys.exit("commit-paragraphs: stdin 无有效段落（空正文？）")
 
@@ -638,6 +647,9 @@ def main():
         elif args.cmd == "verify-persisted":
             cid = _chapter_id(conn, args.chapter)
             ok = verify_chapter_persisted(conn, cid, export_path=args.export_path)
+            # A3:无条件保证 flag 行存在(无论 pass/fail),治"过 L2 修复轮的章无 flag 行"漏判。
+            from src.bedrock.orchestration.review_flag import ensure_flag
+            ensure_flag(conn, cid)
             print("True" if ok else "False")
         elif args.cmd == "commit-paragraphs":
             cid = _chapter_id(conn, args.chapter)
