@@ -353,6 +353,63 @@ function buildManifest(report, drift, ctx) {
 // 定向修订 prompt(合并原 editRepair/editPolish/stylePolish)。manifest 驱动,正确性硬压文风。
 // correctness 优先级:先列 L2 硬违规(必改)+ 字数扩写指令,文风降为"不冲突时顺手"。
 // style 优先级:只对准实测漂移。manifest.empty 时不调用(由调用方判)。
+// stateful 工具型 editor agent 的 prompt(替代失梦 revisePrompt)。editor 自带 Bash 直调 bedrock CLI,
+// 内部循环自纠错:相1保 L2 过(修 beat/扩字数,累进接受)、相2减文风漂移(advisory),硬上限 5 次 commit。
+// 收敛由 run-l2 客观判,不自判;返回结构化 JSON 供 JS 复核(JS 不信自报,独立 relay 再验 L2)。
+function editorPrompt(ctx, project, chapter, volume) {
+  const ex = ctx.style_examples || {}
+  const demo = (ex.good && ex.good.length) || (ex.bad && ex.bad.length)
+    ? ['【风格示范】(对照节奏/密度/句式,严禁复述范例原文)',
+       ...(ex.good || []).map(s => `  ✓ ${s}`),
+       ...(ex.bad || []).map(s => `  ✗ ${s}(避免)`)].join('\n') : ''
+  return [
+    '# 章节修订员(stateful,自带工具循环)',
+    `你在项目根 D:/novel_test。本章=${chapter} 卷=${volume} 已在 bedrock.db(${project})。`,
+    'boot-context(beat 契约/指纹/文风指令/角色正典,必须遵守):',
+    JSON.stringify(ctx, null, 2),
+    '',
+    '【工具·只准用这些 bedrock CLI】(在 D:/novel_test,命令前缀 python -m src.bedrock)',
+    `- 读现状:show-paragraphs --project ${project} --chapter ${chapter}`,
+    `- 结构自检(确定性,判过没过):run-l2 --project ${project} --chapter ${chapter}`,
+    `- 文风自测(确定性,advisory):style-check --project ${project} --chapter ${chapter} --volume ${volume}`,
+    `- 整章落盘(扩写/beat 重构用):commit-paragraphs --project ${project} --chapter ${chapter}  (stdin=整章正文,段间空行,不裹围栏)`,
+    `- 定点改(局部用,更安全):edit-paragraphs --project ${project} --chapter ${chapter}  (stdin=ops JSON)`,
+    'commit-paragraphs/edit-paragraphs 的 stdin 用带引号 heredoc(分隔符 __STDIN__,禁止展开)传入。',
+    '',
+    HYGIENE_RULES,
+    ctx.style_directive ? `【文风指令·定性】${ctx.style_directive}` : '',
+    demo,
+    '',
+    '【迭代协议·必须遵守】',
+    '相 1(正确性优先):show-paragraphs 读现状 → run-l2 自检。',
+    '  若不过(word_count_below_floor→字数不足;或其他 beat 违规):',
+    '    - 字数不足→commit-paragraphs 整章扩写(剧情骨架上增场景细节/感官/心理/对白展开;禁灌水、禁重复、禁堆砌形容词)。',
+    '    - beat 违规→edit-paragraphs 定点修 或 commit-paragraphs 整章重写 → 重 run-l2 复测。',
+    '  累进接受:每次基于 DB 最新版继续(再 show-paragraphs 读),不回退丢进展。',
+    '  反复直到 run-l2.passed_hard_gate=true。',
+    '相 2(文风,advisory):L2 过后 style-check 自测 → 有漂移则最小改动收敛',
+    '  (删非必要破折号→换句号断句、改"不是A是B"句式、减过密比喻)→ 重 run-l2 确认没破 L2。',
+    '  若文风改动破了 L2→commit 回退到上一过 L2 版(再 show-paragraphs 确认),停文风收敛。',
+    '收敛:run-l2.passed_hard_gate=true 即 converged(残留言风漂移可接受,advisory)。',
+    '硬上限:最多 5 次 commit-paragraphs/edit-paragraphs。到限 L2 仍未过→converged=false 退出。',
+    '',
+    '【红线】收敛由 run-l2 客观输出判定,不得自判"我觉得行了"。不得绕过 CLI 直改 DB。',
+    '      破 L2 的文风改动必须回退。整章正文第一段必须是小说正文,无作者旁白/开场白。',
+    '',
+    '【返回】收敛或到限后,最后输出一行 JSON(无围栏、无解释,仅该行):',
+    '{"converged":true|false,"iterations":<commit次数>,"final_passed":<run-l2终态>,"word_count":<int>,"final_l2_violations":[..],"style_drift_remaining":<int>}',
+  ].filter(Boolean).join('\n')
+}
+
+// 读 DB 当前段落拼成 prose(editor 改 DB 后刷新 JS 侧 prose,供下游 Consistency 回退快照)。
+async function readCurrentProse(project, chapter) {
+  const raw = extractProse(await pythonCli(`show-paragraphs --project ${project} --chapter ${chapter}`, { phase: 'Revise' }))
+  try {
+    const paras = JSON.parse(raw)
+    return (Array.isArray(paras) ? paras : []).map(p => p.text).join('\n\n')
+  } catch { return '' }
+}
+
 function revisePrompt(ctx, manifest, prevProse) {
   const lines = [
     '# Edit 子代理 — 定向修订(beat/字数/文风统一收敛)',
