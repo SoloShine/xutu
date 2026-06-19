@@ -21,6 +21,17 @@ _META_PATTERNS = [
     re.compile(r"^```|```$"),
 ]
 
+_PROSE_BLOCK = re.compile(r"```prose[ \t]*\n(.*?)\n```", re.DOTALL)
+
+
+def extract_prose_block(raw: str):
+    """提取 ```prose 标签围栏区内容。多个取最长;无标签区返回 None(由调用方回退 sanitize)。"""
+    matches = _PROSE_BLOCK.findall(raw or "")
+    if not matches:
+        return None
+    return max(matches, key=len).strip()
+
+
 MIN_PROSE_CHARS = 500  # 清洗后正文下限(与 spec 阈值一致)
 
 

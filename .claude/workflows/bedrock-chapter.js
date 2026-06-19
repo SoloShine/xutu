@@ -46,7 +46,7 @@ log(`boot: ${ctx.beat_contracts?.length || 0} beats, fingerprint=${ctx.fingerpri
 
 // 2. Write：ChapterWriter 产正文 → commit+L2 relay（verdict 由 relay 跑，JS 解析）
 phase('Write')
-let prose = stripFences(await agent(chapterWriterPrompt(ctx), { label: 'ChapterWriter', phase: 'Write' }))
+let prose = extractProse(await agent(chapterWriterPrompt(ctx), { label: 'ChapterWriter', phase: 'Write' }))
 let report = await commitAndL2(project, chapter, prose, 'Write')
 _trackDrift(report)
 log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length} words=${report.metrics?.word_count}`)
@@ -57,7 +57,7 @@ let round = 0
 const sigsByRound = []
 while (!report.passed_hard_gate && round < 3) {
   sigsByRound.push((report.beat_violations || []).map(v => `${v.beat_id}:${v.kind}`).sort().join(','))
-  prose = stripFences(await agent(editRepairPrompt(report, prose), { label: `Edit-repair-r${round + 1}`, phase: 'L2+Repair' }))
+  prose = extractProse(await agent(editRepairPrompt(report, prose), { label: `Edit-repair-r${round + 1}`, phase: 'L2+Repair' }))
   report = await commitAndL2(project, chapter, prose, `repair-r${round + 1}`)
   _trackDrift(report)
   round++
@@ -75,7 +75,7 @@ if (!report.passed_hard_gate) {
 // 4. Polish：仅当有 style fingerprint 才跑（无指纹时是空过，省 2 agent）
 phase('Polish')
 if (report.passed_hard_gate && ctx.fingerprint) {
-  prose = stripFences(await agent(editPolishPrompt(ctx, prose), { label: 'Edit-polish', phase: 'Polish' }))
+  prose = extractProse(await agent(editPolishPrompt(ctx, prose), { label: 'Edit-polish', phase: 'Polish' }))
   report = await commitAndL2(project, chapter, prose, 'polish')
   _trackDrift(report)
   if (!report.passed_hard_gate) {
@@ -90,7 +90,7 @@ if (report.passed_hard_gate && ctx.fingerprint) {
 // 对刚写章节查代词/性别/称呼/设定一致性 → surgical ops 修 → 重 L2。ops-based：吐叙述→解析失败→跳过，不毁章。
 phase('Consistency')
 if (report.passed_hard_gate && ctx.characters && ctx.characters.length) {
-  const opsRaw = stripFences(await agent(consistencyPrompt(ctx, project, chapter),
+  const opsRaw = extractProse(await agent(consistencyPrompt(ctx, project, chapter),
     { label: 'Edit-consistency', phase: 'Consistency' }))
   const ops = parseOpsList(opsRaw)
   if (ops && ops.length) {
@@ -121,7 +121,7 @@ if (report.passed_hard_gate) {
   while (drift && drift.drifted && drift.drifted.length && sr < STYLE_MAX_ROUNDS) {
     const hints = drift.drifted.map(d => `${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`).join('；')
     log(`style drift r${sr + 1}: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
-    const prose = stripFences(await agent(stylePolishPrompt(ctx, hints, project, chapter),
+    const prose = extractProse(await agent(stylePolishPrompt(ctx, hints, project, chapter),
       { label: `Edit-style-r${sr + 1}`, phase: 'Style' }))
     let after
     try {
@@ -160,7 +160,7 @@ return { status: 'ok', chapter, rounds: round, passed: report.passed_hard_gate,
 // ── relay 与 prompt ──
 
 async function bootContext(project, chapter, volume) {
-  const raw = stripFences(await pythonCli(
+  const raw = extractProse(await pythonCli(
     `boot-context --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Boot' }))
   try { return JSON.parse(raw) } catch { return { beat_contracts: [], fingerprint: null, _raw: raw } }
 }
@@ -168,7 +168,7 @@ async function bootContext(project, chapter, volume) {
 // run-l2 单命令→解析报告。verdict 独立单命令跑(信任锚),不与 commit 混跑——
 // 免 agent 捏坏多命令 stdout 假阴性(曾导致 style-polish 误判破 beat + 末尾 mark 命令调坏)。
 async function l2Report(project, chapter, phase = 'L2+Repair') {
-  const raw = stripFences(await pythonCli(`run-l2 --project ${project} --chapter ${chapter}`, { phase }))
+  const raw = extractProse(await pythonCli(`run-l2 --project ${project} --chapter ${chapter}`, { phase }))
   try { return JSON.parse(raw) } catch { return { passed_hard_gate: false, beat_violations: [], _raw: raw } }
 }
 
@@ -181,7 +181,7 @@ async function commitAndL2(project, chapter, prose, label) {
 
 // 文风漂移测量 relay：style-check 单命令,回 JSON {drifted, target_source, metrics}。
 async function styleCheck(project, chapter, volume) {
-  const raw = stripFences(await pythonCli(
+  const raw = extractProse(await pythonCli(
     `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Style' }))
   try { return JSON.parse(raw) } catch { return { drifted: [], ok: true } }
 }
@@ -254,7 +254,7 @@ function consistencyPrompt(ctx, project, chapter) {
 // 实际内容已落盘 L2 过）。单命令 relay 可靠回传 stdout；遥测失败不阻塞判决。
 async function finalize(project, chapter, exportPath, round, drift) {
   const exportArg = exportPath ? ` --export-path ${exportPath}` : ''
-  const verifyOut = stripFences(await pythonCli(
+  const verifyOut = extractProse(await pythonCli(
     `verify-persisted --project ${project} --chapter ${chapter}${exportArg}`,
     { phase: 'Persist+Telemetry' }))
   await telemetryRelay(project, chapter, round, drift)
@@ -279,7 +279,7 @@ async function telemetryRelay(project, chapter, round, drift) {
     driftBlock.trim(),
   ].join('\n')
   try {
-    const raw = stripFences(await agent(prompt, { label: 'telemetry', phase: 'Persist+Telemetry' }))
+    const raw = extractProse(await agent(prompt, { label: 'telemetry', phase: 'Persist+Telemetry' }))
     if (String(raw).startsWith('ERROR:')) log(`telemetry 部分失败（不阻塞）: ${raw}`)
   } catch (e) { log(`telemetry relay 异常（不阻塞）: ${e.message}`) }
 }
@@ -369,12 +369,12 @@ function editPolishPrompt(ctx, prevProse) {
   ].join('\n')
 }
 
-function stripFences(s) {
+// Unit A0:正文定界提取。只认 ```prose 标签区;无则原样返回(交 commit 段 sanitize 防线 + L2 non_prose 兜底)。
+function extractProse(s) {
   if (typeof s !== 'string') return String(s ?? '')
-  let t = s.trim()
-  const m = t.match(/^```[a-zA-Z]*\n([\s\S]*?)\n```$/)
-  if (m) t = m[1]
-  return t.trim()
+  const blocks = [...s.matchAll(/```prose[ \t]*\n([\s\S]*?)\n```/g)].map(m => m[1].trim())
+  if (blocks.length) return blocks.sort((a, b) => b.length - a.length)[0]
+  return s.trim()
 }
 
 // 跟踪最差轮文风漂移(取 styleCheck 结果,drifted 数最多者)。fed into finalize→mark-advisory-drift。

@@ -14,4 +14,5 @@
 ## 关键约束
 - repair 时优先级：修复违规 > 润色。两者可同轮做，但不得因润色破坏已 clean 的 beat
 - 修改通过 CLI `write-paragraphs` 写回 DB（覆盖该 beat 段落）
+- **输出仅围栏内正文**：把整章正文包进 ```prose ... ``` 围栏，围栏外不写任何前言/指标点评/思考/工作日志（Polish/Repair/style-polish/Consistency 同此约）。
 - **自报无效**：word_count/editing_corrections 由系统重算（L2 重算覆盖自报）
