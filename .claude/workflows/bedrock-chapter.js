@@ -366,8 +366,15 @@ function editRepairPrompt(report, prevProse) {
   for (const v of (report.beat_violations || [])) {
     lines.push(`  - beat${v.beat_id} [${v.kind}]: ${v.detail} → ${v.fix_hint}`)
   }
-  lines.push('', '下面是上一版整章正文。只改与违规相关段落，不引入新违规，不压缩剧情，保持其余原文。',
-             '返回修订后的【整章正文】纯文本，不裹围栏。', '', '---上一版---', prevProse)
+  const needExpand = (report.beat_violations || []).some(v => v.kind === 'word_count_below_floor')
+  const rule = needExpand
+    ? '本章字数不足(见 word_count_below_floor)。须【扩写】至下限以上:在现有剧情骨架上增场景细节/感官/心理/对白展开,丰富而非重复。不引入新违规,不压缩剧情。'
+    : '下面是上一版整章正文。只改与违规相关段落,不引入新违规,不压缩剧情,保持其余原文。'
+  lines.push('', rule)
+  if (needExpand) {
+    lines.push('【禁灌水】不得无信息扩写、不得重复同一意思、不得堆砌形容词、不得注水对话。扩写须服务于人物/氛围/情节推进;扩写后仍须过文风门禁(修辞密度/对白比/破折号)。')
+  }
+  lines.push('返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。', '', '---上一版---', prevProse)
   return lines.join('\n')
 }
 function editPolishPrompt(ctx, prevProse) {
