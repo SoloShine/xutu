@@ -52,46 +52,49 @@ let report = await commitAndL2(project, chapter, prose, 'Write')
 _trackDrift(report)
 log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length} words=${report.metrics?.word_count}`)
 
-// 3. L2 + Repair 循环（≤3 轮；签名比对、likely_rule_or_model 仍在 JS）
-phase('L2+Repair')
+// 3. Revise：defect manifest 驱动的定向修订(beat/字数/文风统一收敛),复测重喂≤REVISE_MAX_ROUNDS 轮。
+// 收束原 L2+Repair/Polish/Style 三段为一个变异阶段:每轮 commit+L2+styleCheck 复测、重算 manifest 只喂剩余缺陷。
+// 破 L2 回退 preRevise(Write 后已过 L2 版,agent-free);commit 被拒 break 保 preRevise。正确性硬压文风。
+phase('Revise')
+let drift = (report.passed_hard_gate && ctx.fingerprint)
+  ? await styleCheck(project, chapter, volume) : null
+_trackDrift(drift)
+let manifest = buildManifest(report, drift, ctx)
+const preReviseProse = prose, preReviseReport = report   // Write 后 L2-pass 快照(回退锚)
 let round = 0
-const sigsByRound = []
-while (!report.passed_hard_gate && round < 3) {
-  sigsByRound.push((report.beat_violations || []).map(v => `${v.beat_id}:${v.kind}`).sort().join(','))
-  prose = extractProse(await agent(editRepairPrompt(report, prose), { label: `Edit-repair-r${round + 1}`, phase: 'L2+Repair' }))
-  report = await commitAndL2(project, chapter, prose, `repair-r${round + 1}`)
-  _trackDrift(report)
+while (!manifest.empty && round < REVISE_MAX_ROUNDS) {
+  const revised = extractProse(await agent(revisePrompt(ctx, manifest, prose),
+    { label: `Edit-revise-r${round + 1}`, phase: 'Revise' }))
+  let after
+  try {
+    after = await commitAndL2(project, chapter, revised, `revise-r${round + 1}`)
+  } catch (e) {
+    log(`revise r${round + 1} 提交被拒(返回非正文?),保 preRevise: ${String(e.message || e).slice(0, 80)}`)
+    break
+  }
+  if (!after.passed_hard_gate) {
+    // revise 破 L2(beat/word_count)→ 回退 preRevise(已过 L2)。+1 relay;0 新 agent。
+    await commitAndL2(project, chapter, preReviseProse, 'revise-revert')
+    prose = preReviseProse; report = preReviseReport
+    await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Revise' })
+    log('revise 破坏 L2 → 回退 preRevise 版(正确性优先,该轮未应用)')
+    break
+  }
+  prose = revised; report = after
   round++
-  log(`L2 r${round} passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
+  drift = await styleCheck(project, chapter, volume); _trackDrift(drift)
+  manifest = buildManifest(report, drift, ctx)
+  log(`revise r${round} 复测: must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0} align=${manifest.align.length}`)
 }
-const likelyRuleOrModel = round === 3
-    && new Set(sigsByRound.slice(-2)).size === 1 && !report.passed_hard_gate
 if (!report.passed_hard_gate) {
   await pythonCli(
-    `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model ${likelyRuleOrModel ? 1 : 0}`,
-    { phase: 'L2+Repair', stdin: JSON.stringify(report.beat_violations || []) })
-  log(`l2 unresolved after 3 rounds, likely_rule_or_model=${likelyRuleOrModel}`)
-}
-
-// 4. Polish：仅当有 style fingerprint 才跑（无指纹时是空过，省 2 agent）
-phase('Polish')
-if (report.passed_hard_gate && ctx.fingerprint) {
-  const preProse = prose, preReport = report   // 阶段前 L2-pass 快照(含 Repair 扩写的 ≥3000 字)
-  const polished = extractProse(await agent(editPolishPrompt(ctx, preProse), { label: 'Edit-polish', phase: 'Polish' }))
-  const after = await commitAndL2(project, chapter, polished, 'polish')
-  _trackDrift(after)
-  if (after.passed_hard_gate) {
-    prose = polished; report = after
-    log('polish ok')
-  } else {
-    // Polish 破坏 L2(beat/word_count)→ 回退 pre-Polish(已过 L2)。+1 relay 重 commit;0 新 agent。
-    await commitAndL2(project, chapter, preProse, 'polish-revert')
-    prose = preProse; report = preReport
-    await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Polish' })
-    log('polish 破坏 L2 → 回退 pre-Polish 版(风格该轮未应用,正确性优先)')
-  }
+    `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
+    { phase: 'Revise', stdin: JSON.stringify(report.beat_violations || []) })
+  log(`revise 未过 L2(${round} 轮耗尽)→ mark-unresolved`)
+} else if (manifest.align && manifest.align.length) {
+  log(`revise 收敛: L2-clean, 文风仍 ${manifest.align.length} 项漂移(advisory,经 worstDrift 记录)`)
 } else {
-  log('polish skipped (no fingerprint or L2 not passed)')
+  log(`revise 收敛完成 [${manifest.target_source || '无目标'}]`)
 }
 
 // 4b. Consistency：角色正典一致性编辑（复刻 V1 EditAgent，每章跑）。
@@ -132,44 +135,6 @@ if (report.passed_hard_gate) {
     log(`proper-nouns: ${pn.autoedit_count} 处自动改(已留 amendment+flag)`)
   }
   if (pn.escalate && pn.escalate.length) log(`proper-nouns: ${pn.escalate.length} 处歧义 escalate 供卷审`)
-}
-
-// 4c. Style：章级文风漂移测量 + 定向收敛闭环(循环≤2 轮,回喂剩余 hint)。
-// 写后测标量 vs 目标(卷级→作品级→自洽),飘→style-polish→重 L2→复测;仍有飘则再喂剩余项,
-// 直到不飘或达上限。破 beat 立即停+flag。单章噪声大,只对明显偏离(dash/notXisY/修辞/对白比)动手。
-const STYLE_MAX_ROUNDS = 2
-phase('Style')
-if (report.passed_hard_gate) {
-  let drift = await styleCheck(project, chapter, volume)
-  _trackDrift(drift)
-  let sr = 0
-  while (drift && drift.drifted && drift.drifted.length && sr < STYLE_MAX_ROUNDS) {
-    const hints = drift.drifted.map(d => `${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`).join('；')
-    log(`style drift r${sr + 1}: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
-    const prose = extractProse(await agent(stylePolishPrompt(ctx, hints, project, chapter),
-      { label: `Edit-style-r${sr + 1}`, phase: 'Style' }))
-    let after
-    try {
-      after = await commitAndL2(project, chapter, prose, `style-r${sr + 1}`)
-    } catch (e) {
-      // commit-paragraphs 拒绝(style-polish 返回工作日志/非正文)→ 不崩,跳过本轮,保留已过 L2 的版本
-      log(`style-polish r${sr + 1} 提交被拒(返回非正文?),跳过: ${String(e.message || e).slice(0, 80)}`)
-      break
-    }
-    if (!after.passed_hard_gate) {
-      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Style' })
-      log('style-polish broke beat → flagged,停收敛')
-      break
-    }
-    report = after
-    drift = await styleCheck(project, chapter, volume)   // 复测,下轮只喂仍飘的项
-    _trackDrift(drift)
-    sr++
-    log(`style r${sr} 收敛后复测: ${drift.drifted ? drift.drifted.length : 0}项仍飘`)
-  }
-  const left = drift && drift.drifted ? drift.drifted.length : 0
-  if (left === 0) log(`style: 收敛完成(0 项飘) [${(drift && drift.target_source) || '无目标'}]`)
-  else if (sr >= STYLE_MAX_ROUNDS) log(`style: 仍 ${left} 项飘(${(drift.drifted || []).map(d => d.metric).join('/')}),达 ${STYLE_MAX_ROUNDS} 轮上限`)
 }
 
 // 5. Finalize：verify-persisted + collect-runtime + mark-advisory-drift 一 relay 收尾
