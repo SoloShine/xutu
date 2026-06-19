@@ -94,9 +94,9 @@ def get_chapter_boot_context(conn, chapter_id, volume_id):
     # 文风配置(DB 可配,卷级覆盖作品级→代码默认)。指纹/指令/字数/编辑轮全从这出。
     style = get_style_config(conn, volume_id)
     fingerprint = style["fingerprint"] or get_effective_fingerprint(conn, volume_id)
-    # 风格范例(正反例):作者策划的具体段落,注入 writer【风格示范】。{good:[], bad:[]},限 5 条控 token
+    # 风格范例(正反例):作者策划的具体段落,注入 writer【风格示范】。{good:[], bad:[]},限 8 条控 token
     ex = style.get("style_examples") or {}
-    style_examples = {"good": list(ex.get("good") or [])[:5], "bad": list(ex.get("bad") or [])[:5]}
+    style_examples = {"good": list(ex.get("good") or [])[:8], "bad": list(ex.get("bad") or [])[:8]}
 
     constants = {
         "drift_threshold": DRIFT_THRESHOLD,  # 与 L2 门禁共享,不可配(防双真相源)
