@@ -75,20 +75,22 @@ while (!manifest.empty && round < REVISE_MAX_ROUNDS) {
   }
   round++
   if (after.passed_hard_gate) {
-    // 干净:接受,复测下轮剩余文风漂移
+    // 干净:接受,复测下轮剩余文风漂移(无指纹则跳过 styleCheck,与 pre-loop/correctness 分支一致)
     prose = revised; report = after
-    drift = await styleCheck(project, chapter, volume); _trackDrift(drift)
+    drift = (ctx.fingerprint) ? await styleCheck(project, chapter, volume) : null; _trackDrift(drift)
     manifest = buildManifest(report, drift, ctx)
     log(`revise r${round} 复测: must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0} align=${manifest.align.length}`)
   } else if (wasCorrectness) {
     // correctness 修复仍未全过(扩写未达 floor / 仍有 beat):累进接受为新基(复刻旧 repair 渐进语义),下轮继续修剩余项。
-    // 不回退——回退会丢部分进展(如 r1 把 2241 扩到 2800 仍未过,回退到 2240 等于白扩)。
+    // 不回退——回退会丢部分进展(如 r1 把 2341 扩到 2800 仍未过,回退到 2341 等于白扩)。
     prose = revised; report = after
     drift = (ctx.fingerprint) ? await styleCheck(project, chapter, volume) : null; _trackDrift(drift)
     manifest = buildManifest(report, drift, ctx)
     log(`revise r${round} 仍不洁(correctness),累进为下轮基,剩余 must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0}`)
   } else {
     // style 对准破坏了已 L2-clean 的章 → 回退 clean anchor,停(不为文风冒正确性风险)。章保 clean+advisory 漂移。
+    // anchorReport.passed_hard_gate===true 在此恒成立:进 style 分支要求 manifest.priority==='style',
+    // 而 priority==='style' ⟺ must_fix 空 && !expand ⟺ loop 入口 report 已过 L2(无任何硬违规)。
     await commitAndL2(project, chapter, anchorProse, 'revise-revert')
     prose = anchorProse; report = anchorReport
     await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Revise' })
