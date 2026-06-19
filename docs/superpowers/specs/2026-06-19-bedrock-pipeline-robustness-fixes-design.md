@@ -11,7 +11,7 @@
 
 | # | 缺陷 | 根因(文件:行) |
 |---|------|----------------|
-| 1 | writer/Polish 工作日志、指标自评、文件路径泄漏进 `paragraph` 表 | `__main__.py` `_WORKLOG_TOKENS` 缺实测签名;`_looks_like_worklog` 阈值 ≥2 过严;`_is_lead_junk` 仅剥头部,trailing/mid 漏 |
+| 1 | writer/Polish 工作日志、指标自评、文件路径泄漏进 `paragraph` 表 | **契约层**:`stripFences` 仅剥整段围栏,其余全交 commit-paragraphs 切段入库(正文与 agent 思考一视同仁);Polish 阶段要求推理指标→叙述泄入;prompt 未禁非正文输出、无定界符 |
 | 2 | 角色名/地名跨章不一致(周执→周植/周直,北原→北院/北苑) | 全管线无专名白名单校验;Consistency 阶段(`bedrock-chapter.js:89`)仅 LLM,无确定性硬校验 |
 | 3 | `chapter.status` 永远 `writing`,无 `completed` → 导出全跳过 | `__main__.py` 仅 `set_chapter_status("writing")`;`reader_commands.py:124/135` 导出按 `status='completed'` 过滤 |
 | 4 | watchdog `drift_ratio=0.92` → `blocking=true` | `watchdog.py:71` 计 `advisory_drift != "{}"`(恒真,因 drift 快照总写入)而非真实 `drifted != []` |
@@ -21,9 +21,36 @@
 
 ---
 
-## 单元 A — 写面防污染(#1 + #7)
+## 单元 A — 写面防污染:契约优先 + 检测兜底(#1 + #7)
 
-### A1. commit-paragraphs 段落级清洗(#1)
+**根因(契约层)**:当前契约是"agent 吐什么 → `stripFences` 剥最外层围栏 → 剩下全部交 commit-paragraphs 切段入库"。commit-paragraphs 对正文与 agent 思考/日志一视同仁地切段,故后者被当正文入库。Polish/style-polish 阶段显式要求 agent 推理文风指标,使其必然叙述"我删了 N 个明喻、对白占比 X%",泄入正文流;prompt 又未禁止非正文输出,且无定界符可"只摘正文区"。
+
+**修法**:白名单(定界提取)为主,黑名单(正则检测)为兜底,重试闭环保稳定。
+
+### A0. 正文定界契约(主)
+
+**约定**:ChapterWriter / Polish / style-polish / Repair / Consistency 等所有产正文 agent,必须把正文包进**带标签围栏** ` ```prose `:
+
+```
+```prose
+<本章正文,逐 beat 段落>
+```
+```
+
+- 只认 `prose` 标签围栏;普通 ``` 围栏**不算**(防 agent 把推理包进普通围栏)。
+- `bedrock-chapter.js` 把 `stripFences` 升级为 `extractProse(raw)`,**只取 `prose` 标签区内容,区外一律丢弃**。
+
+**`extractProse(raw)` 降级链(保输出稳定性)**:
+1. **有 `prose` 标签区**:取内容;多个区取最长(正文是主体)。✅ 主路径。
+2. **无标签区(agent 漏用)**:回退 `prose_hygiene.sanitize_prose`(见 A1)清洗;若清洗后 ≥ beat 数 且 ≥ 500 字 → 用之并 log 警告"agent 未用 prose 定界符,已回退清洗";否则进入 3。
+3. **清洗仍不达标**:返回失败 → 触发 Repair 重试(≤3 轮,既有机制)。
+
+**prompt 强化**(所有产正文模板,`chapter_writer.md` / `edit_agent.md` 等):
+- "只输出 `prose` 围栏内的正文。无前言、无指标点评、无思考过程、无文件路径、无工作日志。围栏外任何文本将被系统忽略。"
+- 因提取层真的会忽略围栏外,该指令**可信**,LLM 遵守率更高。
+- Polish/style-polish 阶段:指标推理不进输出流(仅产 prose 块);若需留推理,放进围栏外(自动丢弃)。
+
+### A1. prose_hygiene 检测(兜底,A0 第 2 步依赖)
 
 **新组件** `src/bedrock/checks/prose_hygiene.py`(确定性,零 LLM):
 
@@ -36,17 +63,17 @@
 - `classify_paragraphs(paras) -> list[(seq, is_meta, matched)]`:逐段判定。
 - `sanitize_prose(raw) -> (cleaned_text, removed_count, removed_preview)`:剥离所有 meta 段(leading/trailing/mid),返回清洗后正文 + 移除统计。
 
-**commit-paragraphs 改造**(`__main__.py` handler):
-- `_split_paragraphs` 后,先 `sanitize_prose` 逐段清洗(替代当前仅 `_is_lead_junk` 剥头部)。
+**commit-paragraphs 改造**(`__main__.py` handler,作为 A0 之外的写面镜像防线——防止绕过工作流直接调 CLI 时漏网):
+- 正常路径:工作流 `extractProse` 已提取纯正文 → commit 直接切段入库。
+- 防御路径:commit 仍对入参跑 `sanitize_prose`(替代当前仅 `_is_lead_junk` 剥头部),剥离任何残余 meta 段。
 - 清洗后**剩余段数 < beat 数**,或**清洗后正文 < 500 字** → `sys.exit` 拒绝(整篇重度污染,强制重交)。阈值常量集中到 `prose_hygiene` 模块头。
 - 保留 `_looks_like_worklog`(整篇)作为重度污染闸;`_WORKLOG_TOKENS` 补 `META_PATTERNS` 的关键 token,阈值降为"任一强特征命中"。
-- 清洗移除 >0 段时,log 提示(不入 amendment,因 commit 是首写非改)。
 
-### A2. L2 non_prose 兜底(#1 第二层)
+### A2. L2 non_prose 兜底(#1 第三层,数据库内最后防线)
 
 **`src/bedrock/checks/beat_fulfillment.py`**(L2 规则集):
-- 新增违规 kind `non_prose`:逐段跑 `prose_hygiene.detect_meta_paragraphs`,命中 → 违规条目 `{beat_id, kind:"non_prose", detail, fix_hint:"删除该 meta 段", para_seq}`。
-- L2 hard_gate 已含"违规数==0 才过"语义,`non_prose` 自动纳入 → 即便 commit 漏网,L2 Repair 兜底。
+- 新增违规 kind `non_prose`:对已入库 `paragraph` 逐段跑 `prose_hygiene.detect_meta_paragraphs`,命中 → 违规条目 `{beat_id, kind:"non_prose", detail, fix_hint:"删除该 meta 段", para_seq}`。
+- L2 hard_gate 已含"违规数==0 才过"语义,`non_prose` 自动纳入 → 即便 A0/A1 漏网,落盘后 L2 仍拦(Retry loop 兜底)。三层(A0 提取 / A1 清洗 / A2 L2)纵深。
 
 ### A3. flag 行保底(#7)
 
@@ -126,6 +153,7 @@
 ## 测试策略
 
 - **单元测试**(pytest,每组件):
+  - `extractProse`(workflow):构造"有 prose 围栏且前后带日志"、"无围栏纯 prose"、"无围栏混 meta"、"多个围栏"、"围栏内仍混 meta" 五类输入,断言提取/降级/拒绝正确。
   - `prose_hygiene`:ch2/3/6/8/10 实测泄漏片段作 fixture,断言全部命中。
   - `beat_fulfillment` non_prose:同 fixture。
   - `watchdog`:构造 drifted=[]/ok=true 的快照,断言不计入;构造连续 3 章同向,断言 drift_flagged。
@@ -136,6 +164,6 @@
 
 ## 影响面与回退
 
-- 改动文件:`src/bedrock/checks/{prose_hygiene,proper_nouns}.py`(新)、`checks/beat_fulfillment.py`、`__main__.py`、`orchestration/{watchdog,boot_context,review_flag,persist_gate}.py`、`style/{extractor,template_repo}.py`、`repositories/{outline,plot_tree}.py`、`.claude/workflows/bedrock-chapter.js`、`.claude/templates/bedrock/chapter_writer.md`(边界例注入说明)。
+- 改动文件:`src/bedrock/checks/{prose_hygiene,proper_nouns}.py`(新)、`checks/beat_fulfillment.py`、`__main__.py`、`orchestration/{watchdog,boot_context,review_flag,persist_gate}.py`、`style/{extractor,template_repo}.py`、`repositories/{outline,plot_tree}.py`、`.claude/workflows/bedrock-chapter.js`(`stripFences`→`extractProse` + Consistency 专名 hook)、`.claude/templates/bedrock/{chapter_writer,edit_agent}.md`(prose 围栏契约 + 边界例)。
 - 既有作品已落盘 `paragraph` 不动;专名校验只对新写章生效;watchdog/status/export 对既有作品是行为修正。
 - 回退:各单元独立,可按单元 revert。
