@@ -1,13 +1,11 @@
 export const meta = {
   name: 'bedrock-chapter',
-  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Repair(≤3轮)→Polish(指纹门控)→Consistency(角色正典)→Style(漂移测量+收敛)→Finalize',
+  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Revise(manifest 驱动定向修订,复测重喂≤2)→Consistency(角色正典 ops)→专名(ops)→Finalize',
   phases: [
     { title: 'Boot' },
     { title: 'Write' },
-    { title: 'L2+Repair' },
-    { title: 'Polish' },
+    { title: 'Revise' },
     { title: 'Consistency' },
-    { title: 'Style' },
     { title: 'Persist+Telemetry' },
   ],
 }
@@ -36,6 +34,9 @@ const HYGIENE_RULES = [
 // drift 最差轮累积器（须在主流程调用前初始化，避 TDZ）
 let worstDrift = {}
 
+// Revise 复测重喂上限(收束原 repair≤3 + style≤2,合并取严的 2)。
+const REVISE_MAX_ROUNDS = 2
+
 const _args = typeof args === 'string' ? JSON.parse(args) : (args || {})
 const { project, chapter, volume, exportPath } = _args
 
@@ -51,46 +52,61 @@ let report = await commitAndL2(project, chapter, prose, 'Write')
 _trackDrift(report)
 log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length} words=${report.metrics?.word_count}`)
 
-// 3. L2 + Repair 循环（≤3 轮；签名比对、likely_rule_or_model 仍在 JS）
-phase('L2+Repair')
+// 3. Revise：defect manifest 驱动的定向修订(beat/字数/文风统一收敛),复测重喂≤REVISE_MAX_ROUNDS 轮。
+// 收束原 L2+Repair/Polish/Style 三段为一个变异阶段:每轮 commit+L2+styleCheck 复测、重算 manifest 只喂剩余缺陷。
+// 破 L2 回退 preRevise(Write 后已过 L2 版,agent-free);commit 被拒 break 保 preRevise。正确性硬压文风。
+phase('Revise')
+let drift = (report.passed_hard_gate && ctx.fingerprint)
+  ? await styleCheck(project, chapter, volume) : null
+_trackDrift(drift)
+let manifest = buildManifest(report, drift, ctx)
 let round = 0
-const sigsByRound = []
-while (!report.passed_hard_gate && round < 3) {
-  sigsByRound.push((report.beat_violations || []).map(v => `${v.beat_id}:${v.kind}`).sort().join(','))
-  prose = extractProse(await agent(editRepairPrompt(report, prose), { label: `Edit-repair-r${round + 1}`, phase: 'L2+Repair' }))
-  report = await commitAndL2(project, chapter, prose, `repair-r${round + 1}`)
-  _trackDrift(report)
+while (!manifest.empty && round < REVISE_MAX_ROUNDS) {
+  const wasCorrectness = manifest.priority === 'correctness'   // 本轮意图:修正确性 还是 对准文风
+  const anchorProse = prose, anchorReport = report             // 本轮前状态(仅 style 回退用)
+  const revised = extractProse(await agent(revisePrompt(ctx, manifest, prose),
+    { label: `Edit-revise-r${round + 1}`, phase: 'Revise' }))
+  let after
+  try {
+    after = await commitAndL2(project, chapter, revised, `revise-r${round + 1}`)
+  } catch (e) {
+    log(`revise r${round + 1} 提交被拒(返回非正文?),保 anchor: ${String(e.message || e).slice(0, 80)}`)
+    break
+  }
   round++
-  log(`L2 r${round} passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length}`)
+  if (after.passed_hard_gate) {
+    // 干净:接受,复测下轮剩余文风漂移(无指纹则跳过 styleCheck,与 pre-loop/correctness 分支一致)
+    prose = revised; report = after
+    drift = (ctx.fingerprint) ? await styleCheck(project, chapter, volume) : null; _trackDrift(drift)
+    manifest = buildManifest(report, drift, ctx)
+    log(`revise r${round} 复测: must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0} align=${manifest.align.length}`)
+  } else if (wasCorrectness) {
+    // correctness 修复仍未全过(扩写未达 floor / 仍有 beat):累进接受为新基(复刻旧 repair 渐进语义),下轮继续修剩余项。
+    // 不回退——回退会丢部分进展(如 r1 把 2341 扩到 2800 仍未过,回退到 2341 等于白扩)。
+    prose = revised; report = after
+    drift = (ctx.fingerprint) ? await styleCheck(project, chapter, volume) : null; _trackDrift(drift)
+    manifest = buildManifest(report, drift, ctx)
+    log(`revise r${round} 仍不洁(correctness),累进为下轮基,剩余 must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0}`)
+  } else {
+    // style 对准破坏了已 L2-clean 的章 → 回退 clean anchor,停(不为文风冒正确性风险)。章保 clean+advisory 漂移。
+    // anchorReport.passed_hard_gate===true 在此恒成立:进 style 分支要求 manifest.priority==='style',
+    // 而 priority==='style' ⟺ must_fix 空 && !expand ⟺ loop 入口 report 已过 L2(无任何硬违规)。
+    await commitAndL2(project, chapter, anchorProse, 'revise-revert')
+    prose = anchorProse; report = anchorReport
+    await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Revise' })
+    log('revise style 破坏 L2 → 回退 last-good,停(正确性优先)')
+    break
+  }
 }
-const likelyRuleOrModel = round === 3
-    && new Set(sigsByRound.slice(-2)).size === 1 && !report.passed_hard_gate
 if (!report.passed_hard_gate) {
   await pythonCli(
-    `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model ${likelyRuleOrModel ? 1 : 0}`,
-    { phase: 'L2+Repair', stdin: JSON.stringify(report.beat_violations || []) })
-  log(`l2 unresolved after 3 rounds, likely_rule_or_model=${likelyRuleOrModel}`)
-}
-
-// 4. Polish：仅当有 style fingerprint 才跑（无指纹时是空过，省 2 agent）
-phase('Polish')
-if (report.passed_hard_gate && ctx.fingerprint) {
-  const preProse = prose, preReport = report   // 阶段前 L2-pass 快照(含 Repair 扩写的 ≥3000 字)
-  const polished = extractProse(await agent(editPolishPrompt(ctx, preProse), { label: 'Edit-polish', phase: 'Polish' }))
-  const after = await commitAndL2(project, chapter, polished, 'polish')
-  _trackDrift(after)
-  if (after.passed_hard_gate) {
-    prose = polished; report = after
-    log('polish ok')
-  } else {
-    // Polish 破坏 L2(beat/word_count)→ 回退 pre-Polish(已过 L2)。+1 relay 重 commit;0 新 agent。
-    await commitAndL2(project, chapter, preProse, 'polish-revert')
-    prose = preProse; report = preReport
-    await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Polish' })
-    log('polish 破坏 L2 → 回退 pre-Polish 版(风格该轮未应用,正确性优先)')
-  }
+    `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
+    { phase: 'Revise', stdin: JSON.stringify(report.beat_violations || []) })
+  log(`revise 未过 L2(${round} 轮耗尽)→ mark-unresolved`)
+} else if (manifest.align && manifest.align.length) {
+  log(`revise 收敛: L2-clean, 文风仍 ${manifest.align.length} 项漂移(advisory,经 worstDrift 记录)`)
 } else {
-  log('polish skipped (no fingerprint or L2 not passed)')
+  log(`revise 收敛完成 [${manifest.target_source || '无目标'}]`)
 }
 
 // 4b. Consistency：角色正典一致性编辑（复刻 V1 EditAgent，每章跑）。
@@ -133,44 +149,6 @@ if (report.passed_hard_gate) {
   if (pn.escalate && pn.escalate.length) log(`proper-nouns: ${pn.escalate.length} 处歧义 escalate 供卷审`)
 }
 
-// 4c. Style：章级文风漂移测量 + 定向收敛闭环(循环≤2 轮,回喂剩余 hint)。
-// 写后测标量 vs 目标(卷级→作品级→自洽),飘→style-polish→重 L2→复测;仍有飘则再喂剩余项,
-// 直到不飘或达上限。破 beat 立即停+flag。单章噪声大,只对明显偏离(dash/notXisY/修辞/对白比)动手。
-const STYLE_MAX_ROUNDS = 2
-phase('Style')
-if (report.passed_hard_gate) {
-  let drift = await styleCheck(project, chapter, volume)
-  _trackDrift(drift)
-  let sr = 0
-  while (drift && drift.drifted && drift.drifted.length && sr < STYLE_MAX_ROUNDS) {
-    const hints = drift.drifted.map(d => `${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`).join('；')
-    log(`style drift r${sr + 1}: ${drift.drifted.length}项 [${drift.target_source}] → ${hints}`)
-    const prose = extractProse(await agent(stylePolishPrompt(ctx, hints, project, chapter),
-      { label: `Edit-style-r${sr + 1}`, phase: 'Style' }))
-    let after
-    try {
-      after = await commitAndL2(project, chapter, prose, `style-r${sr + 1}`)
-    } catch (e) {
-      // commit-paragraphs 拒绝(style-polish 返回工作日志/非正文)→ 不崩,跳过本轮,保留已过 L2 的版本
-      log(`style-polish r${sr + 1} 提交被拒(返回非正文?),跳过: ${String(e.message || e).slice(0, 80)}`)
-      break
-    }
-    if (!after.passed_hard_gate) {
-      await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Style' })
-      log('style-polish broke beat → flagged,停收敛')
-      break
-    }
-    report = after
-    drift = await styleCheck(project, chapter, volume)   // 复测,下轮只喂仍飘的项
-    _trackDrift(drift)
-    sr++
-    log(`style r${sr} 收敛后复测: ${drift.drifted ? drift.drifted.length : 0}项仍飘`)
-  }
-  const left = drift && drift.drifted ? drift.drifted.length : 0
-  if (left === 0) log(`style: 收敛完成(0 项飘) [${(drift && drift.target_source) || '无目标'}]`)
-  else if (sr >= STYLE_MAX_ROUNDS) log(`style: 仍 ${left} 项飘(${(drift.drifted || []).map(d => d.metric).join('/')}),达 ${STYLE_MAX_ROUNDS} 轮上限`)
-}
-
 // 5. Finalize：verify-persisted + collect-runtime + mark-advisory-drift 一 relay 收尾
 phase('Persist+Telemetry')
 const persisted = await finalize(project, chapter, exportPath, round, worstDrift)
@@ -206,28 +184,11 @@ async function commitAndL2(project, chapter, prose, label) {
 // 文风漂移测量 relay：style-check 单命令,回 JSON {drifted, target_source, metrics}。
 async function styleCheck(project, chapter, volume) {
   const raw = extractProse(await pythonCli(
-    `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Style' }))
+    `style-check --project ${project} --chapter ${chapter} --volume ${volume}`, { phase: 'Revise' }))
   try { return JSON.parse(raw) } catch { return { drifted: [], ok: true } }
 }
 
 function pct(x) { return Math.round((x || 0) * 100) + '%' }
-
-// 文风定向收敛 prompt：agent 读当前正文,针对测量出的漂移项做最小改动(删破折号/改句式/减比喻)。
-function stylePolishPrompt(ctx, hints, project, chapter) {
-  return [
-    '# Edit 子代理 — 文风定向收敛（按测量出的漂移修）',
-    `先读本章当前正文(只读): cd "${CWD}" && python -m src.bedrock show-paragraphs --project ${project} --chapter ${chapter}`,
-    '把返回 JSON 每段 text 按原顺序拼成当前正文。',
-    '',
-    HYGIENE_RULES,
-    ctx.style_directive ? `【文风指令】${ctx.style_directive}` : '',
-    '【本章测量出的文风漂移——必须定向修正这些项】',
-    hints,
-    '',
-    '针对上面漂移做最小改动收敛(如删非必要破折号→换句号断句、改"不是A是B"句式、减过密比喻),',
-    '保持剧情/字数/beat/pov 不变,不引入新问题。返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。',
-  ].join('\n')
-}
 
 // edit-paragraphs(ops,stdin) → run-l2,各单命令(一致性编辑用;verdict 独立跑)。
 async function applyOpsAndL2(project, chapter, ops, label) {
@@ -371,33 +332,58 @@ function chapterWriterPrompt(ctx) {
     '把整章正文（纯文本，段间空行分隔）作为最终返回值。',
   ].join('\n')
 }
-function editRepairPrompt(report, prevProse) {
-  const lines = ['# Edit 子代理 — 定向修复', '违规清单（beat_id / kind / detail / fix_hint）：']
-  for (const v of (report.beat_violations || [])) {
-    lines.push(`  - beat${v.beat_id} [${v.kind}]: ${v.detail} → ${v.fix_hint}`)
+// defect manifest 装配(纯 JS,零 LLM):合并 L2 违规 + 字数扩写 + 实测文风漂移 + 目标分布。
+// 优先级:must_fix(beat 结构/pov)非空或需 expand → correctness 主;否则 style 主。empty=true → Revise 跳过。
+function buildManifest(report, drift, ctx) {
+  const violations = (report && report.beat_violations) || []
+  const mustFix = violations.filter(v => v.kind !== 'word_count_below_floor')
+  const expand = violations.some(v => v.kind === 'word_count_below_floor')
+  const align = (drift && Array.isArray(drift.drifted)) ? drift.drifted : []
+  return {
+    empty: mustFix.length === 0 && !expand && align.length === 0,
+    must_fix: mustFix,
+    expand,
+    align,
+    targets: (ctx && ctx.fingerprint) || null,
+    target_source: (drift && drift.target_source) || null,
+    priority: (mustFix.length || expand) ? 'correctness' : 'style',
   }
-  const needExpand = (report.beat_violations || []).some(v => v.kind === 'word_count_below_floor')
-  const rule = needExpand
-    ? '本章字数不足(见 word_count_below_floor)。须【扩写】至下限以上:在现有剧情骨架上增场景细节/感官/心理/对白展开,丰富而非重复。不引入新违规,不压缩剧情。'
-    : '下面是上一版整章正文。只改与违规相关段落,不引入新违规,不压缩剧情,保持其余原文。'
-  lines.push('', rule)
-  if (needExpand) {
-    lines.push('【禁灌水】不得无信息扩写、不得重复同一意思、不得堆砌形容词、不得注水对话。扩写须服务于人物/氛围/情节推进;扩写后仍须过文风门禁(修辞密度/对白比/破折号)。')
-  }
-  lines.push('返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。', '', '---上一版---', prevProse)
-  return lines.join('\n')
 }
-function editPolishPrompt(ctx, prevProse) {
-  return [
-    '# Edit 子代理 — 正向润色',
-    '目标分布:', JSON.stringify(ctx.fingerprint || {}, null, 2),
-    '本章 beat 契约:', JSON.stringify(ctx.beat_contracts, null, 2),
-    '',
+
+// 定向修订 prompt(合并原 editRepair/editPolish/stylePolish)。manifest 驱动,正确性硬压文风。
+// correctness 优先级:先列 L2 硬违规(必改)+ 字数扩写指令,文风降为"不冲突时顺手"。
+// style 优先级:只对准实测漂移。manifest.empty 时不调用(由调用方判)。
+function revisePrompt(ctx, manifest, prevProse) {
+  const lines = [
+    '# Edit 子代理 — 定向修订(beat/字数/文风统一收敛)',
     HYGIENE_RULES,
-    '把当前正文往目标分布微调的同时,严格执行上面的文风硬约束(标点全角/清掉"不是A是B"句式/删非必要破折号)。',
-    '保持剧情、beat 结构完整、汉字数不低于下限;不删段、不合并/拆分 beat、不降字数。仅做风格微调(句式/对白/破折号/修辞密度对准目标分布)。',
-    '返回润色后的【整章正文】纯文本，不裹围栏。', '', '---当前版---', prevProse,
-  ].join('\n')
+  ]
+  if (ctx.style_directive) lines.push('', `【文风指令·定性】${ctx.style_directive}`)
+  const ex = ctx.style_examples || {}
+  if ((ex.good && ex.good.length) || (ex.bad && ex.bad.length)) {
+    lines.push('', '【风格示范】(对照节奏/密度/句式,严禁复述范例原文)')
+    ;(ex.good || []).forEach(s => lines.push(`  ✓ ${s}`))
+    ;(ex.bad || []).forEach(s => lines.push(`  ✗ ${s}(避免)`))
+  }
+  if (manifest.priority === 'correctness') {
+    lines.push('', '【必须先修·不得破坏结构】下面是 L2 硬违规(beat_id / kind / detail / fix_hint):')
+    manifest.must_fix.forEach(v => lines.push(`  - beat${v.beat_id} [${v.kind}]: ${v.detail} → ${v.fix_hint}`))
+    if (manifest.expand) {
+      lines.push('', '【字数不足·须扩写至下限以上】在现有剧情骨架上增场景细节/感官/心理/对白展开,丰富而非重复。不引入新违规,不压缩剧情。')
+      lines.push('【禁灌水】不得无信息扩写、不得重复同一意思、不得堆砌形容词、不得注水对话。扩写须服务于人物/氛围/情节推进;扩写后仍须过文风门禁(修辞密度/对白比/破折号)。')
+    }
+    if (manifest.align.length) {
+      lines.push('', '【次要·文风对准】结构修复后,在不冲突前提下顺手对准(不为此冒险):')
+      manifest.align.forEach(d => lines.push(`  - ${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`))
+    }
+  } else {
+    lines.push('', `【对准目标分布·文风定向收敛】实测漂移(目标分布: ${JSON.stringify(manifest.targets || {})})`)
+    manifest.align.forEach(d => lines.push(`  - ${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`))
+    lines.push('做最小改动收敛(如删非必要破折号→换句号断句、改"不是A是B"句式、减过密比喻)。')
+  }
+  lines.push('', '保持剧情/字数下限/beat 结构/pov 不变,不引入新问题。返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。')
+  lines.push('', '---上一版---', prevProse)
+  return lines.join('\n')
 }
 
 // Unit A0:正文定界提取。只认 ```prose 标签区;无则原样返回(交 commit 段 sanitize 防线 + L2 non_prose 兜底)。
