@@ -362,9 +362,20 @@ def _check_proper_nouns(conn, chapter_id):
 
     ensure_flag(conn, chapter_id)
     if autoedit:
+        # 读改合并 advisory_drift,保留 style-drift 快照(若有);专名校验在工作流里可能
+        # 先于 finalize 的 mark-advisory-drift 跑,整体替换会丢任一方审计痕迹。
+        cur = conn.execute(
+            "SELECT advisory_drift FROM chapter_review_flag WHERE chapter_id=?",
+            (chapter_id,)).fetchone()
+        drift = {}
+        if cur and cur["advisory_drift"] and cur["advisory_drift"] != "{}":
+            try:
+                drift = json.loads(cur["advisory_drift"])
+            except (ValueError, TypeError):
+                drift = {}
+        drift["proper_noun_autoedit"] = autoedit
         _upsert(conn, chapter_id, {
-            "advisory_drift": json.dumps(
-                {"proper_noun_autoedit": autoedit}, ensure_ascii=False)})
+            "advisory_drift": json.dumps(drift, ensure_ascii=False)})
     return {"ops": ops, "escalate": escalate, "autoedit_count": len(autoedit)}
 
 
