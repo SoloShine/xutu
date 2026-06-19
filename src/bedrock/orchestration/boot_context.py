@@ -52,6 +52,14 @@ def _character_canon(conn):
     return out
 
 
+def _available_inspirations(conn):
+    """Unit F:注入未消费(raw/refined/partial)灵感,作 writer 可选素材池。"""
+    rows = conn.execute(
+        "SELECT id, type, content FROM inspiration "
+        "WHERE status IN ('raw','refined','partial') ORDER BY id").fetchall()
+    return [{"id": r["id"], "type": r["type"], "content": r["content"]} for r in rows]
+
+
 def _prev_chapter_tail(conn, chapter_id, target_chars=400, hard_max=600):
     """上一章(global_number-1)的收尾正文，作章际交接信号。
 
@@ -84,7 +92,7 @@ def _prev_chapter_tail(conn, chapter_id, target_chars=400, hard_max=600):
 
 def get_chapter_boot_context(conn, chapter_id, volume_id):
     """返回 {beat_contracts, reader_disclosed_secrets, characters, fingerprint, style_directive,
-    style_examples, constants, prev_chapter_tail}。文风(指纹+指令+范例+旋钮)从 style_template 读,可配。"""
+    style_examples, constants, prev_chapter_tail, inspirations}。文风(指纹+指令+范例+旋钮)从 style_template 读,可配。"""
     beat_contracts = []
     for beat in list_beats_in_chapter(conn, chapter_id):
         c = get_beat_contract(conn, volume_id, beat["id"])
@@ -114,4 +122,5 @@ def get_chapter_boot_context(conn, chapter_id, volume_id):
         "style_examples": style_examples,        # 正反例段落,注入 writer【风格示范】(对照不复述)
         "constants": constants,
         "prev_chapter_tail": _prev_chapter_tail(conn, chapter_id),
+        "inspirations": _available_inspirations(conn),  # Unit F:writer 可选素材池(未消费灵感)
     }

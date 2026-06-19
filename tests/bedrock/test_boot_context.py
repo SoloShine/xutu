@@ -4,6 +4,7 @@ from src.bedrock.orchestration.boot_context import get_chapter_boot_context
 from src.bedrock.repositories.plot_tree import create_volume, create_chapter, create_beat, create_paragraph
 from src.bedrock.repositories.outline import (
     save_volume_outline, lock_volume_outline, unlock_volume_outline, update_beat_contract,
+    add_inspiration, consume_inspiration,
 )
 from src.bedrock.repositories.character import create_character
 from src.bedrock.style.template_repo import save_fingerprint
@@ -64,4 +65,41 @@ def test_boot_context_reader_secrets_filtered(tmp_project):
     keys = [s["key"] for s in ctx["reader_disclosed_secrets"]]
     assert "pub" in keys
     assert "sec" not in keys
+    conn.close()
+
+
+def test_boot_context_includes_inspirations(tmp_project):
+    """Unit F: 未消费灵感(raw/refined/partial)注入 writer 上下文作可选素材池。"""
+    conn = get_connection(tmp_project)
+    vid, cid = _seed(conn)
+    add_inspiration(conn, content="一个创意", type="scene")
+    ctx = get_chapter_boot_context(conn, chapter_id=cid, volume_id=vid)
+    assert "inspirations" in ctx
+    assert any(i["content"] == "一个创意" for i in ctx["inspirations"])
+    # 形状:id/type/content
+    item = ctx["inspirations"][0]
+    assert set(item.keys()) == {"id", "type", "content"}
+    conn.close()
+
+
+def test_boot_context_excludes_consumed_inspirations(tmp_project):
+    """Unit F: 已 consumed 的灵感不再注入。"""
+    conn = get_connection(tmp_project)
+    vid, cid = _seed(conn)
+    iid = add_inspiration(conn, content="已消费的创意", type="scene")
+    consume_inspiration(conn, iid, "chapter", cid)
+    ctx = get_chapter_boot_context(conn, chapter_id=cid, volume_id=vid)
+    assert all(i["content"] != "已消费的创意" for i in ctx["inspirations"])
+    conn.close()
+
+
+def test_consume_inspiration_returns_row(tmp_project):
+    """Unit F: consume_inspiration 返回更新后 row(非 None),便于调用方 r['status'] 取值。"""
+    conn = get_connection(tmp_project)
+    vid, cid = _seed(conn)
+    iid = add_inspiration(conn, content="待消费", type="scene")
+    r = consume_inspiration(conn, iid, "chapter", cid)
+    assert r is not None
+    assert isinstance(r, dict)
+    assert r["status"] == "consumed"
     conn.close()

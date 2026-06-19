@@ -69,6 +69,8 @@ def consume_inspiration(conn, inspiration_id, target_type, target_id):
     conn.execute("UPDATE inspiration SET consumed_into=? WHERE id=?",
                  (json.dumps(into, ensure_ascii=False), inspiration_id))
     conn.commit()
+    return dict(conn.execute("SELECT * FROM inspiration WHERE id=?",
+                             (inspiration_id,)).fetchone())
 
 
 _LEGAL_TRANSITIONS = {
