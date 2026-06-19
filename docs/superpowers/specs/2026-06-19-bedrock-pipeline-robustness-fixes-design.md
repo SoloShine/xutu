@@ -29,15 +29,15 @@
 
 ### A0. 正文定界契约(主)
 
-**约定**:ChapterWriter / Polish / style-polish / Repair / Consistency 等所有产正文 agent,必须把正文包进**带标签围栏** ` ```prose `:
+**约定**:ChapterWriter / Polish / style-polish / Repair / Consistency 等所有产正文 agent,必须把正文包进**带标签围栏**——起标记为「三个反引号 + `prose`」,收尾为「三个反引号」。形如:
 
-```
+~~~markdown
 ```prose
 <本章正文,逐 beat 段落>
 ```
-```
+~~~
 
-- 只认 `prose` 标签围栏;普通 ``` 围栏**不算**(防 agent 把推理包进普通围栏)。
+- 只认 `prose` 标签围栏;普通三反引号围栏**不算**(防 agent 把推理包进普通围栏)。
 - `bedrock-chapter.js` 把 `stripFences` 升级为 `extractProse(raw)`,**只取 `prose` 标签区内容,区外一律丢弃**。
 
 **`extractProse(raw)` 降级链(保输出稳定性)**:
@@ -59,7 +59,7 @@
   - 草案/润色汇报:`草案.{0,6}符合|润色版本|符合.{0,4}要求|我(删除|修改|调整)|唯一的顾虑`
   - 文件路径:`[A-Za-z]:[\\/]|projects/[^ ]*\.db|\.db\b`
   - 纯分隔符:`^(-{3,}|\*{3,}|\* \* \*|—{2,})$`
-  - 代码块:`` `{3} ``
+  - 代码块:连续三个反引号开头
 - `classify_paragraphs(paras) -> list[(seq, is_meta, matched)]`:逐段判定。
 - `sanitize_prose(raw) -> (cleaned_text, removed_count, removed_preview)`:剥离所有 meta 段(leading/trailing/mid),返回清洗后正文 + 移除统计。
 
