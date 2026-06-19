@@ -518,6 +518,11 @@ def main():
     p_mark_pbb.add_argument("--project", type=Path, required=True)
     p_mark_pbb.add_argument("--chapter", type=int, required=True)
 
+    p_mc = sub.add_parser("mark-completed",
+                          help="人工/卷审后置章为 completed(导出门禁前置状态)")
+    p_mc.add_argument("--project", type=Path, required=True)
+    p_mc.add_argument("--chapter", type=int, required=True)
+
     p_mark_fpf = sub.add_parser("mark-forced-persist-failed")
     p_mark_fpf.add_argument("--project", type=Path, required=True)
     p_mark_fpf.add_argument("--chapter", type=int, required=True)
@@ -650,6 +655,9 @@ def main():
             # A3:无条件保证 flag 行存在(无论 pass/fail),治"过 L2 修复轮的章无 flag 行"漏判。
             from src.bedrock.orchestration.review_flag import ensure_flag
             ensure_flag(conn, cid)
+            # Unit B:verify 通过 → completed(可导出)。verify_chapter_persisted 返回 bool。
+            if ok:
+                set_chapter_status(conn, cid, "completed")
             print("True" if ok else "False")
         elif args.cmd == "commit-paragraphs":
             cid = _chapter_id(conn, args.chapter)
@@ -674,6 +682,10 @@ def main():
                 sys.exit(f"invalid ops JSON on stdin: {e}")
             payload = _apply_paragraph_ops(conn, cid, ops)
             print(json.dumps(payload, ensure_ascii=False))
+        elif args.cmd == "mark-completed":
+            cid = _chapter_id(conn, args.chapter)
+            set_chapter_status(conn, cid, "completed")
+            print(f"ch{args.chapter} → completed")
         elif args.cmd == "export-chapter-json":
             cid = _chapter_id(conn, args.chapter)
             out = _export_chapter_json(conn, args.project, cid, args.chapter, args.stage)

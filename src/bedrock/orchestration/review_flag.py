@@ -30,6 +30,10 @@ def _upsert(conn, chapter_id, fields):
     conn.execute(
         "INSERT INTO chapter_review_flag(chapter_id) VALUES(?) "
         "ON CONFLICT(chapter_id) DO NOTHING", (chapter_id,))
+    if not fields:
+        # 空 fields(ensure_flag)只需保证行存在,跳过 UPDATE(空 SET 子句是 SQL 语法错)。
+        conn.commit()
+        return
     set_clause = ", ".join(f"{k}=?" for k in fields)
     conn.execute(
         f"UPDATE chapter_review_flag SET {set_clause} WHERE chapter_id=?",
