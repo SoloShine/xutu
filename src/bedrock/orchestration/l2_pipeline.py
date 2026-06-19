@@ -14,11 +14,12 @@ from src.bedrock.repositories.plot_tree import (
     list_paragraphs_in_chapter, list_beats_in_chapter,
 )
 from src.bedrock.repositories.telemetry import get_chapter_metrics
-from src.bedrock.checks.beat_fulfillment import check_beat_fulfillment
+from src.bedrock.checks.beat_fulfillment import check_beat_fulfillment, BeatViolation
 from src.bedrock.checks.cross_volume import check_cross_volume_anchors
 from src.bedrock.checks.word_count import compute_word_count
 from src.bedrock.checks.grep_metrics import compute_grep_metrics
 from src.bedrock.checks.consumption import compute_consumption
+from src.bedrock.style.template_repo import get_style_config
 
 DRIFT_THRESHOLD = 0.10  # |Δ|/recomputed > 10% → drifted
 
@@ -100,6 +101,24 @@ def run_l2(conn, chapter_id):
     advisory = {"grep": grep, "consumption": {"consumed": consumed, "balance": balance}}
     if cross is not None:
         advisory["cross_volume"] = cross
+
+    # 字数下限硬门禁:实测汉字数 < word_count_target[0] → 违规(进 Repair 循环)。
+    # 空稿(wc==0)由 unwritten_beat 兜,不重复报。无 style config → 兜底 3000。
+    _DEFAULT_FLOOR = 3000
+    _floor = _DEFAULT_FLOOR
+    if volume_id is not None:
+        try:
+            _wct = get_style_config(conn, volume_id).get("word_count_target")
+            if _wct:
+                _floor = int(_wct[0])
+        except Exception:
+            pass
+    if 0 < wc < _floor:
+        beat_violations.append(BeatViolation(
+            beat_id=beat_violations[0].beat_id if beat_violations else 0,
+            kind="word_count_below_floor",
+            detail=f"实测 {wc} 汉字 < 下限 {_floor} 汉字",
+            fix_hint=f"扩写至 {_floor} 汉字以上:增场景细节/感官/心理/对白展开;禁灌水/重复/注水"))
 
     return L2Report(
         beat_violations=beat_violations,
