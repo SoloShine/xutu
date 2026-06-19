@@ -52,61 +52,26 @@ let report = await commitAndL2(project, chapter, prose, 'Write')
 _trackDrift(report)
 log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length} words=${report.metrics?.word_count}`)
 
-// 3. Revise：defect manifest 驱动的定向修订(beat/字数/文风统一收敛),复测重喂≤REVISE_MAX_ROUNDS 轮。
-// 收束原 L2+Repair/Polish/Style 三段为一个变异阶段:每轮 commit+L2+styleCheck 复测、重算 manifest 只喂剩余缺陷。
-// 破 L2 回退 preRevise(Write 后已过 L2 版,agent-free);commit 被拒 break 保 preRevise。正确性硬压文风。
+// 3. Revise：stateful 工具型 editor agent(内部循环自纠错,替代失忆轮)。
+// editor 自带 Bash 直调 CLI,相1保 L2 过、相2减文风漂移(advisory),硬上限 5 次 commit。
+// 收敛由 L2 客观判——JS 用独立 l2Report relay 复核(不信 editor 自报 converged),Finalize verify-persisted 终审。双 gate。
 phase('Revise')
-let drift = (report.passed_hard_gate && ctx.fingerprint)
-  ? await styleCheck(project, chapter, volume) : null
-_trackDrift(drift)
-let manifest = buildManifest(report, drift, ctx)
-let round = 0
-while (!manifest.empty && round < REVISE_MAX_ROUNDS) {
-  const wasCorrectness = manifest.priority === 'correctness'   // 本轮意图:修正确性 还是 对准文风
-  const anchorProse = prose, anchorReport = report             // 本轮前状态(仅 style 回退用)
-  const revised = extractProse(await agent(revisePrompt(ctx, manifest, prose),
-    { label: `Edit-revise-r${round + 1}`, phase: 'Revise' }))
-  let after
-  try {
-    after = await commitAndL2(project, chapter, revised, `revise-r${round + 1}`)
-  } catch (e) {
-    log(`revise r${round + 1} 提交被拒(返回非正文?),保 anchor: ${String(e.message || e).slice(0, 80)}`)
-    break
-  }
-  round++
-  if (after.passed_hard_gate) {
-    // 干净:接受,复测下轮剩余文风漂移(无指纹则跳过 styleCheck,与 pre-loop/correctness 分支一致)
-    prose = revised; report = after
-    drift = (ctx.fingerprint) ? await styleCheck(project, chapter, volume) : null; _trackDrift(drift)
-    manifest = buildManifest(report, drift, ctx)
-    log(`revise r${round} 复测: must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0} align=${manifest.align.length}`)
-  } else if (wasCorrectness) {
-    // correctness 修复仍未全过(扩写未达 floor / 仍有 beat):累进接受为新基(复刻旧 repair 渐进语义),下轮继续修剩余项。
-    // 不回退——回退会丢部分进展(如 r1 把 2341 扩到 2800 仍未过,回退到 2341 等于白扩)。
-    prose = revised; report = after
-    drift = (ctx.fingerprint) ? await styleCheck(project, chapter, volume) : null; _trackDrift(drift)
-    manifest = buildManifest(report, drift, ctx)
-    log(`revise r${round} 仍不洁(correctness),累进为下轮基,剩余 must_fix=${manifest.must_fix.length} expand=${manifest.expand ? 1 : 0}`)
-  } else {
-    // style 对准破坏了已 L2-clean 的章 → 回退 clean anchor,停(不为文风冒正确性风险)。章保 clean+advisory 漂移。
-    // anchorReport.passed_hard_gate===true 在此恒成立:进 style 分支要求 manifest.priority==='style',
-    // 而 priority==='style' ⟺ must_fix 空 && !expand ⟺ loop 入口 report 已过 L2(无任何硬违规)。
-    await commitAndL2(project, chapter, anchorProse, 'revise-revert')
-    prose = anchorProse; report = anchorReport
-    await pythonCli(`mark-polish-broke-beat --project ${project} --chapter ${chapter}`, { phase: 'Revise' })
-    log('revise style 破坏 L2 → 回退 last-good,停(正确性优先)')
-    break
-  }
-}
+const editorRaw = extractProse(await agent(editorPrompt(ctx, project, chapter, volume),
+  { label: 'Editor', phase: 'Revise' }))
+let editor
+try { editor = JSON.parse(editorRaw) } catch { editor = { converged: false, final_passed: false, iterations: 0, style_drift_remaining: 0 } }
+const round = editor.iterations || 0   // finalize 遥测 --editing-rounds 用(原 Revise round 的替代)
+report = await l2Report(project, chapter, 'Revise')   // 独立 relay 复核 L2(信任锚,不信 editor 自报)
+prose = await readCurrentProse(project, chapter)      // editor 改了 DB,刷新 JS 侧 prose(供下游 Consistency 回退快照,防丢 editor 成果)
+if (editor.style_drift_remaining > 0)
+  _trackDrift({ drifted: new Array(editor.style_drift_remaining), target_source: ctx.fingerprint ? 'editor' : null })
 if (!report.passed_hard_gate) {
   await pythonCli(
     `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
     { phase: 'Revise', stdin: JSON.stringify(report.beat_violations || []) })
-  log(`revise 未过 L2(${round} 轮耗尽)→ mark-unresolved`)
-} else if (manifest.align && manifest.align.length) {
-  log(`revise 收敛: L2-clean, 文风仍 ${manifest.align.length} 项漂移(advisory,经 worstDrift 记录)`)
+  log(`editor 未收敛(L2 仍不过,${editor.iterations || '?'} 轮)→ mark-unresolved`)
 } else {
-  log(`revise 收敛完成 [${manifest.target_source || '无目标'}]`)
+  log(`editor 收敛: L2-clean${editor.style_drift_remaining ? `, 文风仍 ${editor.style_drift_remaining} 项漂移(advisory)` : ''}`)
 }
 
 // 4b. Consistency：角色正典一致性编辑（复刻 V1 EditAgent，每章跑）。
