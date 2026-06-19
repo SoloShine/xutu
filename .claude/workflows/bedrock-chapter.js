@@ -372,6 +372,60 @@ function chapterWriterPrompt(ctx) {
     '把整章正文（纯文本，段间空行分隔）作为最终返回值。',
   ].join('\n')
 }
+// defect manifest 装配(纯 JS,零 LLM):合并 L2 违规 + 字数扩写 + 实测文风漂移 + 目标分布。
+// 优先级:must_fix(beat 结构/pov)非空或需 expand → correctness 主;否则 style 主。empty=true → Revise 跳过。
+function buildManifest(report, drift, ctx) {
+  const violations = (report && report.beat_violations) || []
+  const mustFix = violations.filter(v => v.kind !== 'word_count_below_floor')
+  const expand = violations.some(v => v.kind === 'word_count_below_floor')
+  const align = (drift && Array.isArray(drift.drifted)) ? drift.drifted : []
+  return {
+    empty: mustFix.length === 0 && !expand && align.length === 0,
+    must_fix: mustFix,
+    expand,
+    align,
+    targets: (ctx && ctx.fingerprint) || null,
+    target_source: (drift && drift.target_source) || null,
+    priority: (mustFix.length || expand) ? 'correctness' : 'style',
+  }
+}
+
+// 定向修订 prompt(合并原 editRepair/editPolish/stylePolish)。manifest 驱动,正确性硬压文风。
+// correctness 优先级:先列 L2 硬违规(必改)+ 字数扩写指令,文风降为"不冲突时顺手"。
+// style 优先级:只对准实测漂移。manifest.empty 时不调用(由调用方判)。
+function revisePrompt(ctx, manifest, prevProse) {
+  const lines = [
+    '# Edit 子代理 — 定向修订(beat/字数/文风统一收敛)',
+    HYGIENE_RULES,
+  ]
+  if (ctx.style_directive) lines.push('', `【文风指令·定性】${ctx.style_directive}`)
+  const ex = ctx.style_examples || {}
+  if ((ex.good && ex.good.length) || (ex.bad && ex.bad.length)) {
+    lines.push('', '【风格示范】(对照节奏/密度/句式,严禁复述范例原文)')
+    ;(ex.good || []).forEach(s => lines.push(`  ✓ ${s}`))
+    ;(ex.bad || []).forEach(s => lines.push(`  ✗ ${s}(避免)`))
+  }
+  if (manifest.priority === 'correctness') {
+    lines.push('', '【必须先修·不得破坏结构】下面是 L2 硬违规(beat_id / kind / detail / fix_hint):')
+    manifest.must_fix.forEach(v => lines.push(`  - beat${v.beat_id} [${v.kind}]: ${v.detail} → ${v.fix_hint}`))
+    if (manifest.expand) {
+      lines.push('', '【字数不足·须扩写至下限以上】在现有剧情骨架上增场景细节/感官/心理/对白展开,丰富而非重复。不引入新违规,不压缩剧情。')
+      lines.push('【禁灌水】不得无信息扩写、不得重复同一意思、不得堆砌形容词、不得注水对话。扩写须服务于人物/氛围/情节推进;扩写后仍须过文风门禁(修辞密度/对白比/破折号)。')
+    }
+    if (manifest.align.length) {
+      lines.push('', '【次要·文风对准】结构修复后,在不冲突前提下顺手对准(不为此冒险):')
+      manifest.align.forEach(d => lines.push(`  - ${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`))
+    }
+  } else {
+    lines.push('', `【对准目标分布·文风定向收敛】实测漂移(目标分布: ${JSON.stringify(manifest.targets || {})})`)
+    manifest.align.forEach(d => lines.push(`  - ${d.hint}(实测${pct(d.actual)}/目标${pct(d.target)})`))
+    lines.push('做最小改动收敛(如删非必要破折号→换句号断句、改"不是A是B"句式、减过密比喻)。')
+  }
+  lines.push('', '保持剧情/字数下限/beat 结构/pov 不变,不引入新问题。返回修订后的【整章正文】纯文本(段间空行),不裹围栏,不写标题行。')
+  lines.push('', '---上一版---', prevProse)
+  return lines.join('\n')
+}
+
 function editRepairPrompt(report, prevProse) {
   const lines = ['# Edit 子代理 — 定向修复', '违规清单（beat_id / kind / detail / fix_hint）：']
   for (const v of (report.beat_violations || [])) {
