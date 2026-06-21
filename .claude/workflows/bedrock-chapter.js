@@ -1,6 +1,6 @@
 export const meta = {
   name: 'bedrock-chapter',
-  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Revise(stateful editor agent 内部循环自纠错)→Consistency(角色正典 ops)→专名(ops)→Finalize',
+  description: '磐石 V3 单章管线：Boot→Write(stateful writer agent 自纠结构)→Revise(stateful editor agent 内部循环自纠错)→Consistency(角色正典 ops)→专名(ops)→Finalize',
   phases: [
     { title: 'Boot' },
     { title: 'Write' },
