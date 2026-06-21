@@ -1,6 +1,6 @@
 export const meta = {
   name: 'bedrock-chapter',
-  description: '磐石 V3 单章管线：Boot→Write→commit+L2→Revise(stateful editor agent 内部循环自纠错)→Consistency(角色正典 ops)→专名(ops)→Finalize',
+  description: '磐石 V3 单章管线：Boot→Write(stateful writer agent 自纠结构)→Revise(stateful editor agent 内部循环自纠错)→Consistency(角色正典 ops)→专名(ops)→Finalize',
   phases: [
     { title: 'Boot' },
     { title: 'Write' },
@@ -42,12 +42,25 @@ phase('Boot')
 const ctx = await bootContext(project, chapter, volume)
 log(`boot: ${ctx.beat_contracts?.length || 0} beats, fingerprint=${ctx.fingerprint ? 'yes' : 'no'}`)
 
-// 2. Write：ChapterWriter 产正文 → commit+L2 relay（verdict 由 relay 跑，JS 解析）
+// 2. Write：stateful 工具型 writer agent(内部循环自纠结构:字数+beat,与 editor 同构)。
+// writer 自带 Bash 直调 CLI,写→commit→run-l2 自检→扩/修→复测→收敛。结构 clean 后交 editor(做 style)。
+// 收敛由 L2 客观判——JS 用独立 l2Report relay 复核(不信 writer 自报),editor+finalize 再独立验。多 gate。
 phase('Write')
-let prose = extractProse(await agent(chapterWriterPrompt(ctx), { label: 'ChapterWriter', phase: 'Write' }))
-let report = await commitAndL2(project, chapter, prose, 'Write')
-_trackDrift(report)
-log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length} words=${report.metrics?.word_count}`)
+const writerRaw = extractProse(await agent(writerPrompt(ctx, project, chapter, volume),
+  { label: 'Writer', phase: 'Write' }))
+// writer 常在 JSON 行前后带叙述,逐行找最后一个可解析 {...}(复用 extractEditorJson);仅遥测,收敛判定走下面独立 l2Report。
+let writer = extractEditorJson(writerRaw) || { converged: false, final_passed: false, iterations: 0 }
+let report = await l2Report(project, chapter, 'Write')   // 独立 relay 复核 L2(信任锚,不信 writer 自报)
+let prose = await readCurrentProse(project, chapter)     // writer 改了 DB,刷新 JS 侧 prose(注:Revise 段会再覆盖,下游用 Revise 后值)
+if (!report.passed_hard_gate) {
+  // mark-unresolved 仅设 review 旗,不阻流;终审 verify-persisted 独立再跑 L2 兜底,破损章不会 completed。
+  await pythonCli(
+    `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
+    { phase: 'Write', stdin: JSON.stringify(report.beat_violations || []) })
+  log(`writer 未收敛(L2 仍不过,${writer.iterations || '?'} 轮)→ mark-unresolved`)
+} else {
+  log(`writer 收敛: 结构 clean, ${writer.word_count || '?'} 字 → 进 editor`)
+}
 
 // 3. Revise：stateful 工具型 editor agent(内部循环自纠错,替代失忆轮)。
 // editor 自带 Bash 直调 CLI,相1保 L2 过、相2减文风漂移(advisory),硬上限 5 次 commit。
@@ -248,7 +261,10 @@ async function pythonCli(cmdStr, opts = {}) {
   return s
 }
 
-function chapterWriterPrompt(ctx) {
+// stateful 工具型 writer agent 的 prompt(写整章正文 + 工具面/迭代协议/返回契约)。
+// writer 自带 Bash 直调 CLI,内部 写→commit→run-l2 自检→扩/修→复测→收敛(结构:字数+beat)。
+// 收敛由 run-l2 客观判,不自判;返回 JSON 供 JS 复核(JS 不信自报,独立 relay 再验 L2)。镜像 editorPrompt。
+function writerPrompt(ctx, project, chapter, volume) {
   const prev = ctx.prev_chapter_tail
     ? ['【上一章收尾】（本章开篇须自然承接其画面/语气/悬念，禁止复述原文）：',
        ctx.prev_chapter_tail, '']
@@ -258,7 +274,7 @@ function chapterWriterPrompt(ctx) {
        JSON.stringify(ctx.characters.map(c => ({ name: c.name, pronoun: c.pronoun, gender: c.gender, role: c.role, personality: c.personality })), null, 2), '']
     : []
   const multi = (ctx.beat_contracts && ctx.beat_contracts.length > 1)
-    ? [`【多 beat 章，共 ${ctx.beat_contracts.length} 个 beat】每个 beat 的内容块**前面**单独起一行写标记 @@beat:<beat_id>@@（beat_id 见各 beat 契约），按契约顺序。这样系统才能把段落正确归属到对应 beat。标记行单独成段（前后空行），不要混入正文。`,
+    ? [`【多 beat 章，共 ${ctx.beat_contracts.length} 个 beat】每个 beat 的内容块**前面**单独起一行写标记 @@beat:<beat_id>@@（beat_id 见各 beat 契约），按契约顺序。这样系统才能把段落正确归属到对应 beat。`,
        'beat 契约(注意每个的 beat_id)：' + JSON.stringify(ctx.beat_contracts, null, 2), '']
     : []
   const secrets = (ctx.reader_disclosed_secrets && ctx.reader_disclosed_secrets.length)
@@ -268,7 +284,6 @@ function chapterWriterPrompt(ctx) {
   const directive = ctx.style_directive
     ? [`【文风指令·定性要求(高于统计指纹,必须贯彻)】`, ctx.style_directive, '']
     : []
-  // 风格范例(正反例):具体段落,show don't tell。硬约束"对照节奏/密度/句式,禁止复述范例原文"。
   const ex = ctx.style_examples || {}
   const demo = (ex.good && ex.good.length) || (ex.bad && ex.bad.length)
     ? [`【风格示范】(对照以下范例的节奏/密度/句式/语气写作。**严禁复述范例原文**,只学其风格)`,
@@ -277,7 +292,8 @@ function chapterWriterPrompt(ctx) {
        '']
     : []
   return [
-    '# ChapterWriter 子代理（磐石 V3）',
+    '# 章节写作员(stateful,自带工具循环)',
+    `你在项目根 D:/novel_test。本章=${chapter} 卷=${volume} 已在 bedrock.db(${project})。`,
     'boot context:', JSON.stringify(ctx, null, 2),
     '',
     ...prev,
@@ -287,12 +303,29 @@ function chapterWriterPrompt(ctx) {
     ...secrets,
     HYGIENE_RULES,
     ...multi,
-    '按 beat_contracts 写整章正文：视角符合 pov，推进本章 beat 的叙事目的，3000–5000 字。',
-    '不自报字数（系统重查）。不写标题行。不包裹 markdown 围栏。',
-    '**第一段就必须是小说正文（人物/场景/动作）。严禁任何作者旁白/开场白**——不得出现"我将/我会/下面/本章将撰写/遵循beat契约/按照要求"等自述语，这类内容会被系统剥除。',
-    '把整章正文（纯文本，段间空行分隔）作为最终返回值。',
+    '',
+    '【工具·只准用这些 bedrock CLI】(在 D:/novel_test,命令前缀 python -m src.bedrock)',
+    `- 读现状:show-paragraphs --project ${project} --chapter ${chapter}`,
+    `- 结构自检(确定性,判字数+beat):run-l2 --project ${project} --chapter ${chapter}`,
+    `- 整章落盘:commit-paragraphs --project ${project} --chapter ${chapter}  (stdin=整章正文,段间空行,不裹围栏)`,
+    'commit-paragraphs 的 stdin 用管道传入(先写临时文件再 cat,或 printf 管道)。**不要用 heredoc**(本环境易失败)。',
+    '',
+    '【迭代协议·必须遵守】',
+    '1. 按 beat_contracts 写整章正文首版(视角符合 pov,推进 beat 叙事目的,3000–5000 字;多 beat 章按上面 multi 指令标 @@beat)。第一段必须是小说正文(人物/场景/动作),严禁作者旁白/开场白("我将/我会/下面/本章将撰写/遵循beat契约"等自述语会被系统剥除)。不写标题行,不裹 markdown 围栏。',
+    '2. 把整章正文写入临时文件,cat 临时文件 | python -m src.bedrock commit-paragraphs --project ' + project + ' --chapter ' + chapter + ' 落盘。',
+    '3. python -m src.bedrock run-l2 --project ' + project + ' --chapter ' + chapter + ' 自检。',
+    '4. 若 run-l2.passed_hard_gate=false:',
+    '   - word_count_below_floor(字数不足)→ 在剧情骨架上整章扩写(增场景细节/感官/心理/对白;禁灌水、禁重复同一意思、禁堆砌形容词)→ 重新 commit → 重 run-l2 复测。',
+    '   - beat 违规 → 修(必要时 show-paragraphs 重读确认 @@beat 归属)→ 重新 commit → 复测。',
+    '   累进接受:基于上一轮自己写过的版本继续(stateful 上下文记忆),不回退丢进展。',
+    '5. 反复直到 run-l2.passed_hard_gate=true,或达 3 次 commit 上限。',
+    '收敛由 run-l2 客观输出判定,不得自判"我觉得够了"。文风(style)不在你职责内——交后续 editor,你只保结构(字数+beat)过。',
+    '',
+    '【返回】收敛或到限后,最后输出一行 JSON(无围栏、无解释,仅该行):',
+    '{"converged":true|false,"iterations":<commit次数>,"final_passed":<run-l2终态>,"word_count":<int>,"final_l2_violations":[..]}',
   ].join('\n')
 }
+
 
 // stateful 工具型 editor agent 的 prompt(替代失梦的定向修订轮)。editor 自带 Bash 直调 bedrock CLI,
 // 内部循环自纠错:相1保 L2 过(修 beat/扩字数,累进接受)、相2减文风漂移(advisory),硬上限 5 次 commit。
