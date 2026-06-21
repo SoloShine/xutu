@@ -42,12 +42,25 @@ phase('Boot')
 const ctx = await bootContext(project, chapter, volume)
 log(`boot: ${ctx.beat_contracts?.length || 0} beats, fingerprint=${ctx.fingerprint ? 'yes' : 'no'}`)
 
-// 2. Write：ChapterWriter 产正文 → commit+L2 relay（verdict 由 relay 跑，JS 解析）
+// 2. Write：stateful 工具型 writer agent(内部循环自纠结构:字数+beat,与 editor 同构)。
+// writer 自带 Bash 直调 CLI,写→commit→run-l2 自检→扩/修→复测→收敛。结构 clean 后交 editor(做 style)。
+// 收敛由 L2 客观判——JS 用独立 l2Report relay 复核(不信 writer 自报),editor+finalize 再独立验。多 gate。
 phase('Write')
-let prose = extractProse(await agent(chapterWriterPrompt(ctx), { label: 'ChapterWriter', phase: 'Write' }))
-let report = await commitAndL2(project, chapter, prose, 'Write')
-_trackDrift(report)
-log(`L2 r0 passed=${report.passed_hard_gate} violations=${(report.beat_violations || []).length} words=${report.metrics?.word_count}`)
+const writerRaw = extractProse(await agent(writerPrompt(ctx, project, chapter, volume),
+  { label: 'Writer', phase: 'Write' }))
+// writer 常在 JSON 行前后带叙述,逐行找最后一个可解析 {...}(复用 extractEditorJson);仅遥测,收敛判定走下面独立 l2Report。
+let writer = extractEditorJson(writerRaw) || { converged: false, final_passed: false, iterations: 0 }
+let report = await l2Report(project, chapter, 'Write')   // 独立 relay 复核 L2(信任锚,不信 writer 自报)
+let prose = await readCurrentProse(project, chapter)     // writer 改了 DB,刷新 JS 侧 prose(注:Revise 段会再覆盖,下游用 Revise 后值)
+if (!report.passed_hard_gate) {
+  // mark-unresolved 仅设 review 旗,不阻流;终审 verify-persisted 独立再跑 L2 兜底,破损章不会 completed。
+  await pythonCli(
+    `mark-unresolved --project ${project} --chapter ${chapter} --rule-or-model 0`,
+    { phase: 'Write', stdin: JSON.stringify(report.beat_violations || []) })
+  log(`writer 未收敛(L2 仍不过,${writer.iterations || '?'} 轮)→ mark-unresolved`)
+} else {
+  log(`writer 收敛: 结构 clean, ${writer.word_count || '?'} 字 → 进 editor`)
+}
 
 // 3. Revise：stateful 工具型 editor agent(内部循环自纠错,替代失忆轮)。
 // editor 自带 Bash 直调 CLI,相1保 L2 过、相2减文风漂移(advisory),硬上限 5 次 commit。
