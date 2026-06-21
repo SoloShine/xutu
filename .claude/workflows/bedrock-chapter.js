@@ -248,6 +248,71 @@ async function pythonCli(cmdStr, opts = {}) {
   return s
 }
 
+// stateful 工具型 writer agent 的 prompt(= chapterWriterPrompt 全部内容 + 工具面/迭代协议/返回契约)。
+// writer 自带 Bash 直调 CLI,内部 写→commit→run-l2 自检→扩/修→复测→收敛(结构:字数+beat)。
+// 收敛由 run-l2 客观判,不自判;返回 JSON 供 JS 复核(JS 不信自报,独立 relay 再验 L2)。镜像 editorPrompt。
+function writerPrompt(ctx, project, chapter, volume) {
+  const prev = ctx.prev_chapter_tail
+    ? ['【上一章收尾】（本章开篇须自然承接其画面/语气/悬念，禁止复述原文）：',
+       ctx.prev_chapter_tail, '']
+    : ['（本章为开篇，无前章。）', '']
+  const canon = (ctx.characters && ctx.characters.length)
+    ? [`【角色正典·必须严格遵守】代词/性别/称呼/性格按下表，不得擅改（如 ${ctx.characters[0].name}=${ctx.characters[0].pronoun}）：`,
+       JSON.stringify(ctx.characters.map(c => ({ name: c.name, pronoun: c.pronoun, gender: c.gender, role: c.role, personality: c.personality })), null, 2), '']
+    : []
+  const multi = (ctx.beat_contracts && ctx.beat_contracts.length > 1)
+    ? [`【多 beat 章，共 ${ctx.beat_contracts.length} 个 beat】每个 beat 的内容块**前面**单独起一行写标记 @@beat:<beat_id>@@（beat_id 见各 beat 契约），按契约顺序。这样系统才能把段落正确归属到对应 beat。`,
+       'beat 契约(注意每个的 beat_id)：' + JSON.stringify(ctx.beat_contracts, null, 2), '']
+    : []
+  const secrets = (ctx.reader_disclosed_secrets && ctx.reader_disclosed_secrets.length)
+    ? [`【读者此刻(本章时点)已知的信息——只能用这些，不得越界】` + JSON.stringify(ctx.reader_disclosed_secrets, null, 2),
+       '上面含到本章才解封的揭示(若有)。揭示章可写明已解封的真相；但**未在列表里的角色隐藏身世/动机/来历——一律不得临场编造**(这是结构性防跨章矛盾的硬约束：种子没编码的揭示，writer 凭空编了必和他章冲突)。', '']
+    : []
+  const directive = ctx.style_directive
+    ? [`【文风指令·定性要求(高于统计指纹,必须贯彻)】`, ctx.style_directive, '']
+    : []
+  const ex = ctx.style_examples || {}
+  const demo = (ex.good && ex.good.length) || (ex.bad && ex.bad.length)
+    ? [`【风格示范】(对照以下范例的节奏/密度/句式/语气写作。**严禁复述范例原文**,只学其风格)`,
+       ...(ex.good || []).map(s => `  ✓ ${s}`),
+       ...(ex.bad || []).map(s => `  ✗ ${s}（避免）`),
+       '']
+    : []
+  return [
+    '# 章节写作员(stateful,自带工具循环)',
+    `你在项目根 D:/novel_test。本章=${chapter} 卷=${volume} 已在 bedrock.db(${project})。`,
+    'boot context:', JSON.stringify(ctx, null, 2),
+    '',
+    ...prev,
+    ...canon,
+    ...directive,
+    ...demo,
+    ...secrets,
+    HYGIENE_RULES,
+    ...multi,
+    '',
+    '【工具·只准用这些 bedrock CLI】(在 D:/novel_test,命令前缀 python -m src.bedrock)',
+    `- 读现状:show-paragraphs --project ${project} --chapter ${chapter}`,
+    `- 结构自检(确定性,判字数+beat):run-l2 --project ${project} --chapter ${chapter}`,
+    `- 整章落盘:commit-paragraphs --project ${project} --chapter ${chapter}  (stdin=整章正文,段间空行,不裹围栏)`,
+    'commit-paragraphs 的 stdin 用管道传入(先写临时文件再 cat,或 printf 管道)。**不要用 heredoc**(本环境易失败)。',
+    '',
+    '【迭代协议·必须遵守】',
+    '1. 按 beat_contracts 写整章正文首版(视角符合 pov,推进 beat 叙事目的,3000–5000 字;多 beat 章按上面 multi 指令标 @@beat)。第一段必须是小说正文(人物/场景/动作),严禁作者旁白/开场白("我将/我会/下面/本章将撰写/遵循beat契约"等自述语会被系统剥除)。不写标题行,不裹 markdown 围栏。',
+    '2. 把整章正文写入临时文件,cat 临时文件 | python -m src.bedrock commit-paragraphs --project ' + project + ' --chapter ' + chapter + ' 落盘。',
+    '3. python -m src.bedrock run-l2 --project ' + project + ' --chapter ' + chapter + ' 自检。',
+    '4. 若 run-l2.passed_hard_gate=false:',
+    '   - word_count_below_floor(字数不足)→ 在剧情骨架上整章扩写(增场景细节/感官/心理/对白;禁灌水、禁重复同一意思、禁堆砌形容词)→ 重新 commit → 重 run-l2 复测。',
+    '   - beat 违规 → 修(必要时 show-paragraphs 重读确认 @@beat 归属)→ 重新 commit → 复测。',
+    '   累进接受:基于上一轮自己写过的版本继续(stateful 上下文记忆),不回退丢进展。',
+    '5. 反复直到 run-l2.passed_hard_gate=true,或达 3 次 commit 上限。',
+    '收敛由 run-l2 客观输出判定,不得自判"我觉得够了"。文风(style)不在你职责内——交后续 editor,你只保结构(字数+beat)过。',
+    '',
+    '【返回】收敛或到限后,最后输出一行 JSON(无围栏、无解释,仅该行):',
+    '{"converged":true|false,"iterations":<commit次数>,"final_passed":<run-l2终态>,"word_count":<int>,"final_l2_violations":[..]}',
+  ].join('\n')
+}
+
 function chapterWriterPrompt(ctx) {
   const prev = ctx.prev_chapter_tail
     ? ['【上一章收尾】（本章开篇须自然承接其画面/语气/悬念，禁止复述原文）：',
