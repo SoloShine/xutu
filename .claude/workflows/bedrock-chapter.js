@@ -261,7 +261,7 @@ async function pythonCli(cmdStr, opts = {}) {
   return s
 }
 
-// stateful 工具型 writer agent 的 prompt(= chapterWriterPrompt 全部内容 + 工具面/迭代协议/返回契约)。
+// stateful 工具型 writer agent 的 prompt(写整章正文 + 工具面/迭代协议/返回契约)。
 // writer 自带 Bash 直调 CLI,内部 写→commit→run-l2 自检→扩/修→复测→收敛(结构:字数+beat)。
 // 收敛由 run-l2 客观判,不自判;返回 JSON 供 JS 复核(JS 不信自报,独立 relay 再验 L2)。镜像 editorPrompt。
 function writerPrompt(ctx, project, chapter, volume) {
@@ -326,51 +326,6 @@ function writerPrompt(ctx, project, chapter, volume) {
   ].join('\n')
 }
 
-function chapterWriterPrompt(ctx) {
-  const prev = ctx.prev_chapter_tail
-    ? ['【上一章收尾】（本章开篇须自然承接其画面/语气/悬念，禁止复述原文）：',
-       ctx.prev_chapter_tail, '']
-    : ['（本章为开篇，无前章。）', '']
-  const canon = (ctx.characters && ctx.characters.length)
-    ? [`【角色正典·必须严格遵守】代词/性别/称呼/性格按下表，不得擅改（如 ${ctx.characters[0].name}=${ctx.characters[0].pronoun}）：`,
-       JSON.stringify(ctx.characters.map(c => ({ name: c.name, pronoun: c.pronoun, gender: c.gender, role: c.role, personality: c.personality })), null, 2), '']
-    : []
-  const multi = (ctx.beat_contracts && ctx.beat_contracts.length > 1)
-    ? [`【多 beat 章，共 ${ctx.beat_contracts.length} 个 beat】每个 beat 的内容块**前面**单独起一行写标记 @@beat:<beat_id>@@（beat_id 见各 beat 契约），按契约顺序。这样系统才能把段落正确归属到对应 beat。标记行单独成段（前后空行），不要混入正文。`,
-       'beat 契约(注意每个的 beat_id)：' + JSON.stringify(ctx.beat_contracts, null, 2), '']
-    : []
-  const secrets = (ctx.reader_disclosed_secrets && ctx.reader_disclosed_secrets.length)
-    ? [`【读者此刻(本章时点)已知的信息——只能用这些，不得越界】` + JSON.stringify(ctx.reader_disclosed_secrets, null, 2),
-       '上面含到本章才解封的揭示(若有)。揭示章可写明已解封的真相；但**未在列表里的角色隐藏身世/动机/来历——一律不得临场编造**(这是结构性防跨章矛盾的硬约束：种子没编码的揭示，writer 凭空编了必和他章冲突)。', '']
-    : []
-  const directive = ctx.style_directive
-    ? [`【文风指令·定性要求(高于统计指纹,必须贯彻)】`, ctx.style_directive, '']
-    : []
-  // 风格范例(正反例):具体段落,show don't tell。硬约束"对照节奏/密度/句式,禁止复述范例原文"。
-  const ex = ctx.style_examples || {}
-  const demo = (ex.good && ex.good.length) || (ex.bad && ex.bad.length)
-    ? [`【风格示范】(对照以下范例的节奏/密度/句式/语气写作。**严禁复述范例原文**,只学其风格)`,
-       ...(ex.good || []).map(s => `  ✓ ${s}`),
-       ...(ex.bad || []).map(s => `  ✗ ${s}（避免）`),
-       '']
-    : []
-  return [
-    '# ChapterWriter 子代理（磐石 V3）',
-    'boot context:', JSON.stringify(ctx, null, 2),
-    '',
-    ...prev,
-    ...canon,
-    ...directive,
-    ...demo,
-    ...secrets,
-    HYGIENE_RULES,
-    ...multi,
-    '按 beat_contracts 写整章正文：视角符合 pov，推进本章 beat 的叙事目的，3000–5000 字。',
-    '不自报字数（系统重查）。不写标题行。不包裹 markdown 围栏。',
-    '**第一段就必须是小说正文（人物/场景/动作）。严禁任何作者旁白/开场白**——不得出现"我将/我会/下面/本章将撰写/遵循beat契约/按照要求"等自述语，这类内容会被系统剥除。',
-    '把整章正文（纯文本，段间空行分隔）作为最终返回值。',
-  ].join('\n')
-}
 
 // stateful 工具型 editor agent 的 prompt(替代失梦的定向修订轮)。editor 自带 Bash 直调 bedrock CLI,
 // 内部循环自纠错:相1保 L2 过(修 beat/扩字数,累进接受)、相2减文风漂移(advisory),硬上限 5 次 commit。
