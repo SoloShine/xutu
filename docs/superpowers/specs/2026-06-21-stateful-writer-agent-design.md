@@ -17,7 +17,7 @@
 
 - **scope = writer 仅自纠结构**(字数 + L2 beat);style/专名不动,editor 角色不变。
 - **硬上限 = 3 次 commit**(writer 源头 + editor 兜底,取紧;editor 保持 5)。
-- **工具面 = `commit-paragraphs` + `run-l2` 两样**(writer 从自己上下文重写,不需 show-paragraphs)。
+- **工具面 = `commit-paragraphs` + `run-l2` + `show-paragraphs` 三样**(与 editor 同构;show-paragraphs 用于多 beat 章保归属 + commit 被拒时确认 DB 实况,见独立审查)。
 - **无需 spike**——stateful 工具循环模式已由 editor 验证可行,writer 同款。
 - **不碰工作台**——字数目标走既有 style_template,cap 硬编码 prompt。
 
@@ -40,15 +40,16 @@
 **工具面**(自带 Bash,prompt 限定;**pipe 传 stdin**——editor spike 教训,heredoc 在本环境失败):
 - `commit-paragraphs --project <p> --chapter N`(stdin=整章正文,段间空行,不裹围栏)——落盘
 - `run-l2 --project <p> --chapter N`——结构自检(确定性,返 word_count + word_count_below_floor + beat 违规)
+- `show-paragraphs --project <p> --chapter N`——读 DB 当前段落(重写时保 beat 归属 / commit 被 sanitize 拒时确认 DB 实况)
 
-> writer 从自己上下文重写草稿,**不重读 DB**(无 show-paragraphs)。run-l2 是唯一尺子。写面经 commit-paragraphs(repo + amendment),无绕过。
+> writer 多从自己上下文重写草稿,但**保留 show-paragraphs**(与 editor 同构):多 beat 章重写时需保 `@@beat:N@@` 归属;若某轮 commit 被 sanitize 拒(writer 自以为 ok 但 DB 没变),不读 DB 无法发现"没更新"(run-l2 不返回正文)。run-l2 是收敛尺子。写面经 commit-paragraphs(repo + amendment),无绕过。
 
 **收敛契约(客观,非自判)**:`run-l2.passed_hard_gate === true`(字数 ≥ floor + 无 beat 违规)。**style 不在 writer 范围**(交 editor)。硬上限 **3 次 commit**。
 
 **循环**:写草稿 → commit-paragraphs → run-l2 →
 - `word_count_below_floor` → 整章扩写(剧情骨架增细节/感官/心理/对白;**禁灌水**)
 - beat 违规 → 修(edit-paragraphs 或整章重写)→ 重 run-l2 复测
-- 累进接受(每次基于 DB 最新版继续,不回退丢进展)
+- 累进接受(凭 stateful 上下文记忆上一轮 + 需要时 show-paragraphs 重读 DB 真相,不回退丢进展)
 - 反复直到 passed_hard_gate=true 或到 3 次上限。
 
 **返回(镜像 editor)**:`{converged, iterations, final_passed, word_count, final_l2_violations}`。
@@ -85,7 +86,8 @@ if (!report.passed_hard_gate) {
   log(`writer 收敛: 结构 clean, ${writer.word_count || '?'} 字 → 进 editor`)
 }
 ```
-> 与 editor 接线完全对称。`report`/`prose` 是模块作用域 `let`(原 Write 段声明),此处重赋值;`round` 新 `const`。`l2Report`/`readCurrentProse`/`extractEditorJson`/`extractProse`/`pythonCli` 均既有。
+> 与 editor 接线完全对称。`report`/`prose` 是模块作用域 `let`(原 Write 段声明),此处重赋值;`round` 仍在 Revise 段 const 声明(Write 段不重复声明,避 `const` 冲突)。`l2Report`/`readCurrentProse`/`extractEditorJson`/`extractProse`/`pythonCli` 均既有。
+> **注**:Write 段此处刷新的 `prose` 之后**必被 Revise 段的 `readCurrentProse` 再覆盖**——属预期(editor 一定在 writer 之后跑,editor 版才是最新)。Write 段这行只在"editor 不改 DB"的退化情形下有独立效果,但保留它使两段对称、且 writer 未收敛走 mark-unresolved 时 Consistency 仍读到正确 prose。
 
 ### 5. 红线 + defense-in-depth
 
