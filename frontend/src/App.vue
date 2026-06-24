@@ -42,6 +42,7 @@ const menuOptions = computed(() => {
     { label: '工作流配置', key: 'workflow_config' },
     { label: 'LLM 端点', key: 'endpoints' },
     { label: '运行监控', key: 'runs' },
+    { label: 'AI 工作台', key: 'chat' },
     { label: '灵感池', key: 'inspirations' },
     { label: 'Review 报告', key: 'report' },
     { label: '正文·阅读', key: 'read' },

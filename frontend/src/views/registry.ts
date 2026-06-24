@@ -11,6 +11,7 @@ export const VIEWS = {
   workflow_config: { label: '工作流配置', component: defineAsyncComponent(() => import('./WorkflowConfig.vue')) },
   endpoints:    { label: 'LLM 端点',    component: defineAsyncComponent(() => import('./Endpoints.vue')) },
   runs:         { label: '运行监控',    component: defineAsyncComponent(() => import('./Runs.vue')) },
+  chat:         { label: 'AI 工作台',   component: defineAsyncComponent(() => import('./Chat.vue')) },
   inspirations: { label: '灵感池',      component: defineAsyncComponent(() => import('./Inspirations.vue')) },
   report:       { label: 'Review 报告', component: defineAsyncComponent(() => import('./Report.vue')) },
   read:         { label: '正文·阅读',   component: defineAsyncComponent(() => import('./Reader.vue')) },

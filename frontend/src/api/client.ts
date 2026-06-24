@@ -48,6 +48,11 @@ export const api = {
   run: (w: string, runId: number) => req('GET', `/api/works/${w}/runs/${runId}`),
   startRun: (w: string, body: { chapter: number; dry_run?: boolean }) =>
     req('POST', `/api/works/${w}/runs/start`, body),
+  chatSessions: (w: string) => req('GET', `/api/works/${w}/chat/sessions`),
+  chatCreateSession: (w: string, body: { title?: string }) => req('POST', `/api/works/${w}/chat/sessions`, body),
+  chatGetSession: (w: string, sid: number) => req('GET', `/api/works/${w}/chat/sessions/${sid}`),
+  chatSend: (w: string, sid: number, text: string) => req('POST', `/api/works/${w}/chat/sessions/${sid}/send`, { text }),
+  chatDecide: (w: string, pid: number, approved: boolean) => req('POST', `/api/works/${w}/chat/proposals/${pid}/decide`, { approved }),
   endpoints: () => req('GET', '/api/llm_endpoints'),
   upsertEndpoint: (body: any) => req('POST', '/api/llm_endpoints', body),
   deleteEndpoint: (name: string) => req('DELETE', `/api/llm_endpoints/${encodeURIComponent(name)}`),
