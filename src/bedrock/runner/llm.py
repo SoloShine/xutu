@@ -1,17 +1,24 @@
 # src/bedrock/runner/llm.py
-"""两层 LLM 解析:作品级绑定(workflow_config.models[process]={endpoint,model})
-→ 全局端点(~/.bedrock/global.db llm_endpoint:name/provider/base_url/api_key)→ 构造模型。
+"""两层 LLM 解析 + 默认回退:
 
-分离"有哪些 LLM"(全局目录)与"每个流程用哪个"(作品/图配置)。未绑流程明确报错。
+  作品级绑定(workflow_config.models[process]={endpoint,model})  ← 仅填写时覆盖
+    ↓ 未绑
+  全局默认缺省(llm_default: endpoint+model)                    ← 回退
+    ↓ 未设
+  LLMNotBoundError
+
+→ 全局端点(~/.bedrock/global.db llm_endpoint:name/provider/base_url/api_key)→ 构造模型。
+分离"有哪些 LLM"(全局目录)、"默认用哪个"(全局默认)、"每个流程用哪个"(作品绑定覆盖)。
 """
 from langchain.chat_models import init_chat_model
 from langchain_core.language_models import BaseChatModel
 
 from .endpoint_repo import get_endpoint
+from .default_repo import get_default
 
 
 class LLMNotBoundError(RuntimeError):
-    """流程未绑 LLM(endpoint 为空)。runner 应明确提示作者去工作流配置面板选。"""
+    """流程既无作品绑定、又无全局默认(endpoint 为空)。runner 应明确提示作者去配置面板。"""
 
 
 def _binding_for(workflow_models: dict, process: str):
@@ -26,24 +33,35 @@ def _binding_for(workflow_models: dict, process: str):
 
 
 def get_writer_model(workflow_config, process: str = "writer") -> BaseChatModel:
-    """构造 process 的 LLM。两层:绑定 → 全局端点 → init_chat_model(base_url+api_key 来自端点)。
+    """构造 process 的 LLM。解析顺序:作品绑定(覆盖)→ 全局默认(回退)→ 全局端点 → init_chat_model。
 
     workflow_config:get_workflow_config() 的结果(含 models)。
-    未绑(endpoint 空)或端点不在全局目录 → LLMNotBoundError。
+    作品绑定填了 endpoint → 用绑定(整体覆盖,默认不介入)。
+    作品绑定未填 endpoint → 用全局默认(endpoint+model)。
+    两者皆无 → LLMNotBoundError。
+    端点不在全局目录 → LLMNotBoundError。
     """
     workflow_models = workflow_config.get("models") if isinstance(workflow_config, dict) else workflow_config
     endpoint_name, model_id = _binding_for(workflow_models, process)
 
     if not endpoint_name:
-        raise LLMNotBoundError(
-            f"流程「{process}」未绑 LLM(endpoint 为空)。请在「工作流配置」面板为该流程选全局端点 + 模型。")
+        # 作品未绑 → 回退全局默认缺省
+        d = get_default()
+        if d and d.get("endpoint_name"):
+            endpoint_name = d["endpoint_name"]
+            if not model_id:
+                model_id = d.get("model")
+        if not endpoint_name:
+            raise LLMNotBoundError(
+                f"流程「{process}」既无作品绑定、又未设全局默认模型。"
+                f"请在「LLM 端点」面板设默认模型,或在「工作流配置」为该流程选端点+模型。")
 
     endpoint = get_endpoint(endpoint_name, mask=False)
     if endpoint is None:
         raise LLMNotBoundError(
-            f"流程「{process}」绑的端点「{endpoint_name}」不在全局目录。请在「LLM 端点」面板添加,或重选。")
+            f"端点「{endpoint_name}」不在全局目录。请在「LLM 端点」面板添加,或重选。")
 
-    # model:绑定值 → 端点 models[0] 兜底
+    # model:已解析值 → 端点 models[0] 兜底
     if not model_id:
         models = endpoint.get("models") or []
         if not models:

@@ -18,6 +18,15 @@ CREATE TABLE IF NOT EXISTS llm_endpoint (
     models TEXT NOT NULL DEFAULT '[]',
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- 全局默认缺省模型(单行,id 锁=1)。workflow_config 未绑的流程回退到此(endpoint+model)。
+-- 作品级绑定仅在填写时覆盖;未填 → 用此默认。
+CREATE TABLE IF NOT EXISTS llm_default (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    endpoint_name TEXT NOT NULL DEFAULT '',
+    model TEXT NOT NULL DEFAULT '',
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 """
 
 

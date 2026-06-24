@@ -3,7 +3,7 @@
      每个:{name, provider, base_url, api_key, models[]}。api_key 永不回显(掩码)。
      作品级在「工作流配置」面板为每个流程选这里的端点+模型。 -->
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { NSpin, NCard, NSpace, NInput, NSelect, NButton, NTag, NPopconfirm, NEmpty, NAlert, useMessage } from 'naive-ui'
 import { api } from '../api/client'
 
@@ -14,6 +14,12 @@ interface Endpoint { id: number; name: string; provider: string; base_url: strin
 const endpoints = ref<Endpoint[]>([])
 const loading = ref(true)
 const saving = ref(false)
+
+// 默认缺省模型(workflow 未绑流程的回退)
+const defEndpoint = ref<string | null>(null)
+const defModel = ref<string | null>(null)
+const defOriginal = ref<{ endpoint: string | null; model: string | null }>({ endpoint: null, model: null })
+const defSaving = ref(false)
 
 // 新增/编辑表单
 const name = ref(''), provider = ref('anthropic'), baseUrl = ref(''), apiKey = ref(''), modelsText = ref('')
@@ -28,11 +34,48 @@ const PROVIDER_OPTS = [
 
 async function load() {
   loading.value = true
-  try { endpoints.value = await api.endpoints() as any }
+  try {
+    const [eps, d] = await Promise.all([api.endpoints() as any, api.llmDefault() as any])
+    endpoints.value = eps
+    defEndpoint.value = d?.endpoint_name ?? null
+    defModel.value = d?.model ?? null
+    defOriginal.value = { endpoint: defEndpoint.value, model: defModel.value }
+  }
   catch (e: any) { msg.error('加载端点失败: ' + (e.message || e)) }
   finally { loading.value = false }
 }
 watch(() => props.wid, load, { immediate: true })
+
+const defEndpointOpts = () => endpoints.value.map(e => ({ label: e.name, value: e.name })) as any[]
+function defModelOpts() {
+  const ep = endpoints.value.find(e => e.name === defEndpoint.value)
+  return (ep?.models || []).map(m => ({ label: m, value: m }))
+}
+const defDirty = computed(() => {
+  const a = JSON.stringify({ endpoint: defEndpoint.value, model: defModel.value })
+  const b = JSON.stringify(defOriginal.value)
+  return a !== b
+})
+async function saveDefault() {
+  defSaving.value = true
+  try {
+    await api.setLlmDefault({ endpoint: defEndpoint.value || '', model: defModel.value || '' })
+    defOriginal.value = { endpoint: defEndpoint.value, model: defModel.value }
+    msg.success(defEndpoint.value ? `默认缺省模型已设:${defEndpoint.value}/${defModel.value || '(models[0])'}`
+                                   : '默认已清空')
+  } catch (e: any) { msg.error('保存默认失败: ' + (e.message || e)) }
+  finally { defSaving.value = false }
+}
+async function clearDefault() {
+  defSaving.value = true
+  try {
+    await api.clearLlmDefault()
+    defEndpoint.value = null; defModel.value = null
+    defOriginal.value = { endpoint: null, model: null }
+    msg.success('默认缺省模型已清空')
+  } catch (e: any) { msg.error('清空失败: ' + (e.message || e)) }
+  finally { defSaving.value = false }
+}
 
 function resetForm() {
   name.value = ''; provider.value = 'anthropic'; baseUrl.value = ''; apiKey.value = ''; modelsText.value = ''
@@ -94,6 +137,24 @@ async function remove(name2: string) {
           <NPopconfirm @positive-click="remove(e.name)"><template #trigger><NButton size="tiny" type="error" ghost>删</NButton></template>删端点「{{ e.name }}」?</NPopconfirm>
         </NSpace>
       </div>
+    </NCard>
+
+    <NCard title="默认缺省模型" size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
+      <div class="hint" style="margin-bottom:8px">
+        工作流配置里<strong>未绑</strong>的流程会回退到此默认。给所有流程一个兜底,免去逐一绑定。
+        作品级绑定仍优先覆盖。
+      </div>
+      <NSpace align="center" :size="8">
+        <NSelect v-model:value="defEndpoint" :options="defEndpointOpts()" placeholder="选端点"
+                 style="width:180px" size="small" />
+        <NSelect v-model:value="defModel" :options="defModelOpts()" placeholder="模型(空=端点 models[0])"
+                 tag filterable style="width:240px" size="small" />
+        <NButton type="primary" size="small" :disabled="!defDirty" :loading="defSaving" @click="saveDefault">保存默认</NButton>
+        <NButton size="small" :disabled="!defOriginal.endpoint" :loading="defSaving" @click="clearDefault">清空</NButton>
+        <NTag v-if="defOriginal.endpoint && !defDirty" size="tiny" type="success" :bordered="false">
+          当前默认:{{ defOriginal.endpoint }}/{{ defOriginal.model || 'models[0]' }}
+        </NTag>
+      </NSpace>
     </NCard>
 
     <NCard :title="editingName ? `编辑「${editingName}」` : '新建端点'" size="small" :content-style="{ background: 'var(--br-card)' }">

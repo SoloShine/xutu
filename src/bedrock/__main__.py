@@ -566,6 +566,12 @@ def main():
     p_dele = sub.add_parser("delete-llm-endpoint", help="删全局端点")
     p_dele.add_argument("--name", required=True)
 
+    p_getdef = sub.add_parser("get-llm-default", help="查全局默认缺省模型(workflow 未绑流程回退到此)")
+    p_setdef = sub.add_parser("set-llm-default", help="设全局默认缺省模型")
+    p_setdef.add_argument("--endpoint", required=True, help="全局端点名")
+    p_setdef.add_argument("--model", default="", help="模型 id(缺省=端点 models[0])")
+    p_clrdef = sub.add_parser("clear-llm-default", help="清空全局默认缺省模型")
+
     p_boot = sub.add_parser("boot-context", help="装配子代理启动上下文")
     p_boot.add_argument("--project", type=Path, required=True)
     p_boot.add_argument("--chapter", type=int, required=True)
@@ -727,6 +733,23 @@ def main():
         from src.bedrock.runner.endpoint_repo import delete_endpoint
         ok = delete_endpoint(args.name)
         print(f"端点「{args.name}」{'已删' if ok else '不存在'}")
+        return
+
+    # 全局默认缺省模型命令(操作 ~/.bedrock/global.db,不需 project 连接)
+    if args.cmd == "get-llm-default":
+        from src.bedrock.runner.default_repo import get_default
+        print(json.dumps(get_default(), ensure_ascii=False))
+        return
+    if args.cmd == "set-llm-default":
+        from src.bedrock.runner.default_repo import set_default
+        d = set_default(args.endpoint, args.model)
+        print(f"默认缺省模型已设:{d['endpoint_name']}/{d['model'] or '(端点 models[0])'}"
+              if d else "默认已清空(endpoint 为空)")
+        return
+    if args.cmd == "clear-llm-default":
+        from src.bedrock.runner.default_repo import clear_default
+        clear_default()
+        print("默认缺省模型已清空")
         return
 
     # 以下子命令都需要 DB 连接

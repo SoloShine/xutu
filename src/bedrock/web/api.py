@@ -469,6 +469,37 @@ def api_delete_llm_endpoint(name):
         return _err(e)
 
 
+@bp.get("/llm_default")
+def api_llm_default_get():
+    """全局默认缺省模型(workflow 未绑流程回退到此)。{endpoint_name, model} 或 null。"""
+    from src.bedrock.runner.default_repo import get_default
+    return jsonify(get_default())
+
+
+@bp.post("/llm_default")
+def api_llm_default_set():
+    """设默认。body: {endpoint, model?}。endpoint 空=清空。"""
+    from src.bedrock.runner.default_repo import set_default
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    try:
+        d = set_default(body.get("endpoint") or "", body.get("model") or "")
+        return _ok(d)
+    except Exception as e:
+        return _err(e)
+
+
+@bp.delete("/llm_default")
+def api_llm_default_clear():
+    """清空默认。"""
+    from src.bedrock.runner.default_repo import clear_default
+    try:
+        clear_default()
+        return _ok({"cleared": True})
+    except Exception as e:
+        return _err(e)
+
+
 @bp.get("/works/<work_id>/runs")
 def api_runs(work_id):
     """最近 N 个 run（含 event 计数 + 末节点），供前端轮询列表。?limit=20 & ?chapter=N。"""
