@@ -15,6 +15,7 @@ async function req(method: string, path: string, body?: any) {
 
 export const api = {
   works: () => req('GET', '/api/works'),
+  createWork: (body: { name: string; slug?: string }) => req('POST', '/api/works', body),
   overview: (w: string) => req('GET', `/api/works/${w}/overview`),
   matrix: (w: string, v?: number) => req('GET', `/api/works/${w}/matrix${v ? '?volume=' + v : ''}`),
   matrixBeats: (w: string, chapter: number, character: number) =>

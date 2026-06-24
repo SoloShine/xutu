@@ -79,6 +79,29 @@ def api_works():
     return jsonify(list_works(root))
 
 
+@bp.post("/works")
+def api_create_work():
+    """新建作品。body: {name, slug?}。slug 缺省=由 name 净化(中文/非法→work-<短id>)。
+    init_project(projects_root/slug, name) → 建目录+空白 DB+work_name。返回 {id, name}。"""
+    import re, uuid
+    from src.bedrock.init_project import init_project
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    name = (body.get("name") or "").strip()
+    if not name:
+        return _err("需 name(作品名)")
+    root = Path(current_app.config["PROJECTS_ROOT"]).resolve()
+    slug = (body.get("slug") or "").strip()
+    if not slug:
+        # 净化:name 里的 ascii 字母数字下划线保留,其余剔除;空 → work-<短id>
+        slug = re.sub(r"[^A-Za-z0-9_]+", "", name).lower() or f"work-{uuid.uuid4().hex[:8]}"
+    target = root / slug
+    if target.exists():
+        return _err(f"标识「{slug}」已存在(目录 {target.name})")
+    init_project(target, name)
+    return _ok({"id": slug, "name": name})
+
+
 @bp.get("/works/<work_id>/overview")
 def api_overview(work_id):
     wd = _resolve_work(work_id)

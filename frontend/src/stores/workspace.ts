@@ -12,6 +12,13 @@ export const useWorkspace = defineStore('workspace', () => {
 
   async function loadWorks() { works.value = await api.works() }
   function setActive(id: string) { activeId.value = id }
+  async function createWork(name: string, slug?: string) {
+    const r = await api.createWork({ name, slug }) as any
+    await loadWorks()
+    const id = r?.item?.id || r?.id
+    if (id) activeId.value = id
+    return id
+  }
 
-  return { works, activeId, active, loadWorks, setActive }
+  return { works, activeId, active, loadWorks, setActive, createWork }
 })
