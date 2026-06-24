@@ -30,6 +30,14 @@ from src.bedrock.style.template_repo import (
     save_fingerprint_from_written,
 )
 from src.bedrock.checks.style_drift import measure_work_actual
+from src.bedrock.workflow.config_repo import (
+    list_workflow_configs, get_workflow_config, set_workflow_config, get_defaults,
+)
+from src.bedrock.workflow.run_repo import (
+    list_recent_runs, get_run, list_events,
+)
+from src.bedrock.runner.endpoint_repo import list_endpoints, upsert_endpoint, delete_endpoint
+from src.bedrock.web.queries import list_volumes_simple
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -381,6 +389,109 @@ def api_set_style(work_id):
         return _ok({"id": rid, "scope": scope})
     except Exception as e:
         return _err(e)
+    finally:
+        conn.close()
+
+
+@bp.get("/works/<work_id>/workflow_config")
+def api_workflow_config(work_id):
+    """编排旋钮配置(work + 各 volume 覆盖)+ 冻结默认基线 + 卷列表。
+    前端据此渲染配置面板;LangGraph runner 经 CLI get-workflow-config 消费(同一 repo)。"""
+    wd = _resolve_work(work_id)
+    conn = get_connection(wd)
+    try:
+        return jsonify({
+            "configs": list_workflow_configs(conn),
+            "defaults": get_defaults(),
+            "volumes": list_volumes_simple(conn),
+        })
+    finally:
+        conn.close()
+
+
+@bp.post("/works/<work_id>/workflow_config")
+def api_set_workflow_config(work_id):
+    """改编排旋钮。body: {scope:'work'|'volume', volume_id?, caps?, models?, phases?, prompts?}。
+    只更新给出的类别(upsert 不覆盖)。caps/models/phases/prompts 各为 dict,内部深度逐键 merge。"""
+    _require_json()
+    wd = _resolve_work(work_id)
+    body = request.get_json(silent=True) or {}
+    scope = body.get("scope", "work")
+    if scope not in ("work", "volume"):
+        return _err("scope 必须 work|volume")
+    if scope == "volume" and body.get("volume_id") is None:
+        return _err("scope=volume 需提供 volume_id")
+    conn = get_connection(wd)
+    try:
+        rid = set_workflow_config(
+            conn, scope, volume_id=body.get("volume_id"),
+            caps=body.get("caps"), models=body.get("models"),
+            phases=body.get("phases"), prompts=body.get("prompts"),
+        )
+        return _ok({"id": rid, "scope": scope,
+                    "config": get_workflow_config(conn, body.get("volume_id") if scope == "volume" else None)})
+    except Exception as e:
+        return _err(e)
+    finally:
+        conn.close()
+
+
+@bp.get("/llm_endpoints")
+def api_llm_endpoints():
+    """全局 LLM 端点目录(跨项目共享,~/.bedrock/global.db)。api_key 掩码。"""
+    return jsonify(list_endpoints(mask=True))
+
+
+@bp.post("/llm_endpoints")
+def api_upsert_llm_endpoint():
+    """加/改全局端点。body: {name, provider?, base_url?, api_key?, models?}。
+    api_key 给了才更新(空串=清空);不给=保留。"""
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    name = body.get("name")
+    if not name:
+        return _err("需 name")
+    try:
+        upsert_endpoint(name, provider=body.get("provider"), base_url=body.get("base_url"),
+                        api_key=body.get("api_key"), models=body.get("models"))
+        return _ok({"name": name})
+    except Exception as e:
+        return _err(e)
+
+
+@bp.delete("/llm_endpoints/<name>")
+def api_delete_llm_endpoint(name):
+    """删全局端点。"""
+    try:
+        ok = delete_endpoint(name)
+        return _ok({"name": name, "deleted": ok})
+    except Exception as e:
+        return _err(e)
+
+
+@bp.get("/works/<work_id>/runs")
+def api_runs(work_id):
+    """最近 N 个 run（含 event 计数 + 末节点），供前端轮询列表。?limit=20 & ?chapter=N。"""
+    wd = _resolve_work(work_id)
+    limit = request.args.get("limit", 20, type=int)
+    chapter = request.args.get("chapter", type=int)
+    conn = get_connection(wd)
+    try:
+        return jsonify(list_recent_runs(conn, limit=limit, chapter_global=chapter))
+    finally:
+        conn.close()
+
+
+@bp.get("/works/<work_id>/runs/<int:run_id>")
+def api_run(work_id, run_id):
+    """单 run + 事件序列（按 seq 升序），供 Vue Flow 图轮询渲染。"""
+    wd = _resolve_work(work_id)
+    conn = get_connection(wd)
+    try:
+        r = get_run(conn, run_id)
+        if r is None:
+            return _err(f"run_id={run_id} 不存在")
+        return jsonify({"run": r, "events": list_events(conn, run_id)})
     finally:
         conn.close()
 

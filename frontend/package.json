@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vue-flow/background": "^1.3.2",
+    "@vue-flow/core": "^1.48.2",
     "marked": "^12.0.0",
     "naive-ui": "^2.38.0",
     "pinia": "^2.1.0",

@@ -436,3 +436,57 @@ CREATE TABLE IF NOT EXISTS volume_review (
     blocking INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+
+-- ===== 编排旋钮配置（runner-agnostic；phase 1 冻结自 .js 硬编码快照）=====
+-- 与 style_template 同范式：scope=work|volume + 字段级 merge + upsert 不覆盖。
+-- 只装编排旋钮（caps/模型/阶段开关/prompt 路径），文风项已在 style_template（RC3 单真相源）。
+-- 消费方：LangGraph runner（经 CLI get-workflow-config 读）；当前 .js 不读（保持现状）。
+CREATE TABLE IF NOT EXISTS workflow_config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    scope TEXT NOT NULL DEFAULT 'work',        -- work | volume
+    volume_id INTEGER,                          -- 仅 scope=volume 有值
+    caps TEXT NOT NULL DEFAULT '{}',            -- {writer,editor,repair,style,vr_fix} 迭代上限
+    models TEXT NOT NULL DEFAULT '{}',          -- {各agent: 模型名|null=runner默认}
+    phases TEXT NOT NULL DEFAULT '{}',          -- {polish:auto|on|off, consistency:bool, ...}
+    prompts TEXT NOT NULL DEFAULT '{}',         -- {writer/editor/volume_review: .md 路径}
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+
+-- ===== 工作流运行事件（phase 2 实时可观测性）=====
+-- runner（当前 .js / 将来 LangGraph）边跑边写;Web 面板 Vue Flow 只读图轮询渲染。
+-- 纯遥测旁路:不影响 L2/verify-persisted 信任锚,不进控制流判决。
+CREATE TABLE IF NOT EXISTS workflow_run (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chapter_global INTEGER,                     -- 本章 global_number;volume 级 run 可空
+    volume_id INTEGER,
+    runner TEXT NOT NULL DEFAULT 'js',          -- js | langgraph（谁发射的）
+    status TEXT NOT NULL DEFAULT 'running',     -- running | completed | failed | aborted
+    current_node TEXT NOT NULL DEFAULT '',      -- 最近报告的节点/阶段
+    started_at TEXT NOT NULL DEFAULT (datetime('now')),
+    ended_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS workflow_run_event (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id INTEGER NOT NULL REFERENCES workflow_run(id) ON DELETE CASCADE,
+    seq INTEGER NOT NULL,                        -- run 内单调（1-based）
+    node TEXT NOT NULL,                          -- boot/write/revise/consistency/finalize/l2/...
+    kind TEXT NOT NULL,                          -- start|enter|iteration|l2_verdict|commit|error|end
+    payload TEXT NOT NULL DEFAULT '{}',          -- JSON: {iterations, verdict, word_count, detail, ...}
+    ts TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+
+-- ===== LLM 连接配置（runner 经 API 调模型;作者控制台可配）=====
+-- 项目级单行(id 锁=1):provider/base_url/api_key/default_model。
+-- base_url 支持第三方/代理(network);api_key 存 DB(本地作者工具),env 兜底。GET 掩码不回全文。
+CREATE TABLE IF NOT EXISTS llm_config (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    provider TEXT NOT NULL DEFAULT 'anthropic',   -- anthropic|openai|...
+    base_url TEXT NOT NULL DEFAULT '',             -- 空=官方端点;非空=第三方/代理
+    api_key TEXT NOT NULL DEFAULT '',              -- 空=读 env(ANTHROPIC_API_KEY 等)兜底
+    default_model TEXT NOT NULL DEFAULT '',        -- 空=llm.py 内置默认;覆盖 workflow_config.models
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);

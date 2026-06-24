@@ -38,6 +38,16 @@ export const api = {
     return req('GET', `/api/works/${w}/style/actual${q ? '?' + q : ''}`)
   },
   setStyle: (w: string, body: any) => req('POST', `/api/works/${w}/style`, body),
+  workflowConfig: (w: string) => req('GET', `/api/works/${w}/workflow_config`),
+  setWorkflowConfig: (w: string, body: any) => req('POST', `/api/works/${w}/workflow_config`, body),
+  runs: (w: string, limit = 20, chapter?: number) => {
+    const q = [['limit', limit], ['chapter', chapter]].filter(([, x]) => x != null).map(([k, x]) => `${k}=${x}`).join('&')
+    return req('GET', `/api/works/${w}/runs${q ? '?' + q : ''}`)
+  },
+  run: (w: string, runId: number) => req('GET', `/api/works/${w}/runs/${runId}`),
+  endpoints: () => req('GET', '/api/llm_endpoints'),
+  upsertEndpoint: (body: any) => req('POST', '/api/llm_endpoints', body),
+  deleteEndpoint: (name: string) => req('DELETE', `/api/llm_endpoints/${encodeURIComponent(name)}`),
   importReference: (w: string, body: any) => req('POST', `/api/works/${w}/style/import-reference`, body),
   previewReference: (w: string, text: string) => req('POST', `/api/works/${w}/style/preview-reference`, { text }),
   previewExtract: (w: string, body: any) => req('POST', `/api/works/${w}/style/preview-extract`, body),

@@ -520,6 +520,52 @@ def main():
     p_sdir.add_argument("--scope", choices=["work", "volume"], default="work")
     p_sdir.add_argument("--volume", type=int, default=None)
 
+    p_gwc = sub.add_parser("get-workflow-config", help="读编排旋钮(merge 后 JSON;LangGraph 消费入口)")
+    p_gwc.add_argument("--project", type=Path, required=True)
+    p_gwc.add_argument("--volume", type=int, default=None)
+
+    p_swc = sub.add_parser("set-workflow-config", help="写编排旋钮(stdin=JSON: {caps?,models?,phases?,prompts?})")
+    p_swc.add_argument("--project", type=Path, required=True)
+    p_swc.add_argument("--scope", choices=["work", "volume"], default="work")
+    p_swc.add_argument("--volume", type=int, default=None)
+
+    # ---- phase 2 实时可观测性:run 事件 ----
+    p_strun = sub.add_parser("start-run", help="新建工作流 run(status=running)→ 打印 run_id")
+    p_strun.add_argument("--project", type=Path, required=True)
+    p_strun.add_argument("--chapter", type=int, default=None)
+    p_strun.add_argument("--volume", type=int, default=None)
+    p_strun.add_argument("--runner", default="js")
+
+    p_emitev = sub.add_parser("emit-run-events", help="批量写 run 事件(stdin=JSON 数组 [{node,kind,payload?}])")
+    p_emitev.add_argument("--project", type=Path, required=True)
+    p_emitev.add_argument("--run-id", type=int, required=True)
+
+    p_endrun = sub.add_parser("end-run", help="结束 run(completed|failed|aborted)")
+    p_endrun.add_argument("--project", type=Path, required=True)
+    p_endrun.add_argument("--run-id", type=int, required=True)
+    p_endrun.add_argument("--status", choices=["completed", "failed", "aborted"], required=True)
+    p_endrun.add_argument("--node", default=None, help="最终 current_node(可选)")
+
+    p_lstruns = sub.add_parser("list-runs", help="列最近 N 个 run(JSON)")
+    p_lstruns.add_argument("--project", type=Path, required=True)
+    p_lstruns.add_argument("--limit", type=int, default=20)
+    p_lstruns.add_argument("--chapter", type=int, default=None)
+
+    p_showrun = sub.add_parser("show-run", help="读单 run + 事件(JSON)")
+    p_showrun.add_argument("--project", type=Path, required=True)
+    p_showrun.add_argument("--run-id", type=int, required=True)
+
+    # ---- 全局 LLM 端点目录(操作 ~/.bedrock/global.db,不需 project)----
+    p_lste = sub.add_parser("list-llm-endpoints", help="列全局 LLM 端点(api_key 掩码)")
+    p_adde = sub.add_parser("add-llm-endpoint", help="加/改全局端点(--model 可多次)")
+    p_adde.add_argument("--name", required=True)
+    p_adde.add_argument("--provider", default="anthropic")
+    p_adde.add_argument("--base-url", default="")
+    p_adde.add_argument("--api-key", default=None, help="缺省=stdin 首行;空串=清空")
+    p_adde.add_argument("--model", action="append", default=[], dest="models")
+    p_dele = sub.add_parser("delete-llm-endpoint", help="删全局端点")
+    p_dele.add_argument("--name", required=True)
+
     p_boot = sub.add_parser("boot-context", help="装配子代理启动上下文")
     p_boot.add_argument("--project", type=Path, required=True)
     p_boot.add_argument("--chapter", type=int, required=True)
@@ -663,6 +709,26 @@ def main():
         print(f"已初始化作品 '{args.name}' 于 {args.path}")
         return
 
+    # 全局 LLM 端点目录命令(操作 ~/.bedrock/global.db,不需 project 连接)
+    if args.cmd == "list-llm-endpoints":
+        from src.bedrock.runner.endpoint_repo import list_endpoints
+        print(json.dumps(list_endpoints(mask=True), ensure_ascii=False))
+        return
+    if args.cmd == "add-llm-endpoint":
+        from src.bedrock.runner.endpoint_repo import upsert_endpoint
+        api_key = args.api_key
+        if api_key is None:   # 缺省从 stdin 首行读(便于管道传 key,不落命令历史)
+            api_key = sys.stdin.readline().strip()
+        upsert_endpoint(args.name, provider=args.provider, base_url=args.base_url,
+                        api_key=api_key, models=args.models)
+        print(f"端点「{args.name}」已保存")
+        return
+    if args.cmd == "delete-llm-endpoint":
+        from src.bedrock.runner.endpoint_repo import delete_endpoint
+        ok = delete_endpoint(args.name)
+        print(f"端点「{args.name}」{'已删' if ok else '不存在'}")
+        return
+
     # 以下子命令都需要 DB 连接
     conn = get_connection(args.project)
     try:
@@ -703,6 +769,52 @@ def main():
             rid = set_style_config(conn, args.scope, volume_id=args.volume,
                                    directive=args.directive, directive_source=args.source)
             print(f"directive 已写入 row={rid} scope={args.scope} source={args.source or '(无)'}")
+        elif args.cmd == "get-workflow-config":
+            from src.bedrock.db.migrate import apply_migrations
+            from src.bedrock.workflow.config_repo import get_workflow_config
+            apply_migrations(args.project)  # 自愈:老库补 workflow_config 表(同 web 启动扫描)
+            cfg = get_workflow_config(conn, volume_id=args.volume)
+            print(json.dumps(cfg, ensure_ascii=False))
+        elif args.cmd == "set-workflow-config":
+            from src.bedrock.db.migrate import apply_migrations
+            from src.bedrock.workflow.config_repo import set_workflow_config
+            apply_migrations(args.project)  # 自愈:老库补 workflow_config 表
+            payload = json.loads(sys.stdin.buffer.read().decode("utf-8") or "{}")
+            rid = set_workflow_config(
+                conn, args.scope, volume_id=args.volume,
+                caps=payload.get("caps"), models=payload.get("models"),
+                phases=payload.get("phases"), prompts=payload.get("prompts"))
+            print(f"workflow_config 已写入 row={rid} scope={args.scope} "
+                  f"volume={args.volume if args.scope == 'volume' else '-'}")
+        elif args.cmd == "start-run":
+            from src.bedrock.db.migrate import apply_migrations
+            from src.bedrock.workflow.run_repo import start_run
+            apply_migrations(args.project)
+            rid = start_run(conn, chapter_global=args.chapter, volume_id=args.volume, runner=args.runner)
+            print(rid)
+        elif args.cmd == "emit-run-events":
+            from src.bedrock.db.migrate import apply_migrations
+            from src.bedrock.workflow.run_repo import emit_events_batch
+            apply_migrations(args.project)
+            events = json.loads(sys.stdin.buffer.read().decode("utf-8") or "[]")
+            n = emit_events_batch(conn, args.run_id, events)
+            print(f"emitted {n} events to run={args.run_id}")
+        elif args.cmd == "end-run":
+            from src.bedrock.db.migrate import apply_migrations
+            from src.bedrock.workflow.run_repo import end_run
+            apply_migrations(args.project)
+            end_run(conn, args.run_id, args.status, current_node=args.node)
+            print(f"run={args.run_id} ended status={args.status}")
+        elif args.cmd == "list-runs":
+            from src.bedrock.workflow.run_repo import list_recent_runs
+            print(json.dumps(list_recent_runs(conn, limit=args.limit, chapter_global=args.chapter),
+                             ensure_ascii=False))
+        elif args.cmd == "show-run":
+            from src.bedrock.workflow.run_repo import get_run, list_events
+            r = get_run(conn, args.run_id)
+            if r is None:
+                sys.exit(f"run_id={args.run_id} 不存在")
+            print(json.dumps({"run": r, "events": list_events(conn, args.run_id)}, ensure_ascii=False))
         elif args.cmd == "refresh-style-actual":
             from src.bedrock.checks.style_drift import refresh_actual_cache
             r = refresh_actual_cache(conn, args.volume)

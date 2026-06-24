@@ -12,6 +12,7 @@ def apply_migrations(project_dir: Path) -> int:
     try:
         conn.executescript(sql)
         _migrate_style_template(conn)   # 旧 DB 补 style_template 新列(CREATE IF NOT EXISTS 不加列)
+        _drop_legacy_llm_config(conn)   # 两层 LLM 配置上线:删旧单行 llm_config 表(brand-new 未用)
         version = _stable_version(content_hash)
         existing = conn.execute(
             "SELECT 1 FROM schema_version WHERE version=?", (version,)).fetchone()
@@ -45,6 +46,12 @@ def _migrate_style_template(conn):
     for col, ddl in _STYLE_TEMPLATE_NEW_COLUMNS.items():
         if col not in cols:
             conn.execute(f"ALTER TABLE style_template ADD COLUMN {col} {ddl}")
+    conn.commit()
+
+
+def _drop_legacy_llm_config(conn):
+    """两层 LLM 配置(全局端点 + 作品绑定)替换了旧单行 llm_config 表。brand-new 未 live,安全 DROP。"""
+    conn.execute("DROP TABLE IF EXISTS llm_config")
     conn.commit()
 
 
