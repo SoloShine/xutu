@@ -536,31 +536,9 @@ def api_runs(work_id):
         conn.close()
 
 
-@bp.post("/works/<work_id>/runs/start")
-def api_start_run(work_id):
-    """作者端触发 runner 写作(异步 subprocess)。body: {chapter: global_number, dry_run?: bool}。
-
-    chapter 必须已存在(有 beat 契约;续写新章需先建章+beat)。volume 从 chapter 行取。
-    detached 子进程跑 `python -m src.bedrock.runner`,stdout/stderr 落 runner_logs/chN.log。
-    run row 由 runner boot 的 start_run 创建,面板 2s 轮询自动发现 + 实时更新。
-    """
+def _launch_runner(wd, chapter, volume, dry_run=False):
+    """detached 子进程跑 runner。stdout/stderr→ runner_logs/chN.<ts>.log。返回 log 文件名。"""
     import os, sys, subprocess, datetime
-    wd = _resolve_work(work_id)
-    _require_json()
-    body = request.get_json(silent=True) or {}
-    chapter = body.get("chapter")
-    dry_run = bool(body.get("dry_run"))
-    if chapter is None:
-        return _err("需 chapter(global_number)")
-    conn = get_connection(wd)
-    try:
-        ch = conn.execute("SELECT id, volume_id FROM chapter WHERE global_number=?", (chapter,)).fetchone()
-        if ch is None:
-            return _err(f"章节 {chapter} 不存在(续写新章需先建 chapter + beat 契约)")
-        volume = ch["volume_id"]
-    finally:
-        conn.close()
-
     repo_root = Path(__file__).resolve().parents[3]   # src/bedrock/web → repo root(D:/novel_test)
     log_dir = wd / "exports" / "runner_logs"
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -578,8 +556,168 @@ def api_start_run(work_id):
     else:
         kwargs["start_new_session"] = True
     subprocess.Popen(cmd, **kwargs)
+    return log_name
+
+
+@bp.post("/works/<work_id>/runs/start")
+def api_start_run(work_id):
+    """作者端触发 runner 写作(异步 subprocess)。body: {chapter: global_number, dry_run?: bool}。
+
+    chapter 必须已存在(有 beat 契约;续写新章需先建章+beat)。volume 从 chapter 行取。
+    run row 由 runner boot 的 start_run 创建,面板 2s 轮询自动发现 + 实时更新。
+    """
+    wd = _resolve_work(work_id)
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    chapter = body.get("chapter")
+    dry_run = bool(body.get("dry_run"))
+    if chapter is None:
+        return _err("需 chapter(global_number)")
+    conn = get_connection(wd)
+    try:
+        ch = conn.execute("SELECT id, volume_id FROM chapter WHERE global_number=?", (chapter,)).fetchone()
+        if ch is None:
+            return _err(f"章节 {chapter} 不存在(续写新章需先建 chapter + beat 契约)")
+        volume = ch["volume_id"]
+    finally:
+        conn.close()
+    log_name = _launch_runner(wd, chapter, volume, dry_run=dry_run)
     return _ok({"started": True, "chapter": chapter, "volume": volume,
                 "dry_run": dry_run, "log": log_name})
+
+
+# ===== 作者助手 agent(AI 工作台)=====
+
+def _execute_proposal(conn, wd, action_type, payload):
+    """审批通过后执行提案,经 repo 函数落库(守铁律)。返回 {ok, ...} 或 抛异常。"""
+    from src.bedrock.repositories.plot_tree import create_chapter, create_beat
+    if action_type == "create_chapter_with_beat":
+        vid = int(payload["volume_id"])
+        gnum = int(payload["global_number"])
+        title = payload.get("title") or f"第{gnum}章"
+        beat = payload.get("beat") or {}
+        purpose = beat.get("purpose")
+        if not purpose or len(purpose) < 10:
+            raise ValueError("beat.purpose 需 ≥10 字")
+        if conn.execute("SELECT id FROM chapter WHERE global_number=?", (gnum,)).fetchone():
+            raise ValueError(f"章节 {gnum} 已存在")
+        cid = create_chapter(conn, volume_id=vid, global_number=gnum, title=title)
+        bid = create_beat(conn, chapter_id=cid, sequence=1, purpose=purpose,
+                          pov_character_id=beat.get("pov_character_id"))
+        return {"ok": True, "chapter_id": cid, "beat_id": bid}
+    if action_type == "trigger_run":
+        gnum = int(payload["global_number"])
+        ch = conn.execute("SELECT id, volume_id FROM chapter WHERE global_number=?", (gnum,)).fetchone()
+        if not ch:
+            raise ValueError(f"章节 {gnum} 不存在(先 create_chapter_with_beat)")
+        log = _launch_runner(wd, gnum, ch["volume_id"])
+        return {"ok": True, "started": True, "log": log}
+    if action_type == "set_beat_contract":
+        from src.bedrock.repositories.plot_tree import update_beat_meta
+        bid = int(payload["beat_id"])
+        update_beat_meta(conn, bid, purpose=payload.get("purpose"))
+        return {"ok": True, "beat_id": bid}
+    raise ValueError(f"未知 action_type: {action_type}")
+
+
+@bp.post("/works/<work_id>/chat/sessions")
+def api_chat_create_session(work_id):
+    """新建对话会话。body: {title?}。返回 session。"""
+    from src.bedrock.workflow.chat_repo import create_session, get_session
+    wd = _resolve_work(work_id)
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    conn = get_connection(wd)
+    try:
+        sid = create_session(conn, body.get("title") or "")
+        return _ok(get_session(conn, sid))
+    finally:
+        conn.close()
+
+
+@bp.get("/works/<work_id>/chat/sessions")
+def api_chat_list_sessions(work_id):
+    from src.bedrock.workflow.chat_repo import list_sessions
+    wd = _resolve_work(work_id)
+    conn = get_connection(wd)
+    try:
+        return jsonify(list_sessions(conn))
+    finally:
+        conn.close()
+
+
+@bp.get("/works/<work_id>/chat/sessions/<int:sid>")
+def api_chat_get_session(work_id, sid):
+    from src.bedrock.workflow.chat_repo import get_session, list_messages, list_proposals
+    wd = _resolve_work(work_id)
+    conn = get_connection(wd)
+    try:
+        s = get_session(conn, sid)
+        if not s:
+            return _err("会话不存在")
+        return jsonify({"session": s, "messages": list_messages(conn, sid),
+                        "proposals": list_proposals(conn, sid)})
+    finally:
+        conn.close()
+
+
+@bp.post("/works/<work_id>/chat/sessions/<int:sid>/send")
+def api_chat_send(work_id, sid):
+    """发一句话给作者助手 → agent 跑一轮(读工具 + propose_action)→ 返回新消息 + 新提案。"""
+    from src.bedrock.workflow.chat_repo import (get_session, list_messages, list_proposals)
+    from src.bedrock.runner.author_agent import run_author
+    from src.bedrock.workflow.config_repo import get_workflow_config
+    wd = _resolve_work(work_id)
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    text = (body.get("text") or "").strip()
+    if not text:
+        return _err("需 text")
+    conn = get_connection(wd)
+    try:
+        if not get_session(conn, sid):
+            return _err("会话不存在")
+        cfg = get_workflow_config(conn)
+        try:
+            run_author(wd, sid, text, cfg)
+        except Exception as e:
+            # LLM/agent 失败不应吞,回写一条 assistant 错误消息
+            from src.bedrock.workflow.chat_repo import add_message
+            add_message(conn, sid, "assistant", f"[agent 错误] {type(e).__name__}: {e}")
+            return _err(f"agent 执行失败: {e}")
+        return jsonify({"messages": list_messages(conn, sid),
+                        "proposals": list_proposals(conn, sid)})
+    finally:
+        conn.close()
+
+
+@bp.post("/works/<work_id>/chat/proposals/<int:pid>/decide")
+def api_chat_decide_proposal(work_id, pid):
+    """审批提案。body: {approved: bool}。approved=True → 执行(repo 落库)+ 记结果;
+    False → 标 rejected。"""
+    from src.bedrock.workflow.chat_repo import get_proposal, decide_proposal
+    wd = _resolve_work(work_id)
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    approved = bool(body.get("approved"))
+    conn = get_connection(wd)
+    try:
+        p = get_proposal(conn, pid)
+        if not p:
+            return _err("提案不存在")
+        if p["status"] != "pending":
+            return _err(f"提案已 {p['status']},不能重复审批")
+        result = None
+        if approved:
+            try:
+                result = _execute_proposal(conn, wd, p["action_type"], p["payload"])
+            except Exception as e:
+                decide_proposal(conn, pid, approved=False, result={"error": str(e)})
+                return _err(f"执行失败: {e}")
+        updated = decide_proposal(conn, pid, approved=approved, result=result)
+        return _ok(updated)
+    finally:
+        conn.close()
 
 
 @bp.get("/works/<work_id>/runs/<int:run_id>")

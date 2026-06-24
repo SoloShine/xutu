@@ -38,7 +38,7 @@ const CAP_META = [
 ]
 const MODEL_KEYS = [
   'writer', 'editor', 'consistency', 'rewrite', 'polish', 'surgical', 'repair', 'style',
-  'volume_review', 'volume_fix', 'volume_recheck',
+  'volume_review', 'volume_fix', 'volume_recheck', 'author',
 ]
 // 全局端点目录(供每个流程选 endpoint;model 从该端点的 models 列表选)
 const endpoints = ref<{ name: string; models: string[] }[]>([])

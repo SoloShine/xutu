@@ -490,3 +490,31 @@ CREATE TABLE IF NOT EXISTS llm_config (
     default_model TEXT NOT NULL DEFAULT '',        -- 空=llm.py 内置默认;覆盖 workflow_config.models
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+
+-- ===== 作者助手 agent(对话式 AI 工作台)=====
+-- chat_session:一个作品可有多个会话(各话题);chat_message:对话历史;
+-- chat_proposal:agent 产的结构化提案(作者审批后才落库经 repo 函数,守铁律)。
+CREATE TABLE IF NOT EXISTS chat_session (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS chat_message (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES chat_session(id) ON DELETE CASCADE,
+    role TEXT NOT NULL,                           -- user | assistant | tool
+    content TEXT NOT NULL DEFAULT '',
+    ts TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS chat_proposal (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES chat_session(id) ON DELETE CASCADE,
+    action_type TEXT NOT NULL,                    -- create_chapter_with_beat | trigger_run | ...
+    payload TEXT NOT NULL DEFAULT '{}',           -- JSON,对齐实体 schema
+    status TEXT NOT NULL DEFAULT 'pending',       -- pending | approved | rejected
+    result TEXT,                                  -- 审批后执行结果(JSON 或错误)
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    decided_at TEXT
+);

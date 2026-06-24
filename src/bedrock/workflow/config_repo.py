@@ -24,7 +24,7 @@ _DEFAULT_CAPS = {
 # 两层架构:endpoint 名指向全局目录(~/.bedrock/global.db llm_endpoint),作品级只选"哪个端点+哪个模型"。
 # 流程清单:chapter(writer/editor/consistency)+ chapter-edit(rewrite/polish/surgical/repair/style)+ volume-review。
 _PROCESS_KEYS = ("writer", "editor", "consistency", "rewrite", "polish", "surgical",
-                 "repair", "style", "volume_review", "volume_fix", "volume_recheck")
+                 "repair", "style", "volume_review", "volume_fix", "volume_recheck", "author")
 _UNBOUND = {"endpoint": None, "model": None}
 _DEFAULT_MODELS = {k: dict(_UNBOUND) for k in _PROCESS_KEYS}
 
