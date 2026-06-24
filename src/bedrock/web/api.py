@@ -605,6 +605,32 @@ def _execute_proposal(conn, wd, action_type, payload):
         bid = create_beat(conn, chapter_id=cid, sequence=1, purpose=purpose,
                           pov_character_id=beat.get("pov_character_id"))
         return {"ok": True, "chapter_id": cid, "beat_id": bid}
+    if action_type == "batch_create_chapters":
+        vid = int(payload["volume_id"])
+        chapters = payload.get("chapters") or []
+        if not chapters:
+            raise ValueError("chapters 数组为空")
+        created = []
+        for ch in chapters:
+            gnum = int(ch["global_number"])
+            purpose = (ch.get("beat") or {}).get("purpose")
+            if not purpose or len(purpose) < 10:
+                raise ValueError(f"章 {gnum} 的 beat.purpose 需 ≥10 字")
+            if conn.execute("SELECT id FROM chapter WHERE global_number=?", (gnum,)).fetchone():
+                raise ValueError(f"章节 {gnum} 已存在")
+            cid = create_chapter(conn, volume_id=vid, global_number=gnum,
+                                 title=ch.get("title") or f"第{gnum}章")
+            bid = create_beat(conn, chapter_id=cid, sequence=1, purpose=purpose,
+                              pov_character_id=(ch.get("beat") or {}).get("pov_character_id"))
+            created.append({"global_number": gnum, "chapter_id": cid, "beat_id": bid})
+        return {"ok": True, "created": created, "count": len(created)}
+    if action_type == "create_volume":
+        from src.bedrock.repositories.plot_tree import create_volume
+        vid = create_volume(conn, number=int(payload["number"]), name=payload["name"],
+                            chapter_start=int(payload["chapter_start"]),
+                            chapter_end=int(payload["chapter_end"]),
+                            volume_type=payload.get("volume_type") or "opening")
+        return {"ok": True, "volume_id": vid}
     if action_type == "trigger_run":
         gnum = int(payload["global_number"])
         ch = conn.execute("SELECT id, volume_id FROM chapter WHERE global_number=?", (gnum,)).fetchone()
@@ -617,6 +643,42 @@ def _execute_proposal(conn, wd, action_type, payload):
         bid = int(payload["beat_id"])
         update_beat_meta(conn, bid, purpose=payload.get("purpose"))
         return {"ok": True, "beat_id": bid}
+    if action_type == "create_character":
+        from src.bedrock.repositories.character import create_character
+        if conn.execute("SELECT id FROM character WHERE name=?", (payload["name"],)).fetchone():
+            raise ValueError(f"角色「{payload['name']}」已存在")
+        cid = create_character(conn, name=payload["name"], pronoun=payload["pronoun"],
+                               role=payload["role"], gender=payload.get("gender"),
+                               personality=payload.get("personality", ""), goals=payload.get("goals", ""))
+        return {"ok": True, "character_id": cid}
+    if action_type == "create_location":
+        from src.bedrock.repositories.worldbook import add_location
+        lid = add_location(conn, name=payload["name"], loc_type=payload.get("loc_type", ""),
+                           description=payload.get("description", ""))
+        return {"ok": True, "location_id": lid}
+    if action_type == "create_theme":
+        from src.bedrock.repositories.worldbook import add_theme
+        add_theme(conn, name=payload["name"], description=payload.get("description", ""),
+                  evolution=payload.get("evolution", ""))
+        return {"ok": True, "theme": payload["name"]}
+    if action_type == "create_motif":
+        from src.bedrock.repositories.worldbook import add_motif
+        add_motif(conn, name=payload["name"], meaning=payload.get("meaning", ""),
+                  evolution=payload.get("evolution", ""))
+        return {"ok": True, "motif": payload["name"]}
+    if action_type == "set_worldbook_constant":
+        from src.bedrock.repositories.worldbook import add_constant
+        add_constant(conn, key=payload["key"], value=payload["value"],
+                     source_note="作者助手 agent 提案")
+        return {"ok": True, "key": payload["key"]}
+    if action_type == "set_master_outline":
+        from src.bedrock.repositories.outline import update_master_outline
+        update_master_outline(conn,
+                              theme_evolution=payload.get("theme_evolution"),
+                              key_arcs=payload.get("key_arcs"),
+                              key_milestones=payload.get("key_milestones"),
+                              rhythm_curve=payload.get("rhythm_curve"))
+        return {"ok": True}
     raise ValueError(f"未知 action_type: {action_type}")
 
 
