@@ -145,94 +145,115 @@ const PROC_LABELS: Record<string, string> = {
 </script>
 
 <template>
-  <NSpin :show="loading">
-    <NSpace align="center" style="margin-bottom:12px">
-      <strong>运行监控</strong>
-      <NSelect v-model:value="chapterFilter" :options="([{ label: '全部章', value: null }, ...Array.from(new Set(runs.map(r => r.chapter_global).filter((x): x is number => x != null))).map(c => ({ label: '第' + c + '章', value: c }))] as any[])"
-               size="small" style="width:140px" placeholder="按章过滤" />
-      <NButton size="small" @click="refreshAll">↻ 刷新</NButton>
-      <NTag v-if="runs.some(r => r.status === 'running')" size="small" type="info" :bordered="false">实时轮询中(2s)</NTag>
-    </NSpace>
+  <div class="runs-wrap">
+   <NSpin :show="loading" style="height:100%">
+    <div class="runs-inner">
+      <div class="runs-header">
+        <NSpace align="center">
+          <strong>运行监控</strong>
+          <NSelect v-model:value="chapterFilter" :options="([{ label: '全部章', value: null }, ...Array.from(new Set(runs.map(r => r.chapter_global).filter((x): x is number => x != null))).map(c => ({ label: '第' + c + '章', value: c }))] as any[])"
+                   size="small" style="width:140px" placeholder="按章过滤" />
+          <NButton size="small" @click="refreshAll">↻ 刷新</NButton>
+          <NTag v-if="runs.some(r => r.status === 'running')" size="small" type="info" :bordered="false">实时轮询中(2s)</NTag>
+        </NSpace>
+      </div>
 
-    <div class="runs-layout">
-      <!-- 左:run 列表 -->
-      <NCard size="small" class="runs-list" :content-style="{ background: 'var(--br-card)' }">
-        <NEmpty v-if="!runs.length" description="暂无运行记录(runner 未发射或未跑)" size="small" />
-        <div v-for="r in runs" :key="r.id" class="run-item" :class="{ active: r.id === selectedId }" @click="selectedId = r.id">
-          <div class="run-head">
-            <span class="run-id">#{{ r.id }}</span>
-            <NTag size="tiny" :type="statusType(r.status)" :bordered="false">{{ r.status }}</NTag>
-          </div>
-          <div class="run-meta">第{{ r.chapter_global ?? '-' }}章 · {{ r.event_count }} 事件 · {{ r.runner }}</div>
-          <div class="run-meta">▸ {{ r.current_node || 'start' }}</div>
-          <div class="run-ts">{{ r.started_at }}</div>
-        </div>
-      </NCard>
-
-      <!-- 右:触发写作 + 流程图 + 时间线 -->
-      <div class="runs-main">
-        <NCard title="触发写作" size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
-          <div class="hint" style="margin-bottom:8px">
-            选已有章节(需有 beat 契约)→ runner 异步跑,事件实时出现在下方。「writing」章会重写;「completed」会覆盖;新章需先在 DB 建章+beat。
-          </div>
-          <NSpace align="center" :size="8">
-            <NSelect v-model:value="triggerChapter" :options="chapterOpts()" placeholder="选章节"
-                     size="small" filterable style="min-width:280px" />
-            <span class="hint">dry-run</span>
-            <NSwitch v-model:value="triggerDryRun" size="small" />
-            <NButton type="primary" size="small" :loading="starting" :disabled="triggerChapter==null" @click="startRun">
-              {{ triggerDryRun ? 'dry-run 跑通' : '开始写作' }}
-            </NButton>
-            <NTag v-if="runs.some(r => r.status==='running')" size="tiny" type="warning" :bordered="false">有 run 进行中(start_run 会复用)</NTag>
-          </NSpace>
-        </NCard>
-
-        <NCard size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
-          <div style="height:220px">
-            <VueFlow :nodes="flowNodes" :edges="flowEdges" :nodes-draggable="false" :nodes-connectable="false"
-                     :elements-selectable="false" :pan-on-drag="true" :zoom-on-scroll="true" fit-view-on-init>
-              <Background :gap="20" :size="1" pattern-color="#888" />
-            </VueFlow>
-          </div>
-        </NCard>
-
-        <NCard v-if="telemetry" title="LLM 遥测(成本核算)" size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
-          <div class="tel-summary">
-            <span><strong>{{ telemetry.llm_calls }}</strong> 次 LLM 调用</span>
-            <span>入 <strong>{{ fmtTokens(telemetry.tokens_in) }}</strong> token</span>
-            <span>出 <strong>{{ fmtTokens(telemetry.tokens_out) }}</strong> token</span>
-            <span>LLM 耗时 <strong>{{ fmtMs(telemetry.llm_time_ms) }}</strong></span>
-            <span v-if="telemetry.run_duration_s != null">总 <strong>{{ fmtMs(telemetry.run_duration_s * 1000) }}</strong></span>
-          </div>
-          <div v-if="telemetry.by_process && Object.keys(telemetry.by_process).length" class="tel-procs">
-            <div v-for="(p, key) in telemetry.by_process" :key="key" class="tel-proc">
-              <span class="tel-proc-name">{{ PROC_LABELS[String(key)] || key }}</span>
-              <span class="tel-proc-model">{{ p.endpoint }}/{{ p.model || '?' }}</span>
-              <span>{{ p.calls }}× · 入{{ fmtTokens(p.tokens_in) }} 出{{ fmtTokens(p.tokens_out) }} · {{ fmtMs(p.latency_ms) }}</span>
+      <div class="runs-layout">
+        <!-- 左:run 列表 -->
+        <NCard size="small" class="runs-list-card" :content-style="{ background: 'var(--br-card)', padding: '10px', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }">
+          <div class="runs-list">
+            <NEmpty v-if="!runs.length" description="暂无运行记录(runner 未发射或未跑)" size="small" />
+            <div v-for="r in runs" :key="r.id" class="run-item" :class="{ active: r.id === selectedId }" @click="selectedId = r.id">
+              <div class="run-head">
+                <span class="run-id">#{{ r.id }}</span>
+                <NTag size="tiny" :type="statusType(r.status)" :bordered="false">{{ r.status }}</NTag>
+              </div>
+              <div class="run-meta">第{{ r.chapter_global ?? '-' }}章 · {{ r.event_count }} 事件 · {{ r.runner }}</div>
+              <div class="run-meta">▸ {{ r.current_node || 'start' }}</div>
+              <div class="run-ts">{{ r.started_at }}</div>
             </div>
           </div>
-          <div v-else class="tel-empty">无 LLM 调用(dry-run 或纯确定性章)</div>
         </NCard>
 
-        <NCard title="事件时间线" size="small" :content-style="{ background: 'var(--br-card)' }">
-          <NEmpty v-if="!events.length" description="选中一个 run 查看事件" size="small" />
-          <div v-for="e in events" :key="e.id" class="ev-row">
-            <span class="ev-seq">{{ e.seq }}</span>
-            <NTag size="tiny" :type="e.kind === 'error' ? 'error' : e.kind === 'l2_verdict' ? (e.payload.passed ? 'success' : 'warning') : 'info'"
-                  :bordered="false">{{ e.node }}</NTag>
-            <span class="ev-kind">{{ e.kind }}</span>
-            <span class="ev-payload">{{ payloadSummary(e.payload) }}</span>
-            <span class="ev-ts">{{ e.ts }}</span>
-          </div>
-        </NCard>
+        <!-- 右:触发写作 + 流程图 + 遥测 + 时间线 -->
+        <div class="runs-main">
+          <NCard title="触发写作" size="small" class="r-card" :content-style="{ background: 'var(--br-card)' }">
+            <div class="hint" style="margin-bottom:8px">
+              选已有章节(需有 beat 契约)→ runner 异步跑,事件实时出现在下方。「writing」章会重写;「completed」会覆盖;新章需先在 DB 建章+beat。
+            </div>
+            <NSpace align="center" :size="8">
+              <NSelect v-model:value="triggerChapter" :options="chapterOpts()" placeholder="选章节"
+                       size="small" filterable style="min-width:280px" />
+              <span class="hint">dry-run</span>
+              <NSwitch v-model:value="triggerDryRun" size="small" />
+              <NButton type="primary" size="small" :loading="starting" :disabled="triggerChapter==null" @click="startRun">
+                {{ triggerDryRun ? 'dry-run 跑通' : '开始写作' }}
+              </NButton>
+              <NTag v-if="runs.some(r => r.status==='running')" size="tiny" type="warning" :bordered="false">有 run 进行中(start_run 会复用)</NTag>
+            </NSpace>
+          </NCard>
+
+          <NCard size="small" class="r-card" :content-style="{ background: 'var(--br-card)' }">
+            <div style="height:220px">
+              <VueFlow :nodes="flowNodes" :edges="flowEdges" :nodes-draggable="false" :nodes-connectable="false"
+                       :elements-selectable="false" :pan-on-drag="true" :zoom-on-scroll="true" fit-view-on-init>
+                <Background :gap="20" :size="1" pattern-color="#888" />
+              </VueFlow>
+            </div>
+          </NCard>
+
+          <NCard v-if="telemetry" title="LLM 遥测(成本核算)" size="small" class="r-card" :content-style="{ background: 'var(--br-card)' }">
+            <div class="tel-summary">
+              <span><strong>{{ telemetry.llm_calls }}</strong> 次 LLM 调用</span>
+              <span>入 <strong>{{ fmtTokens(telemetry.tokens_in) }}</strong> token</span>
+              <span>出 <strong>{{ fmtTokens(telemetry.tokens_out) }}</strong> token</span>
+              <span>LLM 耗时 <strong>{{ fmtMs(telemetry.llm_time_ms) }}</strong></span>
+              <span v-if="telemetry.run_duration_s != null">总 <strong>{{ fmtMs(telemetry.run_duration_s * 1000) }}</strong></span>
+            </div>
+            <div v-if="telemetry.by_process && Object.keys(telemetry.by_process).length" class="tel-procs">
+              <div v-for="(p, key) in telemetry.by_process" :key="key" class="tel-proc">
+                <span class="tel-proc-name">{{ PROC_LABELS[String(key)] || key }}</span>
+                <span class="tel-proc-model">{{ p.endpoint }}/{{ p.model || '?' }}</span>
+                <span>{{ p.calls }}× · 入{{ fmtTokens(p.tokens_in) }} 出{{ fmtTokens(p.tokens_out) }} · {{ fmtMs(p.latency_ms) }}</span>
+              </div>
+            </div>
+            <div v-else class="tel-empty">无 LLM 调用(dry-run 或纯确定性章)</div>
+          </NCard>
+
+          <NCard title="事件时间线" size="small" class="r-card ev-card"
+                 :content-style="{ background: 'var(--br-card)', display: 'flex', flexDirection: 'column', minHeight: '0', flex: '1', overflowY: 'auto', padding: '8px 12px 12px' }">
+            <NEmpty v-if="!events.length" description="选中一个 run 查看事件" size="small" />
+            <div v-for="e in events" :key="e.id" class="ev-row">
+              <span class="ev-seq">{{ e.seq }}</span>
+              <NTag size="tiny" :type="e.kind === 'error' ? 'error' : e.kind === 'l2_verdict' ? (e.payload.passed ? 'success' : 'warning') : 'info'"
+                    :bordered="false">{{ e.node }}</NTag>
+              <span class="ev-kind">{{ e.kind }}</span>
+              <span class="ev-payload">{{ payloadSummary(e.payload) }}</span>
+              <span class="ev-ts">{{ e.ts }}</span>
+            </div>
+          </NCard>
+        </div>
       </div>
     </div>
-  </NSpin>
+   </NSpin>
+  </div>
 </template>
 
 <style scoped>
-.runs-layout { display: grid; grid-template-columns: 260px 1fr; gap: 12px; }
-.runs-list { max-height: 70vh; overflow-y: auto; }
+.runs-wrap { height: 100%; min-height: 0; }
+.runs-wrap :deep(.n-spin-container) { height: 100%; }
+.runs-wrap :deep(.n-spin-content) { height: 100%; }
+.runs-inner { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.runs-header { flex-shrink: 0; margin-bottom: 10px; }
+.runs-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 260px 1fr; gap: 12px; }
+/* 左:run 列表卡铺满 + 内部滚动 */
+.runs-list-card { display: flex; flex-direction: column; min-height: 0; }
+.runs-list-card :deep(.n-card-content) { display: flex; flex-direction: column; min-height: 0; }
+.runs-list { flex: 1; min-height: 0; overflow-y: auto; }
+/* 右:主区铺满,各卡 content-sized,事件时间线 flex:1 限高滚动 */
+.runs-main { display: flex; flex-direction: column; gap: 12px; min-height: 0; height: 100%; }
+.r-card { flex-shrink: 0; }
+.ev-card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
 .run-item { padding: 8px 10px; border-radius: 6px; cursor: pointer; border: 1px solid var(--br-border-soft); margin-bottom: 6px; }
 .run-item:hover { background: var(--br-elevated, var(--br-sider)); }
 .run-item.active { border-color: var(--br-primary); background: var(--br-elevated, var(--br-sider)); }

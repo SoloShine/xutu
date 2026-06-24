@@ -191,7 +191,7 @@ function ppayload(p: Proposal): string {
 .chat-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 240px 1fr; gap: 12px; }
 /* 左:会话卡铺满,内部滚动 */
 .sess-card { display: flex; flex-direction: column; min-height: 0; }
-.sess-card :deep(.n-card__content) { display: flex; flex-direction: column; min-height: 0; }
+.sess-card :deep(.n-card-content) { display: flex; flex-direction: column; min-height: 0; }
 .sess-list { flex: 1; min-height: 0; overflow-y: auto; }
 .sess-item { padding: 8px 10px; border-radius: 6px; cursor: pointer; border: 1px solid var(--br-border-soft); margin-bottom: 6px; }
 .sess-item:hover { background: var(--br-elevated, var(--br-sider)); }
@@ -201,7 +201,7 @@ function ppayload(p: Proposal): string {
 /* 右:主区铺满 */
 .chat-main { display: flex; flex-direction: column; gap: 10px; min-height: 0; height: 100%; }
 .msg-card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
-.msg-card :deep(.n-card__content) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.msg-card :deep(.n-card-content) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .msg-stream { flex: 1; min-height: 0; overflow-y: auto; padding-right: 4px; }
 .msg-row { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--br-border-soft); }
 .msg-row.user { background: color-mix(in srgb, var(--br-primary) 6%, transparent); border-radius: 6px; padding: 8px 6px; }
