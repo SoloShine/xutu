@@ -13,15 +13,51 @@ from src.bedrock.orchestration.boot_context import get_chapter_boot_context
 from src.bedrock.orchestration.l2_pipeline import run_l2
 from src.bedrock.orchestration.persist_gate import verify_chapter_persisted
 from src.bedrock.orchestration.review_flag import (
-    ensure_flag, mark_unresolved, mark_forced_persist_failed,
+    ensure_flag, mark_unresolved, mark_forced_persist_failed, mark_polish_broke_beat,
 )
-from src.bedrock.repositories.plot_tree import set_chapter_status
+from src.bedrock.repositories.plot_tree import set_chapter_status, list_paragraphs_in_chapter
 from src.bedrock.workflow.config_repo import get_workflow_config
 from src.bedrock.workflow.run_repo import start_run, emit_event, end_run
-from src.bedrock.__main__ import _commit_paragraphs, _export_chapter_json   # 复用全套入库 guard
+from src.bedrock.__main__ import _commit_paragraphs, _export_chapter_json, _apply_paragraph_ops, _check_proper_nouns   # 复用全套入库 guard
 
 from .llm import get_writer_model
-from .prompts import writer_prompt, editor_prompt
+from .prompts import writer_prompt, editor_prompt, consistency_prompt
+
+
+def _parse_ops_list(raw: str):
+    """从 LLM 输出提取首个完整 JSON 数组(端口自 .js parseOpsList)。非数组/解析失败 → None。"""
+    if not isinstance(raw, str):
+        return None
+    t = raw.strip()
+    i = t.find("[")
+    if i < 0:
+        return None
+    depth = 0
+    in_str = False
+    esc = False
+    for j in range(i, len(t)):
+        c = t[j]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = False
+            continue
+        if c == '"':
+            in_str = True
+        elif c == "[":
+            depth += 1
+        elif c == "]":
+            depth -= 1
+            if depth == 0:
+                try:
+                    v = json.loads(t[i:j + 1])
+                    return v if isinstance(v, list) else None
+                except Exception:
+                    return None
+    return None
 
 
 def make_nodes(conn, project, export_path=None, dry_run=False):
@@ -91,6 +127,89 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
         return {"prose": prose, "editor_iter": state["editor_iter"] + 1, "phase": "revise",
                 "rejected": False, "violations_feedback": ""}
 
+    def consistency(state):
+        # 角色正典一致性编辑(复刻 V1 EditAgent)。gated:L2 已过且有角色正典;否则跳过(章节不动)。
+        # 单次 LLM 出 ops 数组 → 经 edit-paragraphs 落 → 重 L2;破 L2 则回退 pre 快照 + mark-polish-broke-beat。
+        report = state.get("report") or {}
+        ctx = state.get("ctx") or {}
+        chars = ctx.get("characters") or []
+        if dry_run:
+            _emit(state["run_id"], "consistency", "skip", {"dry": True})
+            return {}
+        if not report.get("passed_hard_gate") or not chars:
+            _emit(state["run_id"], "consistency", "skip",
+                  {"reason": "no-canon" if not chars else "not-passed"})
+            return {}
+
+        # pre-consistency 全文快照(ops 破 L2 时回退用,保 editor 终态)
+        rows = list_paragraphs_in_chapter(conn, state["chapter_id"])
+        pre_prose = "\n\n".join((r["text"] or "") for r in rows)
+        para_view = [{"para_id": r["para_id"], "seq": r["seq"], "text": r["text"]}
+                     for r in rows]
+
+        prompt = consistency_prompt(ctx, state["chapter_global"], state["volume_id"], para_view)
+        model = get_writer_model(state["config"], "consistency")
+        resp = model.invoke(prompt)
+        raw = resp.content if hasattr(resp, "content") else str(resp)
+        ops = _parse_ops_list(raw)
+        if not ops:
+            _emit(state["run_id"], "consistency", "skip", {"reason": "no-ops"})
+            return {}
+
+        # 落 ops(事务化,坏 op 内部 rollback+sys.exit → catch 跳过,章不动)
+        try:
+            _apply_paragraph_ops(conn, state["chapter_id"], ops)
+        except SystemExit as e:
+            _emit(state["run_id"], "consistency", "error", {"apply_rejected": str(e)[:120]})
+            return {}
+
+        after = run_l2(conn, state["chapter_id"])   # 信任锚复检(gate 2.5)
+        after_dict = asdict(after)
+        _emit(state["run_id"], "l2", "l2_verdict",
+              {"gate": "consistency", "passed": bool(after_dict.get("passed_hard_gate")),
+               "violations": len(after_dict.get("beat_violations") or [])})
+        if after_dict.get("passed_hard_gate"):
+            _emit(state["run_id"], "consistency", "applied", {"ops": len(ops)})
+            return {"report": after_dict}   # 取 post-consistency L2
+        # ops 破 L2 → 回退 pre 快照 + 留旗;report 保持 pre(仍 passed)
+        if pre_prose:
+            try:
+                _commit_paragraphs(conn, state["chapter_id"], pre_prose)
+            except SystemExit as e:
+                _emit(state["run_id"], "consistency", "error", {"revert_failed": str(e)[:120]})
+            else:
+                mark_polish_broke_beat(conn, state["chapter_id"])
+        _emit(state["run_id"], "consistency", "revert",
+              {"ops": len(ops), "reason": "ops-broke-l2"})
+        return {}   # report 不变(pre,passed);prose 已回退
+
+    def proper_nouns(state):
+        # 专名硬校验(零 LLM,确定性 Unit D)。gated:L2 已过;否则跳过。
+        # check-proper-nouns 产出 Tier1 update ops(variant→canonical 全替换,不破结构)+ Tier2 escalate。
+        # Tier1 ops 经 edit-paragraphs 落(留 amendment+advisory_drift 痕迹);Tier2 escalate emit 供卷审,不自动改。
+        report = state.get("report") or {}
+        if dry_run:
+            _emit(state["run_id"], "proper_nouns", "skip", {"dry": True})
+            return {}
+        if not report.get("passed_hard_gate"):
+            _emit(state["run_id"], "proper_nouns", "skip", {"reason": "not-passed"})
+            return {}
+
+        pn = _check_proper_nouns(conn, state["chapter_id"])   # 确定性,零 LLM
+        ops = pn.get("ops") or []
+        escalate = pn.get("escalate") or []
+        applied = False
+        if ops:
+            try:
+                _apply_paragraph_ops(conn, state["chapter_id"], ops)
+                applied = True
+            except SystemExit as e:
+                _emit(state["run_id"], "proper_nouns", "error", {"apply_rejected": str(e)[:120]})
+        _emit(state["run_id"], "proper_nouns", "result",
+              {"autoedit": pn.get("autoedit_count", 0), "escalate": len(escalate),
+               "applied": len(ops) if applied else 0})
+        return {}
+
     def commit(state):
         if dry_run:
             _emit(state["run_id"], "commit", "enter", {"iter": state["iter"], "dry": True})
@@ -120,7 +239,8 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
             fb = "; ".join(f"{v.get('beat_id','?')}:{v.get('kind','?')}-{v.get('detail','')[:60]}"
                            for v in violations) or "结构门禁未过(见 run-l2)"
         _emit(state["run_id"], "l2", "l2_verdict",
-              {"passed": passed, "violations": len(violations),
+              {"gate": "write" if state.get("phase") == "write" else "revise",
+               "passed": passed, "violations": len(violations),
                "words": (rdict.get("metrics") or {}).get("word_count")})
         return {"report": rdict, "violations_feedback": fb}
 
@@ -152,7 +272,8 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
                                      chapter_id, state["chapter_global"], "draft")
             except Exception as e:
                 print(f"[runner] draft 备份失败(不阻塞): {e}", file=sys.stderr)
-        _emit(run_id, "finalize", "enter", {"persisted": ok, "passed": passed})
+        _emit(run_id, "finalize", "enter",
+              {"gate": "finalize", "persisted": ok, "passed": passed})
         try:
             end_run(conn, run_id, status, current_node="finalize")
         except Exception as e:
@@ -163,5 +284,5 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
                            "iterations": state["iter"],
                            "editor_iterations": state.get("editor_iter", 0)}}
 
-    return {"boot": boot, "write": write, "revise": revise, "commit": commit,
-            "l2_check": l2_check, "finalize": finalize}
+    return {"boot": boot, "write": write, "revise": revise, "consistency": consistency,
+            "proper_nouns": proper_nouns, "commit": commit, "l2_check": l2_check, "finalize": finalize}

@@ -75,6 +75,36 @@ def writer_prompt(ctx: dict, chapter_global: int, volume_id: int,
     return "\n".join(p for p in parts if p is not None)
 
 
+def consistency_prompt(ctx: dict, chapter_global: int, volume_id: int, paragraphs: list) -> str:
+    """构造角色正典一致性检查 prompt(单次,返 ops JSON 数组)。
+
+    移植自 .js consistencyPrompt。runner 无 tool-loop——段落(含 para_id)直接喂入,
+    LLM 只输出 ops 数组(update/delete),由 Python 节点经 edit-paragraphs 落 + 重 L2 + 必要回退。
+    """
+    chars = ctx.get("characters") or []
+    canon = "；".join(
+        f"{c.get('name')}(代词{c.get('pronoun')}"
+        f"{'/' + c.get('gender') if c.get('gender') else ''},{c.get('role')})"
+        for c in chars)
+    parts = [
+        f"# 角色正典一致性检查 | 本章=第{chapter_global}章 卷={volume_id}",
+        f"【角色正典·判据】{canon}",
+        "逐段检查并修正:",
+        "  · 代词/性别:每个角色的他/她必须匹配正典(注意代词消解——\"他\"靠近某角色未必指该角色,要判指代)。",
+        "  · 称呼/身份一致:角色头衔、职业、关系不得前后矛盾。",
+        "  · 设定矛盾:与角色 personality/role 冲突的描写。",
+        "**只改不一致处,不动其余。**代词消解要准(别把指代某角色的\"他\"误改成\"她\")。",
+        "",
+        "【本章当前段落(含 para_id,只读)】",
+        json.dumps(paragraphs, ensure_ascii=False, indent=2),
+        "",
+        "**返回一个 JSON ops 数组**(不要正文/解释/思考过程/markdown 围栏):",
+        '  [{"op":"update","para_id":N,"text":"修正后整段"}, {"op":"delete","para_id":N}]',
+        "无不一致则返回 []。单段多处错用多个 update op。只返回数组本身(以 [ 开头、] 结尾)。",
+    ]
+    return "\n".join(parts)
+
+
 def editor_prompt(ctx: dict, chapter_global: int, volume_id: int, current_prose: str,
                   word_target: tuple, violations_feedback: str = "") -> str:
     """构造 editor(revise)单次修订 prompt。

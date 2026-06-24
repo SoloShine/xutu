@@ -31,11 +31,13 @@ def _cond_commit(state):
 def _cond_after_l2(state):
     """L2 后(共享,phase 区分):
     write 阶段:过→revise(交 editor 做文风+二次复核);未过且 iter<cap→回 write;到 cap→revise(editor 接管结构)。
-    revise 阶段:过→finalize;未过且 editor_iter<editor_cap→回 revise;到 cap→finalize(mark-unresolved)。"""
+    revise 阶段:过→consistency(角色正典一致性 ops);未过且 editor_iter<editor_cap→回 revise;到 cap→finalize(mark-unresolved)。"""
     report = state.get("report") or {}
     phase = state.get("phase", "write")
     if report.get("passed_hard_gate"):
-        return "revise" if phase == "write" else "finalize"
+        if phase == "write":
+            return "revise"
+        return "consistency" if phase == "revise" else "finalize"
     if phase == "revise":
         return "revise" if state["editor_iter"] < state["editor_cap"] else "finalize"
     return "write" if state["iter"] < state["cap"] else "revise"
@@ -52,6 +54,8 @@ def build_graph(conn, project, export_path=None, dry_run=False):
     g.add_node("boot", nodes["boot"])
     g.add_node("write", nodes["write"])
     g.add_node("revise", nodes["revise"])
+    g.add_node("consistency", nodes["consistency"])
+    g.add_node("proper_nouns", nodes["proper_nouns"])
     g.add_node("commit", nodes["commit"])
     g.add_node("l2_check", nodes["l2_check"])
     g.add_node("finalize", nodes["finalize"])
@@ -63,16 +67,18 @@ def build_graph(conn, project, export_path=None, dry_run=False):
     g.add_conditional_edges("commit", _cond_commit,
                             {"write": "write", "revise": "revise", "l2_check": "l2_check", "finalize": "finalize"})
     g.add_conditional_edges("l2_check", _cond_after_l2,
-                            {"write": "write", "revise": "revise", "finalize": "finalize"})
+                            {"write": "write", "revise": "revise", "consistency": "consistency", "finalize": "finalize"})
+    g.add_edge("consistency", "proper_nouns")
+    g.add_edge("proper_nouns", "finalize")
     g.add_edge("finalize", END)
 
     # recursion_limit:write 子图(write/commit/l2 ≈3 节点 * writer cap)+ revise 子图(* editor cap)
-    # + boot/finalize + 裕量。从 work-scope config 读双 cap。
+    # + consistency + proper_nouns(各单趟)+ boot/finalize + 裕量。从 work-scope config 读双 cap。
     try:
         cfg = get_workflow_config(conn, None)
         wcap = int((cfg.get("caps") or {}).get("writer", 3)) or 3
         ecap = int((cfg.get("caps") or {}).get("editor", 5)) or 5
     except Exception:
         wcap, ecap = 3, 5
-    limit = max(25, (wcap + ecap) * 4 + 20)
+    limit = max(25, (wcap + ecap) * 4 + 30)
     return g.compile(checkpointer=InMemorySaver()), limit
