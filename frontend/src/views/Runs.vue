@@ -22,6 +22,7 @@ const runs = ref<RunSummary[]>([])
 const selectedId = ref<number | null>(null)
 const run = ref<{ status: string; current_node: string; chapter_global: number | null; started_at: string; ended_at: string | null } | null>(null)
 const events = ref<RunEvent[]>([])
+const telemetry = ref<any>(null)
 const loading = ref(true)
 const chapterFilter = ref<number | null>(null)
 let pollTimer: any = null
@@ -67,10 +68,10 @@ async function loadRuns() {
 }
 
 async function loadRun() {
-  if (selectedId.value == null) { run.value = null; events.value = []; return }
+  if (selectedId.value == null) { run.value = null; events.value = []; telemetry.value = null; return }
   try {
     const r = await api.run(props.wid, selectedId.value) as any
-    run.value = r.run; events.value = r.events
+    run.value = r.run; events.value = r.events; telemetry.value = r.telemetry ?? null
   } catch (e: any) { msg.error('加载 run 失败: ' + (e.message || e)) }
 }
 
@@ -103,6 +104,19 @@ function payloadSummary(p: Record<string, any>): string {
   const keys = Object.keys(p)
   if (!keys.length) return ''
   return keys.map(k => `${k}=${JSON.stringify(p[k])}`).join(' ')
+}
+function fmtTokens(n: any): string {
+  if (n == null) return '-'
+  const x = Number(n); if (!isFinite(x)) return String(n)
+  return x >= 1000 ? (x / 1000).toFixed(1) + 'k' : String(x)
+}
+function fmtMs(ms: any): string {
+  if (ms == null) return '-'
+  const s = Number(ms) / 1000; if (!isFinite(s)) return String(ms)
+  return s >= 60 ? Math.round(s / 60) + '分' + Math.round(s % 60) + '秒' : s.toFixed(1) + '秒'
+}
+const PROC_LABELS: Record<string, string> = {
+  write: 'Write', revise: 'Revise', consistency: 'Consistency',
 }
 </script>
 
@@ -142,6 +156,24 @@ function payloadSummary(p: Record<string, any>): string {
           </div>
         </NCard>
 
+        <NCard v-if="telemetry" title="LLM 遥测(成本核算)" size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
+          <div class="tel-summary">
+            <span><strong>{{ telemetry.llm_calls }}</strong> 次 LLM 调用</span>
+            <span>入 <strong>{{ fmtTokens(telemetry.tokens_in) }}</strong> token</span>
+            <span>出 <strong>{{ fmtTokens(telemetry.tokens_out) }}</strong> token</span>
+            <span>LLM 耗时 <strong>{{ fmtMs(telemetry.llm_time_ms) }}</strong></span>
+            <span v-if="telemetry.run_duration_s != null">总 <strong>{{ fmtMs(telemetry.run_duration_s * 1000) }}</strong></span>
+          </div>
+          <div v-if="telemetry.by_process && Object.keys(telemetry.by_process).length" class="tel-procs">
+            <div v-for="(p, key) in telemetry.by_process" :key="key" class="tel-proc">
+              <span class="tel-proc-name">{{ PROC_LABELS[String(key)] || key }}</span>
+              <span class="tel-proc-model">{{ p.endpoint }}/{{ p.model || '?' }}</span>
+              <span>{{ p.calls }}× · 入{{ fmtTokens(p.tokens_in) }} 出{{ fmtTokens(p.tokens_out) }} · {{ fmtMs(p.latency_ms) }}</span>
+            </div>
+          </div>
+          <div v-else class="tel-empty">无 LLM 调用(dry-run 或纯确定性章)</div>
+        </NCard>
+
         <NCard title="事件时间线" size="small" :content-style="{ background: 'var(--br-card)' }">
           <NEmpty v-if="!events.length" description="选中一个 run 查看事件" size="small" />
           <div v-for="e in events" :key="e.id" class="ev-row">
@@ -173,6 +205,13 @@ function payloadSummary(p: Record<string, any>): string {
 .ev-kind { color: var(--br-text2); }
 .ev-payload { flex: 1; color: var(--br-text3); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ev-ts { color: var(--br-text3); font-size: 10px; }
+.tel-summary { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--br-text2); margin-bottom: 8px; }
+.tel-summary strong { color: var(--br-text1); }
+.tel-procs { display: flex; flex-direction: column; gap: 4px; }
+.tel-proc { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--br-text3); border-top: 1px solid var(--br-border-soft); padding-top: 4px; }
+.tel-proc-name { font-weight: 600; color: var(--br-text1); min-width: 76px; }
+.tel-proc-model { color: var(--br-text2); font-family: monospace; font-size: 11px; }
+.tel-empty { font-size: 12px; color: var(--br-text3); }
 </style>
 
 <!-- Vue Flow 节点主题化(非 scoped,穿透 VueFlow 内部)。
