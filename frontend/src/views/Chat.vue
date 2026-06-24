@@ -200,7 +200,8 @@ function ppayload(p: Proposal): string {
 .sess-meta { font-size: 11px; color: var(--br-text3); margin-top: 2px; }
 /* 右:主区铺满 */
 .chat-main { display: flex; flex-direction: column; gap: 10px; min-height: 0; height: 100%; }
-.msg-card { min-height: 0; }
+.msg-card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.msg-card :deep(.n-card__content) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .msg-stream { flex: 1; min-height: 0; overflow-y: auto; padding-right: 4px; }
 .msg-row { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--br-border-soft); }
 .msg-row.user { background: color-mix(in srgb, var(--br-primary) 6%, transparent); border-radius: 6px; padding: 8px 6px; }
