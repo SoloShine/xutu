@@ -59,7 +59,7 @@ if (!report.passed_hard_gate) {
     { phase: 'Write', stdin: JSON.stringify(report.beat_violations || []) })
   log(`writer 未收敛(L2 仍不过,${writer.iterations || '?'} 轮)→ mark-unresolved`)
 } else {
-  log(`writer 收敛: 结构 clean, ${writer.word_count || '?'} 字 → 进 editor`)
+  log(`writer 收敛: 结构 clean, ${writer.word_count || '?'} 字, ${writer.iterations || '?'} 轮 → 进 editor`)
 }
 
 // 3. Revise：stateful 工具型 editor agent(内部循环自纠错,替代失忆轮)。
@@ -83,7 +83,7 @@ if (!report.passed_hard_gate) {
     { phase: 'Revise', stdin: JSON.stringify(report.beat_violations || []) })
   log(`editor 未收敛(L2 仍不过,${editor.iterations || '?'} 轮)→ mark-unresolved`)
 } else {
-  log(`editor 收敛: L2-clean${editor.style_drift_remaining ? `, 文风仍 ${editor.style_drift_remaining} 项漂移(advisory)` : ''}`)
+  log(`editor 收敛: L2-clean, ${editor.iterations || '?'} 轮${editor.style_drift_remaining ? `, 文风仍 ${editor.style_drift_remaining} 项漂移(advisory)` : ''}`)
 }
 
 // 4b. Consistency：角色正典一致性编辑（复刻 V1 EditAgent，每章跑）。
