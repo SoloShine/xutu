@@ -5,7 +5,7 @@
      数据由 runner(.js 薄发射 / 将来 LangGraph)边跑边写 workflow_run_event。 -->
 <script setup lang="ts">
 import { ref, watch, computed, onUnmounted } from 'vue'
-import { NSpin, NEmpty, NCard, NSpace, NTag, NButton, NSelect, useMessage } from 'naive-ui'
+import { NSpin, NEmpty, NCard, NSpace, NTag, NButton, NSelect, NSwitch, useMessage } from 'naive-ui'
 import { VueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import '@vue-flow/core/dist/style.css'
@@ -23,6 +23,10 @@ const selectedId = ref<number | null>(null)
 const run = ref<{ status: string; current_node: string; chapter_global: number | null; started_at: string; ended_at: string | null } | null>(null)
 const events = ref<RunEvent[]>([])
 const telemetry = ref<any>(null)
+const chapters = ref<{ global_number: number; title: string; status: string; volume_id: number }[]>([])
+const triggerChapter = ref<number | null>(null)
+const triggerDryRun = ref(false)
+const starting = ref(false)
 const loading = ref(true)
 const chapterFilter = ref<number | null>(null)
 let pollTimer: any = null
@@ -59,12 +63,32 @@ const flowEdges = computed(() => baseEdges)
 
 async function loadRuns() {
   try {
-    runs.value = await api.runs(props.wid, 50, chapterFilter.value ?? undefined) as any
+    const [rs, chs] = await Promise.all([api.runs(props.wid, 50, chapterFilter.value ?? undefined) as any,
+                                          api.chapters(props.wid) as any])
+    runs.value = rs
+    chapters.value = chs || []
+    if (!triggerChapter.value && chapters.value.length) triggerChapter.value = chapters.value[0].global_number
     if (!selectedId.value && runs.value.length) selectedId.value = runs.value[0].id
     if (selectedId.value && !runs.value.find(r => r.id === selectedId.value)) {
       selectedId.value = runs.value.length ? runs.value[0].id : null
     }
   } catch (e: any) { msg.error('加载 runs 失败: ' + (e.message || e)) }
+}
+
+const chapterOpts = () => chapters.value.map(c => ({
+  label: `第${c.global_number}章 ${c.title || ''} [${c.status}]`, value: c.global_number,
+})) as any[]
+
+async function startRun() {
+  if (triggerChapter.value == null) { msg.warning('选一章'); return }
+  const ch = chapters.value.find(c => c.global_number === triggerChapter.value)
+  starting.value = true
+  try {
+    const r = await api.startRun(props.wid, { chapter: triggerChapter.value, dry_run: triggerDryRun.value }) as any
+    msg.success(`已触发第${triggerChapter.value}章 ${triggerDryRun.value ? '(dry-run)' : ''}(${(ch as any)?.status === 'writing' ? '重写' : '续写/写'})`)
+    await refreshAll()
+  } catch (e: any) { msg.error('触发失败: ' + (e.message || e)) }
+  finally { starting.value = false }
 }
 
 async function loadRun() {
@@ -145,8 +169,24 @@ const PROC_LABELS: Record<string, string> = {
         </div>
       </NCard>
 
-      <!-- 右:流程图 + 时间线 -->
+      <!-- 右:触发写作 + 流程图 + 时间线 -->
       <div class="runs-main">
+        <NCard title="触发写作" size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
+          <div class="hint" style="margin-bottom:8px">
+            选已有章节(需有 beat 契约)→ runner 异步跑,事件实时出现在下方。「writing」章会重写;「completed」会覆盖;新章需先在 DB 建章+beat。
+          </div>
+          <NSpace align="center" :size="8">
+            <NSelect v-model:value="triggerChapter" :options="chapterOpts()" placeholder="选章节"
+                     size="small" filterable style="min-width:280px" />
+            <span class="hint">dry-run</span>
+            <NSwitch v-model:value="triggerDryRun" size="small" />
+            <NButton type="primary" size="small" :loading="starting" :disabled="triggerChapter==null" @click="startRun">
+              {{ triggerDryRun ? 'dry-run 跑通' : '开始写作' }}
+            </NButton>
+            <NTag v-if="runs.some(r => r.status==='running')" size="tiny" type="warning" :bordered="false">有 run 进行中(start_run 会复用)</NTag>
+          </NSpace>
+        </NCard>
+
         <NCard size="small" style="margin-bottom:12px" :content-style="{ background: 'var(--br-card)' }">
           <div style="height:220px">
             <VueFlow :nodes="flowNodes" :edges="flowEdges" :nodes-draggable="false" :nodes-connectable="false"

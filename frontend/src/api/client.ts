@@ -45,6 +45,8 @@ export const api = {
     return req('GET', `/api/works/${w}/runs${q ? '?' + q : ''}`)
   },
   run: (w: string, runId: number) => req('GET', `/api/works/${w}/runs/${runId}`),
+  startRun: (w: string, body: { chapter: number; dry_run?: boolean }) =>
+    req('POST', `/api/works/${w}/runs/start`, body),
   endpoints: () => req('GET', '/api/llm_endpoints'),
   upsertEndpoint: (body: any) => req('POST', '/api/llm_endpoints', body),
   deleteEndpoint: (name: string) => req('DELETE', `/api/llm_endpoints/${encodeURIComponent(name)}`),

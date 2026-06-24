@@ -513,6 +513,52 @@ def api_runs(work_id):
         conn.close()
 
 
+@bp.post("/works/<work_id>/runs/start")
+def api_start_run(work_id):
+    """作者端触发 runner 写作(异步 subprocess)。body: {chapter: global_number, dry_run?: bool}。
+
+    chapter 必须已存在(有 beat 契约;续写新章需先建章+beat)。volume 从 chapter 行取。
+    detached 子进程跑 `python -m src.bedrock.runner`,stdout/stderr 落 runner_logs/chN.log。
+    run row 由 runner boot 的 start_run 创建,面板 2s 轮询自动发现 + 实时更新。
+    """
+    import os, sys, subprocess, datetime
+    wd = _resolve_work(work_id)
+    _require_json()
+    body = request.get_json(silent=True) or {}
+    chapter = body.get("chapter")
+    dry_run = bool(body.get("dry_run"))
+    if chapter is None:
+        return _err("需 chapter(global_number)")
+    conn = get_connection(wd)
+    try:
+        ch = conn.execute("SELECT id, volume_id FROM chapter WHERE global_number=?", (chapter,)).fetchone()
+        if ch is None:
+            return _err(f"章节 {chapter} 不存在(续写新章需先建 chapter + beat 契约)")
+        volume = ch["volume_id"]
+    finally:
+        conn.close()
+
+    repo_root = Path(__file__).resolve().parents[3]   # src/bedrock/web → repo root(D:/novel_test)
+    log_dir = wd / "exports" / "runner_logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_name = f"ch{chapter}.{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    log_path = log_dir / log_name
+    cmd = [sys.executable, "-m", "src.bedrock.runner",
+           "--project", str(wd), "--chapter", str(chapter), "--volume", str(volume)]
+    if dry_run:
+        cmd.append("--dry-run")
+    kwargs = dict(stdout=open(log_path, "w", encoding="utf-8"),
+                  stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+                  cwd=str(repo_root), close_fds=True)
+    if os.name == "nt":
+        kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW | subprocess.DETACHED_PROCESS
+    else:
+        kwargs["start_new_session"] = True
+    subprocess.Popen(cmd, **kwargs)
+    return _ok({"started": True, "chapter": chapter, "volume": volume,
+                "dry_run": dry_run, "log": log_name})
+
+
 @bp.get("/works/<work_id>/runs/<int:run_id>")
 def api_run(work_id, run_id):
     """单 run + 事件序列（按 seq 升序）+ LLM 遥测汇总(token/调用/耗时)，供 Vue Flow 图轮询渲染。"""
