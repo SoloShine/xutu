@@ -77,3 +77,31 @@ def test_empty_default_string_treated_as_unset(monkeypatch, captured):
     monkeypatch.setattr(llm_mod, "get_endpoint", lambda name, mask=False: _ep(name))
     with pytest.raises(llm_mod.LLMNotBoundError):
         llm_mod.get_writer_model({"models": {}}, "writer")
+
+
+def test_call_llm_captures_tokens_and_identity(monkeypatch):
+    """call_llm resolve+invoke+捕 token/延迟/endpoint/model,返回遥测 dict。"""
+    class FakeResp:
+        content = "hello"
+        usage_metadata = {"input_tokens": 13, "output_tokens": 93, "total_tokens": 106}
+    monkeypatch.setattr(llm_mod, "get_default", lambda: {"endpoint_name": "GLM", "model": "glm-5.2"})
+    monkeypatch.setattr(llm_mod, "get_endpoint", lambda name, mask=False: _ep(name))
+    monkeypatch.setattr(llm_mod, "init_chat_model", lambda *a, **k: type("M", (), {"invoke": lambda self, p: FakeResp()})())
+    r = llm_mod.call_llm({"models": {}}, "writer", "prompt")
+    assert r["content"] == "hello"
+    assert r["tokens_in"] == 13 and r["tokens_out"] == 93
+    assert r["endpoint"] == "GLM" and r["model"] == "glm-5.2"
+    assert isinstance(r["latency_ms"], int) and r["latency_ms"] >= 0
+
+
+def test_call_llm_missing_usage_yields_none(monkeypatch):
+    """响应无 usage_metadata → tokens_* 为 None(不崩)。"""
+    class FakeResp:
+        content = "hi"
+        usage_metadata = None
+    monkeypatch.setattr(llm_mod, "get_default", lambda: {"endpoint_name": "GLM", "model": "glm-5.2"})
+    monkeypatch.setattr(llm_mod, "get_endpoint", lambda name, mask=False: _ep(name))
+    monkeypatch.setattr(llm_mod, "init_chat_model", lambda *a, **k: type("M", (), {"invoke": lambda self, p: FakeResp()})())
+    r = llm_mod.call_llm({"models": {}}, "writer", "p")
+    assert r["content"] == "hi"
+    assert r["tokens_in"] is None and r["tokens_out"] is None

@@ -175,3 +175,43 @@ def test_migration_idempotent(tmp_project):
     n = conn.execute("SELECT COUNT(*) AS n FROM sqlite_master WHERE type='table' AND name IN ('workflow_run','workflow_run_event')").fetchone()
     assert n["n"] == 2
     conn.close()
+
+
+# ── run_telemetry:从 llm_call event 聚合 token/调用/耗时 ──
+
+def test_run_telemetry_aggregates_llm_calls(tmp_project):
+    from src.bedrock.workflow.run_repo import run_telemetry
+    conn = get_connection(tmp_project)
+    rid = start_run(conn, chapter_global=1, volume_id=1, runner="langgraph")
+    # 模拟 write 1 次 + revise 1 次 + consistency 1 次 LLM 调用
+    emit_event(conn, rid, "write", "llm_call",
+               {"endpoint": "GLM", "model": "glm-5.2", "tokens_in": 1000, "tokens_out": 2000, "latency_ms": 5000})
+    emit_event(conn, rid, "revise", "llm_call",
+               {"endpoint": "GLM", "model": "glm-5.2", "tokens_in": 3000, "tokens_out": 1500, "latency_ms": 6000})
+    emit_event(conn, rid, "consistency", "llm_call",
+               {"endpoint": "GLM", "model": "glm-5.2", "tokens_in": 800, "tokens_out": 50, "latency_ms": 1000})
+    end_run(conn, rid, "completed", current_node="finalize")
+    t = run_telemetry(conn, rid)
+    assert t["llm_calls"] == 3
+    assert t["tokens_in"] == 4800       # 1000+3000+800
+    assert t["tokens_out"] == 3550      # 2000+1500+50
+    assert t["llm_time_ms"] == 12000
+    # by_process 按 node 归并
+    assert set(t["by_process"].keys()) == {"write", "revise", "consistency"}
+    assert t["by_process"]["write"]["tokens_out"] == 2000
+    assert t["by_process"]["consistency"]["calls"] == 1
+    assert t["run_duration_s"] is not None and t["run_duration_s"] >= 0
+    conn.close()
+
+
+def test_run_telemetry_no_llm_calls(tmp_project):
+    from src.bedrock.workflow.run_repo import run_telemetry
+    conn = get_connection(tmp_project)
+    rid = start_run(conn, chapter_global=2, volume_id=1, runner="langgraph")
+    emit_event(conn, rid, "boot", "start", {"beats": 1})   # 非 llm_call
+    end_run(conn, rid, "completed", current_node="finalize")
+    t = run_telemetry(conn, rid)
+    assert t["llm_calls"] == 0
+    assert t["tokens_in"] == 0 and t["tokens_out"] == 0
+    assert t["by_process"] == {}
+    conn.close()

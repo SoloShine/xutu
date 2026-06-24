@@ -20,7 +20,7 @@ from src.bedrock.workflow.config_repo import get_workflow_config
 from src.bedrock.workflow.run_repo import start_run, emit_event, end_run
 from src.bedrock.__main__ import _commit_paragraphs, _export_chapter_json, _apply_paragraph_ops, _check_proper_nouns   # 复用全套入库 guard
 
-from .llm import get_writer_model
+from .llm import call_llm
 from .prompts import writer_prompt, editor_prompt, consistency_prompt
 
 
@@ -100,9 +100,10 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
         else:
             prompt = writer_prompt(ctx, state["chapter_global"], state["volume_id"], tuple(wt),
                                    violations_feedback=state.get("violations_feedback", ""))
-            model = get_writer_model(state["config"], "writer")
-            resp = model.invoke(prompt)
-            prose = resp.content if hasattr(resp, "content") else str(resp)
+            r = call_llm(state["config"], "writer", prompt)
+            prose = r["content"]
+            _emit(state["run_id"], "write", "llm_call",
+                  {k: r[k] for k in ("endpoint", "model", "tokens_in", "tokens_out", "latency_ms")})
         _emit(state["run_id"], "write", "iteration",
               {"iter": state["iter"] + 1, "chars": len(prose),
                "retry": bool(state.get("violations_feedback")) or state.get("rejected", False)})
@@ -118,9 +119,10 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
         else:
             prompt = editor_prompt(ctx, state["chapter_global"], state["volume_id"], state["prose"],
                                    tuple(wt), violations_feedback=state.get("violations_feedback", ""))
-            model = get_writer_model(state["config"], "editor")
-            resp = model.invoke(prompt)
-            prose = resp.content if hasattr(resp, "content") else str(resp)
+            r = call_llm(state["config"], "editor", prompt)
+            prose = r["content"]
+            _emit(state["run_id"], "revise", "llm_call",
+                  {k: r[k] for k in ("endpoint", "model", "tokens_in", "tokens_out", "latency_ms")})
         _emit(state["run_id"], "revise", "iteration",
               {"iter": state["editor_iter"] + 1, "chars": len(prose),
                "retry": bool(state.get("violations_feedback")) or state.get("rejected", False)})
@@ -148,10 +150,10 @@ def make_nodes(conn, project, export_path=None, dry_run=False):
                      for r in rows]
 
         prompt = consistency_prompt(ctx, state["chapter_global"], state["volume_id"], para_view)
-        model = get_writer_model(state["config"], "consistency")
-        resp = model.invoke(prompt)
-        raw = resp.content if hasattr(resp, "content") else str(resp)
-        ops = _parse_ops_list(raw)
+        r = call_llm(state["config"], "consistency", prompt)
+        _emit(state["run_id"], "consistency", "llm_call",
+              {k: r[k] for k in ("endpoint", "model", "tokens_in", "tokens_out", "latency_ms")})
+        ops = _parse_ops_list(r["content"])
         if not ops:
             _emit(state["run_id"], "consistency", "skip", {"reason": "no-ops"})
             return {}

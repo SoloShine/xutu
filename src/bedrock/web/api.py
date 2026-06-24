@@ -515,14 +515,16 @@ def api_runs(work_id):
 
 @bp.get("/works/<work_id>/runs/<int:run_id>")
 def api_run(work_id, run_id):
-    """单 run + 事件序列（按 seq 升序），供 Vue Flow 图轮询渲染。"""
+    """单 run + 事件序列（按 seq 升序）+ LLM 遥测汇总(token/调用/耗时)，供 Vue Flow 图轮询渲染。"""
+    from src.bedrock.workflow.run_repo import run_telemetry
     wd = _resolve_work(work_id)
     conn = get_connection(wd)
     try:
         r = get_run(conn, run_id)
         if r is None:
             return _err(f"run_id={run_id} 不存在")
-        return jsonify({"run": r, "events": list_events(conn, run_id)})
+        return jsonify({"run": r, "events": list_events(conn, run_id),
+                        "telemetry": run_telemetry(conn, run_id)})
     finally:
         conn.close()
 

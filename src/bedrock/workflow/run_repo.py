@@ -122,6 +122,47 @@ def list_events(conn, run_id):
     return out
 
 
+def run_telemetry(conn, run_id):
+    """聚合 run 的 LLM 遥测(从 llm_call event 求)。成本核算用。
+
+    返回 {run_id, llm_calls, tokens_in, tokens_out, llm_time_ms, by_process:{process:{calls,tokens_in,tokens_out}},
+    run_started_at, run_ended_at, run_duration_s(总耗时,含非 LLM)}。无 llm_call event → calls=0。
+    """
+    evs = list_events(conn, run_id)
+    by_proc = {}
+    tin = tout = ttime = 0
+    for e in evs:
+        if e["kind"] != "llm_call":
+            continue
+        p = e["payload"] or {}
+        key = e["node"]   # 按 node(write/revise/consistency)归并
+        b = by_proc.setdefault(key, {"calls": 0, "tokens_in": 0, "tokens_out": 0, "latency_ms": 0,
+                                     "endpoint": p.get("endpoint"), "model": p.get("model")})
+        b["calls"] += 1
+        b["tokens_in"] += p.get("tokens_in") or 0
+        b["tokens_out"] += p.get("tokens_out") or 0
+        b["latency_ms"] += p.get("latency_ms") or 0
+        tin += p.get("tokens_in") or 0
+        tout += p.get("tokens_out") or 0
+        ttime += p.get("latency_ms") or 0
+    run = get_run(conn, run_id) or {}
+    started = run.get("started_at")
+    ended = run.get("ended_at")
+    duration_s = None
+    if started and ended:
+        try:
+            from datetime import datetime
+            s = datetime.strptime(started, "%Y-%m-%d %H:%M:%S")
+            e2 = datetime.strptime(ended, "%Y-%m-%d %H:%M:%S")
+            duration_s = (e2 - s).total_seconds()
+        except Exception:
+            duration_s = None
+    return {"run_id": run_id, "llm_calls": sum(b["calls"] for b in by_proc.values()),
+            "tokens_in": tin, "tokens_out": tout, "llm_time_ms": ttime,
+            "by_process": by_proc, "run_started_at": started, "run_ended_at": ended,
+            "run_duration_s": duration_s}
+
+
 def list_recent_runs(conn, limit=20, chapter_global=None):
     """最近 N 个 run(含 event 计数 + 末节点)。可按章过滤。"""
     if chapter_global is not None:

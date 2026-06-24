@@ -125,7 +125,10 @@ def _run(tmp, monkeypatch, *, l2_pass_seq, cap=3, editor_cap=5, l2_counter=None,
         return _FakeReport(passed_hard_gate=passed,
                            beat_violations=[] if passed else [{"beat_id": 1, "kind": "x", "detail": "d"}])
 
-    monkeypatch.setattr(nodes, "get_writer_model", lambda config, process="writer": _fake_model())
+    monkeypatch.setattr(nodes, "call_llm",
+                        lambda config, process, prompt: {"content": "第一章正文。" * 200,
+                                                          "endpoint": "X", "model": "m",
+                                                          "tokens_in": 10, "tokens_out": 20, "latency_ms": 5})
     monkeypatch.setattr(nodes, "run_l2", fake_run_l2)
     monkeypatch.setattr(nodes, "verify_chapter_persisted", lambda c, cid, export_path=None: verify_result)
     monkeypatch.setattr(nodes, "_commit_paragraphs", lambda c, cid, raw: {"paragraph_count": 10})
@@ -169,7 +172,7 @@ def test_write_retry_then_converge_to_revise(tmp_path, monkeypatch):
     assert final["result"]["status"] == "completed"
     assert final["iter"] == 2            # write 两次
     assert final["editor_iter"] == 1
-    writes = [e for e in evs if e["node"] == "write"]
+    writes = [e for e in evs if e["node"] == "write" and e["kind"] == "iteration"]
     assert len(writes) == 2
     assert writes[1]["payload"]["retry"] is True
     assert writes[0]["payload"]["retry"] is False
@@ -264,8 +267,10 @@ def _consistency_node(tmp, monkeypatch, *, ops_json, post_l2_pass=True, has_char
     rows = [{"para_id": 1, "seq": 1, "text": "他走进来。"},
             {"para_id": 2, "seq": 2, "text": "她说好。"}]
     monkeypatch.setattr(nodes, "list_paragraphs_in_chapter", lambda c, cid: rows)
-    monkeypatch.setattr(nodes, "get_writer_model",
-                        lambda config, process="writer": _fake_model(text=ops_json))
+    monkeypatch.setattr(nodes, "call_llm",
+                        lambda config, process, prompt: {"content": ops_json, "endpoint": "X",
+                                                          "model": "m", "tokens_in": 1,
+                                                          "tokens_out": 2, "latency_ms": 3})
     monkeypatch.setattr(nodes, "run_l2", lambda c, cid: _FakeReport(passed_hard_gate=post_l2_pass))
     applied = {"n": 0}
     monkeypatch.setattr(nodes, "_apply_paragraph_ops",

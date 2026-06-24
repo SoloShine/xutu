@@ -555,6 +555,10 @@ def main():
     p_showrun.add_argument("--project", type=Path, required=True)
     p_showrun.add_argument("--run-id", type=int, required=True)
 
+    p_telrun = sub.add_parser("run-telemetry", help="run 的 LLM 遥测汇总(token/调用/耗时,成本核算用)")
+    p_telrun.add_argument("--project", type=Path, required=True)
+    p_telrun.add_argument("--run-id", type=int, required=True)
+
     # ---- 全局 LLM 端点目录(操作 ~/.bedrock/global.db,不需 project)----
     p_lste = sub.add_parser("list-llm-endpoints", help="列全局 LLM 端点(api_key 掩码)")
     p_adde = sub.add_parser("add-llm-endpoint", help="加/改全局端点(--model 可多次)")
@@ -838,6 +842,9 @@ def main():
             if r is None:
                 sys.exit(f"run_id={args.run_id} 不存在")
             print(json.dumps({"run": r, "events": list_events(conn, args.run_id)}, ensure_ascii=False))
+        elif args.cmd == "run-telemetry":
+            from src.bedrock.workflow.run_repo import run_telemetry
+            print(json.dumps(run_telemetry(conn, args.run_id), ensure_ascii=False, indent=2))
         elif args.cmd == "refresh-style-actual":
             from src.bedrock.checks.style_drift import refresh_actual_cache
             r = refresh_actual_cache(conn, args.volume)
